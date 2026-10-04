@@ -208,3 +208,61 @@ def test_public_generation_budget_error_keeps_retrieval_available():
         client.query_official("parameter priority", version="wiki-1eadc6584f96", language="all")
     assert failure.value.code == "LLM_BUDGET_EXHAUSTED"
     assert "\u68c0\u7d22" in failure.value.public_message
+
+
+def test_public_search_batch_posts_once_with_120_second_timeout_and_scope():
+    session = Session([Response({"checks": [], "results": []})])
+    client = PublicKnowledgeClient(
+        "http://localhost:8765", session=session, retry_limit=3, timeout=17,
+    )
+    scope = {
+        "device_model": "reComputer Industrial J4012",
+        "module_sku": "P3767-0000",
+    }
+
+    client.search_batch(
+        "切换行人跟踪模型", checks=[
+            {"check_index": 0, "query": "推理配置"},
+            {"check_index": 1, "query": "跟踪参数"},
+        ], version="v2.9.0", language="zh", top_k=5,
+        retrieval_policy="task_adaptive_rerank", **scope,
+    )
+
+    assert len(session.calls) == 1
+    method, url, timeout, kwargs = session.calls[0]
+    assert method == "POST"
+    assert url == "http://localhost:8765/public/search-batch"
+    assert timeout == 120.0
+    assert kwargs["json"] == {
+        "summary": "切换行人跟踪模型",
+        "checks": [
+            {"check_index": 0, "query": "推理配置"},
+            {"check_index": 1, "query": "跟踪参数"},
+        ],
+        "version": "v2.9.0", "language": "zh", "top_k": 5,
+        "retrieval_policy": "task_adaptive_rerank", **scope,
+    }
+
+
+def test_public_query_uses_120_second_timeout_without_retry():
+    session = Session([Response({"status": "GENERATION_NOT_CONFIGURED"})])
+    client = PublicKnowledgeClient(
+        "http://localhost:8765", session=session, retry_limit=3, timeout=17,
+    )
+
+    client.query_official("问题", version="v2.9.0")
+
+    assert len(session.calls) == 1
+    assert session.calls[0][2] == 120.0
+
+
+def test_config_trace_is_read_only_bounded_and_keeps_selected_version():
+    session = Session([Response({"status": "OK", "relations": []})])
+    client = PublicKnowledgeClient("http://localhost:8765", session=session)
+    client.config_trace(["v2.8.1:zh:deploy/pipeline/config/infer_cfg_pphuman"], version="v2.8.1")
+    assert len(session.calls) == 1
+    assert session.calls[0][1].endswith("/public/config-trace")
+    assert session.calls[0][3]["json"] == {
+        "document_ids": ["v2.8.1:zh:deploy/pipeline/config/infer_cfg_pphuman"],
+        "version": "v2.8.1",
+    }

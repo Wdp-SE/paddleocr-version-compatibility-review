@@ -10,6 +10,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import time
 import unicodedata
 import uuid
 from pathlib import Path
@@ -56,8 +57,16 @@ def _profile_for_workspace(workspace: dict) -> dict:
 class PublicKnowledgeGateway(Protocol):
     def workspace(self) -> dict: ...
     def document(self, document_id: str) -> list[dict]: ...
+    def config_trace(self, document_ids: list[str], *, version: str) -> dict: ...
     def search(
         self, question: str, *, version: str, language: str, top_k: int = 5,
+        device_model: str | None = None, module_sku: str | None = None,
+        carrier_board: str | None = None, software_baseline: str | None = None,
+        retrieval_policy: str | None = None,
+    ) -> dict: ...
+    def search_batch(
+        self, summary: str, *, checks: list[dict], version: str, language: str,
+        top_k: int = 5, retrieval_policy: str | None = None,
         device_model: str | None = None, module_sku: str | None = None,
         carrier_board: str | None = None, software_baseline: str | None = None,
     ) -> dict: ...
@@ -220,6 +229,70 @@ def _select_request_evidence(
                 return list(selected.values())
             selected.setdefault(row["chunk_id"], row)
     return list(selected.values())
+
+
+def _select_ranked_request_evidence(
+    searches: list[tuple[dict, list[dict]]], ranked_ids: list[str], *, max_items: int = 8,
+) -> list[dict]:
+    """Preserve reranker order within each check while rotating evidence coverage."""
+    rank = {chunk_id: index for index, chunk_id in enumerate(ranked_ids)}
+    ordered = [
+        (trace, sorted(rows, key=lambda row: rank.get(row.get("chunk_id"), len(rank))))
+        for trace, rows in searches
+    ]
+    selected: dict[str, dict] = {}
+    selected_documents: set[tuple[str, str]] = set()
+    max_rounds = max((len(rows) for _trace, rows in ordered), default=0)
+    for row_index in range(max_rounds):
+        for trace, rows in ordered:
+            language = str(trace.get("language") or "all")
+            row = next((
+                item for item in rows
+                if item.get("chunk_id") not in selected
+                and (language, item.get("document_key") or item.get("chunk_id")) not in selected_documents
+            ), None)
+            if row is None:
+                continue
+            selected[row["chunk_id"]] = row
+            selected_documents.add((language, row.get("document_key") or row["chunk_id"]))
+            if len(selected) >= max_items:
+                return list(selected.values())
+    for _trace, rows in ordered:
+        for row in rows:
+            if len(selected) >= max_items:
+                return list(selected.values())
+            selected.setdefault(row["chunk_id"], row)
+    return list(selected.values())
+
+
+def _batch_endpoint_unavailable(exc: Exception) -> bool:
+    """Allow bounded BM25 fallback only for transport or endpoint-compatibility failures."""
+    if type(exc).__name__ in {"Timeout", "TimeoutError"}:
+        return False
+    if isinstance(exc, ConnectionError):
+        return True
+    if getattr(exc, "code", None) == "RAG_UNAVAILABLE":
+        return True
+    status = getattr(exc, "status_code", None)
+    response = getattr(exc, "response", None)
+    if status is None and response is not None:
+        status = getattr(response, "status_code", None)
+    detail = f"{getattr(exc, 'detail', '')} {exc}"
+    return status in {404, 422} or any(
+        marker in detail for marker in ("HTTPStatus=404", "HTTPStatus=422", "HTTP 404", "HTTP 422")
+    )
+
+
+def _retrieval_policy_unsupported(exc: Exception) -> bool:
+    """Identify an older RAG API rejecting the experimental policy; avoid retrying timeouts."""
+    status = getattr(exc, "status_code", None)
+    response = getattr(exc, "response", None)
+    if status is None and response is not None:
+        status = getattr(response, "status_code", None)
+    detail = f"{getattr(exc, 'detail', '')} {exc}"
+    return status in {404, 422} or any(
+        marker in detail for marker in ("HTTPStatus=404", "HTTPStatus=422", "HTTP 404", "HTTP 422")
+    )
 
 
 def _retrieval_gaps(searches: list[tuple[dict, list[dict]]]) -> list[str]:
@@ -484,6 +557,99 @@ def _generation_stage_status(advice_status: str) -> str:
     return "FAILED"
 
 
+def _trace_request_configuration(gateway, workspace: dict, candidates: list[dict], version: str, summary: str) -> dict:
+    """One bounded, read-only tool call; fail closed on provenance mismatches."""
+    empty = {"version": version, "relations": [], "gaps": [], "roots": [],
+             "impact_status": "REQUIRES_HUMAN_REVIEW", "http_request_count": 0}
+    if workspace.get("workspace_id") != "pphuman":
+        return {**empty, "status": "NOT_APPLICABLE"}
+    # A named file is the change target, not every semantically related RAG hit.
+    # Resolve only registered same-version paths; never open the user-supplied path.
+    named_paths = set(re.findall(r"(?<![A-Za-z0-9_./-])(?:configs|deploy|docs)/[A-Za-z0-9_./-]+\.(?:ya?ml|md)(?![A-Za-z0-9_.-])", summary))
+    explicit_roots = [f"{version}:zh:{row['path'].rsplit('.', 1)[0]}"
+        for row in workspace.get("source_registry", [])
+        if row.get("version") == version and row.get("path") in named_paths]
+    roots = list(dict.fromkeys(explicit_roots or [row["document_id"] for row in candidates if row.get("document_id")]))[:8]
+    method = getattr(gateway, "config_trace", None)
+    if not roots:
+        return {**empty, "status": "NO_RETRIEVAL_EVIDENCE"}
+    if not callable(method):
+        return {**empty, "status": "NOT_AVAILABLE"}
+    try:
+        report = method(roots, version=version)
+    except Exception:
+        return {**empty, "status": "UNAVAILABLE", "http_request_count": 1}
+    registry = {row.get("source_id"): row for row in workspace.get("source_registry", [])}
+
+    def bound_source(row):
+        if not isinstance(row, dict):
+            return False
+        source = registry.get(row.get("source_id"))
+        path = source.get("path") if isinstance(source, dict) else None
+        return bool(source and row.get("version") == version
+            and source.get("version") == version and row.get("path") == path
+            and row.get("source_url") == source.get("source_url")
+            and row.get("document_id") == f"{version}:zh:{path.rsplit('.', 1)[0]}")
+
+    try:
+        if (not isinstance(report, dict) or report.get("version") != version
+                or report.get("status") not in {"ok", "partial", "no_relations"}
+                or not isinstance(report.get("roots"), list)
+                or {row.get("document_id") for row in report["roots"] if isinstance(row, dict)} != set(roots)
+                or not all(bound_source(row) for row in report["roots"])):
+            raise ValueError("untrusted configuration roots")
+        relations, gaps = report.get("relations"), report.get("gaps")
+        if not isinstance(relations, list) or not isinstance(gaps, list) or len(relations) > 80 or len(gaps) > 80:
+            raise ValueError("unbounded configuration response")
+        for row in [*relations, *gaps]:
+            evidence = row.get("evidence") if isinstance(row, dict) else None
+            if (not bound_source(row) or not isinstance(evidence, dict)
+                    or not isinstance(evidence.get("text"), str) or len(evidence["text"]) > 600
+                    or not isinstance(evidence.get("line_start"), int) or isinstance(evidence["line_start"], bool) or evidence["line_start"] < 1
+                    or not isinstance(evidence.get("line_end"), int) or isinstance(evidence["line_end"], bool) or evidence["line_end"] < evidence["line_start"]
+                    or row.get("document_id") not in roots and row.get("target_document_id") not in roots):
+                raise ValueError("untrusted configuration evidence")
+            if row.get("target_status") == "indexed":
+                target = registry.get(row.get("target_source_id"))
+                if (not isinstance(target, dict) or target.get("version") != version
+                        or row.get("target_path") != target.get("path")
+                        or row.get("target_document_id") != f"{version}:zh:{target['path'].rsplit('.', 1)[0]}"):
+                    raise ValueError("cross-version configuration target")
+        for row in relations:
+            if (row.get("relation_type") not in {"config_inherits", "config_references", "document_references"}
+                    or row.get("target_status") not in {"indexed", "not_indexed", "different_version", "external_repository", "invalid_path"}
+                    or row.get("direction") != ("outgoing" if row.get("document_id") in roots else "incoming")):
+                raise ValueError("invalid configuration relation")
+    except (ValueError, TypeError, KeyError):
+        return {**empty, "status": "INVALID_RESPONSE", "http_request_count": 1}
+    return {**report, "impact_status": "REQUIRES_HUMAN_REVIEW", "http_request_count": 1}
+
+
+def _configuration_gap_details(report: dict, version: str) -> list[dict]:
+    status = report.get("status")
+    if status in {"NOT_AVAILABLE", "UNAVAILABLE", "INVALID_RESPONSE"}:
+        return [{"gap_type": "CONFIG_TRACE_UNAVAILABLE", "expected_version": version,
+            "message": "显式配置关联工具未可用或未通过来源校验；本次无法确认资料引用链。",
+            "suggested_action": "请人工核对当前版本的配置引用关系。", "requires_human_review": True}]
+    details = []
+    for row in report.get("gaps", []):
+        target = row.get("target_path")
+        not_indexed = row.get("kind") == "not_indexed"
+        details.append({
+            "gap_type": "CONFIG_REFERENCE_NOT_INDEXED" if not_indexed else "CONFIG_REFERENCE_UNRESOLVED",
+            "expected_version": version, "source_id": row.get("source_id"),
+            "source_url": row.get("source_url"), "target_path": target,
+            "message": f"资料显式引用未收录目标：{target}" if not_indexed else f"资料引用无法在当前版本解析：{target or row.get('kind')}",
+            "suggested_action": "核对相同版本的引用文件；缺少资料不能解释为无影响。",
+            "requires_human_review": True,
+        })
+    if (report.get("bounds") or {}).get("truncated"):
+        details.append({"gap_type": "CONFIG_TRACE_BUDGET", "expected_version": version,
+            "message": "显式关联超过查询预算，结果已截断。",
+            "suggested_action": "缩小到具体配置文件并人工核对剩余引用。", "requires_human_review": True})
+    return details
+
+
 class PublicReviewAgent:
     def __init__(self, gateway: PublicKnowledgeGateway):
         self.gateway = gateway
@@ -503,6 +669,7 @@ class PublicReviewAgent:
         module_sku: str | None = None,
         carrier_board: str | None = None,
         software_baseline: str | None = None,
+        retrieval_policy: str = "bm25",
     ) -> dict:
         """Find current-version candidates from a natural-language change request."""
         summary = change_summary.strip()
@@ -510,6 +677,10 @@ class PublicReviewAgent:
             raise ValueError("变更描述应为 1 到 4000 字")
         if language_mode != "zh":
             raise ValueError("当前知识空间仅收录中文资料，请使用中文审查")
+        if retrieval_policy not in {
+            "bm25", "bm25_pphuman_term_expansion_rrf", "task_adaptive_rerank",
+        }:
+            raise ValueError("不支持的检索策略")
         languages = ["zh"]
 
         plan = build_request_plan(summary, change_type=change_type, impact_scope=impact_scope)
@@ -545,6 +716,8 @@ class PublicReviewAgent:
                 },
                 "scope_status": "OUT_OF_SCOPE",
                 "retrieval_policy": "not_run_scope_guard",
+                "retrieval_policy_requested": retrieval_policy,
+                "retrieval_policy_status": "NOT_RUN",
                 "retrieval_trace": {
                     "queries": [],
                     "uncovered_queries": [summary],
@@ -580,6 +753,8 @@ class PublicReviewAgent:
             }
 
         workspace = self.gateway.workspace()
+        if retrieval_policy != "bm25" and workspace.get("workspace_id") != "pphuman":
+            raise ValueError("当前知识空间不支持该实验检索策略")
         current_version = workspace["current_version"]
         repositories = _workspace_repositories(workspace)
         active_profile = _profile_for_workspace(workspace)
@@ -627,51 +802,179 @@ class PublicReviewAgent:
         plan["target_version"] = selected_version
         plan["proposal_context_status"] = request_context["context_status"]
         task_id = uuid.uuid4().hex
+        requested_retrieval_policy = retrieval_policy
         fingerprint = _normalized_hash(
             json.dumps({
                 "version": selected_version, "change_type": plan["change_type"],
                 "impact_scope": plan["impact_scope"], "summary": summary,
                 "language_mode": "zh",
                 "device_scope": plan.get("device_scope"),
+                "retrieval_policy": requested_retrieval_policy,
                 **context_values,
             }, ensure_ascii=False, sort_keys=True)
         )[:20]
         searches: list[tuple[dict, list[dict]]] = []
-        retrieval_policy = "bm25"
-        for check_index, query_step in enumerate(plan["queries"]):
-            query = query_step["query"]
-            search_query = query_step.get("search_query", query)
-            for language in languages:
-                trace = {
-                    **query_step,
-                    "check_index": check_index,
-                    "language": language,
-                    "status": "no_retrieval_match",
-                    "top_chunk_ids": [],
-                    "selected_chunk_ids": [],
-                }
+        observed_retrieval_policies: set[str] = set()
+        retrieval_started = time.perf_counter()
+        batch_response = None
+        batch_attempted = False
+        batch_fallback_reason = None
+        batch_failure = None
+        batch_rerank_status = "NOT_REQUESTED"
+        batch_ranked_ids: list[str] = []
+        batch_subquery_count: int | None = None
+        batch_http_request_count = 0
+        batch_rerank_calls = 0
+        if requested_retrieval_policy == "task_adaptive_rerank":
+            batch_method = getattr(self.gateway, "search_batch", None)
+            if callable(batch_method):
+                batch_attempted = True
+                batch_http_request_count = 1
                 try:
-                    search_result = self.gateway.search(
-                        search_query, version=selected_version, language=language, top_k=5,
+                    batch_response = batch_method(
+                        summary,
+                        checks=[{
+                            "check_index": index,
+                            "query": step.get("search_query", step["query"]),
+                        } for index, step in enumerate(plan["queries"])],
+                        version=selected_version, language="zh", top_k=5,
+                        retrieval_policy=requested_retrieval_policy,
                         **scope_values,
                     )
-                    retrieval_policy = search_result.get("retrieval_policy", retrieval_policy)
-                    rows = [
-                        row for row in search_result.get("results", [])
-                        if _official_hit(
-                            row, selected_version, repositories, allowed_versions=allowed_versions,
-                            allowed_sources=source_registry,
-                        )
-                        and str(row.get("language") or row.get("locale") or "").casefold().startswith(language)
+                    if not isinstance(batch_response, dict) or not isinstance(batch_response.get("checks"), list):
+                        raise ValueError("批量检索响应缺少 checks 列表")
+                    batch_by_index = {
+                        row.get("check_index"): row
+                        for row in batch_response["checks"] if isinstance(row, dict)
+                    }
+                    if any(index not in batch_by_index for index in range(len(plan["queries"]))):
+                        raise ValueError("批量检索响应未覆盖全部检查项")
+                    diagnostics = batch_response.get("rerank_diagnostics")
+                    if isinstance(diagnostics, dict):
+                        batch_rerank_calls = int(diagnostics.get("rerank_calls") or 0)
+                    batch_rerank_status = str(batch_response.get("rerank_status") or "UNKNOWN")
+                    batch_ranked_ids = [
+                        value for value in batch_response.get("ranked_ids", [])
+                        if isinstance(value, str)
                     ]
-                    trace["top_chunk_ids"] = [row["chunk_id"] for row in rows]
-                except Exception:
-                    # A failed search is distinct from a successful search without matches.
-                    rows = []
-                    trace["status"] = "search_unavailable"
-                searches.append((trace, rows))
+                    batch_subquery_count = int(
+                        batch_response.get("retrieval_call_count") or len(plan["queries"])
+                    )
+                    observed_policy = batch_response.get("actual_policy") or batch_response.get("retrieval_policy")
+                    if isinstance(observed_policy, str) and observed_policy:
+                        observed_retrieval_policies.add(observed_policy)
+                except Exception as exc:
+                    batch_response = None
+                    if _batch_endpoint_unavailable(exc):
+                        batch_fallback_reason = type(exc).__name__
+                        batch_rerank_status = "NOT_AVAILABLE_FALLBACK"
+                    else:
+                        batch_failure = exc
+                        batch_rerank_status = "FAILED"
+            else:
+                batch_fallback_reason = "gateway_missing_batch_method"
+                batch_rerank_status = "NOT_AVAILABLE_FALLBACK"
 
-        candidates = _select_request_evidence(searches, max_items=8)
+        if batch_response is not None:
+            batch_by_index = {row["check_index"]: row for row in batch_response["checks"]}
+            for check_index, query_step in enumerate(plan["queries"]):
+                query = query_step["query"]
+                search_query = query_step.get("search_query", query)
+                check_result = batch_by_index[check_index]
+                trace = {
+                    **query_step, "check_index": check_index, "language": "zh",
+                    "status": "no_retrieval_match",
+                    "retrieval_policy": next(iter(observed_retrieval_policies), "not_confirmed"),
+                    "top_chunk_ids": [], "selected_chunk_ids": [],
+                }
+                raw_rows = check_result.get("results")
+                if not isinstance(raw_rows, list):
+                    raw_rows = []
+                    trace["status"] = "search_unavailable"
+                rows = [
+                    row for row in raw_rows if isinstance(row, dict)
+                    and _official_hit(
+                        row, selected_version, repositories, allowed_versions=allowed_versions,
+                        allowed_sources=source_registry,
+                    )
+                    and str(row.get("language") or row.get("locale") or "").casefold().startswith("zh")
+                ]
+                rows.sort(key=lambda row: batch_ranked_ids.index(row["chunk_id"])
+                          if row.get("chunk_id") in batch_ranked_ids else len(batch_ranked_ids))
+                trace["top_chunk_ids"] = [row["chunk_id"] for row in rows]
+                searches.append((trace, rows))
+        else:
+            if batch_attempted:
+                batch_http_request_count = 1
+            for check_index, query_step in enumerate(plan["queries"]):
+                query = query_step["query"]
+                search_query = query_step.get("search_query", query)
+                for language in languages:
+                    trace = {
+                        **query_step,
+                        "check_index": check_index,
+                        "language": language,
+                        "status": "no_retrieval_match",
+                        "retrieval_policy": "not_confirmed",
+                        "top_chunk_ids": [],
+                        "selected_chunk_ids": [],
+                    }
+                    try:
+                        if batch_failure is not None:
+                            raise batch_failure
+                        search_options = {
+                            "version": selected_version, "language": language, "top_k": 5,
+                            **scope_values,
+                        }
+                        # A missing/old batch endpoint must fall back to honest BM25.
+                        if requested_retrieval_policy == "task_adaptive_rerank":
+                            search_options["retrieval_policy"] = "bm25"
+                        elif requested_retrieval_policy != "bm25":
+                            search_options["retrieval_policy"] = requested_retrieval_policy
+                        batch_http_request_count += 1
+                        search_result = self.gateway.search(search_query, **search_options)
+                        observed_policy = search_result.get("retrieval_policy")
+                        if isinstance(observed_policy, str) and observed_policy:
+                            observed_retrieval_policies.add(observed_policy)
+                            trace["retrieval_policy"] = observed_policy
+                        rows = [
+                            row for row in search_result.get("results", [])
+                            if _official_hit(
+                                row, selected_version, repositories, allowed_versions=allowed_versions,
+                                allowed_sources=source_registry,
+                            )
+                            and str(row.get("language") or row.get("locale") or "").casefold().startswith(language)
+                        ]
+                        trace["top_chunk_ids"] = [row["chunk_id"] for row in rows]
+                    except Exception:
+                        # A failed search is distinct from a successful search without matches.
+                        rows = []
+                        trace["status"] = "search_unavailable"
+                    searches.append((trace, rows))
+            if requested_retrieval_policy == "task_adaptive_rerank" and batch_fallback_reason:
+                # The compatibility path is deliberately BM25-only and visibly unreranked.
+                observed_retrieval_policies.add("bm25")
+                batch_subquery_count = len(searches)
+        if requested_retrieval_policy != "task_adaptive_rerank":
+            batch_rerank_status = "NOT_REQUESTED"
+
+        retrieval_latency_ms = round((time.perf_counter() - retrieval_started) * 1000, 3)
+        retrieval_policy = (
+            next(iter(observed_retrieval_policies)) if len(observed_retrieval_policies) == 1 else
+            "mixed" if observed_retrieval_policies else "not_confirmed"
+        )
+        any_search_failure = any(trace["status"] == "search_unavailable" for trace, _rows in searches)
+        retrieval_policy_status = (
+            "NOT_AVAILABLE_FALLBACK" if batch_fallback_reason else
+            "MISMATCH" if observed_retrieval_policies and observed_retrieval_policies != {requested_retrieval_policy} else
+            "PARTIAL" if observed_retrieval_policies == {requested_retrieval_policy} and any_search_failure else
+            "CONFIRMED" if observed_retrieval_policies == {requested_retrieval_policy} else "UNCONFIRMED"
+        )
+
+        candidates = (
+            _select_ranked_request_evidence(searches, batch_ranked_ids, max_items=8)
+            if batch_response is not None else _select_request_evidence(searches, max_items=8)
+        )
         candidate_ids = {row["chunk_id"] for row in candidates}
         for trace, rows in searches:
             trace["selected_chunk_ids"] = [row["chunk_id"] for row in rows if row["chunk_id"] in candidate_ids]
@@ -687,6 +990,27 @@ class PublicReviewAgent:
             "query_limit": plan["query_limit"],
             "languages_per_check": list(languages),
             "search_call_limit": plan["query_limit"] * len(languages),
+            "retrieval_policies": sorted(observed_retrieval_policies),
+            "rerank_status": batch_rerank_status,
+            "rerank_calls": batch_rerank_calls,
+            "http_request_count": batch_http_request_count,
+            "subquery_count": (
+                batch_subquery_count if batch_subquery_count is not None else
+                len(searches) if not batch_attempted else None
+            ),
+            "batch_fallback_reason": batch_fallback_reason,
+            "route": "CHANGE_REVIEW",
+            "candidate_count": (
+                batch_response.get("candidate_count") if batch_response is not None else
+                len({row.get("chunk_id") for _trace, rows in searches for row in rows})
+            ),
+            "final_evidence_count": len(candidates),
+            "stage_latency_ms": (
+                batch_response.get("stage_latency_ms", {}) if batch_response is not None else {}
+            ),
+            "rerank_diagnostics": (
+                batch_response.get("rerank_diagnostics", {}) if batch_response is not None else {}
+            ),
         }
         coverage = _review_coverage(plan, searches, candidates, languages, evidence_budget=8)
         evidence_gap_details = _retrieval_gap_details(searches, plan)
@@ -710,6 +1034,9 @@ class PublicReviewAgent:
                     "generation": "SKIPPED",
                 },
                 "retrieval_policy": retrieval_policy,
+                "retrieval_policy_requested": requested_retrieval_policy,
+                "retrieval_policy_status": retrieval_policy_status,
+                "retrieval_latency_ms": retrieval_latency_ms,
                 "retrieval_trace": retrieval_trace,
                 "coverage": coverage,
                 "retrieved_results": [],
@@ -720,6 +1047,11 @@ class PublicReviewAgent:
                 "sandbox_only": True,
                 "public_baseline_written": False,
             }
+
+        configuration_trace = _trace_request_configuration(self.gateway, workspace, candidates, selected_version, summary)
+        configuration_gaps = _configuration_gap_details(configuration_trace, selected_version)
+        evidence_gap_details.extend(configuration_gaps)
+        evidence_gaps.extend(row["message"] for row in configuration_gaps)
 
         try:
             advice_summary = (
@@ -782,8 +1114,12 @@ class PublicReviewAgent:
                 "generation": _generation_stage_status(str(advice.get("status", "UNKNOWN"))),
             },
             "retrieval_policy": retrieval_policy,
+            "retrieval_policy_requested": requested_retrieval_policy,
+            "retrieval_policy_status": retrieval_policy_status,
+            "retrieval_latency_ms": retrieval_latency_ms,
             "retrieval_trace": retrieval_trace,
             "coverage": coverage,
+            "configuration_trace": configuration_trace,
             "retrieved_results": candidates,
             "impacts": grounded_impacts,
             "review_advice": advice,
@@ -797,8 +1133,15 @@ class PublicReviewAgent:
         self, selected: dict, proposed_text: str, *,
         device_model: str | None = None, module_sku: str | None = None,
         carrier_board: str | None = None, software_baseline: str | None = None,
+        retrieval_policy: str = "bm25",
     ) -> dict:
         workspace = self.gateway.workspace()
+        if retrieval_policy not in {
+            "bm25", "bm25_pphuman_term_expansion_rrf", "task_adaptive_rerank",
+        }:
+            raise ValueError("不支持的检索策略")
+        if retrieval_policy != "bm25" and workspace.get("workspace_id") != "pphuman":
+            raise ValueError("当前知识空间不支持该实验检索策略")
         current_version = workspace["current_version"]
         repositories = _workspace_repositories(workspace)
         allowed_versions = _scope_versions(workspace, current_version)
@@ -826,7 +1169,7 @@ class PublicReviewAgent:
             raise ValueError("修改后内容与原文相同")
         task_id = uuid.uuid4().hex
         fingerprint = _normalized_hash(
-            f"exact:{current_version}:{selected['chunk_id']}:{old_item['content_hash']}:{new_item['content_hash']}"
+            f"exact:{current_version}:{selected['chunk_id']}:{old_item['content_hash']}:{new_item['content_hash']}:{retrieval_policy}"
         )[:20]
         related_query = (selected["heading"] + " " + proposed)[:1000]
         retrieval_failed = False
@@ -856,15 +1199,38 @@ class PublicReviewAgent:
         for field, value in scope_values.items():
             if value is not None and value not in scope_options[field]:
                 raise ValueError(f"{field} 不在当前知识空间的可选范围中")
+        retrieval_started = time.perf_counter()
+        actual_retrieval_policy = None
+        selected_rerank_status = "NOT_REQUESTED"
+        selected_http_request_count = 0
         try:
-            retrieved = self.gateway.search(
-                related_query,
-                version=current_version, language="zh", top_k=12,
+            search_options = {
+                "version": current_version, "language": "zh", "top_k": 12,
                 **scope_values,
-            )["results"]
+            }
+            if retrieval_policy != "bm25":
+                search_options["retrieval_policy"] = retrieval_policy
+            selected_http_request_count = 1
+            try:
+                search_result = self.gateway.search(related_query, **search_options)
+            except Exception as exc:
+                if retrieval_policy != "task_adaptive_rerank" or not _retrieval_policy_unsupported(exc):
+                    raise
+                # Only retry an explicit unsupported-policy response, never timeouts/provider failures.
+                search_options["retrieval_policy"] = "bm25"
+                search_result = self.gateway.search(related_query, **search_options)
+                selected_http_request_count += 1
+                selected_rerank_status = "NOT_AVAILABLE_FALLBACK"
+            retrieved = search_result["results"]
+            actual_retrieval_policy = search_result.get("retrieval_policy")
+            if isinstance(search_result.get("rerank_status"), str):
+                selected_rerank_status = search_result["rerank_status"]
+            if retrieval_policy == "task_adaptive_rerank" and selected_rerank_status == "NOT_REQUESTED":
+                selected_rerank_status = "OK" if actual_retrieval_policy == "task_adaptive_rerank" else "UNCONFIRMED"
         except Exception:
             retrieved = []
             retrieval_failed = True
+        retrieval_latency_ms = round((time.perf_counter() - retrieval_started) * 1000, 3)
         related = [
             row for row in retrieved
             if row["chunk_id"] != selected["chunk_id"]
@@ -916,9 +1282,13 @@ class PublicReviewAgent:
                 ),
                 "top_chunk_ids": [row["chunk_id"] for row in related],
                 "selected_chunk_ids": [row["chunk_id"] for row in related],
+                "retrieval_policy": actual_retrieval_policy or "not_confirmed",
+                "rerank_status": selected_rerank_status,
             }],
             "uncovered_queries": [] if related else [related_query],
             "model_status": review_advice.get("status", "NOT_CALLED") if related else "NOT_CALLED",
+            "http_request_count": selected_http_request_count,
+            "subquery_count": 1 if selected_http_request_count else 0,
         }
         model_gap_details = _model_evidence_gap_details(
             review_advice, expected_version=current_version,
@@ -952,6 +1322,14 @@ class PublicReviewAgent:
                     str(review_advice.get("status", "NOT_CALLED")) if related else "NOT_CALLED",
                 ),
             },
+            "retrieval_policy": actual_retrieval_policy or "not_confirmed",
+            "retrieval_policy_requested": retrieval_policy,
+            "retrieval_policy_status": (
+                "NOT_AVAILABLE_FALLBACK" if selected_rerank_status == "NOT_AVAILABLE_FALLBACK" else
+                "CONFIRMED" if actual_retrieval_policy == retrieval_policy else
+                "MISMATCH" if actual_retrieval_policy else "UNCONFIRMED"
+            ),
+            "retrieval_latency_ms": retrieval_latency_ms,
             "retrieval_trace": retrieval_trace,
             "change": change,
             "selected_source": selected,

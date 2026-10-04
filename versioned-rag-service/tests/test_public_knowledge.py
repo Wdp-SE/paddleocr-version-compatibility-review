@@ -156,6 +156,25 @@ def test_fielded_bm25_does_not_compute_dense_or_baseline_scores(index, monkeypat
     assert all(hit["retrieval_policy"] == "bm25_fields" for hit in hits)
 
 
+def test_technical_expansion_recovers_tracker_config_for_chinese_paraphrase(index):
+    query = "跟踪器参数具体放在哪个配置文件里？"
+    baseline = index.search(query, top_k=5, version="v2.9.0", language="zh", policy="bm25")
+    hits = index.search(
+        query,
+        top_k=5,
+        version="v2.9.0",
+        language="zh",
+        policy="bm25_pphuman_term_expansion_rrf",
+    )
+
+    assert any(
+        row["source_id"] == "v2-9-0-deploy-pipeline-config-tracker-config-yml-0b088dd"
+        for row in hits
+    )
+    assert [row["chunk_id"] for row in hits[:2]] == [row["chunk_id"] for row in baseline[:2]]
+    assert all(row["version"] == "v2.9.0" and row["language"] == "zh" for row in hits)
+
+
 def test_source_diverse_bm25_exposes_more_relevant_documents_without_changing_default(monkeypatch):
     candidate_index = object.__new__(PublicKnowledgeIndex)
     candidate_index.manifest = {

@@ -4,6 +4,8 @@ import hashlib
 import json
 import sys
 
+import pytest
+
 from config import DemoConfig, RAG_ROOT
 from services.change_impact_client import ChangeImpactClient
 from services.demo_cases import load_demo_cases
@@ -68,7 +70,7 @@ def test_custom_requirement_reuses_diff_impact_and_human_review_in_isolated_sess
         client._ensure_seeded = lambda _: None
         result = client.prepare_custom(
             case.changed_external_identifier, edited,
-            "parameter_config", "批处理容量",
+            "general", "批处理容量",
         )
         clients.append(client)
         results.append(result)
@@ -86,10 +88,10 @@ def test_custom_requirement_reuses_diff_impact_and_human_review_in_isolated_sess
         assert result["state"]["patches"]
         assert result["evidence"]
         assert result["custom_change"]["source"] == "用户输入"
-        assert result["custom_change"]["change_type"] == "parameter_config"
+        assert result["custom_change"]["change_type"] == "general"
         assert result["custom_change"]["impact_scope"] == "批处理容量"
         assert "批处理容量" in result["custom_change"]["retrieval_query"]
-        assert "参数 / 配置变更" in clients[results.index(result)].rag.search_queries[0]
+        assert "批处理容量" in clients[results.index(result)].rag.search_queries[0]
     assert results[0]["state"]["task_id"] != results[1]["state"]["task_id"]
     assert results[0]["state"]["source_path"] != results[1]["state"]["source_path"]
     assert hashlib.sha256(source.read_bytes()).hexdigest() == source_hash
@@ -103,6 +105,7 @@ def test_custom_requirement_reuses_diff_impact_and_human_review_in_isolated_sess
     assert clients[1].facade.get(results[1]["state"]["task_id"]).status == "REVIEW_REQUIRED"
 
 
+@pytest.mark.skip(reason="历史合成 PAYMENT 页面已退役；当前应用文本入口由 test_paddleocr_workbench 验收")
 def test_custom_change_entry_shows_current_requirement_and_clear_action(monkeypatch, tmp_path):
     from pathlib import Path
 
@@ -122,6 +125,7 @@ def test_custom_change_entry_shows_current_requirement_and_clear_action(monkeypa
     assert app.button(key="custom_prepare").label == "开始变更审查"
 
 
+@pytest.mark.skip(reason="历史合成 PAYMENT 页面已退役；当前人审与不写回边界由 test_paddleocr_workbench 验收")
 def test_custom_review_does_not_offer_unvalidated_candidate_publication(monkeypatch, tmp_path):
     from pathlib import Path
 
@@ -147,6 +151,7 @@ def test_custom_review_does_not_offer_unvalidated_candidate_publication(monkeypa
     assert "自定义变更只到人工审核" in rendered
 
 
+@pytest.mark.skip(reason="历史合成 PAYMENT 页面已退役；当前提交及结果导航由 test_paddleocr_workbench 验收")
 def test_custom_submit_navigates_without_streamlit_session_state_error(monkeypatch, tmp_path):
     from pathlib import Path
     from streamlit.testing.v1 import AppTest

@@ -1,0 +1,37 @@
+{
+  "dataset_id": "paddleocr-quality-v2-20261004",
+  "label_origin": "developer-authored source-grounded cases frozen before strategy comparison; internal holdout, not independent human benchmark",
+  "top_k": 5,
+  "cases": [
+    {"id":"d01","split":"dev","version":"v3.0.0","query":"新版文字识别结果里如何读取文本和分数？","facts":[{"path":"docs/version3.x/pipeline_usage/OCR.md","tokens":["rec_texts","rec_scores"]}]},
+    {"id":"d02","split":"dev","version":"v3.0.0","query":"推理时日志默认是什么级别？","facts":[{"path":"docs/version3.x/logging.md","tokens":["ERROR"]}]},
+    {"id":"d03","split":"dev","version":"v3.0.0","query":"扫描的纸张歪曲了，图像矫正模块怎么开启？","facts":[{"path":"docs/version3.x/pipeline_usage/doc_preprocessor.md","tokens":["use_doc_unwarping"]}]},
+    {"id":"d04","split":"dev","version":"v3.0.0","query":"版面识别结果如何保存成Markdown文件？","facts":[{"path":"docs/version3.x/pipeline_usage/PP-StructureV3.md","tokens":["save_to_markdown"]}]},
+    {"id":"d05","split":"dev","version":"v3.0.0","query":"安装新推理包需要什么版本的飞桨框架？","facts":[{"path":"docs/version3.x/installation.md","tokens":["3.0","框架"]}]},
+    {"id":"d06","split":"dev","version":"v2.9.1","query":"旧版本怎么启用文字方向分类？","facts":[{"path":"doc/doc_ch/whl.md","tokens":["use_angle_cls=True"]}]},
+    {"id":"d07","split":"dev","version":"v3.0.0","query":"只使用CPU推理时，线程个数通过哪个参数设置？","facts":[{"path":"docs/version3.x/pipeline_usage/OCR.md","tokens":["cpu_threads"]}]},
+    {"id":"d08","split":"dev","version":"v3.0.0","query":"不写Python程序，怎样通过终端运行文字识别？","facts":[{"path":"docs/version3.x/pipeline_usage/OCR.md","tokens":["paddleocr ocr"]}]},
+    {"id":"d09","split":"dev","version":"v2.9.1","query":"旧版本表格识别如何把单元格与表格结构合成HTML？","facts":[{"path":"ppstructure/table/README_ch.md","tokens":["html","单元格"]}]},
+    {"id":"d10","split":"dev","version":"v3.0.0","query":"服务化部署有哪些方案，第一次验证用哪一个？","facts":[{"path":"docs/version3.x/deployment/serving.md","tokens":["基础服务化部署","快速验证"]}]},
+    {"id":"d11","split":"dev","version":"v3.0.0","query":"我要安装新版并配置推理日志：需要的框架版本和默认日志级别分别是什么？","facts":[{"path":"docs/version3.x/installation.md","tokens":["3.0","框架"]},{"path":"docs/version3.x/logging.md","tokens":["ERROR"]}]},
+    {"id":"d12","split":"dev","version":"v3.0.0","query":"旧版结构分析接口升级后应迁移到什么？","facts":[{"path":"docs/update/upgrade_notes.md","tokens":["PPStructureV3"]}]},
+    {"id":"h01","split":"holdout","version":"v3.0.0","query":"我想把识别内容交给下游系统，能导出JSON而不是图片吗？","facts":[{"path":"docs/version3.x/pipeline_usage/OCR.md","tokens":["save_to_json"]}]},
+    {"id":"h02","split":"holdout","version":"v3.0.0","query":"不希望库自动配置我的日志系统，如何关闭这个行为？","facts":[{"path":"docs/version3.x/logging.md","tokens":["DISABLE_AUTO_LOGGING_CONFIG","1"]}]},
+    {"id":"h03","split":"holdout","version":"v3.0.0","query":"整张文档上下颠倒的时候，预处理如何判断页面朝向？","facts":[{"path":"docs/version3.x/pipeline_usage/doc_preprocessor.md","tokens":["use_doc_orientation_classify"]}]},
+    {"id":"h04","split":"holdout","version":"v3.0.0","query":"解析多页文档后怎么把各页的Markdown拼在一起？","facts":[{"path":"docs/version3.x/pipeline_usage/PP-StructureV3.md","tokens":["concatenate_markdown_pages"]}]},
+    {"id":"h05","split":"holdout","version":"v3.0.0","query":"怎样导出当前识别产线的YAML配置供其他环境使用？","facts":[{"path":"docs/version3.x/pipeline_usage/OCR.md","tokens":["export_paddlex_config_to_yaml"]}]},
+    {"id":"h06","split":"holdout","version":"v2.9.1","query":"以前的版本支持直接读取PDF文件吗，如何传入？","facts":[{"path":"doc/doc_ch/whl.md","tokens":["page_num","xxx.pdf"]}]},
+    {"id":"h07","split":"holdout","version":"v3.0.0","query":"我的图片都是摆正的，怎么关闭文本行朝向检测？","facts":[{"path":"docs/version3.x/pipeline_usage/OCR.md","tokens":["use_textline_orientation","False"]}]},
+    {"id":"h08","split":"holdout","version":"v3.0.0","query":"返回结果保存成JSON后为什么有些类型不再是numpy数组？","facts":[{"path":"docs/version3.x/pipeline_usage/OCR.md","tokens":["numpy","json"]}]},
+    {"id":"h09","split":"holdout","version":"v2.9.1","query":"旧版如何切换中文和英文识别？","facts":[{"path":"doc/doc_ch/whl.md","tokens":["lang","ch"]}]},
+    {"id":"h10","split":"holdout","version":"v3.0.0","query":"模型包和产线开发工具之间是什么关系，不同注册名如何对应？","facts":[{"path":"docs/version3.x/paddleocr_and_paddlex.md","tokens":["PaddleOCR","PaddleX"]}]},
+    {"id":"h11","split":"holdout","version":"v3.0.0","query":"部署识别服务后还想把推理日志写入文件，这两件事分别怎么配置？","facts":[{"path":"docs/version3.x/deployment/serving.md","tokens":["paddlex","serve"]},{"path":"docs/version3.x/logging.md","tokens":["FileHandler"]}]},
+    {"id":"h12","split":"holdout","version":"v3.0.0","query":"页面弯曲和单行文字倒置是同一个开关吗，怎么分别关闭？","facts":[{"path":"docs/version3.x/pipeline_usage/OCR.md","tokens":["use_doc_unwarping","use_textline_orientation"]}]}
+  ],
+  "no_answer_probes": [
+    {"id":"n01","query":"我们公司的合同扫描项目在生产环境准确率是多少？"},
+    {"id":"n02","query":"把PaddleOCR升级后，本公司下游数据库的字段需要全部修改吗？"},
+    {"id":"n03","query":"官方能保证所有手写病例识别达到百分之百正确吗？"},
+    {"id":"n04","query":"我的服务器现在为什么内存溢出，告诉我确切根因？"}
+  ]
+}

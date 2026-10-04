@@ -1,83 +1,56 @@
-# PP-Human 研发知识 RAG 与变更影响审查 Agent
+# PaddleOCR 版本知识 RAG 与应用兼容性审查
 
-面向 AI 应用开发岗位的垂直场景原型：围绕 PaddleDetection 中 PP-Human 行人分析流水线，研发人员可按官方版本检索中文技术资料；提出模型配置、行为分析、跟踪或部署变更后，Agent 调用同一 RAG 服务查找可能受影响的教程和配置，整理引用证据、验证建议与资料缺口，由工程师复核。
+面向维护文档处理应用的研发人员：查询指定 PaddleOCR 依赖版本的中文资料，并在升级组件时审查应用调用、配置和结果消费方式。原创应用示例展示扫描文档经 OCR/版面解析后归一化为 JSON 的调用边界；它用于复现迁移检查，不冒充企业生产系统。
 
-RAG 同时服务人工查询和 Agent。检索默认使用 BM25；版本、语言和来源在服务端约束。Agent 负责分类变更、拆分有限的检查问题、调用 RAG 并形成带证据的影响候选。没有证据时保留缺口，不把“未检索到”解释为“没有影响”，也不会写回公共资料或上游仓库。
+RAG 是统一证据服务，供人工查询和受控审查工作流使用。Agent 结合静态代码检查与版本证据，给出应用文件位置、迁移风险、需人工确认的未知项和回归建议。系统不执行待审代码、不自动修改应用或上游仓库、不替开发者批准升级。
 
-## 当前语料
+## 固定业务范围
 
-- 唯一发布方为 PaddlePaddle，仓库为 [`PaddlePaddle/PaddleDetection`](https://github.com/PaddlePaddle/PaddleDetection)，资料限定在 PP-Human 中文教程及直接使用的项目配置。
-- 收录正式版本 v2.5.0、v2.6.0、v2.7.0、v2.8.0、v2.8.1 和 v2.9.0；当前默认版本为 v2.9.0。每条来源记录 release tag 对应 commit、仓库路径、SHA-256 和 Apache-2.0 许可出处。
-- 语料包含 83 条版本来源、14 个文档主题和 761 个检索片段。v2.5.0 中有 1 个后来版本才出现的模型配置文件，审计清单将其记为该版本不存在，不用新版本内容补齐历史。
-- 仅导入 Markdown 教程与必要 YAML 配置；不下载或再分发模型权重、视频、图片、个人数据或第三方数据集。
-- 当前语料切换后，PP-Human 专项冻结评测仍待建立。旧语料的评测分数不代表 PP-Human 效果；README 和页面不会把待测数据说成准确率成绩。
+- 同一上游：PaddlePaddle/PaddleOCR，按正式 tag 固定到完整提交，中文教程与必要 Python/YAML 契约证据逐文件保留哈希、路径、行号和 Apache-2.0 许可。
+- 可复现升级案例：v2.9.1 → v3.0.0。默认问答使用**最新已收录** v3.0.0，不能把它称作上游当前最新版；审查分别指定应用原依赖与升级目标。
+- 三种典型检查：`PPStructure` 公共 API 迁移、旧结果消费方式、基础 `PaddleOCR` 用法的兼容范围。动态反射或官方资料不足时保留缺口，静态检查结果不等于实际推理通过。
+- v3.0.0 仓库里的 `docs/version2.x` 不进入新接口默认问答，避免“提交版本正确、内容适用版本错误”。旧接口从 v2.9.1 快照查询。
+- 知识索引不导入模型权重、数据集或第三方媒体。图片内部信息尚不作为可检索证据；原创三页回归图片只用于测试应用。以实际导入清单为准，不宣称覆盖所有上游内容。
 
-该原型展示公开研发文档检索和变更审查方法，不代表 PaddlePaddle 官方产品或任何企业内部系统，也未接入企业工单、权限系统、真实视频和生产验证环境。它不分析真人影像、身份或员工行为数据。
+## 工程闭环
 
-## 业务闭环
+1. 开发者按依赖版本查询 API、安装、OCR 和文档解析资料，答案逐条引用检索证据，证据不足时保留具体缺口。
+2. 选择当前/目标依赖，提交受限应用源代码文本或使用原创示例。服务只解析文本，不运行其中的命令。
+3. 只读工具识别公共 API 调用、字面参数和结果消费位置，匹配固定版本的官方迁移契约。
+4. Agent 复核来源身份，调用相同知识空间补充检索；模型可辅助生成核查建议，不能改变静态发现或新增已确认事实。
+5. 人工查看应用位置、版本原文、未知项和回归步骤后确认或驳回，记录可导出。匿名 SQLite 演示记录不等于企业实名审批，云临时盘也不保证永久保存。
 
-1. 研发人员选择 PP-Human 已收录版本并查询模型、跟踪、行为分析或部署资料。
-2. 变更审查按规则识别变更类别，围绕原始描述构造有限检索问题，并限定到目标版本和中文资料。
-3. RAG 返回固定来源片段；Agent 将片段整理为可能受影响的材料、核查动作和证据缺口。
-4. 工程师查看引用原文后确认、修改或驳回候选。系统不自动认定实际影响，也不修改上游资料。
+## 运行与目录
 
-## 主要组件
-
-- `versioned-rag-service/`：FastAPI、按 release 固定的来源清单、中文 BM25 检索、引用追溯与来源完整性校验。
-- `change-review-agent/`：PP-Human 变更类型规则、有限检索规划、证据校验与人工审核流程。
-- `demo-ui/`：Streamlit 工作台，提供版本检索、来源浏览、变更候选和审核页面。
-- `versioned-rag-service/public_corpus_pphuman/`：已构建的活动 PP-Human 语料、索引、版本快照和逐来源审计。
-- `evaluation/`：历史试验保留作开发记录；PP-Human 专项评测尚未完成，不能引用历史业务语料指标作为当前成绩。
-
-## 本地运行
-
-需要服务端与工作台各自的 Python 依赖。服务默认读取 PP-Human 语料，生成能力由服务端环境变量和密钥配置控制；不在前端 secrets 中放模型密钥。
+- `versioned-rag-service/`：FastAPI 版本检索、引用校验、来源完整性、受限兼容性工具。
+- `change-review-agent/app/paddleocr_review.py`：证据约束的应用升级审查工作流。
+- `demo-ui/`：人工知识查询、兼容性报告与审核。
+- `examples/paddleocr_document_app/`：原创文档处理应用示例。
+- `versioned-rag-service/public_corpus_paddleocr/`：当前活动语料，范围及构建步骤见来源审计。
+- `evaluation/paddleocr_compatibility_v1/`：基础来源派生与静态规则验收。
+- `evaluation/paddleocr_quality_v2/`：五策略冻结对比、独立补充探针、真实升级回归与 DeepSeek 冒烟记录。旧领域资料不进入活动入口或当前成绩。
 
 ```powershell
-Set-Location versioned-rag-service
-$env:RAG_PUBLIC_CORPUS_ROOT = "public_corpus_pphuman"
-$env:RAG_PUBLIC_RETRIEVAL_CONFIG = "public_corpus_pphuman/public_retrieval_runtime.json"
-..\.venv\Scripts\python.exe -m uvicorn src.public_server:app --host 127.0.0.1 --port 8765
+.\start_prototype.ps1 -RagPort 8770 -UiPort 8520
 ```
 
-另开终端启动工作台：
+本机环境有 DeepSeek 密钥时启动脚本启用生成；`-DisableGeneration` 可只核对原文。密钥只在服务端环境变量配置。应用不设置固定会话生成次数上限，供应商计费与限流仍适用；每次工具请求的文本、解析复杂度、上下文与输出有明确边界。
+
+分别安装服务和 UI 的 requirements 后也可手动启动：
 
 ```powershell
-Set-Location demo-ui
-$env:APP_ENV = "public_demo"
-$env:RAG_API_BASE_URL = "http://127.0.0.1:8765"
-..\change-review-agent\.venv\Scripts\python.exe -m streamlit run app.py --server.address 127.0.0.1 --server.port 8502
+# 服务目录
+python -m uvicorn src.public_server:app --host 127.0.0.1 --port 8770
+# UI 目录（另一终端）
+$env:APP_ENV = 'public_demo'
+$env:RAG_API_BASE_URL = 'http://127.0.0.1:8770'
+python -m streamlit run app.py --server.address 127.0.0.1 --server.port 8520
 ```
 
-仓库根目录的 `start_prototype.ps1` 也已改为启动 PP-Human 后端语料。
+## 效果口径
 
-## 来源更新
+活动资料为 58 条来源、1754 个原文块。公开运行默认 BM25；只有与代码、语料和模型资产匹配且通过留出门槛的评测才可改变策略。准确与版本安全优先，速度不能抵消错误增加。神经模型资产需单独配置，失败明确回退。已公开的[质量选型记录](evaluation/paddleocr_quality_v2/README.md)是 54 来源实验，不能当作当前语料成绩。更大规模的本地重排实验依赖未随应用部署的模型资产，因此不作为公网评测结果展示。
 
-语料选择见 `versioned-rag-service/config/pphuman_source_selection.json`，领域与版本定义见 `pphuman_project.json`。重建脚本只接受官方 PaddleDetection 仓库，并要求输出路径为空：
+生成先验证引用身份，再逐条进行原文支持度模型复核；复核失败或不支持的主张不显示。引用可追溯、模型复核通过和答案正确率分别统计。原创应用已在两版真实环境执行三页回归：旧结果消费者在新版失败，版本适配器通过。它不能代替客户扫描件质量、任意应用兼容性或独立专家盲评，没有依据时不展示伪置信度。
 
-```powershell
-Set-Location versioned-rag-service
-$env:PYTHONPATH = "."
-python scripts/build_pphuman_corpus.py --repository-root <PaddleDetection本地仓库路径> --output <新的空目录>
-```
-
-构建新版本后，应先审查来源审计和版本差异，再重新构建评测集并验证 RAG/Agent；评测通过后才能更新线上语料配置。`render.yaml` 当前已指向本地代码中的 PP-Human 语料路径，但这次工作没有执行线上部署。
-
-## 验证
-
-```powershell
-Set-Location versioned-rag-service
-python -m pytest -q tests/test_pphuman_corpus.py tests/test_pphuman_server.py
-
-Set-Location ..\change-review-agent
-python -m pytest -q tests/test_pphuman_profile.py tests/test_change_request.py tests/test_public_review.py
-```
-
-发布前还需补齐并运行 PP-Human 的冻结检索与 Agent 评测，分别检查必需来源召回、版本正确率、引用有效率、无证据拒答和变更候选审核质量。
-
-## 资料链接
-
-- [PaddleDetection 官方仓库](https://github.com/PaddlePaddle/PaddleDetection)
-- [PP-Human 中文快速开始](https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.9/deploy/pipeline/docs/tutorials/PPHuman_QUICK_STARTED.md)
-- [官方版本发布页](https://github.com/PaddlePaddle/PaddleDetection/releases)
-- [Apache-2.0 许可证](https://github.com/PaddlePaddle/PaddleDetection/blob/release/2.9/LICENSE)
+项目用于展示 AI 应用工程方案，并非 PaddlePaddle 官方产品。公网发布需核对 Render 后端与 Streamlit 前端的相同工作区和语料指纹；本轮本地实现不自动代表公网已经部署。

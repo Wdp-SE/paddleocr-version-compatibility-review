@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "default_policy": "bm25",
+  "allowed_policies": [
+    "bm25",
+    "bm25_faceted_rrf"
+  ],
+  "max_facets": 4,
+  "rrf_k": 60,
+  "image_top_k": 5,
+  "corpus_manifest_sha256": "1866a6622e55625d934ec84f4c803a236768314867b8ff07dfa77588848340c0"
+}

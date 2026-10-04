@@ -1,0 +1,180 @@
+{
+  "assessment_type": "reviewer_created_source_grounded_probes",
+  "selection_policy": "Run once after production strategy is frozen; do not tune queries, labels, retrieval choices or review rules using these outcomes.",
+  "selected_strategy_frozen_before_probes": "bm25",
+  "probes_sha256": "38c6b7386875d50d42f3f24953d8f175549dc921f713105525afacd5dda2d18e",
+  "runner_sha256": "e09638895c6d1f4b4239ebbdf86733a119a29e9158b9140ee3b4a1f0d4c4dd50",
+  "comparison_sha256": "31aaf9247784aa93c8065732e92476c48fc524141070dd60f99131908af2d316",
+  "chunks_sha256": "3c19be4115d702bd9121096df0eeb1624695ca36d4cea3053916e4c139734fe1",
+  "static_code_sha256": "4ac9cf06d4791e54f86dcfe9a3a69b301515b2ca930a34367eff9c5160ddf02d",
+  "retrieval": [
+    {
+      "id": "ir01",
+      "fact_recall": 0.0,
+      "complete": false,
+      "reciprocal_rank": 0,
+      "matched_fact_count": 0,
+      "required_fact_count": 1,
+      "wrong_version_count": 0,
+      "chunk_ids": [
+        "v2.9.1:zh:doc/doc_ch/FAQ:115",
+        "v2.9.1:zh:doc/doc_ch/table_recognition:44",
+        "v2.9.1:zh:ppstructure/layout/README_ch:40",
+        "v2.9.1:zh:doc/doc_ch/FAQ:74",
+        "v2.9.1:zh:doc/doc_ch/FAQ:60"
+      ]
+    },
+    {
+      "id": "ir02",
+      "fact_recall": 1.0,
+      "complete": true,
+      "reciprocal_rank": 1.0,
+      "matched_fact_count": 1,
+      "required_fact_count": 1,
+      "wrong_version_count": 0,
+      "chunk_ids": [
+        "v2.9.1:zh:doc/doc_ch/inference_args:6",
+        "v2.9.1:zh:doc/doc_ch/inference_args:18",
+        "v2.9.1:zh:doc/doc_ch/inference_ppocr:4",
+        "v2.9.1:zh:doc/doc_ch/FAQ:102",
+        "v2.9.1:zh:doc/doc_ch/FAQ:133"
+      ]
+    },
+    {
+      "id": "ir03",
+      "fact_recall": 1.0,
+      "complete": true,
+      "reciprocal_rank": 1.0,
+      "matched_fact_count": 1,
+      "required_fact_count": 1,
+      "wrong_version_count": 0,
+      "chunk_ids": [
+        "v2.9.1:zh:doc/doc_ch/angle_class:2",
+        "v2.9.1:zh:doc/doc_ch/FAQ:33",
+        "v2.9.1:zh:doc/doc_ch/angle_class:1",
+        "v2.9.1:zh:doc/doc_ch/FAQ:35",
+        "v2.9.1:zh:doc/doc_ch/quickstart:15"
+      ]
+    },
+    {
+      "id": "ir04",
+      "fact_recall": 0.0,
+      "complete": false,
+      "reciprocal_rank": 0,
+      "matched_fact_count": 0,
+      "required_fact_count": 1,
+      "wrong_version_count": 0,
+      "chunk_ids": [
+        "v3.0.0:zh:docs/version3.x/module_usage/doc_img_orientation_classification:2",
+        "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:93",
+        "v3.0.0:zh:docs/version3.x/module_usage/doc_img_orientation_classification:3",
+        "v3.0.0:zh:docs/version3.x/module_usage/doc_img_orientation_classification:10",
+        "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3"
+      ]
+    },
+    {
+      "id": "ir05",
+      "fact_recall": 1.0,
+      "complete": true,
+      "reciprocal_rank": 1.0,
+      "matched_fact_count": 1,
+      "required_fact_count": 1,
+      "wrong_version_count": 0,
+      "chunk_ids": [
+        "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:41",
+        "v3.0.0:zh:docs/version3.x/module_usage/doc_img_orientation_classification:19",
+        "v3.0.0:zh:docs/version3.x/module_usage/layout_detection:32",
+        "v3.0.0:zh:docs/version3.x/module_usage/table_cells_detection:19",
+        "v3.0.0:zh:docs/version3.x/module_usage/text_detection:19"
+      ]
+    },
+    {
+      "id": "ir06",
+      "fact_recall": 1.0,
+      "complete": true,
+      "reciprocal_rank": 1.0,
+      "matched_fact_count": 2,
+      "required_fact_count": 2,
+      "wrong_version_count": 0,
+      "chunk_ids": [
+        "v3.0.0:zh:docs/version3.x/logging:1",
+        "v3.0.0:zh:docs/version3.x/logging:3",
+        "v3.0.0:zh:docs/version3.x/installation:5",
+        "v3.0.0:zh:docs/update/upgrade_notes:8",
+        "v3.0.0:zh:docs/version3.x/deployment/serving:12"
+      ]
+    }
+  ],
+  "static": [
+    {
+      "id": "is01",
+      "passed": true,
+      "status": "supported_risk",
+      "rules": [
+        "removed_ppstructure"
+      ],
+      "gaps": [],
+      "runtime_verified": false
+    },
+    {
+      "id": "is02",
+      "passed": true,
+      "status": "supported_risk",
+      "rules": [
+        "basic_ocr_surface",
+        "legacy_ocr_result"
+      ],
+      "gaps": [],
+      "runtime_verified": false
+    },
+    {
+      "id": "is03",
+      "passed": true,
+      "status": "unaffected",
+      "rules": [
+        "basic_ocr_surface"
+      ],
+      "gaps": [],
+      "runtime_verified": false
+    },
+    {
+      "id": "is04",
+      "passed": true,
+      "status": "needs_verification",
+      "rules": [],
+      "gaps": [
+        "unreviewed_call_arguments",
+        "unreviewed_parameter"
+      ],
+      "runtime_verified": false
+    },
+    {
+      "id": "is05",
+      "passed": true,
+      "status": "needs_verification",
+      "rules": [],
+      "gaps": [
+        "dynamic_arguments",
+        "unreviewed_call_arguments"
+      ],
+      "runtime_verified": false
+    },
+    {
+      "id": "is06",
+      "passed": true,
+      "status": "needs_verification",
+      "rules": [],
+      "gaps": [
+        "dynamic_access",
+        "no_resolved_paddleocr_usage",
+        "unresolved_call"
+      ],
+      "runtime_verified": false
+    }
+  ],
+  "limitations": [
+    "Fact token/span hits measure retrieval coverage, not answer correctness.",
+    "Static labels apply to observed contracts only; uploaded application text must never execute.",
+    "Reviewer is code-aware and has seen strategy implementation, so these are additional unseen probes, not a blind human benchmark."
+  ]
+}

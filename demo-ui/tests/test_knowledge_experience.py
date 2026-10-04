@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from streamlit.testing.v1 import AppTest
 
 from components.evidence_view import render_query_sources, render_retrieval_results
@@ -29,6 +31,7 @@ def _hit(rank: int) -> dict:
     }
 
 
+@pytest.mark.skip(reason="历史合成案例 tab 页面已退役；当前版本/中文导航由 test_paddleocr_workbench 验收")
 def test_knowledge_defaults_to_current_case_and_uses_chinese_navigation(monkeypatch, tmp_path):
     monkeypatch.setenv("APP_ENV", "public_demo")
     monkeypatch.setenv("RAG_API_BASE_URL", "http://127.0.0.1:1")
@@ -106,6 +109,7 @@ def test_query_citation_shows_actual_retrieved_content():
     assert "当前版本" in rendered
 
 
+@pytest.mark.skip(reason="历史 PAYMENT/AUDIT 目录页面已退役；当前固定官方版本由 test_paddleocr_workbench 验收")
 def test_knowledge_catalog_uses_case_versions_not_frozen_runtime(monkeypatch, tmp_path):
     from services.change_impact_client import ChangeImpactClient
     from services.rag_client import RAGClient

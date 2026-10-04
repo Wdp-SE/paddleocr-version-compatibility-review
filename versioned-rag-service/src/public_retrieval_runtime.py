@@ -14,10 +14,10 @@ from src.retrieval_fusion import fuse_ranked_hits, split_query_facets
 
 
 POLICIES = {
-    "bm25", "bm25_faceted_rrf", "bm25_figure_ocr",
-    "bm25_faceted_figure_ocr", "hybrid",
+    "bm25", "bm25_faceted_rrf", "bm25_pphuman_term_expansion_rrf", "bm25_figure_ocr",
+    "bm25_faceted_figure_ocr", "hybrid", "task_adaptive_rerank",
 }
-DEFAULT_CONFIG = Path(__file__).resolve().parents[1] / "public_corpus_pphuman" / "public_retrieval_runtime.json"
+DEFAULT_CONFIG = Path(__file__).resolve().parents[1] / "public_corpus_paddleocr" / "public_retrieval_runtime.json"
 _SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -34,7 +34,7 @@ class PublicRetrievalRuntime:
         self.manifest = base_index.manifest
         self.chunks = base_index.chunks
         self.policy = base_index.policy
-        self.config_path = Path(config_path or DEFAULT_CONFIG)
+        self.config_path = Path(config_path or self.root / "public_retrieval_runtime.json")
         self.sidecar_path = Path(sidecar_path or self.root / "figure_evidence_reviewed.json")
         self.inventory_path = Path(inventory_path or self.root / "figure_evidence.json")
         try:
@@ -291,6 +291,14 @@ class PublicRetrievalRuntime:
         if selected == "hybrid":
             self.last_retrieval_call_count = 1
             return self.base_index.search(query, top_k=top_k, version=version, language=language, policy="hybrid", **facet_kwargs)
+        if selected == "bm25_pphuman_term_expansion_rrf":
+            self.last_retrieval_call_count = 1
+            return self.base_index.search(
+                query, top_k=top_k, version=version, language=language,
+                policy=selected, **facet_kwargs,
+            )
+        if selected == "task_adaptive_rerank":
+            raise ValueError("task-adaptive reranking must be orchestrated by the public API")
 
         use_facets = selected in ("bm25_faceted_rrf", "bm25_faceted_figure_ocr")
         use_images = selected in ("bm25_figure_ocr", "bm25_faceted_figure_ocr")

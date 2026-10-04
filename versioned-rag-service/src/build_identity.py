@@ -84,6 +84,8 @@ def public_build_identity(
         if project_id == "industrial-inspection"
         else pphuman_evaluation_fingerprint(repo_root)
         if workspace_id == "pphuman"
+        else paddleocr_evaluation_fingerprint(repo_root)
+        if workspace_id == "paddleocr"
         else edge_evaluation_fingerprint(repo_root)
     )
     return {
@@ -92,6 +94,21 @@ def public_build_identity(
         "retrieval_config_fingerprint": retrieval_fingerprint,
         "evaluation_fingerprint": evaluation_fingerprint,
     }
+
+
+def paddleocr_evaluation_fingerprint(repo_root: Path) -> str:
+    """Keep application compatibility acceptance separate from past-domain scores."""
+    root = Path(repo_root) / "evaluation" / "paddleocr_compatibility_v1"
+    paths = {
+        "cases": root / "cases.json",
+        "runner": root / "run_evaluation.py",
+        "report": root / "report.json",
+        "compatibility_tool": Path(repo_root) / "versioned-rag-service" / "src" / "paddleocr_compatibility.py",
+        "retrieval_fusion": Path(repo_root) / "versioned-rag-service" / "src" / "retrieval_fusion.py",
+    }
+    if any(not path.is_file() for path in paths.values()):
+        return "pending_paddleocr_evaluation"
+    return content_fingerprint(paths)["fingerprint_sha256"]
 
 
 def edge_evaluation_fingerprint(repo_root: Path) -> str:

@@ -2,10 +2,17 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from streamlit.testing.v1 import AppTest
 
 
 UI_ROOT = Path(__file__).parents[1]
+
+# This module only tests removed synthetic-case screens and their former
+# session budget. Current public-source generation is covered by the active
+# workbench tests; the old UI must not be reactivated to satisfy these tests.
+pytestmark = pytest.mark.skip(reason="历史合成案例及会话预算页面已退役；活动入口由 test_public_official_workbench/test_paddleocr_workbench 验收")
 
 
 def test_public_ui_shows_case_selector_and_cold_start_reconnect(monkeypatch, tmp_path) -> None:

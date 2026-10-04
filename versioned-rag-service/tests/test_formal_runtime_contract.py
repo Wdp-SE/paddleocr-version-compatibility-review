@@ -56,21 +56,14 @@ def test_answer_schema_requires_each_claim_to_cite_a_non_empty_chunk_id() -> Non
             StructuredAnswerGenerator._decode({"claims": [claim], "relevant_sources": []})
 
 
-def test_answer_prompt_requires_concise_direct_and_scope_bound_responses() -> None:
-    from src.answer_generation import SYSTEM_PROMPT
-
-    assert "先直接回答问题" in SYSTEM_PROMPT
-    assert "默认 1 到 3 条" in SYSTEM_PROMPT
-    assert "不得拼接重复的启动命令" in SYSTEM_PROMPT
-    assert "最多给一个禁用参数和一个启用参数" in SYSTEM_PROMPT
-    assert "只引用直接支撑回答所需的最少来源" in SYSTEM_PROMPT
-    assert "启动命令只写一次" in SYSTEM_PROMPT
-    assert "开关参数单独列出，不要重复启动命令" in SYSTEM_PROMPT
-    assert "不列控制器模式等无关参数" in SYSTEM_PROMPT
-    assert "每条主张必须在 evidence_ids 中列出" in SYSTEM_PROMPT
-    assert '"claims"' in SYSTEM_PROMPT
-    assert "final_answer" not in SYSTEM_PROMPT
-    assert "不得补充证据未明确支持的参数" in SYSTEM_PROMPT
+def test_legacy_answer_schema_remains_compatible_without_gap_field() -> None:
+    result = StructuredAnswerGenerator._decode({
+        "claims": [{"text": "直接事实。", "evidence_ids": ["chunk-1"]}],
+        "relevant_sources": [],
+    })
+    assert result["claims"] == [{"text": "直接事实。", "evidence_ids": ["chunk-1"]}]
+    assert result["final_answer"] == "直接事实。"
+    assert result["evidence_gaps"] == []
 
 
 def test_structured_review_schema_requires_human_review_and_grounded_checks() -> None:

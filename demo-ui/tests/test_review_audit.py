@@ -70,6 +70,7 @@ def test_workbench_review_callback_persists_decision_and_reports_event(monkeypat
     monkeypatch.syspath_prepend(str(demo_ui))
     streamlit_stub = types.ModuleType("streamlit")
     streamlit_stub.session_state = {}
+    streamlit_stub.fragment = lambda **kwargs: lambda fn: fn
     monkeypatch.setitem(sys.modules, "streamlit", streamlit_stub)
     spec = importlib.util.spec_from_file_location(
         "public_workbench_under_test", demo_ui / "public_workbench.py"

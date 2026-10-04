@@ -70,8 +70,11 @@ def _contains_term(text: str, term: str) -> bool:
 
 def classify_change_type(text: str) -> str:
     """Classify a request using the active PP-Human engineering profile."""
+    return _classify_change_type(text, _default_profile()["change_types"])
+
+
+def _classify_change_type(text: str, categories: list[dict[str, Any]]) -> str:
     clauses = [part.strip() for part in _CLAUSE_SPLIT.split(text or "") if part.strip()]
-    categories = _default_profile()["change_types"]
     if clauses:
         primary = _classify_profile_change_type(clauses[0], categories)
         if primary != "general":
@@ -121,7 +124,7 @@ def _build_profile_request_plan(
         raise ValueError("资料快照不能为空且不能超过 128 字")
     requested = (change_type or "auto").strip()
     if requested in {"", "auto"}:
-        resolved_type = _classify_profile_change_type(summary, profile["change_types"])
+        resolved_type = _classify_change_type(summary, profile["change_types"])
         classification_source = "rule_inferred" if resolved_type != "general" else "unclassified"
     elif requested in categories:
         resolved_type = requested

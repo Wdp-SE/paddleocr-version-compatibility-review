@@ -6,14 +6,14 @@ from streamlit.testing.v1 import AppTest
 UI_ROOT = Path(__file__).parents[1]
 
 
-def test_edge_ai_workbench_is_the_primary_review_flow_and_loads_without_rag(monkeypatch) -> None:
+def test_paddleocr_workbench_is_the_primary_review_flow_and_loads_without_rag(monkeypatch) -> None:
     monkeypatch.setenv("RAG_API_BASE_URL", "http://127.0.0.1:1")
     app = AppTest.from_file(UI_ROOT / "app.py", default_timeout=60).run()
 
     assert not app.exception
-    assert any(item.value == "研发知识版本服务与变更影响审查" for item in app.title)
+    assert any(item.value == "PaddleOCR 文档处理应用研发工作台" for item in app.title)
     navigation = {item.label for item in app.button}
-    assert {"总览", "版本化知识检索", "版本与历史", "发起变更审查", "检索评测"} <= navigation
+    assert {"总览", "版本化知识检索", "版本与历史", "发起兼容性审查", "检索评测"} <= navigation
 
 def test_change_analysis_explains_added_and_removed_without_blank_placeholders() -> None:
     result = {

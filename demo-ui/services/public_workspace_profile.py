@@ -3,9 +3,9 @@
 from __future__ import annotations
 
 
-PROJECT_ID = "pphuman"
-PROJECT_PROFILE_ID = "pphuman"
-PROJECT_REPOSITORY = "PaddlePaddle/PaddleDetection"
+PROJECT_ID = "paddleocr"
+PROJECT_PROFILE_ID = "paddleocr"
+PROJECT_REPOSITORY = "PaddlePaddle/PaddleOCR"
 _ALLOWED_LANGUAGES = {"zh"}
 _WORKSPACE_RESULT_KEYS = (
     "official_result", "official_result_top_k", "official_review",
@@ -16,6 +16,9 @@ _WORKSPACE_RESULT_KEYS = (
     "official_document_titles", "official_change_chunk",
     "official_change_document", "official_draft_source_id",
     "official_review_draft", "official_proposed_text",
+    "ocr_compatibility_review", "ocr_review_input_fingerprint",
+    "ocr_review_decision", "ocr_application_content", "ocr_application_path",
+    "official_question", "official_change_request", "official_change_request_draft",
 )
 
 
@@ -37,7 +40,7 @@ def public_workspace_mismatch(workspace: dict | None, *, public_demo: bool) -> s
         or repositories != [PROJECT_REPOSITORY]
         or languages != _ALLOWED_LANGUAGES
     ):
-        return "当前连接的知识空间与 PP-Human 官方中文资料不匹配，已停止检索。请检查后端资料配置。"
+        return "当前连接的知识空间与 PaddleOCR 官方中文资料不匹配，已停止检索。请检查后端资料配置。"
     return None
 
 
@@ -56,8 +59,8 @@ def workspace_readiness_message(workspace: dict | None) -> str | None:
             "正文检索与变更审查暂不可用，待许可核实并重新构建语料后开放。"
         )
     if status == "pending_project_evaluation":
-        return "PP-Human 语料尚未完成评测与激活，正文检索与变更审查暂不可用。"
-    return "PP-Human 语料尚未通过激活校验，正文检索与变更审查暂不可用。"
+        return "PaddleOCR 语料尚未完成评测与激活，正文检索与兼容性审查暂不可用。"
+    return "PaddleOCR 语料尚未通过激活校验，正文检索与兼容性审查暂不可用。"
 
 
 def workspace_page_readiness_notice(workspace: dict | None, fallback: str) -> str | None:
@@ -83,6 +86,10 @@ def workspace_identity_changed(previous: dict | None, current: dict | None) -> b
 def clear_workspace_bound_results(state, current: dict | None) -> bool:
     """Clear evidence and review decisions when the active corpus identity changes."""
     previous = state.get("official_workspace") or {}
+    # A temporary disconnect must not erase the identity used to invalidate
+    # old evidence when a different workspace reconnects.
+    if not current:
+        return False
     changed = workspace_identity_changed(previous, current or {})
     if changed:
         for key in _WORKSPACE_RESULT_KEYS:

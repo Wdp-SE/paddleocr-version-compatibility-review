@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "tags": [
+    {
+      "version": "v2.9.1",
+      "tag": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "verification_url": "https://api.github.com/repos/PaddlePaddle/PaddleOCR/git/ref/tags/v2.9.1",
+      "reference": {
+        "ref": "refs/tags/v2.9.1",
+        "node_id": "MDM6UmVmMjYyMjk2MTIyOnJlZnMvdGFncy92Mi45LjE=",
+        "url": "https://api.github.com/repos/PaddlePaddle/PaddleOCR/git/refs/tags/v2.9.1",
+        "object": {
+          "sha": "07603421c20a96bb94bb87d0c4211032527ae706",
+          "type": "commit",
+          "url": "https://api.github.com/repos/PaddlePaddle/PaddleOCR/git/commits/07603421c20a96bb94bb87d0c4211032527ae706"
+        }
+      }
+    },
+    {
+      "version": "v3.0.0",
+      "tag": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "verification_url": "https://api.github.com/repos/PaddlePaddle/PaddleOCR/git/ref/tags/v3.0.0",
+      "reference": {
+        "ref": "refs/tags/v3.0.0",
+        "node_id": "MDM6UmVmMjYyMjk2MTIyOnJlZnMvdGFncy92My4wLjA=",
+        "url": "https://api.github.com/repos/PaddlePaddle/PaddleOCR/git/refs/tags/v3.0.0",
+        "object": {
+          "sha": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+          "type": "commit",
+          "url": "https://api.github.com/repos/PaddlePaddle/PaddleOCR/git/commits/a8474288ad53c0f439c272b786c5fa6240f0cf27"
+        }
+      }
+    }
+  ]
+}

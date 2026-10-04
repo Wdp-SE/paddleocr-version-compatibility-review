@@ -1,6 +1,7 @@
 param(
     [int]$RagPort = 8765,
     [int]$UiPort = 8502,
+    [string]$RagPythonPath = '',
     [switch]$EnableGeneration,
     [switch]$DisableGeneration
 )
@@ -17,12 +18,15 @@ if (-not (Test-Path -LiteralPath $ragPython -PathType Leaf)) {
     # Keep the existing local virtual environment usable after the folder rename.
     $ragPython = Join-Path $legacyRagRoot '.venv\Scripts\python.exe'
 }
+if (-not [string]::IsNullOrWhiteSpace($RagPythonPath)) {
+    $ragPython = (Resolve-Path -LiteralPath $RagPythonPath).Path
+}
 $uiPython = Join-Path $agentRoot '.venv\Scripts\python.exe'
 if (-not (Test-Path -LiteralPath $uiPython -PathType Leaf)) {
     # Keep the existing local virtual environment usable after the folder rename.
     $uiPython = Join-Path $legacyAgentRoot '.venv\Scripts\python.exe'
 }
-$projectCorpus = Join-Path $ragRoot 'public_corpus_pphuman'
+$projectCorpus = Join-Path $ragRoot 'public_corpus_paddleocr'
 $projectRetrievalPolicy = Join-Path $projectCorpus 'retrieval_policy.json'
 
 # Codex can inject a loopback HTTP proxy into its child processes. If that
@@ -178,7 +182,7 @@ if (-not $ragReady) {
 $env:RAG_API_BASE_URL = $ragUrl
 $env:DEMO_RUNTIME_ROOT = Join-Path $runRoot 'ui-runtime'
 $env:DEMO_DATA_CLASSIFICATION = 'Official Public'
-$env:DEMO_ALLOW_RAG_QUERY = 'false'
+$env:DEMO_ALLOW_RAG_QUERY = if ($generationEnabled) { 'true' } else { 'false' }
 $env:STREAMLIT_BROWSER_GATHER_USAGE_STATS = 'false'
 $env:STREAMLIT_SERVER_HEADLESS = 'true'
 $uiProcess = Start-PrototypeProcess @{ FilePath = $uiPython; ArgumentList = @('-m', 'streamlit', 'run', 'app.py', '--server.address', '127.0.0.1', '--server.port', "$UiPort", '--server.headless', 'true', '--browser.gatherUsageStats', 'false'); WorkingDirectory = $uiRoot; RedirectStandardOutput = (Join-Path $runRoot 'ui.stdout.log'); RedirectStandardError = (Join-Path $runRoot 'ui.stderr.log'); WindowStyle = 'Hidden'; PassThru = $true }

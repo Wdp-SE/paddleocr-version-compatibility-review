@@ -70,10 +70,11 @@ class EdgeGateway:
     def search(
         self, question, *, version, language, top_k=5,
         device_model=None, module_sku=None, carrier_board=None, software_baseline=None,
+        retrieval_policy=None,
     ):
         self.calls.append((
             "search", question, version, language, top_k,
-            device_model, module_sku, carrier_board, software_baseline,
+            device_model, module_sku, carrier_board, software_baseline, retrieval_policy,
         ))
         if self.fail_search:
             raise ConnectionError("retrieval unavailable")
@@ -127,6 +128,14 @@ def test_agent_uses_pinned_chinese_source_and_forwards_confirmed_device_scope():
     assert result["review_advice"]["review"]["review_status"] == "REQUIRES_HUMAN_REVIEW"
     assert result["sandbox_only"] is True
     assert result["public_baseline_written"] is False
+
+
+def test_agent_rejects_pphuman_only_policy_for_edge_workspace():
+    with pytest.raises(ValueError, match="当前知识空间"):
+        PublicReviewAgent(EdgeGateway()).analyze_request(
+            "将 J4012 的 JetPack 6.2 升级到 7.2，核对刷写、L4T 版本和运行验证。",
+            retrieval_policy="bm25_pphuman_term_expansion_rrf",
+        )
 
 
 def test_agent_skips_generation_when_current_corpus_has_no_evidence():

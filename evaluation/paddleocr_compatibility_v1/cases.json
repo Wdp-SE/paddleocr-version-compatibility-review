@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "dataset_id": "paddleocr-source-derived-acceptance-v1",
+  "purpose": "来源派生工程验收；不是独立业务盲评，不据此宣称准确率",
+  "top_k": 5,
+  "retrieval_cases": [
+    {"id":"upgrade-api","version":"v3.0.0","query":"PaddleOCR 升级到 3.0 后 PPStructure 应替换成哪个接口？","path":"docs/update/upgrade_notes.md","tokens":["PPStructureV3","移除"]},
+    {"id":"ocr-fields","version":"v3.0.0","query":"OCR 识别结果的文本和置信度 rec_texts、rec_scores 分别是什么？","path":"docs/version3.x/pipeline_usage/OCR.md","tokens":["rec_texts","rec_scores"]},
+    {"id":"ocr-json","version":"v3.0.0","query":"OCR 结果如何使用 save_to_json 保存，numpy 数组如何转换？","path":"docs/version3.x/pipeline_usage/OCR.md","tokens":["save_to_json","numpy"]},
+    {"id":"structure-markdown","version":"v3.0.0","query":"PP-StructureV3 如何将多页 PDF 的 Markdown 合并？","path":"docs/version3.x/pipeline_usage/PP-StructureV3.md","tokens":["concatenate_markdown_pages"]},
+    {"id":"old-result","version":"v2.9.1","query":"旧版 Python OCR 结果如何通过 line[1][0] 读取文本？","path":"doc/doc_ch/whl.md","tokens":["line[1][0]"]},
+    {"id":"old-install","version":"v2.9.1","query":"PaddleOCR 使用 pip 安装 paddleocr 的命令是什么？","path":"doc/doc_ch/whl.md","tokens":["pip install"]},
+    {"id":"new-orientation","version":"v3.0.0","query":"OCR 如何用 use_doc_orientation_classify 参数关闭文档方向分类？","path":"docs/version3.x/pipeline_usage/OCR.md","tokens":["use_doc_orientation_classify=False"]},
+    {"id":"new-config","version":"v3.0.0","query":"如何 export_paddlex_config_to_yaml 导出 OCR 配置？","path":"docs/version3.x/pipeline_usage/OCR.md","tokens":["export_paddlex_config_to_yaml"]},
+    {"id":"old-layout","version":"v2.9.1","query":"PPStructure 在 Python 中如何初始化 table_engine 并保存版面分析结果？","path":"ppstructure/docs/quickstart.md","tokens":["PPStructure","save_structure_res"]},
+    {"id":"new-structure","version":"v3.0.0","query":"PPStructureV3 的结果如何 save_to_markdown 保存为 Markdown？","path":"docs/version3.x/pipeline_usage/PP-StructureV3.md","tokens":["save_to_markdown"]}
+  ],
+  "compatibility_cases": [
+    {"id":"removed-api","file":"removed_structure_api.py","expected_status":"supported_risk","expected_rule":"removed_ppstructure"},
+    {"id":"result-consumer","file":"legacy_result_consumer.py","expected_status":"supported_risk","expected_rule":"legacy_ocr_result"},
+    {"id":"basic-surface","file":"compatible_basic.py","expected_status":"unaffected","expected_rule":"basic_ocr_surface"}
+  ]
+}

@@ -13,19 +13,26 @@ from pathlib import Path
 from typing import Literal
 
 from fastapi import APIRouter, HTTPException, Request
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from src.answer_generation import (
     GenerationProviderError, GenerationResponseError,
     StructuredAnswerGenerator, validate_review_evidence_membership,
 )
 from src.public_knowledge import (
-    PublicKnowledgeIndex, tokens, verified_consistency_notes,
+    PublicKnowledgeIndex, pphuman_alias_query, tokens, verified_consistency_notes,
 )
 from src.public_scope import is_out_of_scope_public_request
 from src.pphuman_corpus import PPHUMAN_WORKSPACE_ID
+from src.paddleocr_corpus import PADDLEOCR_WORKSPACE_ID
+from src.paddleocr_evaluation import load_paddleocr_acceptance, load_quality_comparison, load_upgrade_demo, load_independent_probes
+from src.paddleocr_impact_evaluation import load_impact_release
 from src.rd_v2_runtime import _format_context
-from src.public_evaluation_release import validate_public_evaluation_release
+from src.public_evaluation_release import validate_public_evaluation_release, validate_pphuman_dev_diagnostic
+from src.public_reranking import (
+    build_candidate_pool, route_query, select_coverage_ranked, validate_ranked_ids,
+)
+from src.retrieval_fusion import fuse_ranked_hits
 
 
 router = APIRouter(prefix="/public", tags=["official-public-knowledge"])
@@ -82,7 +89,8 @@ def _log_generation_failure(*, operation: str, status: str, diagnostics: dict, e
 
 def _log_public_stage(
     request: Request, *, operation: str, stage: str, status: str,
-    started: float, hit_count: int | None = None,
+    started: float, hit_count: int | None = None, retrieval_policy: str | None = None,
+    duration_ms: float | None = None,
 ) -> None:
     identity = getattr(request.app.state, "public_build_identity", {})
     logger.info(
@@ -90,9 +98,9 @@ def _log_public_stage(
         "hit_count=%s stage=%s duration_ms=%s status=%s",
         getattr(request.state, "request_id", "unknown"),
         identity.get("build_revision", "unknown"), operation,
-        getattr(request.app.state.public_knowledge_index, "runtime_policy", "unknown"),
+        retrieval_policy or getattr(request.app.state.public_knowledge_index, "runtime_policy", "unknown"),
         hit_count if hit_count is not None else "unknown", stage,
-        round((time.perf_counter() - started) * 1000), status,
+        round(duration_ms if duration_ms is not None else (time.perf_counter() - started) * 1000), status,
     )
 
 
@@ -216,6 +224,9 @@ class SearchRequest(BaseModel):
     top_k: int = Field(default=5, ge=1, le=20)
     version: str = Field(default="current", min_length=1, max_length=64)
     language: Literal["zh_preferred", "all", "zh", "en"] = "zh_preferred"
+    retrieval_policy: Literal["bm25", "bm25_pphuman_term_expansion_rrf", "task_adaptive_rerank", "paddleocr_quality", "paddleocr_evidence"] = "bm25"
+    evidence_strategy: Literal['auto','contextual_bm25','contextual_semantic','contextual_rrf','contextual_rerank','contextual_rrf_rerank'] = 'auto'
+    candidate_budget: Literal[40,80,120] = 80
     device_model: str | None = Field(default=None, min_length=1, max_length=120)
     module_sku: str | None = Field(default=None, min_length=1, max_length=80)
     carrier_board: str | None = Field(default=None, min_length=1, max_length=120)
@@ -223,9 +234,61 @@ class SearchRequest(BaseModel):
     include_dependency_reference: bool = False
 
 
+def _canonical_evidence_text(hit: dict) -> str:
+    from src.paddleocr_retrieval_views import evidence_text
+    return evidence_text(hit)
+
+
+class BatchSearchCheck(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    check_index: int = Field(ge=0, le=3)
+    query: str = Field(min_length=1, max_length=4000)
+
+
+class BatchSearchRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    summary: str = Field(min_length=1, max_length=4000)
+    checks: list[BatchSearchCheck] = Field(min_length=1, max_length=4)
+    version: str = Field(default="current", min_length=1, max_length=64)
+    language: Literal["zh_preferred", "all", "zh", "en"] = "zh_preferred"
+    top_k: int = Field(default=5, ge=1, le=5)
+    retrieval_policy: Literal["bm25", "bm25_pphuman_term_expansion_rrf", "task_adaptive_rerank", "paddleocr_quality"] = "bm25"
+    device_model: str | None = Field(default=None, min_length=1, max_length=120)
+    module_sku: str | None = Field(default=None, min_length=1, max_length=80)
+    carrier_board: str | None = Field(default=None, min_length=1, max_length=120)
+    software_baseline: str | None = Field(default=None, min_length=1, max_length=120)
+
+    @model_validator(mode="after")
+    def indexes_must_be_unique(self):
+        indexes = [check.check_index for check in self.checks]
+        if len(indexes) != len(set(indexes)):
+            raise ValueError("check_index values must be unique")
+        return self
+
+
 def _validate_public_language(index: PublicKnowledgeIndex, payload: SearchRequest) -> None:
+    if index.manifest.get("workspace_id") == PADDLEOCR_WORKSPACE_ID and payload.language == "en":
+        raise HTTPException(status_code=422, detail="PADDLEOCR_CORPUS_IS_CHINESE_ONLY")
     if index.manifest.get("workspace_id") == "edge_ai_device" and payload.language not in ("zh", "zh_preferred"):
         raise HTTPException(status_code=422, detail="EDGE_AI_PUBLIC_CORPUS_IS_CHINESE_ONLY")
+
+
+def _validate_public_retrieval_policy(index, payload: SearchRequest) -> None:
+    if payload.retrieval_policy == "bm25":
+        return
+    workspace_id = index.manifest.get("workspace_id")
+    if payload.retrieval_policy in ('paddleocr_quality','paddleocr_evidence'):
+        if workspace_id != PADDLEOCR_WORKSPACE_ID:
+            raise HTTPException(status_code=422,detail='RETRIEVAL_POLICY_NOT_AVAILABLE_FOR_WORKSPACE')
+        return
+    if workspace_id not in {PPHUMAN_WORKSPACE_ID, PADDLEOCR_WORKSPACE_ID} or (
+        payload.retrieval_policy == "bm25_pphuman_term_expansion_rrf"
+        and workspace_id != PPHUMAN_WORKSPACE_ID
+    ):
+        raise HTTPException(status_code=422, detail="RETRIEVAL_POLICY_NOT_AVAILABLE_FOR_WORKSPACE")
+    runtime_config = getattr(index, "config", None)
+    if isinstance(runtime_config, dict) and payload.retrieval_policy not in runtime_config.get("allowed_policies", []):
+        raise HTTPException(status_code=422, detail="RETRIEVAL_POLICY_NOT_ENABLED")
 
 
 def _validate_edge_ai_facets(index, payload, *, error_code: str = "INVALID_PUBLIC_SEARCH") -> None:
@@ -262,9 +325,306 @@ def _edge_ai_evidence_matches_scope(row: dict, payload) -> bool:
     return True
 
 
+def _search_with_scope(index, payload, query: str, *, top_k: int, policy: str = "bm25") -> list[dict]:
+    """Search one channel with all caller-selected corpus and device filters intact."""
+    return _positive_retrieval_hits(index.search(
+        _query_with_compound_aliases(query, index),
+        top_k=top_k,
+        version=payload.version,
+        language=payload.language,
+        device_model=getattr(payload, "device_model", None),
+        module_sku=getattr(payload, "module_sku", None),
+        carrier_board=getattr(payload, "carrier_board", None),
+        software_baseline=getattr(payload, "software_baseline", None),
+        source_namespace="project_primary",
+        policy=policy,
+    ))
+
+
+def _rerank_candidates(generator, task: str, candidates: list[dict], *, fallback_order: list[dict]):
+    """Attempt one ID-only rerank, returning the known-safe order on any expected failure."""
+    started = time.perf_counter()
+    safe_fallback = [dict(row) for row in fallback_order]
+    ids = [row.get("chunk_id") for row in safe_fallback]
+    base = {
+        "provider": _safe_diagnostic_label(getattr(generator, "provider", None)),
+        "model": _safe_diagnostic_label(getattr(generator, "model", None)),
+        "usage": None,
+        "candidate_count": len(safe_fallback),
+        "rerank_calls": 0,
+    }
+    if not safe_fallback:
+        return [], {**base, "status": "SKIPPED_NO_EVIDENCE", "latency_ms": 0}
+    if len(safe_fallback) < 2:
+        return safe_fallback, {**base, "status": "SKIPPED_SINGLE_CANDIDATE", "latency_ms": 0}
+    method = getattr(generator, "rerank_candidate_ids", None)
+    if not callable(method):
+        return safe_fallback, {
+            **base, "status": "RERANK_FALLBACK", "fallback_reason": "RERANKER_UNAVAILABLE",
+            "latency_ms": 0,
+        }
+    try:
+        ranked_ids, details = method(task=task, candidates=candidates)
+        validated = validate_ranked_ids({"ranked_ids": ranked_ids}, ids)
+        if validated is None:
+            raise ValueError("invalid candidate ID order")
+    except GenerationProviderError as exc:
+        reason = exc.code
+        details = {}
+        validated = None
+    except GenerationResponseError as exc:
+        reason = exc.code
+        details = exc.diagnostics if isinstance(exc.diagnostics, dict) else {}
+        validated = None
+    except TimeoutError:
+        reason, details, validated = "GENERATION_PROVIDER_TIMEOUT", {}, None
+    except (ConnectionError, OSError):
+        reason, details, validated = "GENERATION_PROVIDER_UNAVAILABLE", {}, None
+    except (TypeError, ValueError, KeyError):
+        reason, details, validated = "GENERATION_RESPONSE_INVALID", {}, None
+    latency_ms = round((time.perf_counter() - started) * 1000, 3)
+    if validated is None:
+        usage = details.get("usage") if isinstance(details, dict) else None
+        return safe_fallback, {
+            **base,
+            "status": "RERANK_FALLBACK",
+            "fallback_reason": reason,
+            "usage": usage if isinstance(usage, dict) else None,
+            "latency_ms": latency_ms,
+            "rerank_calls": 1,
+        }
+    by_id = {row["chunk_id"]: row for row in safe_fallback}
+    usage = details.get("usage") if isinstance(details, dict) else None
+    provider = details.get("provider") if isinstance(details, dict) else None
+    model = details.get("model") if isinstance(details, dict) else None
+    status = details.get("status") if isinstance(details, dict) else None
+    if status == "SKIPPED":
+        return safe_fallback, {
+            **base, "status": "SKIPPED_SINGLE_CANDIDATE",
+            "latency_ms": latency_ms, "rerank_calls": 0,
+        }
+    return [by_id[chunk_id] for chunk_id in validated], {
+        **base,
+        "provider": _safe_diagnostic_label(provider) or base["provider"],
+        "model": _safe_diagnostic_label(model) or base["model"],
+        "usage": usage if isinstance(usage, dict) else None,
+        "status": "OK",
+        "latency_ms": latency_ms,
+        "rerank_calls": 1,
+    }
+
+
+def _claim_scope_mismatches(claims,hits,requirements):
+    from src.paddleocr_query_plan import query_module,explicit_versions
+    from src.paddleocr_retrieval_views import module_for,evidence_text
+    by_id={h['chunk_id']:h for h in hits};bad=set()
+    modules={r['module'] for r in requirements if r.get('module')}
+    fallback=next(iter(modules)) if len(modules)==1 else None
+    for i,claim in enumerate(claims):
+        claim_versions=explicit_versions(claim['text'])
+        if claim_versions and any(by_id[cid].get('version') not in claim_versions for cid in claim['evidence_ids']):
+            bad.add(i);continue
+        module=query_module(claim['text']) or fallback
+        applicable=[r for r in requirements if r.get('module')==module] if module else []
+        if not applicable:continue
+        for cid in claim['evidence_ids']:
+            hit=by_id[cid];scope=hit.get('module',module_for(hit))
+            if scope not in (module,'shared','general') or not any(not r.get('version') or r['version']==hit.get('version') for r in applicable):
+                bad.add(i);break
+            # General guides can support OCR only where that public API is present.
+            if scope=='general' and module=='ocr' and 'PaddleOCR' not in evidence_text(hit):bad.add(i);break
+    return bad
+
+
+def _execute_public_search(index, payload, generator, *, top_k: int) -> dict:
+    """Execute legacy retrieval or the explicitly selected experimental policy."""
+    requested = payload.retrieval_policy
+    route = route_query(payload.query, task_type="lookup")
+    retrieval_started = time.perf_counter()
+    if requested == 'paddleocr_evidence':
+        from src.paddleocr_query_plan import plan_query
+        from src.paddleocr_evidence_search import configured_evidence_search
+        base_index=getattr(index,'base_index',index)
+        versions=tuple(sorted(base_index._version_members(payload.version) or base_index.manifest['versions']))
+        plan=plan_query(payload.query,versions=versions)
+        strategy=payload.evidence_strategy;budget=payload.candidate_budget;use_context=True
+        if strategy=='auto':
+            release=load_impact_release(Path(base_index.root))
+            strategy='contextual_bm25'
+            if release:
+                selected=release['selected_strategy']
+                strategy,budget=release['configs'][selected]
+                use_context=selected!='window_plain_80'
+            if strategy=='bm25':
+                baseline=payload.model_copy(update={'retrieval_policy':'bm25'})
+                return _execute_public_search(index,baseline,generator,top_k=top_k)
+        result=configured_evidence_search(index,strategy,use_context=use_context).search(
+            plan,top_k=top_k,candidate_budget=budget,strategy=strategy)
+        details=result['diagnostics']; hits=result['results']
+        return {'results':_with_document_relationships(index,hits),'candidates':hits,'route':route,
+                'requirements':result['requirements'],'requested_policy':requested,
+                'actual_policy':details['actual_strategy'],
+                'rerank_status':'OK' if details['rerank_calls'] else 'FALLBACK' if details['fallback_reason'] else 'NOT_REQUESTED',
+                'rerank_diagnostics':details,'candidate_count':details.get('candidate_windows',0),
+                'final_evidence_count':len(hits),'retrieval_latency_ms':round((time.perf_counter()-retrieval_started)*1000,3),
+                'rerank_latency_ms':None}
+    if requested == 'paddleocr_quality':
+        from src.paddleocr_quality import configured_quality_retriever,ModelUnavailable,STRATEGIES
+        strategy=_quality_strategy(index)
+        try:
+            if strategy not in STRATEGIES:raise ModelUnavailable('QUALITY_STRATEGY_INVALID')
+            retriever=configured_quality_retriever(index)
+            hits=retriever.search(payload.query,version=payload.version,language=payload.language,
+                                  strategy=strategy,top_k=top_k)
+            actual=strategy
+            status=('OK' if hits else 'SKIPPED_NO_CANDIDATES') if 'rerank' in strategy else 'NOT_REQUESTED'
+            details={'status':status,'model':'mmarco-mMiniLMv2-L12-H384-v1' if 'rerank' in strategy else None,
+                     'rerank_calls':1 if status=='OK' else 0,'external_model_calls':0}
+        except ModelUnavailable as exc:
+            hits=_search_with_scope(index,payload,payload.query,top_k=top_k,policy='bm25')
+            actual,status='bm25','QUALITY_FALLBACK'
+            details={'status':status,'failure_reason':str(exc),'rerank_calls':0,'external_model_calls':0}
+        duration=round((time.perf_counter()-retrieval_started)*1000,3)
+        return {'results':_with_document_relationships(index,hits),'candidates':hits,'route':route,
+                'requested_policy':requested,'actual_policy':actual,'rerank_status':status,
+                'rerank_diagnostics':details,'candidate_count':hits[0].get('candidate_pool_size',len(hits)) if hits else 0,'final_evidence_count':len(hits),
+                'retrieval_latency_ms':duration,'rerank_latency_ms':None}
+    if requested != "task_adaptive_rerank":
+        hits = _search_with_scope(
+            index, payload, payload.query, top_k=top_k, policy=requested,
+        )
+        retrieval_ms = round((time.perf_counter() - retrieval_started) * 1000, 3)
+        return {
+            "results": _with_document_relationships(index, hits),
+            "candidates": hits,
+            "route": route,
+            "requested_policy": requested,
+            "actual_policy": requested,
+            "rerank_status": "NOT_REQUESTED",
+            "rerank_diagnostics": {"status": "NOT_REQUESTED", "rerank_calls": 0},
+            "candidate_count": len(hits),
+            "final_evidence_count": len(hits),
+            "retrieval_latency_ms": retrieval_ms,
+            "rerank_latency_ms": 0,
+        }
+
+    if route == "DIRECT_LOOKUP":
+        hits = _search_with_scope(index, payload, payload.query, top_k=20, policy="bm25")
+        retrieval_ms = round((time.perf_counter() - retrieval_started) * 1000, 3)
+        final = hits[:top_k]
+        return {
+            "results": _with_document_relationships(index, final),
+            "candidates": hits,
+            "route": route,
+            "requested_policy": requested,
+            "actual_policy": "bm25",
+            "rerank_status": "SKIPPED_DIRECT_LOOKUP",
+            "rerank_diagnostics": {"status": "SKIPPED_DIRECT_LOOKUP", "rerank_calls": 0},
+            "candidate_count": len(hits),
+            "final_evidence_count": len(final),
+            "retrieval_latency_ms": retrieval_ms,
+            "rerank_latency_ms": 0,
+        }
+
+    bm25_hits = _search_with_scope(index, payload, payload.query, top_k=20, policy="bm25")
+    alias_query = (
+        pphuman_alias_query(payload.query)
+        if index.manifest.get("workspace_id") == PPHUMAN_WORKSPACE_ID else ""
+    )
+    expanded_hits = []
+    if alias_query and alias_query.strip().casefold() != payload.query.strip().casefold():
+        expanded_hits = _search_with_scope(index, payload, alias_query, top_k=20, policy="bm25")
+    rrf_k = getattr(index, "config", {}).get("rrf_k", 60)
+    candidates = build_candidate_pool(
+        bm25_hits, expanded_hits, limit=24, bm25_anchor=5, rrf_k=rrf_k,
+    )
+    retrieval_ms = round((time.perf_counter() - retrieval_started) * 1000, 3)
+    ordered, rerank = _rerank_candidates(
+        generator, payload.query, candidates, fallback_order=candidates,
+    )
+    final = ordered[:top_k]
+    status = rerank["status"]
+    actual = (
+        "task_adaptive_rerank" if status == "OK"
+        else "bm25_rrf_fallback" if status == "RERANK_FALLBACK"
+        else "bm25_rrf"
+    )
+    return {
+        "results": _with_document_relationships(index, final),
+        "candidates": candidates,
+        "route": route,
+        "requested_policy": requested,
+        "actual_policy": actual,
+        "rerank_status": status,
+        "rerank_diagnostics": rerank,
+        "candidate_count": len(candidates),
+        "final_evidence_count": len(final),
+        "retrieval_latency_ms": retrieval_ms,
+        "rerank_latency_ms": rerank.get("latency_ms", 0),
+    }
+
+
 class DocumentRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
     document_id: str = Field(min_length=1, max_length=250)
+
+
+class ConfigTraceRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    document_ids: list[str] = Field(min_length=1, max_length=8)
+    version: str = Field(default="current", min_length=1, max_length=64)
+
+    @model_validator(mode="after")
+    def bounded_document_ids(self):
+        if any(not value.strip() or len(value) > 250 for value in self.document_ids):
+            raise ValueError("invalid document identifier")
+        return self
+
+
+class ApplicationFile(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    path: str = Field(min_length=1, max_length=160)
+    content: str = Field(min_length=1, max_length=50000)
+
+
+class InvestigationItem(BaseModel):
+    model_config=ConfigDict(extra='forbid')
+    check_id:str=Field(min_length=1,max_length=80)
+    query:str=Field(min_length=1,max_length=4000)
+    versions:list[Literal['v2.9.1','v3.0.0']]=Field(min_length=1,max_length=2)
+
+
+class InvestigationProposalRequest(BaseModel):
+    model_config=ConfigDict(extra='forbid')
+    items:list[InvestigationItem]=Field(min_length=1,max_length=4)
+    remaining_seconds:float=Field(gt=0,le=240)
+
+
+@router.post('/investigation-plan')
+async def investigation_plan(payload:InvestigationProposalRequest,request:Request)->dict:
+    index=_index(request)
+    if index.manifest.get('workspace_id')!=PADDLEOCR_WORKSPACE_ID:raise HTTPException(422,detail='INVALID_PLANNER_WORKSPACE')
+    generator=request.app.state.public_generator
+    if generator is None:return {'status':'GENERATION_NOT_CONFIGURED','queries':[]}
+    from src.paddleocr_planning import propose
+    try:
+        rows,diagnostics=await asyncio.wait_for(asyncio.to_thread(propose,generator,[r.model_dump() for r in payload.items],payload.remaining_seconds),payload.remaining_seconds)
+        return {'status':'OK','queries':rows,'generation':diagnostics}
+    except (ValueError,RuntimeError,TimeoutError,ConnectionError):
+        return {'status':'PLANNER_FAILED_OR_DEADLINE','queries':[]}
+
+
+class CompatibilityReviewRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    source_version: str = Field(min_length=1, max_length=32)
+    target_version: str = Field(min_length=1, max_length=32)
+    files: list[ApplicationFile] = Field(min_length=1, max_length=12)
+
+    @model_validator(mode="after")
+    def total_payload_is_bounded(self):
+        if sum(len(row.content.encode("utf-8")) for row in self.files) > 200000:
+            raise ValueError("application content exceeds the 200000-byte review limit")
+        return self
 
 
 class ReviewAdviceRequest(BaseModel):
@@ -285,7 +645,7 @@ def _index(request: Request) -> PublicKnowledgeIndex:
     if os.environ.get("APP_ENV", "local").strip().casefold() == "public_demo":
         if (
             not index.manifest.get("project_id")
-            and index.manifest.get("workspace_id") == PPHUMAN_WORKSPACE_ID
+            and index.manifest.get("workspace_id") == PADDLEOCR_WORKSPACE_ID
         ):
             return index
         raise HTTPException(status_code=503, detail="PUBLIC_CORPUS_PROFILE_MISMATCH")
@@ -293,7 +653,7 @@ def _index(request: Request) -> PublicKnowledgeIndex:
         if index.manifest.get("project_id") != "industrial-inspection":
             raise HTTPException(status_code=503, detail="PUBLIC_CORPUS_PROFILE_MISMATCH")
         return index
-    if index.manifest.get("workspace_id") not in {"edge_ai_device", PPHUMAN_WORKSPACE_ID}:
+    if index.manifest.get("workspace_id") not in {"edge_ai_device", PPHUMAN_WORKSPACE_ID, PADDLEOCR_WORKSPACE_ID}:
         raise HTTPException(status_code=503, detail="PUBLIC_CORPUS_PROFILE_MISMATCH")
     return index
 
@@ -306,9 +666,59 @@ def _require_project_query_ready(index, payload=None) -> None:
         raise HTTPException(status_code=503, detail="PROJECT_CORPUS_INACTIVE_LICENSE_PENDING")
 
 
+@router.post("/config-trace")
+def config_trace(payload: ConfigTraceRequest, request: Request) -> dict:
+    from src.public_config_trace import trace_configuration
+
+    index = _index(request)
+    _require_project_query_ready(index)
+    if index.manifest.get("workspace_id") != PPHUMAN_WORKSPACE_ID:
+        raise HTTPException(status_code=422, detail="CONFIG_TRACE_NOT_SUPPORTED")
+    started = time.perf_counter()
+    try:
+        version = index.manifest["current_version"] if payload.version == "current" else payload.version
+        report = trace_configuration(index, payload.document_ids, version)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail="INVALID_CONFIG_TRACE") from exc
+    return {
+        **report,
+        "model_calls": 0,
+        "impact_status": "REQUIRES_HUMAN_REVIEW",
+        "latency_ms": round((time.perf_counter() - started) * 1000, 3),
+    }
+
+
 def _relationship_index(index):
     base_index = getattr(index, "base_index", index)
     return getattr(base_index, "document_relations", None)
+
+
+@router.post("/compatibility-review")
+def compatibility_review(payload: CompatibilityReviewRequest, request: Request) -> dict:
+    from src.paddleocr_compatibility import review_compatibility
+
+    index = _index(request)
+    _require_project_query_ready(index)
+    if index.manifest.get("workspace_id") != PADDLEOCR_WORKSPACE_ID:
+        raise HTTPException(status_code=422, detail="COMPATIBILITY_REVIEW_NOT_SUPPORTED_FOR_WORKSPACE")
+    started = time.perf_counter()
+    try:
+        report = review_compatibility(
+            index, source_version=payload.source_version, target_version=payload.target_version,
+            files=[row.model_dump() for row in payload.files],
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail={
+            "code": "INVALID_COMPATIBILITY_REVIEW", "message": str(exc),
+        }) from exc
+    duration = round((time.perf_counter() - started) * 1000, 3)
+    _log_public_stage(
+        request, operation="compatibility_review", stage="static_analysis", status="OK", started=started,
+    )
+    return {
+        **report, "workspace_id": PADDLEOCR_WORKSPACE_ID,
+        "model_calls": 0, "impact_status": "REQUIRES_HUMAN_REVIEW", "latency_ms": duration,
+    }
 
 
 def _with_document_relationships(index, rows: list[dict]) -> list[dict]:
@@ -344,6 +754,37 @@ def _available_versions(manifest: dict) -> list[str]:
 
 def _runtime_policy(index) -> str:
     return getattr(index, "runtime_policy", index.policy["default_policy"])
+
+
+def _task_coverage(index):
+    import json
+    from src.paddleocr_coverage import validate_coverage
+    try:
+        row=json.loads((Path(index.root)/'coverage_manifest.json').read_text(encoding='utf-8'))
+        return validate_coverage(Path(index.root),row)
+    except (OSError,ValueError,KeyError):return {'status':'UNVERIFIED','gaps':[],'formats':{}}
+
+
+def _impact_summary(index):
+    row=load_impact_release(Path(index.root))
+    if row is None:return None
+    try:
+        return {k:row[k] for k in ('dataset_id','selected_strategy','promotion_passed','promotion_reason','development_candidate','top_k','limitations','configs')}|{
+            'retrieval':{name:{split:{'metrics':values['metrics'],'candidate_metrics':values.get('candidate_metrics'),
+                                     'timing':values['timing']} for split,values in splits.items()} for name,splits in row['retrieval'].items()},
+            'review':[{k:v for k,v in r.items() if k not in ('report','investigation')} for r in row['review']]}
+    except (KeyError,TypeError):
+        # Corrupt presentation metadata must not break an otherwise healthy workspace.
+        return None
+
+
+def _quality_strategy(index) -> str:
+    """Promote only the current-build development-set selection, never holdout."""
+    configured=os.environ.get('PADDLEOCR_QUALITY_STRATEGY','').strip()
+    if configured:
+        return configured
+    report=load_quality_comparison(Path(index.root))
+    return report['selected_on_dev'] if report is not None else 'bm25'
 
 
 def _positive_retrieval_hits(hits: list[dict]) -> list[dict]:
@@ -445,11 +886,16 @@ def workspace(request: Request) -> dict:
             "retrieval_policy": _runtime_policy(index),
             "retrieval_evaluation_status": "pending_project_evaluation",
             "frozen_benchmark_query_count": 0,
+            "development_evaluation": validate_pphuman_dev_diagnostic(Path(index.root)),
             "data_origin": f"唯一应用来源：{manifest['primary_repository']}；发布者与许可按逐路径清单审核。",
             "upstream_writes_enabled": False,
             **getattr(request.app.state, "public_build_identity", {}),
         }
-    if manifest.get("workspace_id") == PPHUMAN_WORKSPACE_ID:
+    if manifest.get("workspace_id") in {PPHUMAN_WORKSPACE_ID, PADDLEOCR_WORKSPACE_ID}:
+        current_acceptance = (
+            load_paddleocr_acceptance(Path(index.root))
+            if manifest["workspace_id"] == PADDLEOCR_WORKSPACE_ID else None
+        )
         versions = list(reversed(manifest.get("available_versions", [])))
         sources = manifest.get("sources", [])
         source_breakdown = Counter(
@@ -467,13 +913,13 @@ def workspace(request: Request) -> dict:
                 "version": version,
                 "repository": manifest["repository"],
                 "source_count": sum(row.get("version") == version for row in sources),
-                "label": "当前最新版" if version == manifest["current_version"] else f"历史版本 {version}",
+                "label": "最新已收录版本" if version == manifest["current_version"] else f"历史版本 {version}",
             })
             snapshots.append(snapshot)
         relation_index = _relationship_index(index)
         return {
-            "workspace_id": PPHUMAN_WORKSPACE_ID,
-            "domain_profile": dict(manifest.get("domain_profile") or {"id": PPHUMAN_WORKSPACE_ID}),
+            "workspace_id": manifest["workspace_id"],
+            "domain_profile": dict(manifest.get("domain_profile") or {"id": manifest["workspace_id"]}),
             "workspace": manifest["workspace"],
             "repository": manifest["repository"],
             "repositories": [manifest["repository"]],
@@ -481,7 +927,7 @@ def workspace(request: Request) -> dict:
             "current_version": manifest["current_version"],
             "available_versions": versions,
             "version_labels": {
-                version: ("当前最新版" if version == manifest["current_version"] else f"历史版本 {version}")
+                version: ("最新已收录版本" if version == manifest["current_version"] else f"历史版本 {version}")
                 for version in versions
             },
             "version_scopes": dict(manifest.get("version_scopes") or {}),
@@ -507,13 +953,36 @@ def workspace(request: Request) -> dict:
             "source_status": "ready",
             "public_body_indexing_enabled": True,
             "rag_ready": bool(getattr(index, "ready", True)),
+            "generation_available": request.app.state.public_generator is not None,
+            "generation_status": getattr(request.app.state, "public_generation_config", {}).get("status"),
             "activation_block_reason": None,
             "retrieval_policy": _runtime_policy(index),
             "base_retrieval_policy": index.policy["default_policy"],
+            **({'quality_retrieval': {
+                'configured':bool(os.environ.get('PADDLEOCR_RERANKER_PATH') or os.environ.get('PADDLEOCR_EMBEDDING_PATH')),
+                'strategy':_quality_strategy(index),
+                'status':'optional_neural_assets_required',
+                'score_is_probability':False,
+            }} if manifest['workspace_id']==PADDLEOCR_WORKSPACE_ID else {}),
+            **({'quality_comparison':load_quality_comparison(Path(index.root)),
+                'impact_evaluation':_impact_summary(index),
+                'task_coverage':_task_coverage(index),
+                'independent_probes':load_independent_probes(Path(index.root)),
+                'upgrade_demo':load_upgrade_demo()}
+               if manifest['workspace_id']==PADDLEOCR_WORKSPACE_ID else {}),
             "retrieval_evaluation_status": str(
                 manifest.get("retrieval_evaluation_status") or "new_corpus_pending_rebenchmark"
             ),
             "frozen_benchmark_query_count": 0,
+            **({"retrieval_evaluation": current_acceptance,
+                "source_derived_query_count": current_acceptance["retrieval"]["bm25"]["count"],
+                "retrieval_evaluation_status": "source_derived_acceptance_validated"}
+               if current_acceptance is not None else {}),
+            **({"compatibility_review": {
+                "mode": "static", "runtime_verified": False,
+                "supported_pairs": [{"source_version": "v2.9.1", "target_version": "v3.0.0"}],
+                "scope": ["public_api", "constructor_configuration", "result_consumption"],
+            }} if manifest["workspace_id"] == PADDLEOCR_WORKSPACE_ID else {}),
             "data_origin": manifest.get("data_origin", "PaddleDetection 官方中文 PP-Human 研发资料；来源固定到正式 release tag。"),
             "upstream_writes_enabled": False,
             "approved_image_chunk_count": len(getattr(index, "_images", [])),
@@ -654,17 +1123,144 @@ def documents(request: Request) -> dict:
 @router.post("/document")
 def document(payload: DocumentRequest, request: Request) -> dict:
     index = _index(request)
-    rows = [row for row in index.chunks if row["document_id"] == payload.document_id]
+    selected_id = payload.document_id
+    if index.manifest.get("workspace_id") == PADDLEOCR_WORKSPACE_ID:
+        source = next((
+            row for row in index.manifest["sources"] if row.get("source_id") == selected_id
+        ), None)
+        if source is not None:
+            selected_id = f"{source['version']}:{source['language']}:{source['document_key']}"
+    rows = [row for row in index.chunks if row["document_id"] == selected_id]
     if not rows:
         raise HTTPException(status_code=404, detail="OFFICIAL_DOCUMENT_NOT_FOUND")
     rows = _with_document_relationships(index, rows)
     return {
-        "document_id": payload.document_id,
+        "document_id": selected_id,
         "document_relationships": (
-            _relationship_index(index).for_document(payload.document_id)
+            _relationship_index(index).for_document(selected_id)
             if _relationship_index(index) is not None else []
         ),
         "chunks": rows,
+    }
+
+
+@router.post("/search-batch")
+def search_batch(payload: BatchSearchRequest, request: Request) -> dict:
+    index = _index(request)
+    _require_project_query_ready(index, payload)
+    started = time.perf_counter()
+    if is_out_of_scope_public_request(payload.summary) or any(
+        is_out_of_scope_public_request(check.query) for check in payload.checks
+    ):
+        return {
+            "summary": payload.summary, "checks": [], "candidates": [], "results": [],
+            "ranked_ids": [], "status": "OUT_OF_SCOPE",
+            "scope_status": "OUT_OF_SCOPE_PUBLIC_CORPUS",
+            "requested_policy": payload.retrieval_policy, "actual_policy": "not_run_scope_guard",
+            "retrieval_policy": "not_run_scope_guard", "route": "CHANGE_REVIEW",
+            "rerank_status": "NOT_RUN_SCOPE_GUARD", "candidate_count": 0,
+            "final_evidence_count": 0,
+            "stage_latency_ms": {"retrieval": 0, "rerank": 0, "total": 0},
+        }
+    _validate_public_language(index, payload)
+    _validate_public_retrieval_policy(index, payload)
+    _validate_edge_ai_facets(index, payload)
+    retrieval_started = time.perf_counter()
+    try:
+        searches = []
+        check_results = []
+        retrieval_call_count = 0
+        adaptive = payload.retrieval_policy == "task_adaptive_rerank"
+        rrf_k = getattr(index, "config", {}).get("rrf_k", 60)
+        for check in payload.checks:
+            check_route = route_query(check.query, task_type="lookup")
+            retrieval_call_count += 1
+            bm25_hits = _search_with_scope(
+                index, payload, check.query, top_k=payload.top_k,
+                policy=payload.retrieval_policy if not adaptive else "bm25",
+            )
+            expanded_hits = []
+            if adaptive and check_route != "DIRECT_LOOKUP":
+                alias_query = (
+                    pphuman_alias_query(check.query)
+                    if index.manifest.get("workspace_id") == PPHUMAN_WORKSPACE_ID else ""
+                )
+                if alias_query and alias_query.strip().casefold() != check.query.strip().casefold():
+                    retrieval_call_count += 1
+                    expanded_hits = _search_with_scope(
+                        index, payload, alias_query, top_k=payload.top_k, policy="bm25",
+                    )
+            local = (
+                build_candidate_pool(bm25_hits, expanded_hits, limit=10, bm25_anchor=5, rrf_k=rrf_k)
+                if adaptive else bm25_hits[:5]
+            )
+            searches.append(({"check_index": check.check_index}, local))
+            check_results.append({
+                "check_index": check.check_index, "query": check.query,
+                "route": check_route, "results": local,
+            })
+        fused = fuse_ranked_hits([rows for _, rows in searches], top_k=40, rrf_k=rrf_k)
+        check_indexes: dict[str, list[int]] = {}
+        for check, rows in searches:
+            for row in rows:
+                chunk_id = row.get("chunk_id")
+                if isinstance(chunk_id, str):
+                    indexes = check_indexes.setdefault(chunk_id, [])
+                    if check["check_index"] not in indexes:
+                        indexes.append(check["check_index"])
+        candidates = [
+            {**row, "check_indices": check_indexes.get(row["chunk_id"], [])}
+            for row in fused
+        ]
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail="INVALID_PUBLIC_SEARCH") from exc
+    retrieval_ms = round((time.perf_counter() - retrieval_started) * 1000, 3)
+    if adaptive:
+        task = "变更摘要：" + payload.summary[:1800] + "\n检查项：" + "；".join(
+            f"{check.check_index}: {check.query[:450]}" for check in payload.checks
+        )
+        ordered, rerank = _rerank_candidates(
+            request.app.state.public_generator, task, candidates, fallback_order=candidates,
+        )
+        status = rerank["status"]
+        actual = (
+            "task_adaptive_rerank" if status == "OK"
+            else "bm25_rrf_fallback" if status == "RERANK_FALLBACK"
+            else "bm25_rrf"
+        )
+    else:
+        ordered = candidates
+        rerank = {"status": "NOT_REQUESTED", "rerank_calls": 0, "latency_ms": 0}
+        status, actual = "NOT_REQUESTED", payload.retrieval_policy
+    ranked_ids = [row["chunk_id"] for row in ordered]
+    final = select_coverage_ranked(searches, ranked_ids, max_items=8) if candidates else []
+    final = _with_document_relationships(index, final)
+    for check in check_results:
+        check["results"] = _with_document_relationships(index, check["results"])
+    total_ms = round((time.perf_counter() - started) * 1000, 3)
+    logger.info(
+        "public_rerank request_id=%s status=%s candidate_count=%s provider=%s model=%s usage=%s latency_ms=%s",
+        getattr(request.state, "request_id", "unknown"), status, len(candidates),
+        rerank.get("provider"), rerank.get("model"), rerank.get("usage"), rerank.get("latency_ms", 0),
+    )
+    _log_public_stage(
+        request, operation="search-batch", stage="retrieval", status="OK" if candidates else "EMPTY",
+        started=retrieval_started, duration_ms=retrieval_ms, hit_count=len(candidates),
+        retrieval_policy=actual,
+    )
+    return {
+        "summary": payload.summary, "checks": check_results, "candidates": candidates,
+        "results": final, "ranked_ids": ranked_ids, "route": "CHANGE_REVIEW",
+        "requested_policy": payload.retrieval_policy, "actual_policy": actual,
+        "retrieval_policy": payload.retrieval_policy, "rerank_status": status,
+        "rerank_diagnostics": rerank, "candidate_count": len(candidates),
+        "final_evidence_count": len(final),
+        "retrieval_call_count": retrieval_call_count,
+        "stage_latency_ms": {
+            "retrieval": retrieval_ms, "rerank": rerank.get("latency_ms", 0), "total": total_ms,
+        },
+        "consistency_notes": verified_consistency_notes(final),
+        "status": "OK" if candidates else "NO_EVIDENCE",
     }
 
 
@@ -672,32 +1268,49 @@ def document(payload: DocumentRequest, request: Request) -> dict:
 def search(payload: SearchRequest, request: Request) -> dict:
     index = _index(request)
     _require_project_query_ready(index, payload)
-    retrieval_started = time.perf_counter()
+    started = time.perf_counter()
     if is_out_of_scope_public_request(payload.query):
-        _log_public_stage(request, operation="search", stage="scope", status="OUT_OF_SCOPE", started=retrieval_started, hit_count=0)
+        _log_public_stage(request, operation="search", stage="scope", status="OUT_OF_SCOPE", started=started, hit_count=0)
         return {
             "query": payload.query, "results": [], "status": "OUT_OF_SCOPE",
             "scope_status": "OUT_OF_SCOPE_PUBLIC_CORPUS",
-            "retrieval_policy": _runtime_policy(index), "consistency_notes": [],
+            "retrieval_policy": "not_run_scope_guard", "consistency_notes": [],
+            "route": "NOT_RUN_SCOPE_GUARD", "rerank_status": "NOT_RUN_SCOPE_GUARD",
         }
     _validate_public_language(index, payload)
+    _validate_public_retrieval_policy(index, payload)
     _validate_edge_ai_facets(index, payload)
     try:
-        hits = _positive_retrieval_hits(index.search(
-            _query_with_compound_aliases(payload.query, index),
-            top_k=payload.top_k, version=payload.version, language=payload.language,
-            device_model=payload.device_model, module_sku=payload.module_sku,
-            carrier_board=payload.carrier_board, software_baseline=payload.software_baseline,
-            source_namespace="project_primary",
-        ))
+        execution = _execute_public_search(
+            index, payload, request.app.state.public_generator, top_k=payload.top_k,
+        )
     except ValueError as exc:
         raise HTTPException(status_code=422, detail="INVALID_PUBLIC_SEARCH") from exc
-    hits = _with_document_relationships(index, hits)
-    _log_public_stage(request, operation="search", stage="retrieval", status="OK" if hits else "EMPTY", started=retrieval_started, hit_count=len(hits))
+    logger.info(
+        "public_rerank request_id=%s status=%s candidate_count=%s provider=%s model=%s usage=%s latency_ms=%s",
+        getattr(request.state, "request_id", "unknown"), execution["rerank_status"],
+        execution["candidate_count"], execution["rerank_diagnostics"].get("provider"),
+        execution["rerank_diagnostics"].get("model"), execution["rerank_diagnostics"].get("usage"),
+        execution["rerank_latency_ms"],
+    )
+    hits = execution["results"]
+    _log_public_stage(
+        request, operation="search", stage="retrieval", status="OK" if hits else "EMPTY",
+        started=started, duration_ms=execution["retrieval_latency_ms"], hit_count=len(hits),
+        retrieval_policy=execution["actual_policy"],
+    )
     return {
         "query": payload.query, "results": hits,
-        "retrieval_policy": _runtime_policy(index),
+        "retrieval_policy": payload.retrieval_policy,
+        "requested_policy": execution["requested_policy"], "actual_policy": execution["actual_policy"],
+        "route": execution["route"], "rerank_status": execution["rerank_status"],
+        "rerank_diagnostics": execution["rerank_diagnostics"],
+        "candidate_count": execution["candidate_count"],
+        "final_evidence_count": execution["final_evidence_count"],
+        "retrieval_latency_ms": execution["retrieval_latency_ms"],
+        "rerank_latency_ms": execution["rerank_latency_ms"],
         "consistency_notes": verified_consistency_notes(hits),
+        "requirements": execution.get('requirements', []),
     }
 
 
@@ -705,43 +1318,68 @@ def search(payload: SearchRequest, request: Request) -> dict:
 async def query(payload: SearchRequest, request: Request) -> dict:
     index = _index(request)
     _require_project_query_ready(index, payload)
-    retrieval_started = time.perf_counter()
+    started = time.perf_counter()
     if is_out_of_scope_public_request(payload.query):
         diagnostics = _generation_diagnostics(
             None, request_id=getattr(request.state, "request_id", None),
         )
         diagnostics["failure_reason"] = "OUT_OF_SCOPE_PUBLIC_CORPUS"
         diagnostics["candidate_count"] = 0
-        _log_public_stage(request, operation="query", stage="scope", status="OUT_OF_SCOPE", started=retrieval_started, hit_count=0)
+        _log_public_stage(request, operation="query", stage="scope", status="OUT_OF_SCOPE", started=started, hit_count=0)
         return {
             "answer": "N/A", "sources": [], "evidence": [],
             "consistency_notes": [], "generation": diagnostics,
-            "retrieval_policy": _runtime_policy(index),
+            "retrieval_policy": "not_run_scope_guard",
+            "route": "NOT_RUN_SCOPE_GUARD", "rerank_status": "NOT_RUN_SCOPE_GUARD",
             "status": "OUT_OF_SCOPE", "scope_status": "OUT_OF_SCOPE_PUBLIC_CORPUS",
         }
     _validate_public_language(index, payload)
+    _validate_public_retrieval_policy(index, payload)
     _validate_edge_ai_facets(index, payload)
+    generator = request.app.state.public_generator
     try:
-        hits = _positive_retrieval_hits(await asyncio.to_thread(
-            index.search, _query_with_compound_aliases(payload.query, index),
-            top_k=payload.top_k, version=payload.version, language=payload.language,
-            device_model=payload.device_model, module_sku=payload.module_sku,
-            carrier_board=payload.carrier_board, software_baseline=payload.software_baseline,
-            source_namespace="project_primary",
-        ))
+        execution = await asyncio.to_thread(
+            _execute_public_search, index, payload, generator, top_k=payload.top_k,
+        )
     except ValueError as exc:
         raise HTTPException(status_code=422, detail="INVALID_PUBLIC_SEARCH") from exc
-    hits = _with_document_relationships(index, hits)
-    _log_public_stage(request, operation="query", stage="retrieval", status="OK" if hits else "EMPTY", started=retrieval_started, hit_count=len(hits))
+    hits = execution["results"]
+    _log_public_stage(
+        request, operation="query", stage="retrieval", status="OK" if hits else "EMPTY",
+        started=started, duration_ms=execution["retrieval_latency_ms"], hit_count=len(hits),
+        retrieval_policy=execution["actual_policy"],
+    )
+    if payload.retrieval_policy == "task_adaptive_rerank":
+        _log_public_stage(
+            request, operation="query", stage="rerank", status=execution["rerank_status"],
+            started=started, duration_ms=execution["rerank_latency_ms"],
+            hit_count=execution["candidate_count"], retrieval_policy=execution["actual_policy"],
+        )
+    logger.info(
+        "public_rerank request_id=%s status=%s candidate_count=%s provider=%s model=%s usage=%s latency_ms=%s",
+        getattr(request.state, "request_id", "unknown"), execution["rerank_status"],
+        execution["candidate_count"], execution["rerank_diagnostics"].get("provider"),
+        execution["rerank_diagnostics"].get("model"), execution["rerank_diagnostics"].get("usage"),
+        execution["rerank_latency_ms"],
+    )
     notes = verified_consistency_notes(hits)
-    generator = request.app.state.public_generator
     diagnostics = _generation_diagnostics(
         generator, request_id=getattr(request.state, "request_id", None),
     )
     base = {
         "answer": "N/A", "sources": [], "evidence": hits,
+        "requirements": execution.get('requirements', []),
         "consistency_notes": notes, "generation": diagnostics,
-        "retrieval_policy": _runtime_policy(index),
+        "retrieval_policy": payload.retrieval_policy,
+        "requested_policy": execution["requested_policy"],
+        "actual_policy": execution["actual_policy"],
+        "route": execution["route"],
+        "rerank_status": execution["rerank_status"],
+        "rerank_diagnostics": execution["rerank_diagnostics"],
+        "candidate_count": execution["candidate_count"],
+        "final_evidence_count": execution["final_evidence_count"],
+        "retrieval_latency_ms": execution["retrieval_latency_ms"],
+        "rerank_latency_ms": execution["rerank_latency_ms"],
     }
     if not hits:
         diagnostics["failure_reason"] = "NO_POSITIVE_RETRIEVAL_EVIDENCE"
@@ -758,7 +1396,7 @@ async def query(payload: SearchRequest, request: Request) -> dict:
         {
             "document_id": f"E{position}", "page_number": 1,
             "section_id": hit["heading"], "section_path": [hit["document_key"], hit["heading"]],
-            "chunk_id": f"E{position}", "text": hit["content"],
+            "chunk_id": f"E{position}", "text": _canonical_evidence_text(hit),
             "modality": hit.get("modality", "text"),
         }
         for position, hit in enumerate(hits, start=1)
@@ -825,6 +1463,12 @@ async def query(payload: SearchRequest, request: Request) -> dict:
                 diagnostics["request_id"], diagnostics["failure_reason"], diagnostics["candidate_count"],
             )
             return {**base, "status": "ABSTAINED"}
+        gaps = generated.get("evidence_gaps", [])
+        if (not isinstance(gaps, list) or len(gaps) > 5
+                or any(not isinstance(gap, str) or not gap.strip() or len(gap) > 800 for gap in gaps)):
+            raise ValueError("answer evidence gaps violate the bounded schema")
+        base["evidence_gaps"] = list(dict.fromkeys(gap.strip() for gap in gaps))
+        base["answer_completeness"] = "PARTIAL_SUPPORTED" if gaps and claims else "NOT_ASSESSED"
         if not claims:
             diagnostics["failure_reason"] = "MODEL_NO_SUPPORTED_ANSWER"
             diagnostics["evidence_coverage"] = _evidence_query_coverage(payload.query, hits)
@@ -833,6 +1477,53 @@ async def query(payload: SearchRequest, request: Request) -> dict:
                 diagnostics["request_id"], diagnostics["failure_reason"], diagnostics["candidate_count"],
             )
             return {**base, "status": "ABSTAINED"}
+        if index.manifest.get('workspace_id') == PADDLEOCR_WORKSPACE_ID:
+            from src.paddleocr_fact_checks import check_mechanical_facts
+            from src.paddleocr_query_plan import plan_query
+            requirements=execution.get('requirements')
+            if not requirements:
+                base_index=getattr(index,'base_index',index)
+                versions=tuple(sorted(base_index._version_members(payload.version) or base_index.manifest['versions']))
+                requirements=plan_query(payload.query,versions=versions)['requirements']
+            mechanical=check_mechanical_facts(claims,hits,requirements=requirements)
+            scope_rejected=_claim_scope_mismatches(claims,hits,requirements)
+            for row in mechanical['claims']:
+                if row['claim_index'] in scope_rejected:row['status']='SCOPE_MISMATCH'
+            rejected_indexes={r['claim_index'] for r in mechanical['claims'] if r['status'] in ('CONTRADICTED','SCOPE_MISMATCH')}
+            if rejected_indexes:
+                claims=[c for i,c in enumerate(claims) if i not in rejected_indexes]
+                if any(r['status']=='SCOPE_MISMATCH' for r in mechanical['claims']):
+                    base['evidence_gaps'].append('部分主张引用了不适用的模块或版本资料，已移除；当前证据尚不足以支持这些要点。')
+                if any(r['status']=='CONTRADICTED' for r in mechanical['claims']):
+                    base['evidence_gaps'].append('部分参数默认值与所引原文冲突，已移除，请核对对应模块和版本。')
+                base['answer_completeness']='PARTIAL_SUPPORTED'
+            base['mechanical_verification']=mechanical
+            if not claims:
+                diagnostics['failure_reason']='CLAIM_SCOPE_MISMATCH' if scope_rejected else 'MECHANICAL_FACT_CONTRADICTION'
+                return {**base,'status':'ABSTAINED'}
+            from src.claim_support import check_claim_support
+            judge=getattr(generator,'verify_claims_with_diagnostics',None)
+            verification_started=time.perf_counter()
+            verification=(await asyncio.to_thread(check_claim_support,claims,hits,judge)
+                          if callable(judge) else {'status':'CHECK_FAILED','claims':[],'rejected':[],
+                                                    'failure_type':'CheckerNotConfigured'})
+            base['claim_verification']={key:value for key,value in verification.items() if key!='claims'}
+            base['claim_verification']['latency_ms']=round((time.perf_counter()-verification_started)*1000,3)
+            diagnostics['generation_latency_ms']=diagnostics.get('latency_ms')
+            diagnostics['latency_ms']=round((time.perf_counter()-started)*1000,3)
+            claims=verification['claims']
+            if not claims:
+                diagnostics['failure_reason']=('CLAIM_SUPPORT_REJECTED' if verification['status']=='UNSUPPORTED'
+                                               else 'CLAIM_SUPPORT_CHECK_FAILED')
+                return {**base,'status':'ABSTAINED'}
+            allowed={cid for claim in claims for cid in claim['evidence_ids']}
+            cited_hits=[row for row in hits if row['chunk_id'] in allowed]
+            # Re-index citations after removing unsupported claims and sources.
+            slots={row['chunk_id']:i+1 for i,row in enumerate(cited_hits)}
+            for claim in claims:claim['source_indexes']=[slots[cid] for cid in claim['evidence_ids']]
+            if verification['rejected']:
+                base['answer_completeness']='PARTIAL_SUPPORTED'
+                base['evidence_gaps'].append('部分生成主张未获得引用原文支持，已移除；请人工核对缺失要点。')
         diagnostics["claimed_citation_count"] = sum(len(claim["evidence_ids"]) for claim in claims)
         diagnostics["valid_citation_count"] = diagnostics["claimed_citation_count"]
         answer = "\n".join(claim["text"] for claim in claims)
@@ -994,6 +1685,22 @@ async def review_advice(payload: ReviewAdviceRequest, request: Request) -> dict:
         diagnostics["latency_ms"] = round((time.perf_counter() - started) * 1000)
         review = StructuredAnswerGenerator._decode_review(generated)
         cited_ids = validate_review_evidence_membership(review, set(requested_ids))
+        if index.manifest.get('workspace_id') == PADDLEOCR_WORKSPACE_ID and cited_ids:
+            from src.claim_support import check_claim_support
+            claims=[{'text':c['reason']+'\n建议核对：'+c['suggested_action'],
+                     'evidence_ids':[c['evidence_chunk_id']]} for c in review['impact_candidates']]
+            judge=getattr(generator,'verify_claims_with_diagnostics',None)
+            verification=(await asyncio.to_thread(check_claim_support,claims,hits,judge)
+                          if callable(judge) else {'status':'CHECK_FAILED','claims':[],
+                                                   'failure_type':'CheckerNotConfigured'})
+            base['claim_verification']={k:v for k,v in verification.items() if k!='claims'}
+            base['claim_verification']['request_count']=int(callable(judge))
+            allowed={cid for c in verification['claims'] for cid in c['evidence_ids']}
+            review['impact_candidates']=[c for c in review['impact_candidates'] if c['evidence_chunk_id'] in allowed]
+            cited_ids=[cid for cid in cited_ids if cid in allowed]
+            if not cited_ids:
+                diagnostics['failure_reason']='REVIEW_SUPPORT_CHECK_FAILED' if verification['status']=='CHECK_FAILED' else 'REVIEW_SUPPORT_REJECTED'
+                return {**base,'review':review,'status':'ABSTAINED'}
         if not cited_ids:
             # A schema-valid abstention may explain exactly which evidence is
             # missing. Keep that explanation without presenting an impact.

@@ -1,0 +1,538 @@
+{
+  "schema_version": 1,
+  "workspace_id": "paddleocr",
+  "repository": "PaddlePaddle/PaddleOCR",
+  "source_selection_status": "reviewed_exact_pinned_git_tree",
+  "excluded_categories": [
+    "English tutorials",
+    "v3.0.0 docs/version2.x legacy references",
+    "third-party media",
+    "weights",
+    "images/videos",
+    "datasets"
+  ],
+  "sources": [
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "README.md",
+      "git_blob_sha": "f6acbe91375db48abdec2cddd1ce63f5b1aa3522",
+      "source_format": "markdown",
+      "title": "PaddleOCR 项目说明",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "__init__.py",
+      "git_blob_sha": "e57c0c764b21e733630b647848d3642123287308",
+      "source_format": "python",
+      "title": "PaddleOCR __init__ 公共 API 实现",
+      "document_family": "python_package"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "configs/det/ch_PP-OCRv4/ch_PP-OCRv4_det_student.yml",
+      "git_blob_sha": "39b260cf3ad0a0bb9664a5165f3262962bba072e",
+      "source_format": "yaml",
+      "title": "PaddleOCR ch_PP-OCRv4_det_student 模型配置",
+      "document_family": "model_config"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "configs/rec/PP-OCRv4/ch_PP-OCRv4_rec.yml",
+      "git_blob_sha": "827f5eef3dff11bd2f5fced387fd5534551075b0",
+      "source_format": "yaml",
+      "title": "PaddleOCR ch_PP-OCRv4_rec 模型配置",
+      "document_family": "model_config"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "configs/table/SLANet_ch.yml",
+      "git_blob_sha": "c16f7efed37e48fecf11ceb2e4bf143c53844c72",
+      "source_format": "yaml",
+      "title": "PaddleOCR SLANet_ch 模型配置",
+      "document_family": "model_config"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "doc/doc_ch/FAQ.md",
+      "git_blob_sha": "5c93d1cbd6f420390e8ecb86f4e7a1776649938a",
+      "source_format": "markdown",
+      "title": "OCR 常见问题",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "doc/doc_ch/angle_class.md",
+      "git_blob_sha": "723d0d2ce5a8c25699c085c32004aa827b188fd9",
+      "source_format": "markdown",
+      "title": "文本方向分类",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "doc/doc_ch/config.md",
+      "git_blob_sha": "5ca1f68e6f71242279688d13b08d4d4e49616115",
+      "source_format": "markdown",
+      "title": "OCR 配置说明",
+      "document_family": "inference_config"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "doc/doc_ch/inference_args.md",
+      "git_blob_sha": "aad7973b16ee5d501d48ce6b8d2bc46d05c27c2a",
+      "source_format": "markdown",
+      "title": "OCR 推理参数",
+      "document_family": "inference_config"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "doc/doc_ch/inference_ppocr.md",
+      "git_blob_sha": "085802fc2cd41bbe922f0d794bcbc724ebdbe49d",
+      "source_format": "markdown",
+      "title": "OCR 模型推理",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "doc/doc_ch/installation.md",
+      "git_blob_sha": "962a926911cba3ad2e50af06c20ea0f8b0c4a927",
+      "source_format": "markdown",
+      "title": "PaddleOCR 安装依赖",
+      "document_family": "installation"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "doc/doc_ch/multi_languages.md",
+      "git_blob_sha": "4a6539fe8ecb783301d45e0cc8e911957b45a438",
+      "source_format": "markdown",
+      "title": "OCR 多语言使用",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "doc/doc_ch/quickstart.md",
+      "git_blob_sha": "65b29b18792d7550ecd73f43a1783017f7087c46",
+      "source_format": "markdown",
+      "title": "OCR 或结构化解析快速开始",
+      "document_family": "quick_start"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "doc/doc_ch/table_recognition.md",
+      "git_blob_sha": "88260466d4e6649fcfc50baa12c09730674f99c0",
+      "source_format": "markdown",
+      "title": "表格识别使用",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "doc/doc_ch/visualization.md",
+      "git_blob_sha": "254634753282f53f367e44f4859e5b748f32bffd",
+      "source_format": "markdown",
+      "title": "OCR 结果可视化",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "doc/doc_ch/whl.md",
+      "git_blob_sha": "2f9976f6d80d14145afab5fffeb85f9f790fc023",
+      "source_format": "markdown",
+      "title": "Python 包安装与 OCR 结果用法",
+      "document_family": "python_package"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "paddleocr.py",
+      "git_blob_sha": "bdf367cf1a41c873783ba0a4c82a71c5f7ff0a82",
+      "source_format": "python",
+      "title": "PaddleOCR paddleocr 公共 API 实现",
+      "document_family": "ocr_api"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "ppstructure/README_ch.md",
+      "git_blob_sha": "9d78df62f499501a3430500d65883242b389ccd0",
+      "source_format": "markdown",
+      "title": "PP-Structure 中文说明",
+      "document_family": "structure_pipeline"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "ppstructure/docs/inference.md",
+      "git_blob_sha": "a7efd5e8c2b8cda086c267e2fec2b858720a10b7",
+      "source_format": "markdown",
+      "title": "PP-Structure 推理与结果格式",
+      "document_family": "structure_pipeline"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "ppstructure/docs/quickstart.md",
+      "git_blob_sha": "ed0843de81a501697ffd91b01f57c646ed8e56a9",
+      "source_format": "markdown",
+      "title": "OCR 或结构化解析快速开始",
+      "document_family": "structure_pipeline"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "ppstructure/layout/README_ch.md",
+      "git_blob_sha": "adef46d47389a50bf34500eee1aaf52ff5dfe449",
+      "source_format": "markdown",
+      "title": "PP-Structure 中文说明",
+      "document_family": "structure_pipeline"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "ppstructure/predict_system.py",
+      "git_blob_sha": "152e989c3b6c9736f9f09663302173d2afc904ce",
+      "source_format": "python",
+      "title": "PaddleOCR predict_system 公共 API 实现",
+      "document_family": "structure_api"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "ppstructure/recovery/README_ch.md",
+      "git_blob_sha": "63a686d256c0ece915b5234adef5652882585127",
+      "source_format": "markdown",
+      "title": "PP-Structure 中文说明",
+      "document_family": "structure_pipeline"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "ppstructure/return_word_pos.md",
+      "git_blob_sha": "5a42d1c0aa08256637e58b2ab82a20d82b42693b",
+      "source_format": "markdown",
+      "title": "返回文字位置",
+      "document_family": "structure_pipeline"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "ppstructure/table/README_ch.md",
+      "git_blob_sha": "cf4e515b5c9db174aac58aca47c6e78bb010e40d",
+      "source_format": "markdown",
+      "title": "PP-Structure 中文说明",
+      "document_family": "structure_pipeline"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "README.md",
+      "git_blob_sha": "7790f05fb92820058d02684744c236f247b187bb",
+      "source_format": "markdown",
+      "title": "PaddleOCR 项目说明",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "configs/table/SLANeXt_wired.yml",
+      "git_blob_sha": "b6d5f6ad70aedf561c743fb67c0709ee04604bef",
+      "source_format": "yaml",
+      "title": "PaddleOCR SLANeXt_wired 模型配置",
+      "document_family": "model_config"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "configs/table/SLANet_plus.yml",
+      "git_blob_sha": "e67ce66fb58e4b04508537de18fc5b0a9afccc6a",
+      "source_format": "yaml",
+      "title": "PaddleOCR SLANet_plus 模型配置",
+      "document_family": "model_config"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/quick_start.md",
+      "git_blob_sha": "6031c6805f5843badb40ccb3a751a5fe8039a9b4",
+      "source_format": "markdown",
+      "title": "PaddleOCR 快速开始",
+      "document_family": "quick_start"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/update/upgrade_notes.md",
+      "git_blob_sha": "840134d67d24de00b492481355ce9f5a62971766",
+      "source_format": "markdown",
+      "title": "PaddleOCR 3.0 升级说明",
+      "document_family": "upgrade_notes"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/deployment/high_performance_inference.md",
+      "git_blob_sha": "a6d4245816f6f242364556ea1aa5e509d22be3ff",
+      "source_format": "markdown",
+      "title": "高性能推理部署",
+      "document_family": "deployment"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/deployment/serving.md",
+      "git_blob_sha": "06ee5f7cd34ce0e2194322aaee9a155d2080a36b",
+      "source_format": "markdown",
+      "title": "服务化部署",
+      "document_family": "deployment"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/installation.md",
+      "git_blob_sha": "74a3eeef653e7761fad1b77cdaff89470d2cc040",
+      "source_format": "markdown",
+      "title": "PaddleOCR 安装依赖",
+      "document_family": "installation"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/logging.md",
+      "git_blob_sha": "fa1927de8a4ba98cf3bdf4fcfedde6c25381ce6c",
+      "source_format": "markdown",
+      "title": "PaddleOCR 日志配置",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/module_usage/doc_img_orientation_classification.md",
+      "git_blob_sha": "7336b4b465ef9a9fcd220c52a3fb38433a2c2c2c",
+      "source_format": "markdown",
+      "title": "文档图像方向分类模块",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/module_usage/layout_detection.md",
+      "git_blob_sha": "57b23f8e6f6099cc6ff472d8d6fec8f94f72ea96",
+      "source_format": "markdown",
+      "title": "版面检测模块",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/module_usage/table_cells_detection.md",
+      "git_blob_sha": "4461c64226f042892a606b42b1eb24b9fe0cf80a",
+      "source_format": "markdown",
+      "title": "表格单元格检测模块",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/module_usage/table_classification.md",
+      "git_blob_sha": "0be4daad9cc32e47783ca69a1ead29157ef96e88",
+      "source_format": "markdown",
+      "title": "表格分类模块",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/module_usage/table_structure_recognition.md",
+      "git_blob_sha": "899b96bf475508f604d861236fb08aef0e1b7926",
+      "source_format": "markdown",
+      "title": "表格结构识别模块",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/module_usage/text_detection.md",
+      "git_blob_sha": "a672b462a9fd8acc245c38aa6d90cccc6ea80171",
+      "source_format": "markdown",
+      "title": "文本检测模块",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/module_usage/text_image_unwarping.md",
+      "git_blob_sha": "f86e849a37b2b5c05e59b2da87f180d089e542f3",
+      "source_format": "markdown",
+      "title": "文本图像矫正模块",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/module_usage/text_line_orientation_classification.md",
+      "git_blob_sha": "b88d009839f138ca41883111b29a5dffc4be4f82",
+      "source_format": "markdown",
+      "title": "文本行方向分类模块",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/module_usage/text_recognition.md",
+      "git_blob_sha": "19a1a8b1bea4c1a8ba01ac64003dad69da8dc649",
+      "source_format": "markdown",
+      "title": "文本识别模块",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/paddleocr_and_paddlex.md",
+      "git_blob_sha": "8f19bf7fdca66217dcd21f0b167d0d6d796bc041",
+      "source_format": "markdown",
+      "title": "PaddleOCR 与 PaddleX 的接口关系",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/pipeline_usage/OCR.md",
+      "git_blob_sha": "9a7d0746c557607450510bbfa96ce95fac9acc75",
+      "source_format": "markdown",
+      "title": "通用 OCR 产线使用与结果格式",
+      "document_family": "ocr_pipeline"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+      "git_blob_sha": "6c147ab81b2c27b91954b8c9758d3c0704e3e147",
+      "source_format": "markdown",
+      "title": "PP-StructureV3 产线使用与结果格式",
+      "document_family": "structure_pipeline"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+      "git_blob_sha": "5a3c5b03093afdcf1f7e31556a410907d29c1d95",
+      "source_format": "markdown",
+      "title": "文档图像预处理产线",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+      "git_blob_sha": "5bd83b7a8a2e8dd12fc25fb1c31b88e58d60d025",
+      "source_format": "markdown",
+      "title": "表格识别产线",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "paddleocr/__init__.py",
+      "git_blob_sha": "bd9280d970ff9568bec0613cdecc28c31b9c517e",
+      "source_format": "python",
+      "title": "PaddleOCR __init__ 公共 API 实现",
+      "document_family": "python_package"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "paddleocr/_common_args.py",
+      "git_blob_sha": "50988c91bce1e321c272c47c30c53962b643417b",
+      "source_format": "python",
+      "title": "PaddleOCR _common_args 公共 API 实现",
+      "document_family": "python_package"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "paddleocr/_pipelines/__init__.py",
+      "git_blob_sha": "d0fec919260ac8d3f12f6e2207c1d3fff9a9bced",
+      "source_format": "python",
+      "title": "PaddleOCR __init__ 公共 API 实现",
+      "document_family": "python_package"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "paddleocr/_pipelines/base.py",
+      "git_blob_sha": "3ac8e4c591cfe06111b6390a34d3c361394cbe92",
+      "source_format": "python",
+      "title": "PaddleOCR base 公共 API 实现",
+      "document_family": "python_package"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "paddleocr/_pipelines/ocr.py",
+      "git_blob_sha": "b38dc5b5b8f9cc4c80907a09d79ee3376091aeb0",
+      "source_format": "python",
+      "title": "PaddleOCR ocr 公共 API 实现",
+      "document_family": "ocr_api"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "paddleocr/_pipelines/pp_structurev3.py",
+      "git_blob_sha": "112c22e6cb01a66fa903f7c2ad93488cdd82fe17",
+      "source_format": "python",
+      "title": "PaddleOCR pp_structurev3 公共 API 实现",
+      "document_family": "structure_api"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "doc/doc_ch/inference.md",
+      "git_blob_sha": "b73245a4107ab2848e7d9af5bb7319efd9b6e6d4",
+      "source_format": "markdown",
+      "title": "模型推理总览",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v2.9.1",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "path": "doc/doc_ch/algorithm_inference.md",
+      "git_blob_sha": "f4858a9a0d2bf9c33250e1a79a7f9d783d32f84f",
+      "source_format": "markdown",
+      "title": "算法推理与模型导出",
+      "document_family": "module_usage"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/deployment/obtaining_onnx_models.md",
+      "git_blob_sha": "6291b0871e3584abb2bec79478642b0e6188acbb",
+      "source_format": "markdown",
+      "title": "获取 ONNX 模型",
+      "document_family": "deployment"
+    },
+    {
+      "version": "v3.0.0",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "path": "docs/version3.x/deployment/on_device_deployment.md",
+      "git_blob_sha": "650c418de877120e443881329a483534b132afd9",
+      "source_format": "markdown",
+      "title": "端侧部署",
+      "document_family": "deployment"
+    }
+  ]
+}

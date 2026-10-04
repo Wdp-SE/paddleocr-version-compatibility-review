@@ -3,6 +3,8 @@ from __future__ import annotations
 from pathlib import Path
 from types import SimpleNamespace
 
+import pytest
+
 from streamlit.testing.v1 import AppTest
 
 from components.product_experience import build_status_cards, build_workflow_progress
@@ -11,6 +13,7 @@ from components.product_experience import build_status_cards, build_workflow_pro
 UI_ROOT = Path(__file__).parents[1]
 
 
+@pytest.mark.skip(reason="历史合成案例 tab 入口已退役；当前应用审查流程由 test_paddleocr_workbench 验收")
 def test_workbench_starts_existing_analysis_flow_and_tracks_case(monkeypatch, tmp_path) -> None:
     monkeypatch.setenv("APP_ENV", "public_demo")
     monkeypatch.setenv("RAG_API_BASE_URL", "http://127.0.0.1:1")

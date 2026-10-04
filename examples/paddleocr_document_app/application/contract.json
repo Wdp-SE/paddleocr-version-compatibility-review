@@ -1,0 +1,1 @@
+{"schema_version":1,"source_type":"developer_original_application","required_line_fields":["page_index","text","confidence"],"output_fields":["schema_version","pages"],"runtime_scope":"original offline regression only; submitted applications are not executed"}

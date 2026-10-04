@@ -39,10 +39,10 @@ def _is_public_demo() -> bool:
 
 def _configured_public_corpus_root() -> Path:
     if _is_public_demo():
-        return SERVICE_ROOT / "public_corpus_pphuman"
+        return SERVICE_ROOT / "public_corpus_paddleocr"
     configured = os.environ.get("RAG_PUBLIC_CORPUS_ROOT", "").strip()
     if not configured:
-        return SERVICE_ROOT / "public_corpus_pphuman"
+        return SERVICE_ROOT / "public_corpus_paddleocr"
     path = Path(configured).expanduser()
     return path if path.is_absolute() else (SERVICE_ROOT / path).resolve()
 
@@ -86,7 +86,10 @@ def create_app(*, index: PublicKnowledgeIndex | None = None, generator=None,
             manifest_path=base_index.root / "corpus_manifest.json",
         )
         active_retrieval_config_path = Path(
-            retrieval_config_path or _configured_public_retrieval_config()
+            retrieval_config_path or (
+                base_index.root / "public_retrieval_runtime.json" if index is not None
+                else _configured_public_retrieval_config()
+            )
         ).resolve()
         app.state.public_base_knowledge_index = base_index
         app.state.public_knowledge_index = PublicRetrievalRuntime(

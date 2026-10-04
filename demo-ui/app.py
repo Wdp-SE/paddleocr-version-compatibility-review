@@ -1,11 +1,11 @@
-"""Single active Streamlit entry point for the public edge-AI workbench."""
+"""Streamlit entry point for versioned PaddleOCR knowledge and application review."""
 
 from __future__ import annotations
 
 import streamlit as st
 
 st.set_page_config(
-    page_title="研发知识版本服务与变更影响审查",
+    page_title="PaddleOCR 版本知识与应用兼容性审查",
     page_icon="📄",
     layout="wide",
     initial_sidebar_state="expanded",

@@ -1,0 +1,579 @@
+{
+  "schema_version": 1,
+  "dataset_id": "paddleocr-source-derived-acceptance-v1",
+  "scope": "来源派生工程验收；不是独立业务盲评，不据此宣称准确率",
+  "project_id": "paddleocr",
+  "assessment_type": "source_derived_acceptance",
+  "cases_sha256": "27f89d615285c4488f04137c798b083094da20892bb8e4fbb7b35bac5d20d149",
+  "corpus_manifest_sha256": "ca0334878ac5e11da5bfcf7016ead7fa8754bac576c393ab36de73b578d9486a",
+  "chunks_sha256": "3c19be4115d702bd9121096df0eeb1624695ca36d4cea3053916e4c139734fe1",
+  "runner_sha256": "17e934a04057103e9ab8e50ab993f3584f55776e6053aa0e629d5510484f022b",
+  "retrieval_code_sha256": "211792d8206e1de61891754d31a25041a06ee5a7526fc4b547c23e1ace50509a",
+  "fusion_code_sha256": "a4eb9ae461c0c526f0d9cde19460e566351b150333b133078841256cf37f9c6e",
+  "compatibility_code_sha256": "4ac9cf06d4791e54f86dcfe9a3a69b301515b2ca930a34367eff9c5160ddf02d",
+  "top_k": 5,
+  "retrieval": {
+    "bm25": {
+      "count": 10,
+      "evidence_span_hit_count": 8,
+      "wrong_version_count": 0,
+      "cases": [
+        {
+          "id": "upgrade-api",
+          "version": "v3.0.0",
+          "matched": false,
+          "matched_chunk_ids": [],
+          "returned_paths": [
+            "docs/update/upgrade_notes.md",
+            "docs/update/upgrade_notes.md",
+            "docs/update/upgrade_notes.md",
+            "docs/version3.x/pipeline_usage/OCR.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 5.01
+        },
+        {
+          "id": "ocr-fields",
+          "version": "v3.0.0",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40"
+          ],
+          "returned_paths": [
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/OCR.md",
+            "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+            "docs/version3.x/module_usage/text_recognition.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 6.08
+        },
+        {
+          "id": "ocr-json",
+          "version": "v3.0.0",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:41"
+          ],
+          "returned_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/OCR.md",
+            "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+            "docs/version3.x/pipeline_usage/table_recognition_v2.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 4.05
+        },
+        {
+          "id": "structure-markdown",
+          "version": "v3.0.0",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:71"
+          ],
+          "returned_paths": [
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 2.3
+        },
+        {
+          "id": "old-result",
+          "version": "v2.9.1",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v2.9.1:zh:doc/doc_ch/whl:9",
+            "v2.9.1:zh:doc/doc_ch/whl:67"
+          ],
+          "returned_paths": [
+            "doc/doc_ch/multi_languages.md",
+            "doc/doc_ch/quickstart.md",
+            "doc/doc_ch/whl.md",
+            "doc/doc_ch/whl.md",
+            "doc/doc_ch/quickstart.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 5.42
+        },
+        {
+          "id": "old-install",
+          "version": "v2.9.1",
+          "matched": false,
+          "matched_chunk_ids": [],
+          "returned_paths": [
+            "ppstructure/recovery/README_ch.md",
+            "doc/doc_ch/FAQ.md",
+            "doc/doc_ch/installation.md",
+            "doc/doc_ch/FAQ.md",
+            "doc/doc_ch/multi_languages.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 3.76
+        },
+        {
+          "id": "new-orientation",
+          "version": "v3.0.0",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:33"
+          ],
+          "returned_paths": [
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/OCR.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 4.04
+        },
+        {
+          "id": "new-config",
+          "version": "v3.0.0",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:58"
+          ],
+          "returned_paths": [
+            "docs/version3.x/paddleocr_and_paddlex.md",
+            "docs/version3.x/pipeline_usage/OCR.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "paddleocr/_pipelines/base.py",
+            "docs/version3.x/paddleocr_and_paddlex.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 1.83
+        },
+        {
+          "id": "old-layout",
+          "version": "v2.9.1",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v2.9.1:zh:ppstructure/docs/quickstart:46"
+          ],
+          "returned_paths": [
+            "ppstructure/docs/inference.md",
+            "ppstructure/docs/quickstart.md",
+            "ppstructure/layout/README_ch.md",
+            "ppstructure/layout/README_ch.md",
+            "ppstructure/layout/README_ch.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 4.27
+        },
+        {
+          "id": "new-structure",
+          "version": "v3.0.0",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:63",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:71"
+          ],
+          "returned_paths": [
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/module_usage/doc_img_orientation_classification.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 2.33
+        }
+      ]
+    },
+    "bm25_fields": {
+      "count": 10,
+      "evidence_span_hit_count": 6,
+      "wrong_version_count": 0,
+      "cases": [
+        {
+          "id": "upgrade-api",
+          "version": "v3.0.0",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v3.0.0:zh:docs/update/upgrade_notes:8"
+          ],
+          "returned_paths": [
+            "docs/update/upgrade_notes.md",
+            "docs/update/upgrade_notes.md",
+            "docs/update/upgrade_notes.md",
+            "docs/update/upgrade_notes.md",
+            "docs/update/upgrade_notes.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 8.42
+        },
+        {
+          "id": "ocr-fields",
+          "version": "v3.0.0",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40"
+          ],
+          "returned_paths": [
+            "docs/version3.x/module_usage/text_recognition.md",
+            "docs/version3.x/pipeline_usage/OCR.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/module_usage/text_recognition.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 11.28
+        },
+        {
+          "id": "ocr-json",
+          "version": "v3.0.0",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:41"
+          ],
+          "returned_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md",
+            "docs/version3.x/pipeline_usage/OCR.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/OCR.md",
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 9.4
+        },
+        {
+          "id": "structure-markdown",
+          "version": "v3.0.0",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:71"
+          ],
+          "returned_paths": [
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 4.63
+        },
+        {
+          "id": "old-result",
+          "version": "v2.9.1",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v2.9.1:zh:doc/doc_ch/whl:9",
+            "v2.9.1:zh:doc/doc_ch/whl:13",
+            "v2.9.1:zh:doc/doc_ch/whl:67"
+          ],
+          "returned_paths": [
+            "doc/doc_ch/FAQ.md",
+            "doc/doc_ch/FAQ.md",
+            "doc/doc_ch/whl.md",
+            "doc/doc_ch/whl.md",
+            "doc/doc_ch/whl.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 11.08
+        },
+        {
+          "id": "old-install",
+          "version": "v2.9.1",
+          "matched": false,
+          "matched_chunk_ids": [],
+          "returned_paths": [
+            "doc/doc_ch/FAQ.md",
+            "doc/doc_ch/FAQ.md",
+            "doc/doc_ch/FAQ.md",
+            "doc/doc_ch/installation.md",
+            "doc/doc_ch/FAQ.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 7.88
+        },
+        {
+          "id": "new-orientation",
+          "version": "v3.0.0",
+          "matched": false,
+          "matched_chunk_ids": [],
+          "returned_paths": [
+            "docs/version3.x/module_usage/doc_img_orientation_classification.md",
+            "docs/version3.x/module_usage/doc_img_orientation_classification.md",
+            "docs/version3.x/module_usage/doc_img_orientation_classification.md",
+            "docs/version3.x/module_usage/doc_img_orientation_classification.md",
+            "docs/version3.x/module_usage/doc_img_orientation_classification.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 8.86
+        },
+        {
+          "id": "new-config",
+          "version": "v3.0.0",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:58"
+          ],
+          "returned_paths": [
+            "paddleocr/_pipelines/base.py",
+            "docs/version3.x/paddleocr_and_paddlex.md",
+            "docs/version3.x/paddleocr_and_paddlex.md",
+            "docs/version3.x/paddleocr_and_paddlex.md",
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 4.31
+        },
+        {
+          "id": "old-layout",
+          "version": "v2.9.1",
+          "matched": false,
+          "matched_chunk_ids": [],
+          "returned_paths": [
+            "ppstructure/layout/README_ch.md",
+            "ppstructure/layout/README_ch.md",
+            "ppstructure/layout/README_ch.md",
+            "ppstructure/layout/README_ch.md",
+            "ppstructure/layout/README_ch.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 9.41
+        },
+        {
+          "id": "new-structure",
+          "version": "v3.0.0",
+          "matched": false,
+          "matched_chunk_ids": [],
+          "returned_paths": [
+            "paddleocr/_pipelines/pp_structurev3.py",
+            "paddleocr/_pipelines/pp_structurev3.py",
+            "paddleocr/_pipelines/pp_structurev3.py",
+            "paddleocr/_pipelines/pp_structurev3.py",
+            "paddleocr/_pipelines/pp_structurev3.py"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 5.3
+        }
+      ]
+    },
+    "bm25_fields_rrf": {
+      "count": 10,
+      "evidence_span_hit_count": 7,
+      "wrong_version_count": 0,
+      "cases": [
+        {
+          "id": "upgrade-api",
+          "version": "v3.0.0",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v3.0.0:zh:docs/update/upgrade_notes:8"
+          ],
+          "returned_paths": [
+            "docs/update/upgrade_notes.md",
+            "docs/update/upgrade_notes.md",
+            "docs/update/upgrade_notes.md",
+            "docs/update/upgrade_notes.md",
+            "docs/update/upgrade_notes.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 14.87
+        },
+        {
+          "id": "ocr-fields",
+          "version": "v3.0.0",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40"
+          ],
+          "returned_paths": [
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/OCR.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/module_usage/text_recognition.md",
+            "docs/version3.x/pipeline_usage/table_recognition_v2.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 18.61
+        },
+        {
+          "id": "ocr-json",
+          "version": "v3.0.0",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:41"
+          ],
+          "returned_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md",
+            "docs/version3.x/pipeline_usage/OCR.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/OCR.md",
+            "docs/version3.x/pipeline_usage/doc_preprocessor.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 14.94
+        },
+        {
+          "id": "structure-markdown",
+          "version": "v3.0.0",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:71"
+          ],
+          "returned_paths": [
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 8.05
+        },
+        {
+          "id": "old-result",
+          "version": "v2.9.1",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v2.9.1:zh:doc/doc_ch/whl:9",
+            "v2.9.1:zh:doc/doc_ch/whl:67",
+            "v2.9.1:zh:doc/doc_ch/whl:13"
+          ],
+          "returned_paths": [
+            "doc/doc_ch/whl.md",
+            "doc/doc_ch/whl.md",
+            "doc/doc_ch/whl.md",
+            "doc/doc_ch/quickstart.md",
+            "doc/doc_ch/FAQ.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 17.58
+        },
+        {
+          "id": "old-install",
+          "version": "v2.9.1",
+          "matched": false,
+          "matched_chunk_ids": [],
+          "returned_paths": [
+            "doc/doc_ch/FAQ.md",
+            "doc/doc_ch/installation.md",
+            "doc/doc_ch/FAQ.md",
+            "doc/doc_ch/FAQ.md",
+            "doc/doc_ch/FAQ.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 11.81
+        },
+        {
+          "id": "new-orientation",
+          "version": "v3.0.0",
+          "matched": false,
+          "matched_chunk_ids": [],
+          "returned_paths": [
+            "docs/version3.x/module_usage/doc_img_orientation_classification.md",
+            "docs/version3.x/module_usage/doc_img_orientation_classification.md",
+            "docs/version3.x/module_usage/doc_img_orientation_classification.md",
+            "docs/version3.x/module_usage/text_line_orientation_classification.md",
+            "docs/version3.x/module_usage/text_line_orientation_classification.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 13.18
+        },
+        {
+          "id": "new-config",
+          "version": "v3.0.0",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:58"
+          ],
+          "returned_paths": [
+            "docs/version3.x/paddleocr_and_paddlex.md",
+            "paddleocr/_pipelines/base.py",
+            "docs/version3.x/pipeline_usage/OCR.md",
+            "docs/version3.x/paddleocr_and_paddlex.md",
+            "docs/version3.x/paddleocr_and_paddlex.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 6.17
+        },
+        {
+          "id": "old-layout",
+          "version": "v2.9.1",
+          "matched": false,
+          "matched_chunk_ids": [],
+          "returned_paths": [
+            "ppstructure/layout/README_ch.md",
+            "ppstructure/docs/inference.md",
+            "ppstructure/layout/README_ch.md",
+            "ppstructure/layout/README_ch.md",
+            "ppstructure/layout/README_ch.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 14.8
+        },
+        {
+          "id": "new-structure",
+          "version": "v3.0.0",
+          "matched": true,
+          "matched_chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:63",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:71"
+          ],
+          "returned_paths": [
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+            "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+            "docs/version3.x/module_usage/doc_img_orientation_classification.md"
+          ],
+          "wrong_version_count": 0,
+          "latency_ms": 10.68
+        }
+      ]
+    }
+  },
+  "compatibility": [
+    {
+      "id": "removed-api",
+      "application_sha256": "dc21a1302cd5f8f674ed85d90ae593b4dd18996d22110750f1785630bc5fe0b9",
+      "status": "supported_risk",
+      "rules": [
+        "removed_ppstructure",
+        "removed_ppstructure"
+      ],
+      "passed": true,
+      "runtime_verified": false
+    },
+    {
+      "id": "result-consumer",
+      "application_sha256": "42ffae7ac515077ceeb0add0d15844533092767f4fdc10c9065b17ba64c0c59b",
+      "status": "supported_risk",
+      "rules": [
+        "basic_ocr_surface",
+        "legacy_ocr_result"
+      ],
+      "passed": true,
+      "runtime_verified": false
+    },
+    {
+      "id": "basic-surface",
+      "application_sha256": "1c8587f8b2e63f30bf26102915501fcb9e0527945948251cb71ed6652a5f36ab",
+      "status": "unaffected",
+      "rules": [
+        "basic_ocr_surface"
+      ],
+      "passed": true,
+      "runtime_verified": false
+    }
+  ],
+  "answer_accuracy": null,
+  "independent_business_accuracy": null,
+  "selection_decision": "保留 BM25 基线；小样本来源派生验收不能证明业务准确率，不自动晋升候选策略。"
+}

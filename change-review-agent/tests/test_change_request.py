@@ -32,11 +32,21 @@ def test_active_profile_is_chinese_pphuman_engineering_only():
     ("调整 PP-Human 的行人检测模型配置和推理阈值。", "model_config"),
     ("变更行人跟踪器参数并核对跨镜跟踪流程。", "tracking"),
     ("变更 PP-Human 推理流水线部署配置。", "deployment"),
+    ("在 PP-Human v2.8.1 部署时调整行人跟踪模型的命令行参数。", "deployment"),
     ("启用行为识别并核对行为分析配置。", "behavior_pipeline"),
+    ("变更视频行为识别任务开关和模型目录，核对行为教程与推理配置。", "behavior_pipeline"),
     ("检查当前资料里是否有对应的工程说明。", "general"),
 ])
 def test_change_type_classification_uses_only_current_pphuman_profile(summary, expected):
     assert classify_change_type(summary) == expected
+
+
+def test_request_plan_uses_the_same_specific_type_as_user_facing_classifier():
+    summary = "变更视频行为识别任务开关和模型目录，核对行为教程与推理配置。"
+
+    plan = build_request_plan(summary)
+
+    assert plan["change_type"] == classify_change_type(summary) == "behavior_pipeline"
 
 
 def test_compound_request_keeps_full_text_and_stops_at_profile_query_limit():

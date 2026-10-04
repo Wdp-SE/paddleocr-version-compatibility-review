@@ -1,0 +1,2291 @@
+{
+  "dataset_id": "paddleocr-quality-v2-20261004",
+  "label_origin": "developer-authored source-grounded cases frozen before strategy comparison; internal holdout, not independent human benchmark",
+  "cases_sha256": "ece981dc6eaee5fa6624f4a7a9414fd7a618fe47f612a87af19124f164949d6e",
+  "chunks_sha256": "3c19be4115d702bd9121096df0eeb1624695ca36d4cea3053916e4c139734fe1",
+  "corpus_manifest_sha256": "ca0334878ac5e11da5bfcf7016ead7fa8754bac576c393ab36de73b578d9486a",
+  "lexical_code_sha256": "211792d8206e1de61891754d31a25041a06ee5a7526fc4b547c23e1ace50509a",
+  "fusion_code_sha256": "a4eb9ae461c0c526f0d9cde19460e566351b150333b133078841256cf37f9c6e",
+  "retriever_sha256": "435b82563a7f296393096667199e50f06feb0ebef5373dd3e60731632d1c761f",
+  "metric_code_sha256": "a2a8159abf6e6940363f038fd3495ba72c403c656a1ccb890980c1050d9b1247",
+  "runner_sha256": "335a9913141fd1c814743b6087a272834f86ffea39981b39849d714fe30edef7",
+  "strategies": {
+    "bm25": {
+      "dev": {
+        "count": 12,
+        "complete_rate": 0.6666666666666666,
+        "fact_recall": 0.6923076923076923,
+        "mrr": 0.5333333333333333,
+        "wrong_version_count": 0,
+        "p95_ms": 16.55149999999999
+      },
+      "holdout": {
+        "count": 12,
+        "complete_rate": 0.4166666666666667,
+        "fact_recall": 0.46153846153846156,
+        "mrr": 0.38888888888888884,
+        "wrong_version_count": 0,
+        "p95_ms": 8.4085
+      },
+      "cases": [
+        {
+          "id": "d01",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.2,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 25.5,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:73",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:74",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40"
+          ]
+        },
+        {
+          "id": "d02",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 5.24,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/update/upgrade_notes:8",
+            "v3.0.0:zh:docs/version3.x/logging:3",
+            "v3.0.0:zh:docs/version3.x/logging:2",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:54"
+          ]
+        },
+        {
+          "id": "d03",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 5.12,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/module_usage/text_image_unwarping:2",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:5",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:5",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:5",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:33"
+          ]
+        },
+        {
+          "id": "d04",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 6.38,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:58",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:17",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:48",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:31"
+          ]
+        },
+        {
+          "id": "d05",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 6.62,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/installation:3",
+            "v3.0.0:zh:docs/version3.x/installation:5",
+            "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:6",
+            "v3.0.0:zh:docs/quick_start:5",
+            "v3.0.0:zh:docs/version3.x/installation:4"
+          ]
+        },
+        {
+          "id": "d06",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 4.56,
+          "chunk_ids": [
+            "v2.9.1:zh:doc/doc_ch/quickstart:30",
+            "v2.9.1:zh:doc/doc_ch/inference_ppocr:29",
+            "v2.9.1:zh:ppstructure/docs/quickstart:9",
+            "v2.9.1:zh:doc/doc_ch/inference_ppocr:30",
+            "v2.9.1:zh:doc/doc_ch/quickstart:15"
+          ]
+        },
+        {
+          "id": "d07",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 7.58,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:33",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:21",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:27",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:55",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:13"
+          ]
+        },
+        {
+          "id": "d08",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 6.55,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:57",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:15",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:46",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:29",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:15"
+          ]
+        },
+        {
+          "id": "d09",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 6.08,
+          "chunk_ids": [
+            "v2.9.1:zh:ppstructure/table/README_ch:3",
+            "v2.9.1:zh:doc/doc_ch/table_recognition:54",
+            "v2.9.1:zh:ppstructure/table/README_ch:11",
+            "v2.9.1:zh:doc/doc_ch/table_recognition:19",
+            "v2.9.1:zh:ppstructure/docs/quickstart:70"
+          ]
+        },
+        {
+          "id": "d10",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 4.4,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/deployment/serving:1",
+            "v3.0.0:zh:docs/version3.x/deployment/serving:15",
+            "v3.0.0:zh:docs/version3.x/deployment/serving:2",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:78",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:29"
+          ]
+        },
+        {
+          "id": "d11",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 2,
+          "required_fact_count": 2,
+          "wrong_version_count": 0,
+          "latency_ms": 9.23,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/version3.x/installation:5",
+            "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:6",
+            "v3.0.0:zh:docs/version3.x/installation:3",
+            "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:1"
+          ]
+        },
+        {
+          "id": "d12",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.2,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 3.2,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/update/upgrade_notes:2",
+            "v3.0.0:zh:docs/update/upgrade_notes:3",
+            "v3.0.0:zh:docs/update/upgrade_notes:7",
+            "v3.0.0:zh:docs/update/upgrade_notes:1",
+            "v3.0.0:zh:docs/update/upgrade_notes:8"
+          ]
+        },
+        {
+          "id": "h01",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 5.49,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/module_usage/table_structure_recognition:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:31",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:28",
+            "v3.0.0:zh:docs/version3.x/module_usage/table_classification:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:60"
+          ]
+        },
+        {
+          "id": "h02",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 5.52,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/version3.x/logging:3",
+            "v3.0.0:zh:docs/update/upgrade_notes:8",
+            "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:1",
+            "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:16"
+          ]
+        },
+        {
+          "id": "h03",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 3.91,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:2",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:9",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:5",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:40"
+          ]
+        },
+        {
+          "id": "h04",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 3.23,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:64",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:85",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:48"
+          ]
+        },
+        {
+          "id": "h05",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 8.59,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:6",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:97",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:58",
+            "v3.0.0:zh:docs/version3.x/module_usage/table_structure_recognition:6",
+            "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:10"
+          ]
+        },
+        {
+          "id": "h06",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 5.28,
+          "chunk_ids": [
+            "v2.9.1:zh:doc/doc_ch/FAQ:114",
+            "v2.9.1:zh:doc/doc_ch/FAQ:131",
+            "v2.9.1:zh:doc/doc_ch/FAQ:135",
+            "v2.9.1:zh:doc/doc_ch/FAQ:162",
+            "v2.9.1:zh:doc/doc_ch/FAQ:151"
+          ]
+        },
+        {
+          "id": "h07",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 4.7,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:66",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_detection:14",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:25",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_image_unwarping:10",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_image_unwarping:3"
+          ]
+        },
+        {
+          "id": "h08",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 7.03,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:41",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:28",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:58"
+          ]
+        },
+        {
+          "id": "h09",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 4.56,
+          "chunk_ids": [
+            "v2.9.1:zh:doc/doc_ch/FAQ:115",
+            "v2.9.1:zh:doc/doc_ch/inference_ppocr:14",
+            "v2.9.1:zh:doc/doc_ch/FAQ:38",
+            "v2.9.1:zh:doc/doc_ch/FAQ:95",
+            "v2.9.1:zh:doc/doc_ch/inference_ppocr:15"
+          ]
+        },
+        {
+          "id": "h10",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 8.26,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:3",
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:4",
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:1",
+            "v3.0.0:zh:docs/version3.x/deployment/serving:11",
+            "v3.0.0:zh:docs/version3.x/deployment/serving:6"
+          ]
+        },
+        {
+          "id": "h11",
+          "split": "holdout",
+          "fact_recall": 0.5,
+          "complete": false,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 2,
+          "wrong_version_count": 0,
+          "latency_ms": 8.08,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/logging:2",
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/version3.x/deployment/serving:15",
+            "v3.0.0:zh:docs/version3.x/deployment/serving:11",
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:5"
+          ]
+        },
+        {
+          "id": "h12",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 4.59,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:77",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:89",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:43",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:66",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:60"
+          ]
+        }
+      ]
+    },
+    "semantic": {
+      "dev": {
+        "count": 12,
+        "complete_rate": 0.4166666666666667,
+        "fact_recall": 0.46153846153846156,
+        "mrr": 0.34027777777777773,
+        "wrong_version_count": 0,
+        "p95_ms": 163.22799999999998
+      },
+      "holdout": {
+        "count": 12,
+        "complete_rate": 0.5,
+        "fact_recall": 0.46153846153846156,
+        "mrr": 0.3055555555555555,
+        "wrong_version_count": 0,
+        "p95_ms": 167.6115
+      },
+      "cases": [
+        {
+          "id": "d01",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 91.7,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:2",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:9",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:29",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:11",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:3"
+          ]
+        },
+        {
+          "id": "d02",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 90.01,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:12",
+            "v3.0.0:zh:README:8",
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:23",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:51"
+          ]
+        },
+        {
+          "id": "d03",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 116.42,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:33",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:5",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:5",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_image_unwarping:2",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:5"
+          ]
+        },
+        {
+          "id": "d04",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 146.43,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:64",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:31",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:55"
+          ]
+        },
+        {
+          "id": "d05",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 130.4,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/installation:3",
+            "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:8",
+            "v3.0.0:zh:README:21",
+            "v3.0.0:zh:docs/version3.x/installation:4",
+            "v3.0.0:zh:docs/version3.x/installation:5"
+          ]
+        },
+        {
+          "id": "d06",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 126.85,
+          "chunk_ids": [
+            "v2.9.1:zh:doc/doc_ch/angle_class:2",
+            "v2.9.1:zh:doc/doc_ch/whl:44",
+            "v2.9.1:zh:doc/doc_ch/inference_ppocr:29",
+            "v2.9.1:zh:doc/doc_ch/angle_class:1",
+            "v2.9.1:zh:doc/doc_ch/inference_ppocr:24"
+          ]
+        },
+        {
+          "id": "d07",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 178.65,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:14",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_detection:16",
+            "v3.0.0:zh:docs/version3.x/module_usage/layout_detection:29",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:53",
+            "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:3"
+          ]
+        },
+        {
+          "id": "d08",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 149.0,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:51",
+            "v3.0.0:zh:docs/quick_start:10",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:22",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:34",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_detection:11"
+          ]
+        },
+        {
+          "id": "d09",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 150.61,
+          "chunk_ids": [
+            "v2.9.1:zh:ppstructure/table/README_ch:11",
+            "v2.9.1:zh:ppstructure/README_ch:5",
+            "v2.9.1:zh:ppstructure/docs/quickstart:22",
+            "v2.9.1:zh:ppstructure/docs/quickstart:70",
+            "v2.9.1:zh:ppstructure/README_ch:11"
+          ]
+        },
+        {
+          "id": "d10",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.25,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 141.63,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/deployment/serving:2",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:78",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:61",
+            "v3.0.0:zh:docs/version3.x/deployment/serving:1",
+            "v3.0.0:zh:docs/version3.x/deployment/serving:3"
+          ]
+        },
+        {
+          "id": "d11",
+          "split": "dev",
+          "fact_recall": 0.5,
+          "complete": false,
+          "reciprocal_rank": 0.5,
+          "matched_fact_count": 1,
+          "required_fact_count": 2,
+          "wrong_version_count": 0,
+          "latency_ms": 146.07,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/logging:3",
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:5",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:10",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:30"
+          ]
+        },
+        {
+          "id": "d12",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 123.12,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:60",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:99",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:46",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:15",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:57"
+          ]
+        },
+        {
+          "id": "h01",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 136.66,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/module_usage/text_image_unwarping:14",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:43",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:28",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:60"
+          ]
+        },
+        {
+          "id": "h02",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.5,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 131.65,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/logging:3",
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/update/upgrade_notes:8",
+            "v3.0.0:zh:docs/version3.x/installation:9",
+            "v3.0.0:zh:docs/version3.x/logging:2"
+          ]
+        },
+        {
+          "id": "h03",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 127.02,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/module_usage/text_detection:14",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_image_unwarping:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:72",
+            "v3.0.0:zh:docs/version3.x/module_usage/table_cells_detection:14"
+          ]
+        },
+        {
+          "id": "h04",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.5,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 117.74,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:64",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:57",
+            "v3.0.0:zh:README:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:72"
+          ]
+        },
+        {
+          "id": "h05",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 119.66,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:8",
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:6",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:58",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:97",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:57"
+          ]
+        },
+        {
+          "id": "h06",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 124.04,
+          "chunk_ids": [
+            "v2.9.1:zh:doc/doc_ch/quickstart:19",
+            "v2.9.1:zh:doc/doc_ch/whl:38",
+            "v2.9.1:zh:ppstructure/recovery/README_ch:30",
+            "v2.9.1:zh:ppstructure/recovery/README_ch:12",
+            "v2.9.1:zh:doc/doc_ch/whl:72"
+          ]
+        },
+        {
+          "id": "h07",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 116.7,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/module_usage/text_image_unwarping:3",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_line_orientation_classification:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:5",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:5",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:5"
+          ]
+        },
+        {
+          "id": "h08",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 133.22,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:41",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:77",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:60",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:28"
+          ]
+        },
+        {
+          "id": "h09",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 131.23,
+          "chunk_ids": [
+            "v2.9.1:zh:doc/doc_ch/inference_ppocr:15",
+            "v2.9.1:zh:ppstructure/docs/quickstart:35",
+            "v2.9.1:zh:ppstructure/table/README_ch:1",
+            "v2.9.1:zh:doc/doc_ch/multi_languages:28",
+            "v2.9.1:zh:ppstructure/README_ch:1"
+          ]
+        },
+        {
+          "id": "h10",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 170.73,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:66",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:56",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:41",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:95"
+          ]
+        },
+        {
+          "id": "h11",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 2,
+          "wrong_version_count": 0,
+          "latency_ms": 165.06,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:33",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:30",
+            "v3.0.0:zh:docs/version3.x/logging:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:65"
+          ]
+        },
+        {
+          "id": "h12",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 155.17,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:64",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:57",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:41",
+            "v3.0.0:zh:README:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:42"
+          ]
+        }
+      ]
+    },
+    "bm25_rerank": {
+      "dev": {
+        "count": 12,
+        "complete_rate": 0.6666666666666666,
+        "fact_recall": 0.6923076923076923,
+        "mrr": 0.5694444444444444,
+        "wrong_version_count": 0,
+        "p95_ms": 37104.523499999996
+      },
+      "holdout": {
+        "count": 12,
+        "complete_rate": 0.5,
+        "fact_recall": 0.46153846153846156,
+        "mrr": 0.26666666666666666,
+        "wrong_version_count": 0,
+        "p95_ms": 31781.1835
+      },
+      "cases": [
+        {
+          "id": "d01",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 40754.56,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:74",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:73",
+            "v3.0.0:zh:docs/update/upgrade_notes:7",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:58",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:10"
+          ]
+        },
+        {
+          "id": "d02",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 34118.13,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:21",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:14",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:43",
+            "v3.0.0:zh:docs/version3.x/deployment/serving:12"
+          ]
+        },
+        {
+          "id": "d03",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 33151.08,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:57",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:19",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:12",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:50"
+          ]
+        },
+        {
+          "id": "d04",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 28493.32,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:77",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:48",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:72",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:60"
+          ]
+        },
+        {
+          "id": "d05",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 24353.03,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/installation:3",
+            "v3.0.0:zh:docs/update/upgrade_notes:2",
+            "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:6",
+            "v3.0.0:zh:docs/update/upgrade_notes:3",
+            "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:8"
+          ]
+        },
+        {
+          "id": "d06",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 16923.83,
+          "chunk_ids": [
+            "v2.9.1:zh:doc/doc_ch/angle_class:2",
+            "v2.9.1:zh:doc/doc_ch/inference_ppocr:30",
+            "v2.9.1:zh:ppstructure/docs/quickstart:9",
+            "v2.9.1:zh:doc/doc_ch/quickstart:15",
+            "v2.9.1:zh:doc/doc_ch/inference_ppocr:31"
+          ]
+        },
+        {
+          "id": "d07",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.5,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 33775.44,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:33",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:35",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:52",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:21",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:67"
+          ]
+        },
+        {
+          "id": "d08",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 30034.94,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:50",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:33",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:51",
+            "v3.0.0:zh:README:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:19"
+          ]
+        },
+        {
+          "id": "d09",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 25022.18,
+          "chunk_ids": [
+            "v2.9.1:zh:ppstructure/table/README_ch:3",
+            "v2.9.1:zh:ppstructure/table/README_ch:11",
+            "v2.9.1:zh:ppstructure/docs/quickstart:64",
+            "v2.9.1:zh:ppstructure/recovery/README_ch:22",
+            "v2.9.1:zh:doc/doc_ch/table_recognition:48"
+          ]
+        },
+        {
+          "id": "d10",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 23808.33,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/deployment/serving:1",
+            "v3.0.0:zh:docs/version3.x/deployment/serving:15",
+            "v3.0.0:zh:docs/update/upgrade_notes:9",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:29",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:61"
+          ]
+        },
+        {
+          "id": "d11",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 2,
+          "required_fact_count": 2,
+          "wrong_version_count": 0,
+          "latency_ms": 30450.32,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/update/upgrade_notes:2",
+            "v3.0.0:zh:docs/version3.x/installation:5",
+            "v3.0.0:zh:docs/version3.x/installation:3",
+            "v3.0.0:zh:docs/version3.x/installation:7"
+          ]
+        },
+        {
+          "id": "d12",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 33024.96,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/update/upgrade_notes:2",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:3",
+            "v3.0.0:zh:docs/update/upgrade_notes:3",
+            "v3.0.0:zh:docs/version3.x/module_usage/table_structure_recognition:5",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:63"
+          ]
+        },
+        {
+          "id": "h01",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 14766.41,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_detection:18",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:28",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:60",
+            "v3.0.0:zh:docs/version3.x/module_usage/table_cells_detection:18"
+          ]
+        },
+        {
+          "id": "h02",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 25507.49,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/version3.x/logging:3",
+            "v3.0.0:zh:docs/update/upgrade_notes:8",
+            "v3.0.0:zh:docs/version3.x/logging:2",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_detection:3"
+          ]
+        },
+        {
+          "id": "h03",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 29942.95,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:72",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_line_orientation_classification:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3",
+            "v3.0.0:zh:docs/version3.x/module_usage/doc_img_orientation_classification:3"
+          ]
+        },
+        {
+          "id": "h04",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 32697.28,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:64",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:71",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:93"
+          ]
+        },
+        {
+          "id": "h05",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 29342.26,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:6",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:97",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:58",
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:8",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:3"
+          ]
+        },
+        {
+          "id": "h06",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 15508.7,
+          "chunk_ids": [
+            "v2.9.1:zh:doc/doc_ch/quickstart:19",
+            "v2.9.1:zh:doc/doc_ch/whl:38",
+            "v2.9.1:zh:ppstructure/recovery/README_ch:18",
+            "v2.9.1:zh:ppstructure/README_ch:4",
+            "v2.9.1:zh:ppstructure/recovery/README_ch:23"
+          ]
+        },
+        {
+          "id": "h07",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 31031.65,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:66",
+            "v3.0.0:zh:docs/quick_start:10",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:21",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:49"
+          ]
+        },
+        {
+          "id": "h08",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.2,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 29994.64,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:77",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:60",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:41"
+          ]
+        },
+        {
+          "id": "h09",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 10788.34,
+          "chunk_ids": [
+            "v2.9.1:zh:doc/doc_ch/FAQ:38",
+            "v2.9.1:zh:ppstructure/table/README_ch:11",
+            "v2.9.1:zh:doc/doc_ch/FAQ:95",
+            "v2.9.1:zh:doc/doc_ch/FAQ:157",
+            "v2.9.1:zh:doc/doc_ch/inference_ppocr:15"
+          ]
+        },
+        {
+          "id": "h10",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 27373.84,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:3",
+            "v3.0.0:zh:docs/version3.x/deployment/serving:11",
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:3",
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:1",
+            "v3.0.0:zh:docs/version3.x/installation:4"
+          ]
+        },
+        {
+          "id": "h11",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 2,
+          "wrong_version_count": 0,
+          "latency_ms": 28281.14,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:5",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:78",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:29",
+            "v3.0.0:zh:docs/version3.x/deployment/serving:12"
+          ]
+        },
+        {
+          "id": "h12",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 18827.53,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:30",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:77",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:66",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:88",
+            "v3.0.0:zh:docs/quick_start:10"
+          ]
+        }
+      ]
+    },
+    "hybrid": {
+      "dev": {
+        "count": 12,
+        "complete_rate": 0.4166666666666667,
+        "fact_recall": 0.46153846153846156,
+        "mrr": 0.4583333333333333,
+        "wrong_version_count": 0,
+        "p95_ms": 107.44749999999999
+      },
+      "holdout": {
+        "count": 12,
+        "complete_rate": 0.4166666666666667,
+        "fact_recall": 0.38461538461538464,
+        "mrr": 0.3194444444444444,
+        "wrong_version_count": 0,
+        "p95_ms": 104.747
+      },
+      "cases": [
+        {
+          "id": "d01",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 104.95,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:3",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:2",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:73",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:9",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:74"
+          ]
+        },
+        {
+          "id": "d02",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 82.86,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:README:8",
+            "v3.0.0:zh:docs/update/upgrade_notes:8",
+            "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:3",
+            "v3.0.0:zh:docs/version3.x/logging:3"
+          ]
+        },
+        {
+          "id": "d03",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 98.07,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/module_usage/text_image_unwarping:2",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:5",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:33",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:5",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:5"
+          ]
+        },
+        {
+          "id": "d04",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 94.94,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:64",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:31",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:55",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:77"
+          ]
+        },
+        {
+          "id": "d05",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 92.61,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/installation:3",
+            "v3.0.0:zh:docs/version3.x/installation:5",
+            "v3.0.0:zh:docs/version3.x/installation:4",
+            "v3.0.0:zh:docs/quick_start:5",
+            "v3.0.0:zh:docs/update/upgrade_notes:2"
+          ]
+        },
+        {
+          "id": "d06",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 77.94,
+          "chunk_ids": [
+            "v2.9.1:zh:doc/doc_ch/inference_ppocr:29",
+            "v2.9.1:zh:doc/doc_ch/angle_class:2",
+            "v2.9.1:zh:doc/doc_ch/inference_ppocr:25",
+            "v2.9.1:zh:doc/doc_ch/quickstart:15",
+            "v2.9.1:zh:doc/doc_ch/quickstart:30"
+          ]
+        },
+        {
+          "id": "d07",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 110.5,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:14",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:33",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_detection:16",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:21",
+            "v3.0.0:zh:docs/version3.x/module_usage/layout_detection:29"
+          ]
+        },
+        {
+          "id": "d08",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 94.75,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:51",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:32",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:18",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:62",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:33"
+          ]
+        },
+        {
+          "id": "d09",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 98.97,
+          "chunk_ids": [
+            "v2.9.1:zh:ppstructure/table/README_ch:11",
+            "v2.9.1:zh:ppstructure/docs/quickstart:70",
+            "v2.9.1:zh:ppstructure/table/README_ch:9",
+            "v2.9.1:zh:ppstructure/README_ch:11",
+            "v2.9.1:zh:doc/doc_ch/FAQ:27"
+          ]
+        },
+        {
+          "id": "d10",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.5,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 97.53,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/deployment/serving:2",
+            "v3.0.0:zh:docs/version3.x/deployment/serving:1",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:78",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:61",
+            "v3.0.0:zh:docs/version3.x/deployment/serving:3"
+          ]
+        },
+        {
+          "id": "d11",
+          "split": "dev",
+          "fact_recall": 0.5,
+          "complete": false,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 2,
+          "wrong_version_count": 0,
+          "latency_ms": 95.08,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/version3.x/logging:3",
+            "v3.0.0:zh:docs/update/upgrade_notes:8",
+            "v3.0.0:zh:docs/version3.x/installation:7",
+            "v3.0.0:zh:docs/version3.x/installation:5"
+          ]
+        },
+        {
+          "id": "d12",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 79.13,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/update/upgrade_notes:3",
+            "v3.0.0:zh:docs/update/upgrade_notes:2",
+            "v3.0.0:zh:docs/update/upgrade_notes:6",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:93",
+            "v3.0.0:zh:docs/version3.x/module_usage/table_structure_recognition:10"
+          ]
+        },
+        {
+          "id": "h01",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 102.65,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:28",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:60",
+            "v3.0.0:zh:docs/version3.x/module_usage/doc_img_orientation_classification:18",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/module_usage/layout_detection:31"
+          ]
+        },
+        {
+          "id": "h02",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 95.67,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/version3.x/logging:3",
+            "v3.0.0:zh:docs/update/upgrade_notes:8",
+            "v3.0.0:zh:docs/version3.x/logging:2",
+            "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:1"
+          ]
+        },
+        {
+          "id": "h03",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 97.64,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/module_usage/doc_img_orientation_classification:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:72",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:57",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_line_orientation_classification:3"
+          ]
+        },
+        {
+          "id": "h04",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.5,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 98.51,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:64",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:README:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:72",
+            "v3.0.0:zh:README:23"
+          ]
+        },
+        {
+          "id": "h05",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 99.43,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:6",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:97",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:58",
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:8",
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:10"
+          ]
+        },
+        {
+          "id": "h06",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 94.18,
+          "chunk_ids": [
+            "v2.9.1:zh:doc/doc_ch/FAQ:151",
+            "v2.9.1:zh:doc/doc_ch/quickstart:19",
+            "v2.9.1:zh:doc/doc_ch/whl:38",
+            "v2.9.1:zh:doc/doc_ch/FAQ:114",
+            "v2.9.1:zh:doc/doc_ch/FAQ:131"
+          ]
+        },
+        {
+          "id": "h07",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 83.75,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/module_usage/text_image_unwarping:3",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:25",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_detection:14",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_line_orientation_classification:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:57"
+          ]
+        },
+        {
+          "id": "h08",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 99.56,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:41",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:28",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:43"
+          ]
+        },
+        {
+          "id": "h09",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 91.41,
+          "chunk_ids": [
+            "v2.9.1:zh:doc/doc_ch/inference_ppocr:15",
+            "v2.9.1:zh:doc/doc_ch/FAQ:38",
+            "v2.9.1:zh:doc/doc_ch/visualization:8",
+            "v2.9.1:zh:doc/doc_ch/inference_ppocr:9",
+            "v2.9.1:zh:doc/doc_ch/inference_ppocr:16"
+          ]
+        },
+        {
+          "id": "h10",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 92.1,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:72",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:94",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:40",
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:4"
+          ]
+        },
+        {
+          "id": "h11",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 2,
+          "wrong_version_count": 0,
+          "latency_ms": 107.31,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/version3.x/logging:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:78",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:16",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:61"
+          ]
+        },
+        {
+          "id": "h12",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 97.48,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:64",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:77",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:57",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:89",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:43"
+          ]
+        }
+      ]
+    },
+    "hybrid_rerank": {
+      "dev": {
+        "count": 12,
+        "complete_rate": 0.4166666666666667,
+        "fact_recall": 0.46153846153846156,
+        "mrr": 0.4583333333333333,
+        "wrong_version_count": 0,
+        "p95_ms": 61927.568
+      },
+      "holdout": {
+        "count": 12,
+        "complete_rate": 0.6666666666666666,
+        "fact_recall": 0.6153846153846154,
+        "mrr": 0.3888888888888889,
+        "wrong_version_count": 0,
+        "p95_ms": 54621.4815
+      },
+      "cases": [
+        {
+          "id": "d01",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 61187.12,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:74",
+            "v3.0.0:zh:docs/update/upgrade_notes:7",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:58",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:68"
+          ]
+        },
+        {
+          "id": "d02",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 58894.5,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:7",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:30",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:5",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:10"
+          ]
+        },
+        {
+          "id": "d03",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 38911.77,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:57",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:50",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_image_unwarping:3",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_line_orientation_classification:3"
+          ]
+        },
+        {
+          "id": "d04",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 45783.36,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:72",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:48",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:77",
+            "v3.0.0:zh:docs/update/upgrade_notes:7"
+          ]
+        },
+        {
+          "id": "d05",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 33024.49,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/installation:3",
+            "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:6",
+            "v3.0.0:zh:docs/update/upgrade_notes:3",
+            "v3.0.0:zh:docs/update/upgrade_notes:2",
+            "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:8"
+          ]
+        },
+        {
+          "id": "d06",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 24317.39,
+          "chunk_ids": [
+            "v2.9.1:zh:doc/doc_ch/angle_class:2",
+            "v2.9.1:zh:doc/doc_ch/inference_ppocr:30",
+            "v2.9.1:zh:ppstructure/docs/quickstart:9",
+            "v2.9.1:zh:doc/doc_ch/inference_ppocr:31",
+            "v2.9.1:zh:doc/doc_ch/quickstart:15"
+          ]
+        },
+        {
+          "id": "d07",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 62832.56,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/module_usage/table_classification:15",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:21",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:52",
+            "v3.0.0:zh:docs/version3.x/module_usage/doc_img_orientation_classification:15",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:67"
+          ]
+        },
+        {
+          "id": "d08",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 55030.34,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:22",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:50",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:66",
+            "v3.0.0:zh:docs/quick_start:10",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:33"
+          ]
+        },
+        {
+          "id": "d09",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 36817.44,
+          "chunk_ids": [
+            "v2.9.1:zh:ppstructure/table/README_ch:3",
+            "v2.9.1:zh:ppstructure/table/README_ch:11",
+            "v2.9.1:zh:ppstructure/table/README_ch:6",
+            "v2.9.1:zh:ppstructure/docs/quickstart:64",
+            "v2.9.1:zh:ppstructure/README_ch:3"
+          ]
+        },
+        {
+          "id": "d10",
+          "split": "dev",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 43117.86,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/deployment/serving:1",
+            "v3.0.0:zh:docs/version3.x/deployment/serving:15",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:45",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:61",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:78"
+          ]
+        },
+        {
+          "id": "d11",
+          "split": "dev",
+          "fact_recall": 0.5,
+          "complete": false,
+          "reciprocal_rank": 0.5,
+          "matched_fact_count": 1,
+          "required_fact_count": 2,
+          "wrong_version_count": 0,
+          "latency_ms": 55476.96,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:10",
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:9",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:22",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:34"
+          ]
+        },
+        {
+          "id": "d12",
+          "split": "dev",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 52955.91,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/update/upgrade_notes:2",
+            "v3.0.0:zh:docs/update/upgrade_notes:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40"
+          ]
+        },
+        {
+          "id": "h01",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 21953.77,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:43",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:55",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:60",
+            "v3.0.0:zh:docs/version3.x/module_usage/doc_img_orientation_classification:18"
+          ]
+        },
+        {
+          "id": "h02",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 1.0,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 31200.07,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/version3.x/logging:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:30",
+            "v3.0.0:zh:docs/version3.x/module_usage/table_structure_recognition:31",
+            "v3.0.0:zh:docs/version3.x/logging:2"
+          ]
+        },
+        {
+          "id": "h03",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 44080.39,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:72",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_line_orientation_classification:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:57"
+          ]
+        },
+        {
+          "id": "h04",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 46843.59,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:64",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:README:2",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:47"
+          ]
+        },
+        {
+          "id": "h05",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.5,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 38303.7,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:6",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:58",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:97",
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:8",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:3"
+          ]
+        },
+        {
+          "id": "h06",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 39930.83,
+          "chunk_ids": [
+            "v2.9.1:zh:README:5",
+            "v2.9.1:zh:doc/doc_ch/quickstart:45",
+            "v2.9.1:zh:doc/doc_ch/whl:38",
+            "v2.9.1:zh:doc/doc_ch/quickstart:19",
+            "v2.9.1:zh:doc/doc_ch/multi_languages:28"
+          ]
+        },
+        {
+          "id": "h07",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 52598.93,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:96",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:21",
+            "v3.0.0:zh:docs/quick_start:10",
+            "v3.0.0:zh:docs/version3.x/module_usage/text_line_orientation_classification:3"
+          ]
+        },
+        {
+          "id": "h08",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.3333333333333333,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 47940.12,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:41",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:77",
+            "v3.0.0:zh:docs/version3.x/module_usage/layout_detection:32"
+          ]
+        },
+        {
+          "id": "h09",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.5,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 40253.02,
+          "chunk_ids": [
+            "v2.9.1:zh:doc/doc_ch/quickstart:45",
+            "v2.9.1:zh:doc/doc_ch/whl:75",
+            "v2.9.1:zh:ppstructure/table/README_ch:11",
+            "v2.9.1:zh:doc/doc_ch/whl:67",
+            "v2.9.1:zh:doc/doc_ch/whl:9"
+          ]
+        },
+        {
+          "id": "h10",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.5,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 35668.03,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/deployment/serving:11",
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:3",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:35",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:21",
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:1"
+          ]
+        },
+        {
+          "id": "h11",
+          "split": "holdout",
+          "fact_recall": 0.0,
+          "complete": false,
+          "reciprocal_rank": 0,
+          "matched_fact_count": 0,
+          "required_fact_count": 2,
+          "wrong_version_count": 0,
+          "latency_ms": 52985.97,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/logging:1",
+            "v3.0.0:zh:docs/version3.x/paddleocr_and_paddlex:5",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:72",
+            "v3.0.0:zh:docs/version3.x/deployment/serving:11",
+            "v3.0.0:zh:docs/version3.x/deployment/serving:12"
+          ]
+        },
+        {
+          "id": "h12",
+          "split": "holdout",
+          "fact_recall": 1.0,
+          "complete": true,
+          "reciprocal_rank": 0.5,
+          "matched_fact_count": 1,
+          "required_fact_count": 1,
+          "wrong_version_count": 0,
+          "latency_ms": 56620.44,
+          "chunk_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:77",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:30",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:47",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:66",
+            "v3.0.0:zh:docs/quick_start:13"
+          ]
+        }
+      ]
+    }
+  },
+  "selected_on_dev": "bm25",
+  "top_k": 5,
+  "answer_accuracy": null,
+  "business_impact_accuracy": null,
+  "embedding": {
+    "model": "BAAI/bge-small-zh-v1.5",
+    "revision": "7999e1d3359715c523056ef9478215996d62a620"
+  },
+  "reranker": {
+    "model": "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1",
+    "revision": "1427fd652930e4ba29e8149678df786c240d8825"
+  },
+  "limitations": [
+    "Internal developer-authored holdout, no independent domain expert labels.",
+    "Neural models truncate at their token limits; ranking does not rewrite source evidence.",
+    "No-answer probes require generation evaluation; not counted as retrieval accuracy."
+  ]
+}

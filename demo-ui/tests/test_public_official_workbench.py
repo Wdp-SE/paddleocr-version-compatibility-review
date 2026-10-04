@@ -280,7 +280,7 @@ def test_legacy_project_workspace_is_rejected_and_query_controls_stay_disabled(m
     app = AppTest.from_file(APP, default_timeout=40).run()
 
     assert not app.exception
-    assert any("PP-Human 官方中文资料不匹配" in item.value for item in app.warning)
+    assert any("PaddleOCR 官方中文资料不匹配" in item.value for item in app.warning)
     next(button for button in app.button if button.label == "版本化知识检索").click().run()
 
     assert not any(button.label == "生成带引用回答" for button in app.button)
@@ -328,7 +328,7 @@ def test_source_coverage_summary_reports_edge_device_snapshot_and_families():
     assert "ai deployment" in summary and "hardware interface" in summary
 
 
-def test_workbench_warns_when_public_rag_workspace_is_not_pphuman(monkeypatch):
+def test_workbench_warns_when_public_rag_workspace_is_not_paddleocr(monkeypatch):
     _mock_client(monkeypatch)
     from services.public_knowledge_client import PublicKnowledgeClient
     monkeypatch.setenv("APP_ENV", "public_demo")
@@ -344,7 +344,7 @@ def test_workbench_warns_when_public_rag_workspace_is_not_pphuman(monkeypatch):
 
     assert not app.exception
     warning = "\n".join(item.value for item in app.warning)
-    assert "PP-Human 官方中文资料不匹配" in warning
+    assert "PaddleOCR 官方中文资料不匹配" in warning
     assert "RAG_API_BASE_URL" not in warning
     assert "public_corpus_other" not in warning
     assert not any("资料规模" in item.value for item in list(app.markdown) + list(app.caption))
@@ -404,6 +404,59 @@ def test_agent_context_filter_keeps_scope_guard_and_rejects_stale_results():
     assert public_workbench._request_context_matches(valid, **args)
     assert not public_workbench._request_context_matches(
         valid, **{**args, "target_version": "0.51.0"}
+    )
+
+
+def test_retrieval_policy_options_only_offer_pphuman_experiment_in_its_workspace():
+    import public_workbench
+
+    baseline = {"id": "bm25", "label": "BM25 基线（默认）", "experimental": False}
+    experiment = {
+        "id": "task_adaptive_rerank",
+        "label": "术语融合 + 模型重排（实验）",
+        "experimental": True,
+    }
+    rrf = {"id": "bm25_pphuman_term_expansion_rrf", "label": "术语扩展 + RRF（可对比）", "experimental": True}
+    assert public_workbench._retrieval_policy_options({"workspace_id": "pphuman"}) == [baseline, rrf, experiment]
+    assert public_workbench._retrieval_policy_options({"workspace_id": "edge_ai_device"}) == [baseline]
+
+
+def test_retrieval_diagnostics_explain_actual_policy_rerank_and_timings():
+    import public_workbench
+
+    lines = public_workbench._retrieval_diagnostic_lines({
+        "retrieval_policy": "bm25_rrf_fallback",
+        "retrieval_policy_requested": "task_adaptive_rerank",
+        "route": "CHANGE_REVIEW",
+        "rerank_status": "RERANK_FALLBACK",
+        "candidate_count": 18,
+        "final_evidence_count": 6,
+        "stage_latency_ms": {"retrieval": 120.5, "rerank": 900.0, "total": 1100.0},
+    })
+
+    assert any("请求策略" in line and "实际策略" in line for line in lines)
+    assert any("重排失败" in line and "BM25/RRF" in line for line in lines)
+    assert any("18" in line and "6" in line for line in lines)
+    assert any("检索 120.5 ms" in line and "重排 900 ms" in line for line in lines)
+
+
+def test_agent_context_filter_invalidates_results_after_retrieval_policy_change():
+    import public_workbench
+
+    result = {
+        "request_summary": "调整行人跟踪阈值",
+        "retrieval_policy": "bm25",
+        "request_plan": {"target_version": "v2.9.0", "impact_scope": "跟踪"},
+        "request_context": {"target_version": "v2.9.0"},
+    }
+    common = {
+        "summary": "调整行人跟踪阈值", "target_version": "v2.9.0", "objective": "",
+        "constraints": "", "validation_plan": "", "selected_type_code": None,
+        "impact_scope": "跟踪", "retrieval_policy": "bm25",
+    }
+    assert public_workbench._request_context_matches(result, **common)
+    assert not public_workbench._request_context_matches(
+        result, **{**common, "retrieval_policy": "bm25_pphuman_term_expansion_rrf"}
     )
 
 
@@ -1229,16 +1282,16 @@ def test_knowledge_top_k_applies_to_generation_and_raw_search_and_scrolls_to_res
     calls = []
     scrolled = []
 
-    def query_official(self, question, *, version, language, top_k=5):
-        calls.append(("query", question, version, language, top_k))
+    def query_official(self, question, *, version, language, top_k=5, retrieval_policy="bm25"):
+        calls.append(("query", question, version, language, top_k, retrieval_policy))
         return {
             "answer": "上游参数优先于启动参数。", "sources": [dict(CHUNK)],
             "claims": [{"text": "上游参数优先于启动参数。", "source_indexes": [1]}],
             "evidence": [dict(CHUNK)], "status": "OK", "consistency_notes": [],
         }
 
-    def search(self, question, *, version, language, top_k=5):
-        calls.append(("search", question, version, language, top_k))
+    def search(self, question, *, version, language, top_k=5, retrieval_policy="bm25"):
+        calls.append(("search", question, version, language, top_k, retrieval_policy))
         return {
             "query": question, "results": [dict(CHUNK)], "retrieval_policy": "bm25",
             "consistency_notes": [],
@@ -1252,12 +1305,83 @@ def test_knowledge_top_k_applies_to_generation_and_raw_search_and_scrolls_to_res
 
     app.slider(key="official_top_k").set_value(8).run()
     next(button for button in app.button if button.label == "生成带引用回答").click().run()
-    assert calls[-1][0] == "query" and calls[-1][-1] == 8
+    assert calls[-1][0] == "query" and calls[-1][4] == 8 and calls[-1][5] == "bm25"
     assert scrolled == [True]
 
     next(button for button in app.button if button.label == "仅查看检索原文").click().run()
-    assert calls[-1][0] == "search" and calls[-1][-1] == 8
+    assert calls[-1][0] == "search" and calls[-1][4] == 8 and calls[-1][5] == "bm25"
     assert scrolled == [True, True]
+
+
+def test_public_knowledge_client_sends_selected_policy_to_search_and_generation(monkeypatch):
+    from services.public_knowledge_client import PublicKnowledgeClient
+
+    calls = []
+    client = object.__new__(PublicKnowledgeClient)
+    client.timeout = 30.0
+    monkeypatch.setattr(client, "_request", lambda method, path, **kwargs: calls.append((method, path, kwargs)) or {})
+    client.search(
+        "问题", version="v2.9.0", language="zh",
+        retrieval_policy="bm25_pphuman_term_expansion_rrf",
+    )
+    client.query_official(
+        "问题", version="v2.9.0", language="zh",
+        retrieval_policy="bm25_pphuman_term_expansion_rrf",
+    )
+
+    assert calls[0][2]["json"]["retrieval_policy"] == "bm25_pphuman_term_expansion_rrf"
+    assert calls[1][2]["json"]["retrieval_policy"] == "bm25_pphuman_term_expansion_rrf"
+
+
+def test_pphuman_rag_page_exposes_experimental_policy_and_passes_it_to_answer(monkeypatch):
+    _mock_client(monkeypatch)
+    from services.public_knowledge_client import PublicKnowledgeClient
+    import public_workbench
+
+    monkeypatch.setattr(PublicKnowledgeClient, "workspace", lambda self: _pphuman_workspace())
+    calls = []
+
+    def query_official(self, question, *, version, language, top_k=5, retrieval_policy="bm25", **scope):
+        calls.append(retrieval_policy)
+        return {
+            "answer": "N/A", "sources": [], "claims": [], "evidence": [],
+            "status": "NO_EVIDENCE", "consistency_notes": [],
+            "retrieval_policy": retrieval_policy,
+        }
+
+    monkeypatch.setattr(PublicKnowledgeClient, "query_official", query_official)
+    app = AppTest.from_file(APP, default_timeout=40).run()
+    next(button for button in app.button if button.label == "版本化知识检索").click().run()
+    policy_widget = app.selectbox(key="official_retrieval_policy")
+    assert "术语融合 + 模型重排（实验）" in policy_widget.options
+    policy_widget.set_value("术语融合 + 模型重排（实验）").run()
+    next(button for button in app.button if button.label == "生成带引用回答").click().run()
+
+    assert calls == ["task_adaptive_rerank"]
+
+
+def test_pphuman_agent_page_exposes_experimental_policy_and_passes_it_to_review(monkeypatch):
+    _mock_client(monkeypatch)
+    from services.public_knowledge_client import PublicKnowledgeClient
+    import public_workbench
+
+    monkeypatch.setattr(PublicKnowledgeClient, "workspace", lambda self: _pphuman_workspace())
+    calls = []
+    monkeypatch.setattr(
+        public_workbench, "_analyze_change_request",
+        lambda client, summary, *args, **kwargs: calls.append(kwargs["retrieval_policy"]),
+    )
+    app = AppTest.from_file(APP, default_timeout=40).run()
+    next(button for button in app.button if button.label == "发起变更审查").click().run()
+    app.text_area(key="official_change_request").set_value(
+        "调整行人跟踪器配置，核对相关部署和回归验证。"
+    ).run()
+    policy_widget = app.selectbox(key="agent_retrieval_policy")
+    assert "术语融合 + 模型重排（实验）" in policy_widget.options
+    policy_widget.set_value("术语融合 + 模型重排（实验）").run()
+    next(button for button in app.button if button.label == "检索资料并分析影响").click().run()
+
+    assert calls == ["task_adaptive_rerank"]
 
 
 def test_scroll_to_results_uses_same_document_html_script(monkeypatch):
@@ -1751,7 +1875,7 @@ def test_agent_stepper_marks_human_review_after_analysis(monkeypatch):
     assert any('class="current">3. 等待人工审核' in track for track in tracks)
     next(button for button in app.button if button.label == "确认已审阅本次影响分析").click().run()
     tracks = [item.value for item in app.markdown if 'review-steps' in item.value]
-    assert any('class="done">3. 等待人工审核' in track for track in tracks)
+    assert any('class="done">3. 人工审核已记录' in track for track in tracks)
 
 
 def test_switching_source_resets_previous_unsent_draft(monkeypatch):

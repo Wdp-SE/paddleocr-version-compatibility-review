@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "source_type": "developer_original_application",
+  "task_id": "paddleocr_document_application_upgrade",
+  "files": [
+    {
+      "path": "__init__.py",
+      "sha256": "916835a1e2c8e2ebc1ed808457eef0cea0e16fbcd2362fcb70359dad8c0a8192",
+      "source_type": "developer_original_application"
+    },
+    {
+      "path": "consumer.py",
+      "sha256": "8fd5daf27099a7e2e26c54fb9880bc8be44d5a9091e3cb336a965d74e1b494b6",
+      "source_type": "developer_original_application"
+    },
+    {
+      "path": "contract.json",
+      "sha256": "af1f2cbf8acddd2a171927dde96a6c55fe43225497f32768b1054ace0d5ba4e3",
+      "source_type": "developer_original_application"
+    },
+    {
+      "path": "design.md",
+      "sha256": "d028eeb81f36aee61d6d63028be69ed437abf35ac852139650a0a2a9b7351382",
+      "source_type": "developer_original_application"
+    },
+    {
+      "path": "normalizer.py",
+      "sha256": "32d811893353415861e4bc4a82525cee6bffa0257f8995f30161ef28836525fb",
+      "source_type": "developer_original_application"
+    },
+    {
+      "path": "ocr_client.py",
+      "sha256": "109c0cce43ec30c5e025624e1160a54153b3d9f4674015e45fb5bcc616b0cc07",
+      "source_type": "developer_original_application"
+    },
+    {
+      "path": "pipeline.py",
+      "sha256": "1540edeab076c3717065e325c19d1636a17e1f3d5faa40ebe7a1f1c84d856e11",
+      "source_type": "developer_original_application"
+    },
+    {
+      "path": "requirements-v2.txt",
+      "sha256": "33e42943a1f915eb34f36b649f706e774cf3f904f113f792540c46a15c9fe23e",
+      "source_type": "developer_original_application"
+    },
+    {
+      "path": "requirements-v3.txt",
+      "sha256": "8f82f4eeffa94bf738f58b0f51eb4d3071139c64ce465e4de8403deedab78865",
+      "source_type": "developer_original_application"
+    },
+    {
+      "path": "tests/test_contract.py",
+      "sha256": "2e03f3e29a9ec8129ee8237a70ca55c47b9b0d3ef88cd17f582948ed5d65298c",
+      "source_type": "developer_original_application"
+    },
+    {
+      "path": "upgrade.md",
+      "sha256": "4b7a4d558cb57a1221cac4a55c663d87ca4dab9b343295b11a7543127d6f0601",
+      "source_type": "developer_original_application"
+    }
+  ]
+}

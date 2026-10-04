@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "id": "paddleocr",
+  "name": "PaddleOCR 文档处理应用兼容性审查",
+  "repository": "PaddlePaddle/PaddleOCR",
+  "languages": ["zh"],
+  "source_version": "v2.9.1",
+  "target_version": "v3.0.0",
+  "mode": "static",
+  "runtime_verified": false,
+  "max_queries": 2,
+  "evidence_budget": 12,
+  "scope_fields": [],
+  "change_types": [
+    {"id":"removed_api","label":"旧版结构分析接口","keywords":["PPStructure"],"focus":"应用调用与两版官方导出接口","materials":"固定提交的接口实现和中文说明","action":"标出应用位置及目标版接口差异，由开发者核对迁移路径。","checklist":["应用调用位置","两版接口证据","实际扫描文档回归"],"query_terms":["PPStructure","PPStructureV3"]},
+    {"id":"result_consumption","label":"旧版结果消费","keywords":["result","ocr"],"focus":"应用结果归一化与官方返回契约","materials":"两版固定结果实现和中文用法","action":"检查旧嵌套列表结果消费，官方契约不足时保留待验证。","checklist":["结果读取位置","新旧返回契约","下游字段回归"],"query_terms":["识别结果","rec_texts","rec_scores"]},
+    {"id":"general","label":"其他 / 待验证","keywords":[],"focus":"受限应用文本中的调用和配置","materials":"同一知识空间登记来源","action":"不执行应用代码，未知动态调用和未覆盖配置列入缺口。","checklist":["固定依赖版本","证据缺口","真实 OCR 推理验证"],"query_terms":[]}
+  ]
+}

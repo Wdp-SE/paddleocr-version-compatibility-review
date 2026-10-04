@@ -16,10 +16,13 @@ import numpy as np
 
 from src.document_relations import DocumentRelationIndex
 from src.pphuman_corpus import PPHUMAN_WORKSPACE_ID, validate_pphuman_manifest
+from src.paddleocr_corpus import (
+    PADDLEOCR_WORKSPACE_ID, build_paddleocr_index, validate_paddleocr_manifest,
+)
 from src.project_corpus_contract import validate_project_corpus
 
 
-ROOT = Path(__file__).resolve().parents[1] / "public_corpus_pphuman"
+ROOT = Path(__file__).resolve().parents[1] / "public_corpus_paddleocr"
 TOKEN_RE = re.compile(r"[a-z][a-z0-9_.-]*|[0-9]+|[\u3400-\u9fff]+", re.I)
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
 BM25_DIVERSITY_PREFIX = {
@@ -27,8 +30,29 @@ BM25_DIVERSITY_PREFIX = {
     "bm25_top2_diverse": 2,
     "bm25_top3_diverse": 3,
 }
-SUPPORTED_POLICIES = ("dense", "bm25", "bm25_fields", *BM25_DIVERSITY_PREFIX, "hybrid")
+SUPPORTED_POLICIES = (
+    "dense", "bm25", "bm25_fields", "bm25_pphuman_term_expansion_rrf",
+    *BM25_DIVERSITY_PREFIX, "hybrid",
+)
 BM25_FIELD_WEIGHTS = {"title": 3.0, "heading_path": 4.0, "body": 1.0}
+TECHNICAL_TERM_ALIASES = (
+    ("行人", ("pedestrian", "person")),
+    ("跟踪", ("tracking", "tracker", "mot")),
+    ("检测", ("detection", "detector")),
+    ("行为", ("action", "behavior")),
+    ("属性", ("attribute", "attr")),
+    ("关键点", ("keypoint", "pose", "kpt")),
+    ("跨镜", ("cross-camera", "mtmct", "reid")),
+    ("推理", ("inference", "infer")),
+    ("配置", ("config", "configuration", "yaml", "yml")),
+    ("参数", ("parameter", "parameters", "param")),
+    ("模型", ("model", "weights")),
+    ("部署", ("deploy", "deployment")),
+    ("训练", ("training", "train")),
+    ("数据集", ("dataset", "annotation")),
+)
+TECHNICAL_EXPANSION_RRF_WEIGHT = 6.0
+RRF_K = 60
 EDGE_AI_WORKSPACE_ID = "edge_ai_device"
 EDGE_AI_SOURCE_HOST = "wiki.seeedstudio.com"
 EDGE_AI_FACET_FIELDS = ("device_model", "module_sku", "carrier_board", "software_baselines")
@@ -45,6 +69,16 @@ def tokens(text: str) -> list[str]:
         else:
             result.append(word)
     return result
+
+
+def _technical_alias_query(query: str) -> str:
+    """Expand common Chinese PP-Human engineering terms to corpus vocabulary."""
+    normalized = unicodedata.normalize("NFKC", query).casefold()
+    aliases: list[str] = []
+    for phrase, terms in TECHNICAL_TERM_ALIASES:
+        if phrase in normalized:
+            aliases.extend(terms)
+    return " ".join(dict.fromkeys(aliases))
 
 
 def dense_vector(text: str, dimension: int = 512) -> np.ndarray:
@@ -170,6 +204,8 @@ def _validate_edge_ai_manifest(root: Path, manifest: dict) -> None:
 
 def build_index(root: Path = ROOT) -> dict:
     manifest = json.loads((root / "corpus_manifest.json").read_text(encoding="utf-8"))
+    if manifest.get("workspace_id") == PADDLEOCR_WORKSPACE_ID:
+        return build_paddleocr_index(root)
     if manifest.get("workspace_id") == EDGE_AI_WORKSPACE_ID:
         _validate_edge_ai_manifest(root, manifest)
     if manifest.get("workspace_id") == PPHUMAN_WORKSPACE_ID:
@@ -279,6 +315,8 @@ class PublicKnowledgeIndex:
         )
         if self.manifest.get("workspace_id") == PPHUMAN_WORKSPACE_ID:
             validate_pphuman_manifest(root, self.manifest, self.chunks)
+        if self.manifest.get("workspace_id") == PADDLEOCR_WORKSPACE_ID:
+            validate_paddleocr_manifest(root, self.manifest, self.chunks)
         self.ready = self.project_status["active"] if self.project_status else True
         self.matrix = np.load(root / "dense_vectors.npy", allow_pickle=False)
         if len(self.chunks) != len(self.matrix):
@@ -416,9 +454,15 @@ class PublicKnowledgeIndex:
         policy = policy or self.policy.get("default_policy")
         if policy not in SUPPORTED_POLICIES:
             raise ValueError("unsupported retrieval policy")
+        if policy == "bm25_pphuman_term_expansion_rrf" and self.manifest.get("workspace_id") != PPHUMAN_WORKSPACE_ID:
+            raise ValueError("PP-Human terminology expansion is unavailable for this knowledge workspace")
         dense = self.matrix @ dense_vector(query) if policy in ("dense", "hybrid") else None
-        sparse = self._bm25(query) if policy in ("bm25", "hybrid") or policy in BM25_DIVERSITY_PREFIX else None
+        sparse = self._bm25(query) if policy in (
+            "bm25", "bm25_pphuman_term_expansion_rrf", "hybrid", *BM25_DIVERSITY_PREFIX,
+        ) else None
         fielded_sparse = self._bm25_fields(query) if policy == "bm25_fields" else None
+        alias_query = _technical_alias_query(query) if policy == "bm25_pphuman_term_expansion_rrf" else ""
+        alias_scores = self._bm25_fields(alias_query) if alias_query else None
         eligible = [
             i for i, chunk in enumerate(self.chunks)
             if (version_members is None or chunk["version"] in version_members)
@@ -458,6 +502,42 @@ class PublicKnowledgeIndex:
         elif policy == "bm25_fields":
             order = ranked(fielded_sparse)
             score = fielded_sparse
+        elif policy == "bm25_pphuman_term_expansion_rrf":
+            # Fuse the user's Chinese query with corpus terminology aliases.
+            # Retain BM25's strongest two hits, then surface distinct source
+            # documents so expansion cannot erase the original lexical signal.
+            if not alias_query:
+                order = ranked(sparse)
+                score = sparse
+                alias_scores = None
+            else:
+                primary_order = sorted((i for i in eligible if sparse[i] > 0), key=lambda i: (-sparse[i], i))
+                alias_order = sorted(
+                    (i for i in eligible if alias_scores is not None and alias_scores[i] > 0),
+                    key=lambda i: (-alias_scores[i], i),
+                )
+                fused = np.zeros(len(self.chunks), dtype=np.float32)
+                for rank, i in enumerate(primary_order, start=1):
+                    fused[i] += 1 / (RRF_K + rank)
+                for rank, i in enumerate(alias_order, start=1):
+                    fused[i] += TECHNICAL_EXPANSION_RRF_WEIGHT / (RRF_K + rank)
+                fused_order = sorted(eligible, key=lambda i: (-fused[i], i))
+                baseline_order = ranked(sparse)
+                diverse = baseline_order[:min(2, top_k)]
+                seen_documents = {str(self.chunks[i].get("document_id") or i) for i in diverse}
+                for i in fused_order:
+                    if fused[i] <= 0:
+                        continue
+                    document_id = str(self.chunks[i].get("document_id") or self.chunks[i].get("source_id") or i)
+                    if document_id in seen_documents:
+                        continue
+                    diverse.append(i)
+                    seen_documents.add(document_id)
+                    if len(diverse) >= top_k:
+                        break
+                selected = set(diverse)
+                order = diverse + [i for i in fused_order if i not in selected]
+                score = fused
         else:
             a = ranked(dense)
             b = ranked(sparse)
@@ -549,3 +629,10 @@ if __name__ == "__main__":
     started = time.perf_counter()
     print(build_index())
     print(f"build_seconds={time.perf_counter() - started:.3f}")
+
+
+def pphuman_alias_query(query: str) -> str:
+    """Return bounded Chinese-to-corpus aliases for PP-Human terminology."""
+    if not isinstance(query, str):
+        return ""
+    return _technical_alias_query(query)

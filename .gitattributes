@@ -7,6 +7,10 @@ versioned-rag-service/public_corpus_pphuman/sources/** -text whitespace=cr-at-eo
 versioned-rag-service/public_corpus_pphuman/corpus_manifest.json text eol=lf
 versioned-rag-service/public_corpus_pphuman/*.json text eol=lf
 versioned-rag-service/public_corpus_pphuman/*.npy binary
+# PaddleOCR pinned upstream text keeps the original bytes and source hashes.
+versioned-rag-service/public_corpus_paddleocr/sources/** -text whitespace=cr-at-eol,-blank-at-eof
+versioned-rag-service/public_corpus_paddleocr/*.json text eol=lf
+versioned-rag-service/public_corpus_paddleocr/*.npy binary
 # The frozen V3 retrieval candidate hashes the exact code bytes. Preserve its
 # mixed historical line endings so Linux deployments match the evaluation lock.
 versioned-rag-service/src/public_knowledge.py -text whitespace=cr-at-eol

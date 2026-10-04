@@ -1,2 +1,1 @@
-"""Reusable Streamlit presentation components."""
-
+"""Focused workbench components."""

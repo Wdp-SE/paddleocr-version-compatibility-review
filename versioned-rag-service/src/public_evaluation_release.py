@@ -38,6 +38,76 @@ def _valid_ratio(value: Any) -> bool:
     )
 
 
+def validate_pphuman_dev_diagnostic(corpus_root: Path) -> dict | None:
+    """Expose matching DEV observations without marking a strategy as validated."""
+    folder = ROOT / "evaluation" / "pphuman_release_candidate_v1"
+    report = _read(folder / "report.json")
+    if (
+        not report or report.get("schema_version") != 1
+        or report.get("workspace_id") != "pphuman"
+        or report.get("assessment_type") != "dev_diagnostic_only"
+        or report.get("holdout_executed") is not False
+        or report.get("default_promotion_eligible") is not False
+    ):
+        return None
+    paths = {
+        "corpus_manifest_sha256": corpus_root / "corpus_manifest.json",
+        "chunks_sha256": corpus_root / "chunks.json",
+        "retrieval_policy_sha256": corpus_root / "retrieval_policy.json",
+        "runtime_config_sha256": corpus_root / "public_retrieval_runtime.json",
+        "rag_cases_sha256": ROOT / "evaluation/pphuman_quality_v1/rag_cases.jsonl",
+        "agent_cases_sha256": ROOT / "evaluation/pphuman_quality_v1/agent_cases.jsonl",
+        "diagnostic_runner_sha256": folder / "run_dev_diagnostic.py",
+    }
+    for relative in (
+        "evaluation/pphuman_quality_v1/run_evaluation.py",
+        "evaluation/pphuman_quality_v1/evaluation.py",
+        "versioned-rag-service/src/public_knowledge.py",
+        "versioned-rag-service/src/public_retrieval_runtime.py",
+        "versioned-rag-service/src/retrieval_fusion.py",
+        "change-review-agent/app/change_request.py",
+        "change-review-agent/app/domain_profile.py",
+        "change-review-agent/config/pphuman_change_profile.json",
+    ):
+        paths[f"code:{relative}"] = ROOT / relative
+    inputs = report.get("input_fingerprints")
+    if not isinstance(inputs, dict) or any(
+        (actual := _sha256(path)) is None or inputs.get(key) != actual
+        for key, path in paths.items()
+    ):
+        return None
+    denominators = report.get("denominators")
+    if not isinstance(denominators, dict) or any(
+        not isinstance(value, int) or isinstance(value, bool) or value < 0
+        for value in denominators.values()
+    ):
+        return None
+    slim = {}
+    for group, metrics in (
+        ("rag", ("mean_required_source_recall", "complete_required_source_set_rate", "mean_ndcg_at_k")),
+        ("agent", ("required_evidence_source_recall", "complete_required_evidence_set_rate")),
+    ):
+        values = report.get(group)
+        if not isinstance(values, dict) or not values:
+            return None
+        if any(not isinstance(row, dict) or any(not _valid_ratio(row.get(key)) for key in metrics)
+               for row in values.values()):
+            return None
+        slim[group] = {
+            name: {key: row.get(key) for key in (*metrics, "top_k", "query_count", "answerable_case_count",
+                "case_count", "in_scope_case_count", "retrieval_top_k_per_query", "wrong_version_result_count",
+                "wrong_language_result_count", "unanswerable_candidate_query_count")}
+            for name, row in values.items()
+        }
+    return {
+        "name": "pphuman_release_candidate_v1", "assessment_type": "dev_diagnostic_only",
+        "default_promotion_eligible": False, "generated_at_utc": report.get("generated_at_utc"),
+        "denominators": denominators, "limitations": report.get("limitations", []),
+        "input_fingerprints": {key: inputs[key] for key in ("corpus_manifest_sha256", "chunks_sha256")},
+        **slim,
+    }
+
+
 def _expected_inputs(corpus_root: Path) -> dict[str, str | None]:
     return {
         "corpus_manifest_sha256": _sha256(corpus_root / "corpus_manifest.json"),

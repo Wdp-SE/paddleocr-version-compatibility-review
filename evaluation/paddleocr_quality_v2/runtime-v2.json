@@ -1,0 +1,78 @@
+{
+  "paddleocr_version": "2.9.1",
+  "paddle_version": "2.6.2",
+  "numpy_version": "1.26.4",
+  "paddlex_version": null,
+  "origin": "original synthetic Chinese documents, not customer scans",
+  "input_sha256": [
+    "2fe4365f436845df7fb75565bb872c0c5b8c88ba6bf7609e7c3f894d84f2e3b3",
+    "9a82c25b87d66558ed10e0d714e7b971e50035f7305570022f2942ee9ca6266b",
+    "c772d294d72f02fca38f4c9a6fa39f11e91c6b9f5ebeaad7f5a018c5862eb32e"
+  ],
+  "application_sha256": "b591a5d8cde7eb16f6b1af2f1eda482966c2d90baa07a349d7db4910d1e5caa6",
+  "adapter_sha256": "702df5052cf64c19c524bdb7ee2a1b931fdc7030e9f09cf2db9842cedb3681cf",
+  "normalization_checks": [
+    {
+      "page_index": 0,
+      "text": "文档处理应用测试 合同编号DEMO-2026-001 金额1234元",
+      "expected_fragments": [
+        "DEMO",
+        "1234"
+      ],
+      "passed": true
+    },
+    {
+      "page_index": 1,
+      "text": "文档处理应用第二页 交付日期2026-10-04 数量5件",
+      "expected_fragments": [
+        "2026",
+        "数量"
+      ],
+      "passed": true
+    },
+    {
+      "page_index": 2,
+      "text": "",
+      "expected_fragments": [],
+      "passed": true
+    }
+  ],
+  "legacy_consumer_success": true,
+  "legacy_error": null,
+  "normalized_results": [
+    {
+      "text": "文档处理应用测试",
+      "confidence": 0.9969224333763123,
+      "page_index": 0
+    },
+    {
+      "text": "合同编号DEMO-2026-001",
+      "confidence": 0.9752674102783203,
+      "page_index": 0
+    },
+    {
+      "text": "金额1234元",
+      "confidence": 0.9994134306907654,
+      "page_index": 0
+    },
+    {
+      "text": "文档处理应用第二页",
+      "confidence": 0.9918579459190369,
+      "page_index": 1
+    },
+    {
+      "text": "交付日期2026-10-04",
+      "confidence": 0.9992081522941589,
+      "page_index": 1
+    },
+    {
+      "text": "数量5件",
+      "confidence": 0.9996517300605774,
+      "page_index": 1
+    }
+  ],
+  "inference_seconds": 2.48,
+  "sample_regression_passed": true,
+  "scope": "These three synthetic pages verify this adapter and runtime only, not document recognition accuracy.",
+  "input_method": "file_path"
+}

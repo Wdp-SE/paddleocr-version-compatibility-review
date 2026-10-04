@@ -1,0 +1,2165 @@
+{
+  "schema_version": 1,
+  "task_id": "paddleocr_document_application_upgrade",
+  "coverage_claim": "task_scoped_not_company_complete",
+  "sources": [
+    {
+      "source_id": "v2-9-1-readme-md-8ec9a00b",
+      "version": "v2.9.1",
+      "path": "README.md",
+      "sha256": "22408f3d42741b88dec6913e6ad1277c21bbc9ac230ae963e4b69d218a62c595",
+      "git_blob_sha": "f6acbe91375db48abdec2cddd1ce63f5b1aa3522",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v2-9-1-init-py-60ad4f3d",
+      "version": "v2.9.1",
+      "path": "__init__.py",
+      "sha256": "1b031dc1a998ffaf562e4ce0b948b19533509bba18f4608bd48ad5ff7ca5a3fd",
+      "git_blob_sha": "e57c0c764b21e733630b647848d3642123287308",
+      "publisher": "PaddlePaddle",
+      "source_format": "python",
+      "document_family": "python_package"
+    },
+    {
+      "source_id": "v2-9-1-configs-det-ch-pp-ocrv4-ch-pp-ocrv4-det-student-yml-0b6669f6",
+      "version": "v2.9.1",
+      "path": "configs/det/ch_PP-OCRv4/ch_PP-OCRv4_det_student.yml",
+      "sha256": "f233f06e1c67d2cd2a20361be7444dbbafd93288c1191cbd089b5a1bca8b4a53",
+      "git_blob_sha": "39b260cf3ad0a0bb9664a5165f3262962bba072e",
+      "publisher": "PaddlePaddle",
+      "source_format": "yaml",
+      "document_family": "model_config"
+    },
+    {
+      "source_id": "v2-9-1-configs-rec-pp-ocrv4-ch-pp-ocrv4-rec-yml-e4c6a6e4",
+      "version": "v2.9.1",
+      "path": "configs/rec/PP-OCRv4/ch_PP-OCRv4_rec.yml",
+      "sha256": "01afd2f8fb272e3f4f1722b00ff4f4df43bb5a71be8d1d9593b85d9ff2fb4595",
+      "git_blob_sha": "827f5eef3dff11bd2f5fced387fd5534551075b0",
+      "publisher": "PaddlePaddle",
+      "source_format": "yaml",
+      "document_family": "model_config"
+    },
+    {
+      "source_id": "v2-9-1-configs-table-slanet-ch-yml-26d87a5a",
+      "version": "v2.9.1",
+      "path": "configs/table/SLANet_ch.yml",
+      "sha256": "9933986765695c2588765597b60e89ded84c75893457c9d52661c15291ad4a97",
+      "git_blob_sha": "c16f7efed37e48fecf11ceb2e4bf143c53844c72",
+      "publisher": "PaddlePaddle",
+      "source_format": "yaml",
+      "document_family": "model_config"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-faq-md-f46bd39c",
+      "version": "v2.9.1",
+      "path": "doc/doc_ch/FAQ.md",
+      "sha256": "b50c9d0955f1a81038285cad126462d49e1b626d0c98f5304afd86506694b6e2",
+      "git_blob_sha": "5c93d1cbd6f420390e8ecb86f4e7a1776649938a",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-angle-class-md-5fe61c36",
+      "version": "v2.9.1",
+      "path": "doc/doc_ch/angle_class.md",
+      "sha256": "23d537b3e5f1094915410ede9cea8a9a6df7d8bbac6a6a0b5ec7ffdeb2dbd3b8",
+      "git_blob_sha": "723d0d2ce5a8c25699c085c32004aa827b188fd9",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-config-md-c662e066",
+      "version": "v2.9.1",
+      "path": "doc/doc_ch/config.md",
+      "sha256": "74a506f54426d692b60361ca01660ce6683ebdd8a2f7e7a287ebb478ac86a38b",
+      "git_blob_sha": "5ca1f68e6f71242279688d13b08d4d4e49616115",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "inference_config"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-args-md-0941a09c",
+      "version": "v2.9.1",
+      "path": "doc/doc_ch/inference_args.md",
+      "sha256": "60812c30e0cd0d9ea351b82b3df0f54106cc36f3943f2072b88dd2a3fb6d59af",
+      "git_blob_sha": "aad7973b16ee5d501d48ce6b8d2bc46d05c27c2a",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "inference_config"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-ppocr-md-4aa7e791",
+      "version": "v2.9.1",
+      "path": "doc/doc_ch/inference_ppocr.md",
+      "sha256": "54e49679a1f0303105a93b7d23665bb92b2d04af7ada32d89c6bbc8e934fc57e",
+      "git_blob_sha": "085802fc2cd41bbe922f0d794bcbc724ebdbe49d",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-installation-md-896b093e",
+      "version": "v2.9.1",
+      "path": "doc/doc_ch/installation.md",
+      "sha256": "05315110378d6df377a839df3928c1867210b5d79440ceb1858ca14084fe8da0",
+      "git_blob_sha": "962a926911cba3ad2e50af06c20ea0f8b0c4a927",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "installation"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-multi-languages-md-fff6237d",
+      "version": "v2.9.1",
+      "path": "doc/doc_ch/multi_languages.md",
+      "sha256": "f2b88a24c9265a73372a4e2b93e0a9a13deebfb4eb65425af2e75eed260d8ad1",
+      "git_blob_sha": "4a6539fe8ecb783301d45e0cc8e911957b45a438",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-quickstart-md-16a9690b",
+      "version": "v2.9.1",
+      "path": "doc/doc_ch/quickstart.md",
+      "sha256": "17605d9dfafc66aab465cbf73f91c8c8800bc389fef4fec4925fe1076a72e981",
+      "git_blob_sha": "65b29b18792d7550ecd73f43a1783017f7087c46",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "quick_start"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-table-recognition-md-0005fd9c",
+      "version": "v2.9.1",
+      "path": "doc/doc_ch/table_recognition.md",
+      "sha256": "2c47abfbd32ecac942363c745d0d6ee88a0b1c5431780dfa2ad5e4efc569d6c0",
+      "git_blob_sha": "88260466d4e6649fcfc50baa12c09730674f99c0",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-visualization-md-5a66a633",
+      "version": "v2.9.1",
+      "path": "doc/doc_ch/visualization.md",
+      "sha256": "c9c89704f7cc948ef721ca49c52b1de8cdedc814d128e90d9e1e9872afd59abd",
+      "git_blob_sha": "254634753282f53f367e44f4859e5b748f32bffd",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-whl-md-f1bd9719",
+      "version": "v2.9.1",
+      "path": "doc/doc_ch/whl.md",
+      "sha256": "9bc1fb30acf1da3ef10613fc44b8748f70ac7fb17d5b449b281fa49d869e455a",
+      "git_blob_sha": "2f9976f6d80d14145afab5fffeb85f9f790fc023",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "python_package"
+    },
+    {
+      "source_id": "v2-9-1-paddleocr-py-02eb1820",
+      "version": "v2.9.1",
+      "path": "paddleocr.py",
+      "sha256": "37da5a58692bcd37c8d9cf60765c449fa3662de82d416f04358bd8ead87e7162",
+      "git_blob_sha": "bdf367cf1a41c873783ba0a4c82a71c5f7ff0a82",
+      "publisher": "PaddlePaddle",
+      "source_format": "python",
+      "document_family": "ocr_api"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-readme-ch-md-0b3b06b7",
+      "version": "v2.9.1",
+      "path": "ppstructure/README_ch.md",
+      "sha256": "702fe8dbe6130cf224c6c88ff58fe293e320d81f944fc80e938acf792bfb55e0",
+      "git_blob_sha": "9d78df62f499501a3430500d65883242b389ccd0",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "structure_pipeline"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-docs-inference-md-ecf144b2",
+      "version": "v2.9.1",
+      "path": "ppstructure/docs/inference.md",
+      "sha256": "cc0532b36a380b0e75029e8441fd4f9eb687d34fa0c6a09a2ac541b381ab6ad4",
+      "git_blob_sha": "a7efd5e8c2b8cda086c267e2fec2b858720a10b7",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "structure_pipeline"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-docs-quickstart-md-7bb6f5d2",
+      "version": "v2.9.1",
+      "path": "ppstructure/docs/quickstart.md",
+      "sha256": "519f0752788fcae2888970f48f433edd82e1e3653284ea8274c40c456af368bc",
+      "git_blob_sha": "ed0843de81a501697ffd91b01f57c646ed8e56a9",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "structure_pipeline"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-layout-readme-ch-md-024c02e5",
+      "version": "v2.9.1",
+      "path": "ppstructure/layout/README_ch.md",
+      "sha256": "037db40341ebaa6921b41a8ff505a177224731416ad1ea477a755c3815fcf749",
+      "git_blob_sha": "adef46d47389a50bf34500eee1aaf52ff5dfe449",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "structure_pipeline"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-predict-system-py-012a1caa",
+      "version": "v2.9.1",
+      "path": "ppstructure/predict_system.py",
+      "sha256": "e8bce2339ec2058f19372924dbff03707a4ffe37d7732fcadfe349b9943186c8",
+      "git_blob_sha": "152e989c3b6c9736f9f09663302173d2afc904ce",
+      "publisher": "PaddlePaddle",
+      "source_format": "python",
+      "document_family": "structure_api"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-recovery-readme-ch-md-92a57657",
+      "version": "v2.9.1",
+      "path": "ppstructure/recovery/README_ch.md",
+      "sha256": "09ba2bc597d469f9996d45fca956890bca684f7320814a06a229901ecbc0cf91",
+      "git_blob_sha": "63a686d256c0ece915b5234adef5652882585127",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "structure_pipeline"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-return-word-pos-md-3ece5954",
+      "version": "v2.9.1",
+      "path": "ppstructure/return_word_pos.md",
+      "sha256": "5f64b30b4accf28e2f6b9acc030ec3819d9d26232d21247db778409df4a237ff",
+      "git_blob_sha": "5a42d1c0aa08256637e58b2ab82a20d82b42693b",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "structure_pipeline"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-table-readme-ch-md-c805418c",
+      "version": "v2.9.1",
+      "path": "ppstructure/table/README_ch.md",
+      "sha256": "0cf25f375eb9ec3ee4dac8c5433ae7ba9236b2dee629309ae35f6fdff76b4b54",
+      "git_blob_sha": "cf4e515b5c9db174aac58aca47c6e78bb010e40d",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "structure_pipeline"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "path": "README.md",
+      "sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "git_blob_sha": "7790f05fb92820058d02684744c236f247b187bb",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v3-0-0-configs-table-slanext-wired-yml-e1863341",
+      "version": "v3.0.0",
+      "path": "configs/table/SLANeXt_wired.yml",
+      "sha256": "0b7895ae6b73e205748ff6bef8db0906768281e5591839ba61e3d21fb49e39ed",
+      "git_blob_sha": "b6d5f6ad70aedf561c743fb67c0709ee04604bef",
+      "publisher": "PaddlePaddle",
+      "source_format": "yaml",
+      "document_family": "model_config"
+    },
+    {
+      "source_id": "v3-0-0-configs-table-slanet-plus-yml-9ab4e5d8",
+      "version": "v3.0.0",
+      "path": "configs/table/SLANet_plus.yml",
+      "sha256": "5eb686fc725998a40513cc3222d09fd18d51179a30b1523934374f5ab1fb8a5c",
+      "git_blob_sha": "e67ce66fb58e4b04508537de18fc5b0a9afccc6a",
+      "publisher": "PaddlePaddle",
+      "source_format": "yaml",
+      "document_family": "model_config"
+    },
+    {
+      "source_id": "v3-0-0-docs-quick-start-md-ea104dc0",
+      "version": "v3.0.0",
+      "path": "docs/quick_start.md",
+      "sha256": "54344c131077a19b8d81912d968e0098705e4ed6b83633024c07082e1996bc5b",
+      "git_blob_sha": "6031c6805f5843badb40ccb3a751a5fe8039a9b4",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "quick_start"
+    },
+    {
+      "source_id": "v3-0-0-docs-update-upgrade-notes-md-eddd1bbb",
+      "version": "v3.0.0",
+      "path": "docs/update/upgrade_notes.md",
+      "sha256": "7b49f5758e45b217b8c3ed04aea3913e26fbf1d1d1a26277d09e55ed365fd994",
+      "git_blob_sha": "840134d67d24de00b492481355ce9f5a62971766",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "upgrade_notes"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-deployment-high-performance-inference-md-274edbc8",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/deployment/high_performance_inference.md",
+      "sha256": "e1ea0614aa091df2e8a818248836cbc7fc3bf11bff167fad327f0b9cb1e343b0",
+      "git_blob_sha": "a6d4245816f6f242364556ea1aa5e509d22be3ff",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "deployment"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-deployment-serving-md-5f5ecdb8",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/deployment/serving.md",
+      "sha256": "19805ff5ea655fe68975296650e9429698ecd6010f33e484b5170c643b368556",
+      "git_blob_sha": "06ee5f7cd34ce0e2194322aaee9a155d2080a36b",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "deployment"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-installation-md-e0148ae6",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/installation.md",
+      "sha256": "1ac79a8903314d5a0da69c5664fb04755f51a3beb961936a77662c0c15dd5e5b",
+      "git_blob_sha": "74a3eeef653e7761fad1b77cdaff89470d2cc040",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "installation"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-logging-md-dc94ba49",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/logging.md",
+      "sha256": "f96479622438d62f5f6ff478d12a709c8436d5fd23a24e801c597a944e9d7c84",
+      "git_blob_sha": "fa1927de8a4ba98cf3bdf4fcfedde6c25381ce6c",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-module-usage-doc-img-orientation-classificatio-41da1721",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/module_usage/doc_img_orientation_classification.md",
+      "sha256": "1afd973dbc4999b600745be7f5fc27f0db78c6d5201b1e7da1746b56e2574d12",
+      "git_blob_sha": "7336b4b465ef9a9fcd220c52a3fb38433a2c2c2c",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-module-usage-layout-detection-md-fa46b4a6",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/module_usage/layout_detection.md",
+      "sha256": "4567d95d8e4571f682b3210d3441c2e661f73a528d321857dbf81972e72d6fbd",
+      "git_blob_sha": "57b23f8e6f6099cc6ff472d8d6fec8f94f72ea96",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-module-usage-table-cells-detection-md-ce0db244",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/module_usage/table_cells_detection.md",
+      "sha256": "47d4ee3527d14c0eef4e71382fbf3c454a8fcb6a95a55a071702891edcd5ba58",
+      "git_blob_sha": "4461c64226f042892a606b42b1eb24b9fe0cf80a",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-module-usage-table-classification-md-9db11c51",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/module_usage/table_classification.md",
+      "sha256": "d1234c970180351c216c3be72ad43b8eeb3ef0997f309766c65475e0c1777d0d",
+      "git_blob_sha": "0be4daad9cc32e47783ca69a1ead29157ef96e88",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-module-usage-table-structure-recognition-md-4d5aea00",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/module_usage/table_structure_recognition.md",
+      "sha256": "5742979908ca42ff2af9c07adac5e10b0cecabf64111799a6245249761b152b0",
+      "git_blob_sha": "899b96bf475508f604d861236fb08aef0e1b7926",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-module-usage-text-detection-md-fa9065ec",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/module_usage/text_detection.md",
+      "sha256": "cc141826eb569a7351f5221bc335d6eb686cd55a56bef32ab9e2aadd23b250af",
+      "git_blob_sha": "a672b462a9fd8acc245c38aa6d90cccc6ea80171",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-module-usage-text-image-unwarping-md-ea2fb72e",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/module_usage/text_image_unwarping.md",
+      "sha256": "387913b8d84b3fdc3a0dfe80a771e8cc0c206da75074abc050ac04c3f93630d6",
+      "git_blob_sha": "f86e849a37b2b5c05e59b2da87f180d089e542f3",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-module-usage-text-line-orientation-classificat-1fbc6790",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/module_usage/text_line_orientation_classification.md",
+      "sha256": "5604bc5726d3201792ad41fda5521ef597e9bee399058e3d4640069e2c63f819",
+      "git_blob_sha": "b88d009839f138ca41883111b29a5dffc4be4f82",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-module-usage-text-recognition-md-ad4d243e",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/module_usage/text_recognition.md",
+      "sha256": "585e1897b961f61e5735b8baf1589320b51d5e4f2b6552330419a99174ddf730",
+      "git_blob_sha": "19a1a8b1bea4c1a8ba01ac64003dad69da8dc649",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-paddleocr-and-paddlex-md-e5cb5ff6",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/paddleocr_and_paddlex.md",
+      "sha256": "01c481745d6772b8fbdc6bf4c653611f6a51d3fff4ec09b37bfa0c6aae1d5dd5",
+      "git_blob_sha": "8f19bf7fdca66217dcd21f0b167d0d6d796bc041",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/pipeline_usage/OCR.md",
+      "sha256": "6ce2310fc0b471e634a57fb54718fa56d79a00867515b3bf5be397163ab8927a",
+      "git_blob_sha": "9a7d0746c557607450510bbfa96ce95fac9acc75",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "ocr_pipeline"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-pipeline-usage-pp-structurev3-md-619d1ff4",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+      "sha256": "edf596dfd26a6a0814650495f2b503933822b06230cf045a3b4b2acbce72950d",
+      "git_blob_sha": "6c147ab81b2c27b91954b8c9758d3c0704e3e147",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "structure_pipeline"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-pipeline-usage-doc-preprocessor-md-3eba1a19",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+      "sha256": "2aeea097fd70f5e9e65257deb2539626894691a56e5f88286fb9091a4313a557",
+      "git_blob_sha": "5a3c5b03093afdcf1f7e31556a410907d29c1d95",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-pipeline-usage-table-recognition-v2-md-c0b78566",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+      "sha256": "6653f429a4f29e9867235eaaa1162f43c3ba7733e2d2991f4b9de22356b01ba5",
+      "git_blob_sha": "5bd83b7a8a2e8dd12fc25fb1c31b88e58d60d025",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v3-0-0-paddleocr-init-py-4230bdf6",
+      "version": "v3.0.0",
+      "path": "paddleocr/__init__.py",
+      "sha256": "3cb0d038cfa69a096dea052aceabdc250032c011211afa8a12b9ac80244f3642",
+      "git_blob_sha": "bd9280d970ff9568bec0613cdecc28c31b9c517e",
+      "publisher": "PaddlePaddle",
+      "source_format": "python",
+      "document_family": "python_package"
+    },
+    {
+      "source_id": "v3-0-0-paddleocr-common-args-py-dafb1c20",
+      "version": "v3.0.0",
+      "path": "paddleocr/_common_args.py",
+      "sha256": "dd33c30e4c6b98ce14a87574df561bdd36f627bdcd90f65d31db60422d94dcdf",
+      "git_blob_sha": "50988c91bce1e321c272c47c30c53962b643417b",
+      "publisher": "PaddlePaddle",
+      "source_format": "python",
+      "document_family": "python_package"
+    },
+    {
+      "source_id": "v3-0-0-paddleocr-pipelines-init-py-1142aef5",
+      "version": "v3.0.0",
+      "path": "paddleocr/_pipelines/__init__.py",
+      "sha256": "aab3bf7b7438cbd4159e5a3b1fd52ad760f313b1afec33c9cd582642b3e3f1b7",
+      "git_blob_sha": "d0fec919260ac8d3f12f6e2207c1d3fff9a9bced",
+      "publisher": "PaddlePaddle",
+      "source_format": "python",
+      "document_family": "python_package"
+    },
+    {
+      "source_id": "v3-0-0-paddleocr-pipelines-base-py-c9e36a65",
+      "version": "v3.0.0",
+      "path": "paddleocr/_pipelines/base.py",
+      "sha256": "8f9ace27768cf162bc322d37cdd0fae1161f06f66abe75f56821f385a7fe859e",
+      "git_blob_sha": "3ac8e4c591cfe06111b6390a34d3c361394cbe92",
+      "publisher": "PaddlePaddle",
+      "source_format": "python",
+      "document_family": "python_package"
+    },
+    {
+      "source_id": "v3-0-0-paddleocr-pipelines-ocr-py-4c8493af",
+      "version": "v3.0.0",
+      "path": "paddleocr/_pipelines/ocr.py",
+      "sha256": "d81073c98ac08125c389d8a292837d9b2e12242ba0601ef65fb5d1c5a176a9a8",
+      "git_blob_sha": "b38dc5b5b8f9cc4c80907a09d79ee3376091aeb0",
+      "publisher": "PaddlePaddle",
+      "source_format": "python",
+      "document_family": "ocr_api"
+    },
+    {
+      "source_id": "v3-0-0-paddleocr-pipelines-pp-structurev3-py-74337216",
+      "version": "v3.0.0",
+      "path": "paddleocr/_pipelines/pp_structurev3.py",
+      "sha256": "9281167b47940f4cc81fe1f37e934b658981483b153021d68b07fab38c0b0239",
+      "git_blob_sha": "112c22e6cb01a66fa903f7c2ad93488cdd82fe17",
+      "publisher": "PaddlePaddle",
+      "source_format": "python",
+      "document_family": "structure_api"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-md-80bfc432",
+      "version": "v2.9.1",
+      "path": "doc/doc_ch/inference.md",
+      "sha256": "95331d6f75b8cefd5fdf659b9260e328fbee1e5b8dddbf05f70c8480e0e82d36",
+      "git_blob_sha": "b73245a4107ab2848e7d9af5bb7319efd9b6e6d4",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-algorithm-inference-md-6f816b8f",
+      "version": "v2.9.1",
+      "path": "doc/doc_ch/algorithm_inference.md",
+      "sha256": "5471b532b2308b3e4fb4bf7f84ba6b29ac6850b57f154df10bfbc17f6fedb35c",
+      "git_blob_sha": "f4858a9a0d2bf9c33250e1a79a7f9d783d32f84f",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "module_usage"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-deployment-obtaining-onnx-models-md-70757045",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/deployment/obtaining_onnx_models.md",
+      "sha256": "d5374680da2c5c70653959b088222a08acbded2d72babaefadead050d6e797e1",
+      "git_blob_sha": "6291b0871e3584abb2bec79478642b0e6188acbb",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "deployment"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-deployment-on-device-deployment-md-a8061e42",
+      "version": "v3.0.0",
+      "path": "docs/version3.x/deployment/on_device_deployment.md",
+      "sha256": "e4b6e90aa8ae55b99795a576f6888e693bf9d25b31f98478693a0c240d668e3e",
+      "git_blob_sha": "650c418de877120e443881329a483534b132afd9",
+      "publisher": "PaddlePaddle",
+      "source_format": "markdown",
+      "document_family": "deployment"
+    }
+  ],
+  "source_count": 58,
+  "formats": {
+    "markdown": 44,
+    "python": 9,
+    "yaml": 5
+  },
+  "required_families": [
+    {
+      "version": "v2.9.1",
+      "family": "installation",
+      "source_ids": [
+        "v2-9-1-doc-doc-ch-installation-md-896b093e"
+      ],
+      "status": "available"
+    },
+    {
+      "version": "v2.9.1",
+      "family": "ocr_contract",
+      "source_ids": [
+        "v2-9-1-paddleocr-py-02eb1820"
+      ],
+      "status": "available"
+    },
+    {
+      "version": "v2.9.1",
+      "family": "ocr_usage",
+      "source_ids": [
+        "v2-9-1-init-py-60ad4f3d",
+        "v2-9-1-doc-doc-ch-whl-md-f1bd9719"
+      ],
+      "status": "available"
+    },
+    {
+      "version": "v2.9.1",
+      "family": "structure_contract",
+      "source_ids": [
+        "v2-9-1-ppstructure-predict-system-py-012a1caa"
+      ],
+      "status": "available"
+    },
+    {
+      "version": "v2.9.1",
+      "family": "structure_usage",
+      "source_ids": [
+        "v2-9-1-ppstructure-readme-ch-md-0b3b06b7",
+        "v2-9-1-ppstructure-docs-inference-md-ecf144b2",
+        "v2-9-1-ppstructure-docs-quickstart-md-7bb6f5d2",
+        "v2-9-1-ppstructure-layout-readme-ch-md-024c02e5",
+        "v2-9-1-ppstructure-recovery-readme-ch-md-92a57657",
+        "v2-9-1-ppstructure-return-word-pos-md-3ece5954",
+        "v2-9-1-ppstructure-table-readme-ch-md-c805418c"
+      ],
+      "status": "available"
+    },
+    {
+      "version": "v2.9.1",
+      "family": "configuration",
+      "source_ids": [
+        "v2-9-1-init-py-60ad4f3d",
+        "v2-9-1-configs-det-ch-pp-ocrv4-ch-pp-ocrv4-det-student-yml-0b6669f6",
+        "v2-9-1-configs-rec-pp-ocrv4-ch-pp-ocrv4-rec-yml-e4c6a6e4",
+        "v2-9-1-configs-table-slanet-ch-yml-26d87a5a",
+        "v2-9-1-doc-doc-ch-config-md-c662e066",
+        "v2-9-1-doc-doc-ch-inference-args-md-0941a09c",
+        "v2-9-1-doc-doc-ch-whl-md-f1bd9719"
+      ],
+      "status": "available"
+    },
+    {
+      "version": "v3.0.0",
+      "family": "installation",
+      "source_ids": [
+        "v3-0-0-docs-version3-x-installation-md-e0148ae6"
+      ],
+      "status": "available"
+    },
+    {
+      "version": "v3.0.0",
+      "family": "ocr_contract",
+      "source_ids": [
+        "v3-0-0-paddleocr-pipelines-ocr-py-4c8493af"
+      ],
+      "status": "available"
+    },
+    {
+      "version": "v3.0.0",
+      "family": "ocr_usage",
+      "source_ids": [
+        "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+        "v3-0-0-paddleocr-init-py-4230bdf6",
+        "v3-0-0-paddleocr-common-args-py-dafb1c20",
+        "v3-0-0-paddleocr-pipelines-init-py-1142aef5",
+        "v3-0-0-paddleocr-pipelines-base-py-c9e36a65"
+      ],
+      "status": "available"
+    },
+    {
+      "version": "v3.0.0",
+      "family": "structure_contract",
+      "source_ids": [
+        "v3-0-0-paddleocr-pipelines-pp-structurev3-py-74337216"
+      ],
+      "status": "available"
+    },
+    {
+      "version": "v3.0.0",
+      "family": "structure_usage",
+      "source_ids": [
+        "v3-0-0-docs-version3-x-pipeline-usage-pp-structurev3-md-619d1ff4"
+      ],
+      "status": "available"
+    },
+    {
+      "version": "v3.0.0",
+      "family": "configuration",
+      "source_ids": [
+        "v3-0-0-configs-table-slanext-wired-yml-e1863341",
+        "v3-0-0-configs-table-slanet-plus-yml-9ab4e5d8",
+        "v3-0-0-paddleocr-init-py-4230bdf6",
+        "v3-0-0-paddleocr-common-args-py-dafb1c20",
+        "v3-0-0-paddleocr-pipelines-init-py-1142aef5",
+        "v3-0-0-paddleocr-pipelines-base-py-c9e36a65"
+      ],
+      "status": "available"
+    }
+  ],
+  "gaps": [
+    {
+      "code": "image_information_not_extracted",
+      "count": 144
+    }
+  ],
+  "media": [
+    {
+      "source_id": "v2-9-1-readme-md-8ec9a00b",
+      "version": "v2.9.1",
+      "line": 4,
+      "reference": "https://github.com/PaddlePaddle/PaddleOCR/releases/download/v2.8.0/PaddleOCR_logo.png",
+      "source_sha256": "22408f3d42741b88dec6913e6ad1277c21bbc9ac230ae963e4b69d218a62c595",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-readme-md-8ec9a00b",
+      "version": "v2.9.1",
+      "line": 7,
+      "reference": "https://img.shields.io/badge/Chat-on%20discord-7289da.svg?sanitize=true",
+      "source_sha256": "22408f3d42741b88dec6913e6ad1277c21bbc9ac230ae963e4b69d218a62c595",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-readme-md-8ec9a00b",
+      "version": "v2.9.1",
+      "line": 8,
+      "reference": "https://img.shields.io/badge/license-Apache%202-dfd.svg",
+      "source_sha256": "22408f3d42741b88dec6913e6ad1277c21bbc9ac230ae963e4b69d218a62c595",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-readme-md-8ec9a00b",
+      "version": "v2.9.1",
+      "line": 9,
+      "reference": "https://img.shields.io/github/v/release/PaddlePaddle/PaddleOCR?color=ffa",
+      "source_sha256": "22408f3d42741b88dec6913e6ad1277c21bbc9ac230ae963e4b69d218a62c595",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-readme-md-8ec9a00b",
+      "version": "v2.9.1",
+      "line": 10,
+      "reference": "https://img.shields.io/badge/python-3.7+-aff.svg",
+      "source_sha256": "22408f3d42741b88dec6913e6ad1277c21bbc9ac230ae963e4b69d218a62c595",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-readme-md-8ec9a00b",
+      "version": "v2.9.1",
+      "line": 11,
+      "reference": "https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg",
+      "source_sha256": "22408f3d42741b88dec6913e6ad1277c21bbc9ac230ae963e4b69d218a62c595",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-readme-md-8ec9a00b",
+      "version": "v2.9.1",
+      "line": 12,
+      "reference": "https://img.shields.io/pypi/dm/PaddleOCR?color=9cf",
+      "source_sha256": "22408f3d42741b88dec6913e6ad1277c21bbc9ac230ae963e4b69d218a62c595",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-readme-md-8ec9a00b",
+      "version": "v2.9.1",
+      "line": 13,
+      "reference": "https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf",
+      "source_sha256": "22408f3d42741b88dec6913e6ad1277c21bbc9ac230ae963e4b69d218a62c595",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-readme-md-8ec9a00b",
+      "version": "v2.9.1",
+      "line": 21,
+      "reference": "https://github.com/PaddlePaddle/PaddleOCR/releases/download/v2.8.0/demo.gif",
+      "source_sha256": "22408f3d42741b88dec6913e6ad1277c21bbc9ac230ae963e4b69d218a62c595",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-readme-md-8ec9a00b",
+      "version": "v2.9.1",
+      "line": 51,
+      "reference": "./docs/images/ppocrv4.png",
+      "source_sha256": "22408f3d42741b88dec6913e6ad1277c21bbc9ac230ae963e4b69d218a62c595",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-readme-md-8ec9a00b",
+      "version": "v2.9.1",
+      "line": 69,
+      "reference": "https://contrib.rocks/image?repo=PaddlePaddle/PaddleOCR&max=400&columns=20",
+      "source_sha256": "22408f3d42741b88dec6913e6ad1277c21bbc9ac230ae963e4b69d218a62c595",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-readme-md-8ec9a00b",
+      "version": "v2.9.1",
+      "line": 74,
+      "reference": "https://api.star-history.com/svg?repos=PaddlePaddle/PaddleOCR&type=Date",
+      "source_sha256": "22408f3d42741b88dec6913e6ad1277c21bbc9ac230ae963e4b69d218a62c595",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-angle-class-md-5fe61c36",
+      "version": "v2.9.1",
+      "line": 18,
+      "reference": "../imgs_results/angle_class_example.jpg",
+      "source_sha256": "23d537b3e5f1094915410ede9cea8a9a6df7d8bbac6a6a0b5ec7ffdeb2dbd3b8",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-angle-class-md-5fe61c36",
+      "version": "v2.9.1",
+      "line": 147,
+      "reference": "../imgs_words/ch/word_1.jpg",
+      "source_sha256": "23d537b3e5f1094915410ede9cea8a9a6df7d8bbac6a6a0b5ec7ffdeb2dbd3b8",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-ppocr-md-4aa7e791",
+      "version": "v2.9.1",
+      "line": 32,
+      "reference": "../imgs_results/det_res_00018069.jpg",
+      "source_sha256": "54e49679a1f0303105a93b7d23665bb92b2d04af7ada32d89c6bbc8e934fc57e",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-ppocr-md-4aa7e791",
+      "version": "v2.9.1",
+      "line": 74,
+      "reference": "../imgs_words/ch/word_4.jpg",
+      "source_sha256": "54e49679a1f0303105a93b7d23665bb92b2d04af7ada32d89c6bbc8e934fc57e",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-ppocr-md-4aa7e791",
+      "version": "v2.9.1",
+      "line": 95,
+      "reference": "../imgs_words/en/word_1.png",
+      "source_sha256": "54e49679a1f0303105a93b7d23665bb92b2d04af7ada32d89c6bbc8e934fc57e",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-ppocr-md-4aa7e791",
+      "version": "v2.9.1",
+      "line": 112,
+      "reference": "../imgs_words/korean/1.jpg",
+      "source_sha256": "54e49679a1f0303105a93b7d23665bb92b2d04af7ada32d89c6bbc8e934fc57e",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-ppocr-md-4aa7e791",
+      "version": "v2.9.1",
+      "line": 133,
+      "reference": "../imgs_words/ch/word_1.jpg",
+      "source_sha256": "54e49679a1f0303105a93b7d23665bb92b2d04af7ada32d89c6bbc8e934fc57e",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-ppocr-md-4aa7e791",
+      "version": "v2.9.1",
+      "line": 163,
+      "reference": "../imgs_results/system_res_00018069_v3.jpg",
+      "source_sha256": "54e49679a1f0303105a93b7d23665bb92b2d04af7ada32d89c6bbc8e934fc57e",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-multi-languages-md-fff6237d",
+      "version": "v2.9.1",
+      "line": 15,
+      "reference": "../imgs_results/multi_lang/img_12.jpg",
+      "source_sha256": "f2b88a24c9265a73372a4e2b93e0a9a13deebfb4eb65425af2e75eed260d8ad1",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-multi-languages-md-fff6237d",
+      "version": "v2.9.1",
+      "line": 21,
+      "reference": "../imgs_results/multi_lang/japan_2.jpg",
+      "source_sha256": "f2b88a24c9265a73372a4e2b93e0a9a13deebfb4eb65425af2e75eed260d8ad1",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-multi-languages-md-fff6237d",
+      "version": "v2.9.1",
+      "line": 22,
+      "reference": "../imgs_results/multi_lang/french_0.jpg",
+      "source_sha256": "f2b88a24c9265a73372a4e2b93e0a9a13deebfb4eb65425af2e75eed260d8ad1",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-multi-languages-md-fff6237d",
+      "version": "v2.9.1",
+      "line": 23,
+      "reference": "../imgs_results/multi_lang/korean_0.jpg",
+      "source_sha256": "f2b88a24c9265a73372a4e2b93e0a9a13deebfb4eb65425af2e75eed260d8ad1",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-multi-languages-md-fff6237d",
+      "version": "v2.9.1",
+      "line": 24,
+      "reference": "../imgs_results/multi_lang/arabic_0.jpg",
+      "source_sha256": "f2b88a24c9265a73372a4e2b93e0a9a13deebfb4eb65425af2e75eed260d8ad1",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-multi-languages-md-fff6237d",
+      "version": "v2.9.1",
+      "line": 91,
+      "reference": "../imgs_en/254.jpg",
+      "source_sha256": "f2b88a24c9265a73372a4e2b93e0a9a13deebfb4eb65425af2e75eed260d8ad1",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-multi-languages-md-fff6237d",
+      "version": "v2.9.1",
+      "line": 92,
+      "reference": "../imgs_results/multi_lang/img_02.jpg",
+      "source_sha256": "f2b88a24c9265a73372a4e2b93e0a9a13deebfb4eb65425af2e75eed260d8ad1",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-multi-languages-md-fff6237d",
+      "version": "v2.9.1",
+      "line": 170,
+      "reference": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/release/2.1/doc/imgs_results/korean.jpg",
+      "source_sha256": "f2b88a24c9265a73372a4e2b93e0a9a13deebfb4eb65425af2e75eed260d8ad1",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-quickstart-md-16a9690b",
+      "version": "v2.9.1",
+      "line": 130,
+      "reference": "../imgs_en/254.jpg",
+      "source_sha256": "17605d9dfafc66aab465cbf73f91c8c8800bc389fef4fec4925fe1076a72e981",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-quickstart-md-16a9690b",
+      "version": "v2.9.1",
+      "line": 131,
+      "reference": "../imgs_results/multi_lang/img_02.jpg",
+      "source_sha256": "17605d9dfafc66aab465cbf73f91c8c8800bc389fef4fec4925fe1076a72e981",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-quickstart-md-16a9690b",
+      "version": "v2.9.1",
+      "line": 198,
+      "reference": "../imgs_results/whl/11_det_rec.jpg",
+      "source_sha256": "17605d9dfafc66aab465cbf73f91c8c8800bc389fef4fec4925fe1076a72e981",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-table-recognition-md-0005fd9c",
+      "version": "v2.9.1",
+      "line": 79,
+      "reference": "https://raw.githubusercontent.com/WenmuZhou/TableGeneration/main/imgs/simple.jpg",
+      "source_sha256": "2c47abfbd32ecac942363c745d0d6ee88a0b1c5431780dfa2ad5e4efc569d6c0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-table-recognition-md-0005fd9c",
+      "version": "v2.9.1",
+      "line": 80,
+      "reference": "https://raw.githubusercontent.com/WenmuZhou/TableGeneration/main/imgs/color.jpg",
+      "source_sha256": "2c47abfbd32ecac942363c745d0d6ee88a0b1c5431780dfa2ad5e4efc569d6c0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-table-recognition-md-0005fd9c",
+      "version": "v2.9.1",
+      "line": 311,
+      "reference": "../../ppstructure/docs/table/table.jpg",
+      "source_sha256": "2c47abfbd32ecac942363c745d0d6ee88a0b1c5431780dfa2ad5e4efc569d6c0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-table-recognition-md-0005fd9c",
+      "version": "v2.9.1",
+      "line": 321,
+      "reference": "../../ppstructure/docs/imgs/slanet_result.jpg",
+      "source_sha256": "2c47abfbd32ecac942363c745d0d6ee88a0b1c5431780dfa2ad5e4efc569d6c0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-table-recognition-md-0005fd9c",
+      "version": "v2.9.1",
+      "line": 366,
+      "reference": "../../ppstructure/docs/table/table.jpg",
+      "source_sha256": "2c47abfbd32ecac942363c745d0d6ee88a0b1c5431780dfa2ad5e4efc569d6c0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-table-recognition-md-0005fd9c",
+      "version": "v2.9.1",
+      "line": 376,
+      "reference": "../../ppstructure/docs/imgs/slanet_result.jpg",
+      "source_sha256": "2c47abfbd32ecac942363c745d0d6ee88a0b1c5431780dfa2ad5e4efc569d6c0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-visualization-md-5a66a633",
+      "version": "v2.9.1",
+      "line": 9,
+      "reference": "../imgs_results/PP-OCRv3/ch/PP-OCRv3-pic001.jpg",
+      "source_sha256": "c9c89704f7cc948ef721ca49c52b1de8cdedc814d128e90d9e1e9872afd59abd",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-visualization-md-5a66a633",
+      "version": "v2.9.1",
+      "line": 10,
+      "reference": "../imgs_results/PP-OCRv3/ch/PP-OCRv3-pic002.jpg",
+      "source_sha256": "c9c89704f7cc948ef721ca49c52b1de8cdedc814d128e90d9e1e9872afd59abd",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-visualization-md-5a66a633",
+      "version": "v2.9.1",
+      "line": 11,
+      "reference": "../imgs_results/PP-OCRv3/ch/PP-OCRv3-pic003.jpg",
+      "source_sha256": "c9c89704f7cc948ef721ca49c52b1de8cdedc814d128e90d9e1e9872afd59abd",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-visualization-md-5a66a633",
+      "version": "v2.9.1",
+      "line": 17,
+      "reference": "../imgs_results/PP-OCRv3/en/en_1.png",
+      "source_sha256": "c9c89704f7cc948ef721ca49c52b1de8cdedc814d128e90d9e1e9872afd59abd",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-visualization-md-5a66a633",
+      "version": "v2.9.1",
+      "line": 18,
+      "reference": "../imgs_results/PP-OCRv3/en/en_2.png",
+      "source_sha256": "c9c89704f7cc948ef721ca49c52b1de8cdedc814d128e90d9e1e9872afd59abd",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-visualization-md-5a66a633",
+      "version": "v2.9.1",
+      "line": 19,
+      "reference": "../imgs_results/PP-OCRv3/en/en_3.png",
+      "source_sha256": "c9c89704f7cc948ef721ca49c52b1de8cdedc814d128e90d9e1e9872afd59abd",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-visualization-md-5a66a633",
+      "version": "v2.9.1",
+      "line": 25,
+      "reference": "../imgs_results/PP-OCRv3/multi_lang/japan_2.jpg",
+      "source_sha256": "c9c89704f7cc948ef721ca49c52b1de8cdedc814d128e90d9e1e9872afd59abd",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-visualization-md-5a66a633",
+      "version": "v2.9.1",
+      "line": 26,
+      "reference": "../imgs_results/PP-OCRv3/multi_lang/korean_1.jpg",
+      "source_sha256": "c9c89704f7cc948ef721ca49c52b1de8cdedc814d128e90d9e1e9872afd59abd",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-visualization-md-5a66a633",
+      "version": "v2.9.1",
+      "line": 32,
+      "reference": "../imgs_results/PP-OCRv2/PP-OCRv2-pic001.jpg",
+      "source_sha256": "c9c89704f7cc948ef721ca49c52b1de8cdedc814d128e90d9e1e9872afd59abd",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-visualization-md-5a66a633",
+      "version": "v2.9.1",
+      "line": 33,
+      "reference": "../imgs_results/PP-OCRv2/PP-OCRv2-pic002.jpg",
+      "source_sha256": "c9c89704f7cc948ef721ca49c52b1de8cdedc814d128e90d9e1e9872afd59abd",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-visualization-md-5a66a633",
+      "version": "v2.9.1",
+      "line": 34,
+      "reference": "../imgs_results/PP-OCRv2/PP-OCRv2-pic003.jpg",
+      "source_sha256": "c9c89704f7cc948ef721ca49c52b1de8cdedc814d128e90d9e1e9872afd59abd",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-visualization-md-5a66a633",
+      "version": "v2.9.1",
+      "line": 41,
+      "reference": "../imgs_results/ch_ppocr_mobile_v2.0/00006737.jpg",
+      "source_sha256": "c9c89704f7cc948ef721ca49c52b1de8cdedc814d128e90d9e1e9872afd59abd",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-visualization-md-5a66a633",
+      "version": "v2.9.1",
+      "line": 42,
+      "reference": "../imgs_results/ch_ppocr_mobile_v2.0/00009282.jpg",
+      "source_sha256": "c9c89704f7cc948ef721ca49c52b1de8cdedc814d128e90d9e1e9872afd59abd",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-visualization-md-5a66a633",
+      "version": "v2.9.1",
+      "line": 43,
+      "reference": "../imgs_results/ch_ppocr_mobile_v2.0/00015504.jpg",
+      "source_sha256": "c9c89704f7cc948ef721ca49c52b1de8cdedc814d128e90d9e1e9872afd59abd",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-visualization-md-5a66a633",
+      "version": "v2.9.1",
+      "line": 50,
+      "reference": "../imgs_results/ch_ppocr_mobile_v2.0/img_12.jpg",
+      "source_sha256": "c9c89704f7cc948ef721ca49c52b1de8cdedc814d128e90d9e1e9872afd59abd",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-visualization-md-5a66a633",
+      "version": "v2.9.1",
+      "line": 57,
+      "reference": "../imgs_results/french_0.jpg",
+      "source_sha256": "c9c89704f7cc948ef721ca49c52b1de8cdedc814d128e90d9e1e9872afd59abd",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-visualization-md-5a66a633",
+      "version": "v2.9.1",
+      "line": 58,
+      "reference": "../imgs_results/korean.jpg",
+      "source_sha256": "c9c89704f7cc948ef721ca49c52b1de8cdedc814d128e90d9e1e9872afd59abd",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-whl-md-f1bd9719",
+      "version": "v2.9.1",
+      "line": 65,
+      "reference": "../imgs_results/whl/11_det_rec.jpg",
+      "source_sha256": "9bc1fb30acf1da3ef10613fc44b8748f70ac7fb17d5b449b281fa49d869e455a",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-whl-md-f1bd9719",
+      "version": "v2.9.1",
+      "line": 105,
+      "reference": "../imgs_results/whl/11_det_rec.jpg",
+      "source_sha256": "9bc1fb30acf1da3ef10613fc44b8748f70ac7fb17d5b449b281fa49d869e455a",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-whl-md-f1bd9719",
+      "version": "v2.9.1",
+      "line": 163,
+      "reference": "../imgs_results/whl/11_det.jpg",
+      "source_sha256": "9bc1fb30acf1da3ef10613fc44b8748f70ac7fb17d5b449b281fa49d869e455a",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-readme-ch-md-0b3b06b7",
+      "version": "v2.9.1",
+      "line": 23,
+      "reference": "https://user-images.githubusercontent.com/14270174/195265734-6f4b5a7f-59b1-4fcc-af6d-89afc9bd51e1.jpg",
+      "source_sha256": "702fe8dbe6130cf224c6c88ff58fe293e320d81f944fc80e938acf792bfb55e0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-readme-ch-md-0b3b06b7",
+      "version": "v2.9.1",
+      "line": 53,
+      "reference": "./docs/table/ppstructure.GIF",
+      "source_sha256": "702fe8dbe6130cf224c6c88ff58fe293e320d81f944fc80e938acf792bfb55e0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-readme-ch-md-0b3b06b7",
+      "version": "v2.9.1",
+      "line": 57,
+      "reference": "https://github.com/PaddlePaddle/PaddleOCR/assets/43341135/799450d4-d2c5-4b61-b490-e160dc0f515c",
+      "source_sha256": "702fe8dbe6130cf224c6c88ff58fe293e320d81f944fc80e938acf792bfb55e0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-readme-ch-md-0b3b06b7",
+      "version": "v2.9.1",
+      "line": 63,
+      "reference": "./docs/recovery/recovery.jpg",
+      "source_sha256": "702fe8dbe6130cf224c6c88ff58fe293e320d81f944fc80e938acf792bfb55e0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-readme-ch-md-0b3b06b7",
+      "version": "v2.9.1",
+      "line": 73,
+      "reference": "https://user-images.githubusercontent.com/14270174/185539141-68e71c75-5cf7-4529-b2ca-219d29fa5f68.jpg",
+      "source_sha256": "702fe8dbe6130cf224c6c88ff58fe293e320d81f944fc80e938acf792bfb55e0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-readme-ch-md-0b3b06b7",
+      "version": "v2.9.1",
+      "line": 77,
+      "reference": "https://user-images.githubusercontent.com/14270174/185310636-6ce02f7c-790d-479f-b163-ea97a5a04808.jpg",
+      "source_sha256": "702fe8dbe6130cf224c6c88ff58fe293e320d81f944fc80e938acf792bfb55e0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-readme-ch-md-0b3b06b7",
+      "version": "v2.9.1",
+      "line": 81,
+      "reference": "https://user-images.githubusercontent.com/14270174/185539517-ccf2372a-f026-4a7c-ad28-c741c770f60a.png",
+      "source_sha256": "702fe8dbe6130cf224c6c88ff58fe293e320d81f944fc80e938acf792bfb55e0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-readme-ch-md-0b3b06b7",
+      "version": "v2.9.1",
+      "line": 85,
+      "reference": "https://user-images.githubusercontent.com/14270174/197464552-69de557f-edff-4c7f-acbf-069df1ba097f.png",
+      "source_sha256": "702fe8dbe6130cf224c6c88ff58fe293e320d81f944fc80e938acf792bfb55e0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-readme-ch-md-0b3b06b7",
+      "version": "v2.9.1",
+      "line": 89,
+      "reference": "https://user-images.githubusercontent.com/25809855/186095702-9acef674-12af-4d09-97fc-abf4ab32600e.png",
+      "source_sha256": "702fe8dbe6130cf224c6c88ff58fe293e320d81f944fc80e938acf792bfb55e0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-readme-ch-md-0b3b06b7",
+      "version": "v2.9.1",
+      "line": 97,
+      "reference": "https://user-images.githubusercontent.com/14270174/185393805-c67ff571-cf7e-4217-a4b0-8b396c4f22bb.jpg",
+      "source_sha256": "702fe8dbe6130cf224c6c88ff58fe293e320d81f944fc80e938acf792bfb55e0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-readme-ch-md-0b3b06b7",
+      "version": "v2.9.1",
+      "line": 101,
+      "reference": "https://user-images.githubusercontent.com/14270174/185540080-0431e006-9235-4b6d-b63d-0b3c6e1de48f.jpg",
+      "source_sha256": "702fe8dbe6130cf224c6c88ff58fe293e320d81f944fc80e938acf792bfb55e0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-readme-ch-md-0b3b06b7",
+      "version": "v2.9.1",
+      "line": 105,
+      "reference": "https://user-images.githubusercontent.com/25809855/186094813-3a8e16cc-42e5-4982-b9f4-0134dfb5688d.png",
+      "source_sha256": "702fe8dbe6130cf224c6c88ff58fe293e320d81f944fc80e938acf792bfb55e0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-readme-ch-md-0b3b06b7",
+      "version": "v2.9.1",
+      "line": 109,
+      "reference": "https://user-images.githubusercontent.com/25809855/186095641-5843b4da-34d7-4c1c-943a-b1036a859fe3.png",
+      "source_sha256": "702fe8dbe6130cf224c6c88ff58fe293e320d81f944fc80e938acf792bfb55e0",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-layout-readme-ch-md-024c02e5",
+      "version": "v2.9.1",
+      "line": 28,
+      "reference": "../docs/layout/layout.png",
+      "source_sha256": "037db40341ebaa6921b41a8ff505a177224731416ad1ea477a755c3815fcf749",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-layout-readme-ch-md-024c02e5",
+      "version": "v2.9.1",
+      "line": 440,
+      "reference": "../docs/layout/layout_res.jpg",
+      "source_sha256": "037db40341ebaa6921b41a8ff505a177224731416ad1ea477a755c3815fcf749",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-recovery-readme-ch-md-92a57657",
+      "version": "v2.9.1",
+      "line": 36,
+      "reference": "https://user-images.githubusercontent.com/19808900/195319840-68fc60ec-ea66-4095-b734-0ec115860341.png",
+      "source_sha256": "09ba2bc597d469f9996d45fca956890bca684f7320814a06a229901ecbc0cf91",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-recovery-readme-ch-md-92a57657",
+      "version": "v2.9.1",
+      "line": 42,
+      "reference": "../docs/recovery/recovery.jpg",
+      "source_sha256": "09ba2bc597d469f9996d45fca956890bca684f7320814a06a229901ecbc0cf91",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-recovery-readme-ch-md-92a57657",
+      "version": "v2.9.1",
+      "line": 45,
+      "reference": "../docs/recovery/recovery_ch.jpg",
+      "source_sha256": "09ba2bc597d469f9996d45fca956890bca684f7320814a06a229901ecbc0cf91",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-return-word-pos-md-3ece5954",
+      "version": "v2.9.1",
+      "line": 42,
+      "reference": "https://github.com/PaddlePaddle/PaddleOCR/assets/43341135/799450d4-d2c5-4b61-b490-e160dc0f515c",
+      "source_sha256": "5f64b30b4accf28e2f6b9acc030ec3819d9d26232d21247db778409df4a237ff",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-return-word-pos-md-3ece5954",
+      "version": "v2.9.1",
+      "line": 65,
+      "reference": "https://github.com/PaddlePaddle/PaddleOCR/assets/43341135/d0858341-a889-483c-8373-5ecaa57f3b20",
+      "source_sha256": "5f64b30b4accf28e2f6b9acc030ec3819d9d26232d21247db778409df4a237ff",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-return-word-pos-md-3ece5954",
+      "version": "v2.9.1",
+      "line": 85,
+      "reference": "https://github.com/PaddlePaddle/PaddleOCR/assets/43341135/3c200538-f2e6-4d79-847a-4c4587efa9f0",
+      "source_sha256": "5f64b30b4accf28e2f6b9acc030ec3819d9d26232d21247db778409df4a237ff",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-table-readme-ch-md-c805418c",
+      "version": "v2.9.1",
+      "line": 24,
+      "reference": "../docs/table/tableocr_pipeline.jpg",
+      "source_sha256": "0cf25f375eb9ec3ee4dac8c5433ae7ba9236b2dee629309ae35f6fdff76b4b54",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-table-readme-ch-md-c805418c",
+      "version": "v2.9.1",
+      "line": 52,
+      "reference": "../docs/imgs/table_ch_result1.jpg",
+      "source_sha256": "0cf25f375eb9ec3ee4dac8c5433ae7ba9236b2dee629309ae35f6fdff76b4b54",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-table-readme-ch-md-c805418c",
+      "version": "v2.9.1",
+      "line": 53,
+      "reference": "../docs/imgs/table_ch_result2.jpg",
+      "source_sha256": "0cf25f375eb9ec3ee4dac8c5433ae7ba9236b2dee629309ae35f6fdff76b4b54",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-ppstructure-table-readme-ch-md-c805418c",
+      "version": "v2.9.1",
+      "line": 54,
+      "reference": "../docs/imgs/table_ch_result3.jpg",
+      "source_sha256": "0cf25f375eb9ec3ee4dac8c5433ae7ba9236b2dee629309ae35f6fdff76b4b54",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 3,
+      "reference": "./docs/images/Banner_cn.png",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 11,
+      "reference": "https://img.shields.io/github/stars/PaddlePaddle/PaddleOCR?color=ccf",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 12,
+      "reference": "https://img.shields.io/pypi/dm/paddleocr",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 13,
+      "reference": "https://img.shields.io/badge/python-3.8+-aff.svg",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 14,
+      "reference": "https://img.shields.io/badge/os-linux%2C%20win%2C%20mac-pink.svg",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 16,
+      "reference": "https://img.shields.io/badge/Website-PaddleOCR-blue?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmmRkdj0AAAAASUVORK5CYII=",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 17,
+      "reference": "https://img.shields.io/badge/PP_OCRv5-AI_Studio-green",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 18,
+      "reference": "https://img.shields.io/badge/PP_StructureV3-AI_Studio-green",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 19,
+      "reference": "https://img.shields.io/badge/PP_ChatOCRv4-AI_Studio-green",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 34,
+      "reference": "./docs/images/Arch_cn.png",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 61,
+      "reference": "https://img.shields.io/badge/PP_OCRv5-AI_Studio-green",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 62,
+      "reference": "https://img.shields.io/badge/PP_StructureV3-AI_Studio-green",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 63,
+      "reference": "https://img.shields.io/badge/PP_ChatOCRv4-AI_Studio-green",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 237,
+      "reference": "./docs/images/demo.gif",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 243,
+      "reference": "./docs/images/blue_v3.gif",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 251,
+      "reference": "https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/README/qrcode_for_paddlepaddle_official_account.jpg",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 251,
+      "reference": "https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/paddleocr/README/qr_code_for_the_questionnaire.jpg",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 257,
+      "reference": "https://img.shields.io/github/stars/infiniflow/ragflow",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 258,
+      "reference": "https://img.shields.io/github/stars/opendatalab/MinerU",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 259,
+      "reference": "https://img.shields.io/github/stars/hiroi-sora/Umi-OCR",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 260,
+      "reference": "https://img.shields.io/github/stars/microsoft/OmniParser",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 261,
+      "reference": "https://img.shields.io/github/stars/netease-youdao/QAnything",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 262,
+      "reference": "https://img.shields.io/github/stars/opendatalab/PDF-Extract-Kit",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 263,
+      "reference": "https://img.shields.io/github/stars/PantsuDango/Dango-Translator",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 269,
+      "reference": "https://contrib.rocks/image?repo=PaddlePaddle/PaddleOCR&max=400&columns=20",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-readme-md-8ec9a00b",
+      "version": "v3.0.0",
+      "line": 275,
+      "reference": "https://api.star-history.com/svg?repos=PaddlePaddle/PaddleOCR&type=Date",
+      "source_sha256": "b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-module-usage-doc-img-orientation-classificatio-41da1721",
+      "version": "v3.0.0",
+      "line": 119,
+      "reference": "https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/doc_img_ori_classification/img_rot180_demo_res.jpg",
+      "source_sha256": "1afd973dbc4999b600745be7f5fc27f0db78c6d5201b1e7da1746b56e2574d12",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-module-usage-layout-detection-md-fa46b4a6",
+      "version": "v3.0.0",
+      "line": 331,
+      "reference": "https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/layout_det/layout_res_plus.jpg",
+      "source_sha256": "4567d95d8e4571f682b3210d3441c2e661f73a528d321857dbf81972e72d6fbd",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-module-usage-table-cells-detection-md-ce0db244",
+      "version": "v3.0.0",
+      "line": 121,
+      "reference": "https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/table_cells_detection/01.jpg",
+      "source_sha256": "47d4ee3527d14c0eef4e71382fbf3c454a8fcb6a95a55a071702891edcd5ba58",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-module-usage-table-classification-md-9db11c51",
+      "version": "v3.0.0",
+      "line": 109,
+      "reference": "https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/table_classification/01.jpg",
+      "source_sha256": "d1234c970180351c216c3be72ad43b8eeb3ef0997f309766c65475e0c1777d0d",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-module-usage-text-detection-md-fa9065ec",
+      "version": "v3.0.0",
+      "line": 147,
+      "reference": "https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/text_det/general_ocr_001_res.png",
+      "source_sha256": "cc141826eb569a7351f5221bc335d6eb686cd55a56bef32ab9e2aadd23b250af",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-module-usage-text-image-unwarping-md-ea2fb72e",
+      "version": "v3.0.0",
+      "line": 111,
+      "reference": "https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/image_unwarp/doc_test_res.jpg",
+      "source_sha256": "387913b8d84b3fdc3a0dfe80a771e8cc0c206da75074abc050ac04c3f93630d6",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-module-usage-text-line-orientation-classificat-1fbc6790",
+      "version": "v3.0.0",
+      "line": 119,
+      "reference": "https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/textline_ori_classification/textline_rot180_demo_res.jpg",
+      "source_sha256": "5604bc5726d3201792ad41fda5521ef597e9bee399058e3d4640069e2c63f819",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-module-usage-text-recognition-md-ad4d243e",
+      "version": "v3.0.0",
+      "line": 436,
+      "reference": "https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/refs/heads/main/images/modules/text_recog/general_ocr_rec_001.png",
+      "source_sha256": "585e1897b961f61e5735b8baf1589320b51d5e4f2b6552330419a99174ddf730",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+      "version": "v3.0.0",
+      "line": 13,
+      "reference": "https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/01.png",
+      "source_sha256": "6ce2310fc0b471e634a57fb54718fa56d79a00867515b3bf5be397163ab8927a",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+      "version": "v3.0.0",
+      "line": 931,
+      "reference": "https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/03.png",
+      "source_sha256": "6ce2310fc0b471e634a57fb54718fa56d79a00867515b3bf5be397163ab8927a",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-pipeline-usage-doc-preprocessor-md-3eba1a19",
+      "version": "v3.0.0",
+      "line": 11,
+      "reference": "https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg",
+      "source_sha256": "2aeea097fd70f5e9e65257deb2539626894691a56e5f88286fb9091a4313a557",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-pipeline-usage-doc-preprocessor-md-3eba1a19",
+      "version": "v3.0.0",
+      "line": 281,
+      "reference": "https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg",
+      "source_sha256": "2aeea097fd70f5e9e65257deb2539626894691a56e5f88286fb9091a4313a557",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-pipeline-usage-table-recognition-v2-md-c0b78566",
+      "version": "v3.0.0",
+      "line": 15,
+      "reference": "https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/table_recognition_v2/01.png",
+      "source_sha256": "6653f429a4f29e9867235eaaa1162f43c3ba7733e2d2991f4b9de22356b01ba5",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v3-0-0-docs-version3-x-pipeline-usage-table-recognition-v2-md-c0b78566",
+      "version": "v3.0.0",
+      "line": 1132,
+      "reference": "https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/table_recognition_v2/02.jpg",
+      "source_sha256": "6653f429a4f29e9867235eaaa1162f43c3ba7733e2d2991f4b9de22356b01ba5",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-md-80bfc432",
+      "version": "v2.9.1",
+      "line": 141,
+      "reference": "../imgs_results/det_res_00018069.jpg",
+      "source_sha256": "95331d6f75b8cefd5fdf659b9260e328fbee1e5b8dddbf05f70c8480e0e82d36",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-md-80bfc432",
+      "version": "v2.9.1",
+      "line": 179,
+      "reference": "../imgs_results/det_res_img_10_db.jpg",
+      "source_sha256": "95331d6f75b8cefd5fdf659b9260e328fbee1e5b8dddbf05f70c8480e0e82d36",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-md-80bfc432",
+      "version": "v2.9.1",
+      "line": 200,
+      "reference": "../imgs_results/det_res_img_10_east.jpg",
+      "source_sha256": "95331d6f75b8cefd5fdf659b9260e328fbee1e5b8dddbf05f70c8480e0e82d36",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-md-80bfc432",
+      "version": "v2.9.1",
+      "line": 223,
+      "reference": "../imgs_results/det_res_img_10_sast.jpg",
+      "source_sha256": "95331d6f75b8cefd5fdf659b9260e328fbee1e5b8dddbf05f70c8480e0e82d36",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-md-80bfc432",
+      "version": "v2.9.1",
+      "line": 241,
+      "reference": "../imgs_results/det_res_img623_sast.jpg",
+      "source_sha256": "95331d6f75b8cefd5fdf659b9260e328fbee1e5b8dddbf05f70c8480e0e82d36",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-md-80bfc432",
+      "version": "v2.9.1",
+      "line": 262,
+      "reference": "../imgs_words_en/word_10.png",
+      "source_sha256": "95331d6f75b8cefd5fdf659b9260e328fbee1e5b8dddbf05f70c8480e0e82d36",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-md-80bfc432",
+      "version": "v2.9.1",
+      "line": 287,
+      "reference": "../imgs_words_en/word_336.png",
+      "source_sha256": "95331d6f75b8cefd5fdf659b9260e328fbee1e5b8dddbf05f70c8480e0e82d36",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-md-80bfc432",
+      "version": "v2.9.1",
+      "line": 337,
+      "reference": "../imgs_words/korean/1.jpg",
+      "source_sha256": "95331d6f75b8cefd5fdf659b9260e328fbee1e5b8dddbf05f70c8480e0e82d36",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-md-80bfc432",
+      "version": "v2.9.1",
+      "line": 359,
+      "reference": "../imgs_words_en/word_10.png",
+      "source_sha256": "95331d6f75b8cefd5fdf659b9260e328fbee1e5b8dddbf05f70c8480e0e82d36",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-md-80bfc432",
+      "version": "v2.9.1",
+      "line": 388,
+      "reference": "../imgs_results/system_res_00018069.jpg",
+      "source_sha256": "95331d6f75b8cefd5fdf659b9260e328fbee1e5b8dddbf05f70c8480e0e82d36",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-inference-md-80bfc432",
+      "version": "v2.9.1",
+      "line": 405,
+      "reference": "../imgs_results/img_10_east_starnet.jpg",
+      "source_sha256": "95331d6f75b8cefd5fdf659b9260e328fbee1e5b8dddbf05f70c8480e0e82d36",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-algorithm-inference-md-6f816b8f",
+      "version": "v2.9.1",
+      "line": 148,
+      "reference": "../imgs_results/det_res_00018069.jpg",
+      "source_sha256": "5471b532b2308b3e4fb4bf7f84ba6b29ac6850b57f154df10bfbc17f6fedb35c",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-algorithm-inference-md-6f816b8f",
+      "version": "v2.9.1",
+      "line": 185,
+      "reference": "../imgs_results/det_res_img_10_db.jpg",
+      "source_sha256": "5471b532b2308b3e4fb4bf7f84ba6b29ac6850b57f154df10bfbc17f6fedb35c",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-algorithm-inference-md-6f816b8f",
+      "version": "v2.9.1",
+      "line": 205,
+      "reference": "../imgs_results/det_res_img_10_east.jpg",
+      "source_sha256": "5471b532b2308b3e4fb4bf7f84ba6b29ac6850b57f154df10bfbc17f6fedb35c",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-algorithm-inference-md-6f816b8f",
+      "version": "v2.9.1",
+      "line": 224,
+      "reference": "../imgs_results/det_res_img_10_sast.jpg",
+      "source_sha256": "5471b532b2308b3e4fb4bf7f84ba6b29ac6850b57f154df10bfbc17f6fedb35c",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-algorithm-inference-md-6f816b8f",
+      "version": "v2.9.1",
+      "line": 240,
+      "reference": "../imgs_results/det_res_img623_sast.jpg",
+      "source_sha256": "5471b532b2308b3e4fb4bf7f84ba6b29ac6850b57f154df10bfbc17f6fedb35c",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-algorithm-inference-md-6f816b8f",
+      "version": "v2.9.1",
+      "line": 263,
+      "reference": "../imgs_words/ch/word_4.jpg",
+      "source_sha256": "5471b532b2308b3e4fb4bf7f84ba6b29ac6850b57f154df10bfbc17f6fedb35c",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-algorithm-inference-md-6f816b8f",
+      "version": "v2.9.1",
+      "line": 289,
+      "reference": "../imgs_words_en/word_336.png",
+      "source_sha256": "5471b532b2308b3e4fb4bf7f84ba6b29ac6850b57f154df10bfbc17f6fedb35c",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-algorithm-inference-md-6f816b8f",
+      "version": "v2.9.1",
+      "line": 335,
+      "reference": "../imgs_words/korean/1.jpg",
+      "source_sha256": "5471b532b2308b3e4fb4bf7f84ba6b29ac6850b57f154df10bfbc17f6fedb35c",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-algorithm-inference-md-6f816b8f",
+      "version": "v2.9.1",
+      "line": 359,
+      "reference": "../imgs_words/ch/word_1.jpg",
+      "source_sha256": "5471b532b2308b3e4fb4bf7f84ba6b29ac6850b57f154df10bfbc17f6fedb35c",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-algorithm-inference-md-6f816b8f",
+      "version": "v2.9.1",
+      "line": 389,
+      "reference": "../imgs_results/system_res_00018069.jpg",
+      "source_sha256": "5471b532b2308b3e4fb4bf7f84ba6b29ac6850b57f154df10bfbc17f6fedb35c",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    },
+    {
+      "source_id": "v2-9-1-doc-doc-ch-algorithm-inference-md-6f816b8f",
+      "version": "v2.9.1",
+      "line": 406,
+      "reference": "../imgs_results/img_10_east_starnet.jpg",
+      "source_sha256": "5471b532b2308b3e4fb4bf7f84ba6b29ac6850b57f154df10bfbc17f6fedb35c",
+      "status": "unextracted",
+      "license_status": "not_individually_verified",
+      "publisher": "PaddlePaddle"
+    }
+  ],
+  "application": {
+    "source_type": "developer_original_application",
+    "file_count": 0
+  }
+}

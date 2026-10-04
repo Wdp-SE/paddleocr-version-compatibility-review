@@ -15,7 +15,7 @@ def test_app_always_runs_the_public_profile_workbench(monkeypatch):
 
     assert not app.exception
     visible = "\n".join(item.value for item in list(app.title) + list(app.markdown))
-    assert "研发知识版本服务与变更影响审查" in visible
+    assert "PaddleOCR 文档处理应用研发工作台" in visible
     assert "研发知识与变更审查工作台" not in visible
     assert "DEMO_LEGACY_FIXTURES" not in visible
     assert not app.tabs

@@ -1,23 +1,30 @@
-# PP-Human 研发知识工作台
+# PaddleOCR 文档处理应用研发工作台
 
-Streamlit 工作台围绕 PP-Human 行人分析应用研发资料，提供版本化中文文档检索、来源浏览和变更影响候选审查。人工查询与 Agent 审查调用同一个 RAG API；Agent 只整理带来源的候选和缺口，工程师负责审核。工作台不会修改 PaddleDetection 上游内容。
+面向维护扫描文档 OCR、版面/表格解析与结果归一化应用的开发者。人工查询按依赖版本检索官方中文资料；兼容性审查 Agent 读取应用文本，定位依赖升级需要核对的调用和结果消费位置。两者共用一个 RAG API，审查不执行提交代码、不修改应用或上游资料。
 
 ## 当前范围
 
-工作区限定为 PaddlePaddle/PaddleDetection 的 PP-Human 官方中文教程和关联配置，版本 v2.5.0–v2.9.0（含 v2.8.1），默认最新版 v2.9.0。导入 83 条版本来源、14 个主题和 761 个检索片段；图片、视频、模型权重和第三方数据集不在检索范围。PP-Human 专项评测待完成，因此不展示其他语料的分数作为本场景成绩。
+活动知识空间为 PaddlePaddle/PaddleOCR 的两个固定版本：v2.9.1 与 v3.0.0。收录40份中文 Markdown、9份 Python 接口契约和5份 YAML，共54条版本来源、1545个检索片段。代码和配置属于辅助契约证据，不算中文教程。默认 v3.0.0 表示最新已收录版本，不表示上游目前最新版。旧领域资料不进入该工作台活动默认链路。
 
-该项目用于说明 RAG 和 Agent 在计算机视觉应用研发资料检索与变更检查中的工程方案，不代表 PaddlePaddle 官方产品或真实企业审批系统，也不处理真人影像、身份信息或员工行为记录。
+三个原创应用片段覆盖 PPStructure 接口移除、旧 OCR 嵌套结果消费以及基本 OCR 调用形式；它们是静态审查样例，不是已经通过真实 OCR 推理的生产应用。动态调用、未覆盖配置及安装环境保留为待验证项。
 
 ## 本地运行
 
-先按[服务说明](../versioned-rag-service/README.md)启动 PP-Human RAG API，再从本目录启动：
+从项目根目录运行 start_prototype.ps1，或先按服务说明启动 API，再从本目录启动 Streamlit。模型密钥仅放在 RAG 后端，不填写到页面。
 
 ```powershell
 $env:APP_ENV = "public_demo"
-$env:RAG_API_BASE_URL = "http://127.0.0.1:8765"
-..\change-review-agent\.venv\Scripts\python.exe -m streamlit run app.py --server.address 127.0.0.1 --server.port 8502
+$env:RAG_API_BASE_URL = "http://127.0.0.1:8770"
+$env:DEMO_ALLOW_RAG_QUERY = "true"
+..\OpenManus-rag\.venv\Scripts\python.exe -m streamlit run app.py --server.address 127.0.0.1 --server.port 8520
 ```
 
-工作台从 `/public/workspace` 读取知识空间身份和可用版本；当前页面仅接受 PP-Human 与中文语料。知识空间不匹配时会停止查询，避免返回其他领域的来源。
+工作台从 /public/workspace 读取实际身份、版本、构建指纹和生成配置。身份不匹配时停止查询并清除绑定结果。人工问答默认 BM25，可配置证据 Top-K；十条来源派生小样本用于工程验收，不能当作独立回答准确率。
 
-模型密钥只配置在 RAG 后端。审查结论需要人工审核；演示中的会话记录不具备企业身份权限或集中审批能力。线上发布需单独核对 Render 与 Streamlit 两端的构建版本和工作区指纹。
+## 审查与审核
+
+选择当前依赖和升级目标，提交相对路径与受限 Python/YAML 文本，查看应用行号、升级前后官方出处、静态风险/缺口和验证清单。可选模型核查建议仅使用已校验目标版证据，与静态事实分开展示；格式或引用失败时保留静态报告和实际生成诊断。
+
+人工确认只记录“已审阅静态报告”。JSON 导出包含版本、应用文件哈希、完整报告与来源身份。匿名会话的 SQLite 审计不等于企业实名审批，临时云磁盘不能保证重启后保留。真实 OCR 推理、模型加载和下游回归尚未验证；审核不能提升该验证状态。
+
+公网发布需另行核对 Render 后端和 Streamlit 前端的同一构建及语料指纹。本轮迁移完成本地实现与验收，不自动发布。

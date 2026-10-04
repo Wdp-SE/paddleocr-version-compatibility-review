@@ -1,41 +1,36 @@
-# PP-Human 版本化研发知识服务
+# PaddleOCR 固定版本知识服务
 
-FastAPI 服务为 PP-Human 研发文档检索和变更审查 Agent 提供同一套中文、版本化证据。活动语料固定于 PaddlePaddle/PaddleDetection 仓库的六个正式版本，默认 v2.9.0；检索来源包含固定 commit、路径和文件哈希，历史版本查询不会用最新版资料代替。
-
-## 语料状态
-
-当前索引包含 83 条版本来源、14 个文档主题、761 个片段，覆盖 v2.5.0 至 v2.9.0（含 v2.8.1）。仅收录 PP-Human 中文教程及直接配置文件。Apache-2.0 许可依据记录在每条来源中；不包含模型权重、影像、视频或数据集。
-
-新语料已可检索，但 PP-Human 专项检索与 Agent 冻结评测仍待建立，因此服务标注 `new_corpus_pending_rebenchmark`，不能把历史语料的指标作为当前效果。
+活动范围是 PaddlePaddle/PaddleOCR 的 v2.9.1 与 v3.0.0 中文 OCR、版面/表格解析、安装部署与升级资料，以及必要的官方代码和配置契约。默认查询最新**已收录** v3.0.0，不宣称它是上游当前最新版。每条来源绑定 tag、提交、路径和原始文件 SHA-256，分块保留来源行号及代码/表格边界。
 
 ## API
 
-- `GET /health`：进程健康、语料就绪和构建指纹。
-- `GET /public/workspace`：当前版本、可查询历史版本、来源数量、中文范围及评测状态。
-- `GET /public/documents`：按版本列出固定来源和标题。
-- `POST /public/search`、`POST /public/query`：检索或生成带引用回答，语言和版本范围由服务端语料清单验证。
-- `POST /public/review-advice`：Agent 提交已检索证据 ID，回答只能引用本次提交的证据。
+- `GET /health`：服务、生成配置、活动工作区和构建指纹。
+- `GET /public/workspace`：来源与版本、语料量、兼容性检查范围。
+- `GET /public/documents`、`POST /public/document`：固定来源与原文片段；后者接受已登记 source_id 或 document_id。
+- `POST /public/search`：只读检索，按版本过滤，最终证据 Top-K 1–20。
+- `POST /public/query`：结构化生成，逐条校验引用成员；失效、证据不足和模型错误分别返回具体状态。
+- `POST /public/compatibility-review`：审查受限应用文本的 v2.9.1→v3.0.0 静态兼容性，返回应用位置、版本证据、风险和未知项。不执行文本。
+- `POST /public/review-advice`：仅用明确提交的当前目标版本证据生成核查建议；模型不批准升级。
 
-## 本地启动
-
-从服务目录执行：
-
-```powershell
-$env:RAG_PUBLIC_CORPUS_ROOT = "public_corpus_pphuman"
-$env:RAG_PUBLIC_RETRIEVAL_CONFIG = "public_corpus_pphuman/public_retrieval_runtime.json"
-..\.venv\Scripts\python.exe -m uvicorn src.public_server:app --host 127.0.0.1 --port 8765
+```json
+{
+  "source_version": "v2.9.1",
+  "target_version": "v3.0.0",
+  "files": [{"path": "app.py", "content": "from paddleocr import PPStructure\nengine = PPStructure()\n"}]
+}
 ```
 
-要启用回答生成，在后端进程设置 `RD_V2_ALLOW_EXTERNAL_GENERATION=true`、`RD_V2_GENERATION_PROVIDER=deepseek` 和 `DEEPSEEK_API_KEY`。密钥仅放在服务端或部署平台的密钥存储中。
+工具限制最多 12 个文件、单文件 50 KB、总计 200 KB；文件名是安全的显示标签，不作为服务器路径读取。AST 复杂度受限，动态反射、不支持的版本和缺失契约不能得到虚假“安全”结论。所有报告标记 `runtime_verified=false`，真正升级还需要原始文档集的推理和下游契约回归。
 
-## 来源导入和评测
+## 来源构建与指标
 
-`config/pphuman_source_selection.json` 是正文路径白名单。`scripts/build_pphuman_corpus.py` 从本地官方仓库读取固定 tag，只能构建到空的输出目录；会生成来源清单、索引、版本关系和排除项审计。缺少的历史文件必须记录为缺失，禁止从后续版本补写。
+构建配置在 `config/paddleocr_project.json`、`config/paddleocr_source_selection.json`，构建器在 `scripts/build_paddleocr_corpus.py`，实际来源与排除范围在活动语料的 `SOURCE_AUDIT.md`。v3 tag 中的 version2.x 教程排除在新接口问答外。只复制获许可的相关文本，不搬运链接中的权重、图像、视频和数据集。
+
+默认 BM25 保留为可解释基线；任务自适应重排只是一条可选择、失败可回退的实验链路，不能因使用大模型就宣称准确率更高。新语料的来源召回与静态案例验收独立记录，旧业务成绩不作为当前成绩。
 
 ```powershell
-$env:PYTHONPATH = "."
-python scripts/build_pphuman_corpus.py --repository-root <PaddleDetection本地仓库路径> --output <新的空目录>
-python -m pytest -q tests/test_pphuman_corpus.py tests/test_pphuman_server.py
+python -m uvicorn src.public_server:app --host 127.0.0.1 --port 8770
+python -m pytest tests/test_paddleocr_corpus.py tests/test_paddleocr_compatibility.py tests/test_paddleocr_release.py -q
 ```
 
-只有在 PP-Human 版本化检索和变更审查题集冻结并通过独立 holdout 后，才能公布准确率或切换检索策略。其他语料的报告不得用于表示本服务的效果。
+生成使用服务端 DeepSeek 环境变量；不在 Streamlit secrets 中放模型密钥。公网模式固定活动语料，不接受旧领域环境覆盖。本轮本地实现不代表已执行线上发布。
