@@ -27,6 +27,7 @@ def test_auto_policy_preserves_baseline_when_validation_rejects_candidate(monkey
     import src.public_api as api
     monkeypatch.setenv('APP_ENV','public_demo')
     monkeypatch.setenv('RD_V2_ALLOW_EXTERNAL_GENERATION','false')
+    monkeypatch.setattr(api,'load_rag_release',lambda corpus:None)
     monkeypatch.setattr(api,'load_impact_release',lambda corpus:{'promotion_passed':False,'selected_strategy':'bm25',
         'development_candidate':'window_rerank_120','configs':{'bm25':['bm25',80],'window_rerank_120':['contextual_rerank',120]}})
     with TestClient(create_app()) as client:

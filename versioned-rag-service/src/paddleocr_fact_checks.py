@@ -2,8 +2,9 @@
 from __future__ import annotations
 import re
 import ast
-from src.paddleocr_retrieval_views import evidence_text, module_for
-from src.paddleocr_query_plan import query_module, explicit_versions
+import html
+from src.paddleocr_retrieval_views import generation_evidence_text as evidence_text, module_for
+from src.paddleocr_query_plan import claim_scope_module, explicit_versions
 
 _DEFAULT=re.compile(r'\b([A-Za-z][\w]*)\b\s*(?:的)?\s*默认(?:值)?\s*(?:为|是|=|：|:)?\s*([-+]?\d+(?:\.\d+)?|True|False|None)\b',re.I)
 
@@ -25,6 +26,16 @@ def _defaults(text):
             for arg,value in values:
                 if isinstance(value,ast.Constant) and (value.value is None or type(value.value) in (int,float,bool)):
                     pairs.setdefault(arg.arg,set()).add(str(value.value).lower())
+    column=None
+    for row in re.findall(r'<tr\b[^>]*>(.*?)</tr>', text, re.S|re.I):
+        cells = [html.unescape(re.sub(r'<[^>]+>', '', c)).strip()
+                 for c in re.findall(r'<t[hd]\b[^>]*>(.*?)</t[hd]>', row, re.S|re.I)]
+        if any('默认' in c for c in cells):
+            column = next(i for i,c in enumerate(cells) if '默认' in c)
+        elif column is not None and len(cells)>column and re.fullmatch(r'[A-Za-z][\w]*',cells[0]):
+            value = cells[column]
+            if re.fullmatch(r'[-+]?\d+(?:\.\d+)?|True|False|None',value,re.I):
+                pairs.setdefault(cells[0],set()).add(value.lower())
     column=None
     for line in text.splitlines():
         cells=[c.strip().strip('`') for c in line.strip().strip('|').split('|')]
@@ -51,12 +62,12 @@ def check_mechanical_facts(claims:list[dict],evidence:list[dict],*,requirements:
     for i,claim in enumerate(claims):
         assertions=list(_DEFAULT.finditer(claim['text'].replace('`','')))
         symbols={m[1] for m in assertions}
-        claim_module=query_module(claim['text'])
+        claim_module=claim_scope_module(claim['text'],requirements)
         claim_versions=explicit_versions(claim['text'])
         relevant=[r for r in requirements if symbols.intersection(r.get('symbols') or [r.get('symbol')])
                   and (not claim_module or not r.get('module') or r['module']==claim_module)
                   and (not claim_versions or not r.get('version') or r['version'] in claim_versions)]
-        if claim_module and not relevant:
+        if assertions and claim_module and not relevant:
             relevant=[{'module':claim_module,'version':None}]
         def applies(hit,req):
             return ((not req.get('module') or hit.get('module',module_for(hit)) in (req['module'],'shared'))

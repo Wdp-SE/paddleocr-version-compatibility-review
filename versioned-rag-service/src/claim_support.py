@@ -1,7 +1,7 @@
 """Conservative model assessment of claim entailment, not a truth probability."""
 from __future__ import annotations
 import json
-from src.paddleocr_retrieval_views import evidence_text
+from src.paddleocr_retrieval_views import generation_evidence_text as evidence_text
 from src.paddleocr_retrieval_views import module_for
 
 

@@ -11,7 +11,7 @@ from src.public_knowledge import tokens
 from src.paddleocr_retrieval_views import build_views, validate_views, materialize_evidence
 
 STRATEGIES=('contextual_bm25','contextual_semantic','contextual_rrf',
-            'contextual_rerank','contextual_rrf_rerank')
+            'contextual_rerank','contextual_rrf_rerank','contextual_llm_rerank')
 _CACHE={}
 _LOCK=threading.Lock()
 
@@ -25,7 +25,7 @@ def configured_evidence_search(index,strategy='contextual_bm25',*,use_context=Tr
     with _LOCK:
         if key in _CACHE:return _CACHE[key]
         encoder=scorer=count=None
-        if strategy!='contextual_bm25':
+        if strategy not in ('contextual_bm25','contextual_llm_rerank'):
             from src.paddleocr_quality import configured_quality_retriever, ModelUnavailable
             try:
                 model=configured_quality_retriever(base)
@@ -64,7 +64,7 @@ class EvidenceSearch:
             if score>0:rows.append((i,score))
         return sorted(rows,key=lambda x:(-x[1],x[0]))
 
-    def search(self,plan:dict,*,top_k:int=5,candidate_budget:int=80,strategy:str='contextual_bm25')->dict:
+    def search(self,plan:dict,*,top_k:int=5,candidate_budget:int=80,strategy:str='contextual_bm25',ranker=None)->dict:
         if type(top_k) is not int or not 1<=top_k<=20 or candidate_budget not in (40,80,120) or strategy not in STRATEGIES:
             raise ValueError('invalid evidence search options')
         if not isinstance(plan.get('versions'),list) or not plan['versions']:
@@ -72,6 +72,15 @@ class EvidenceSearch:
         eligible=[i for i,v in enumerate(self.views) if v['version'] in plan['versions']
                   and self.parents[v['parent_chunk_id']].get('language','zh')==plan.get('language','zh')
                   and self.parents[v['parent_chunk_id']].get('namespace','project_primary')==plan.get('namespace','project_primary')]
+        modules={r['module'] for r in plan.get('requirements',[]) if r.get('module')}
+        # Apply explicit pipeline scope before candidate truncation. Identical
+        # result fields across table/structure/OCR are not interchangeable.
+        if modules:
+            api_names={'ocr':'PaddleOCR', 'structure':'PPStructureV3',
+                       'doc_preprocessor':'DocPreprocessor', 'table_recognition_v2':'TableRecognitionPipelineV2'}
+            eligible=[i for i in eligible if self.views[i]['module'] in modules|{'shared'}
+                      or (self.views[i]['module']=='general' and any(
+                          api_names.get(m,'\0') in self.views[i]['retrieval_text'] for m in modules))]
         diag={'requested_strategy':strategy,'actual_strategy':strategy,'candidate_budget':candidate_budget,
               'eligible_windows':len(eligible),'rerank_calls':0,'external_model_calls':0,
               'fallback_reason':None,'window_failures':[]}
@@ -106,7 +115,25 @@ class EvidenceSearch:
         order=order[:candidate_budget]; diag['candidate_windows']=len(order)
         candidate_evidence=materialize_evidence(self.index.chunks,[self.views[i] for i in order])
         selected_views=[]
-        if 'rerank' in strategy and order:
+        if strategy == 'contextual_llm_rerank' and order:
+            try:
+                if not callable(ranker): raise ValueError('LLM_RANKER_NOT_CONFIGURED')
+                views = [self.views[i] for i in order[:40]]
+                rows = [{'chunk_id': v['view_id'], 'excerpt': v['retrieval_text'],
+                         'title': self.parents[v['parent_chunk_id']].get('document_title',''),
+                         'path': self.parents[v['parent_chunk_id']].get('document_path',''),
+                         'version': v['version']} for v in views]
+                diag['external_model_calls'] = 1
+                ids, details = ranker(task=plan['original_query'], candidates=rows)
+                by_id = {v['view_id']: v for v in views}
+                if not isinstance(ids,list) or len(ids)!=len(by_id) or set(ids)!=set(by_id):
+                    raise ValueError('LLM_RANK_INVALID_PERMUTATION')
+                selected_views = [{**by_id[cid], 'rank_score': float(len(ids)-i)} for i,cid in enumerate(ids)]
+                diag.update(rerank_calls=1, scored_windows=len(ids), score_type='model_order_not_probability',
+                            llm_ranking=details)
+            except Exception as exc:
+                diag.update(actual_strategy='contextual_bm25', fallback_reason=str(exc) if isinstance(exc,ValueError) else type(exc).__name__)
+        elif 'rerank' in strategy and order:
             try:
                 if self.scorer is None:raise ValueError('RERANK_MODEL_NOT_CONFIGURED')
                 # Query+document tokenizer budget, never silent truncation.
@@ -141,6 +168,21 @@ class EvidenceSearch:
                 diag.update(actual_strategy='contextual_bm25',fallback_reason=str(exc)); order=lexical_order[:candidate_budget]
         if not selected_views:
             selected_views=[{**self.views[i],'rank_score':float(weights.get(i,0))} for i in order]
+        # Reserve a relevant source for each explicit requirement before filling
+        # the global Top-K. A high score for one clause must not crowd out another.
+        reserved=[]; coverage={}
+        for req in plan['requirements']:
+            lexical_ids={self.views[i]['parent_chunk_id'] for i,_ in self._lexical(req['query'],eligible)}
+            matching=[v for v in selected_views if v['parent_chunk_id'] in lexical_ids
+                      and (not req.get('version') or v['version']==req['version'])
+                      and (not req.get('module') or v['module'] in (req['module'],'shared'))
+                      and all(s in v['retrieval_text'] for s in req.get('symbols',[]) if s!='PaddleOCR')]
+            best=next((v for v in matching if v['parent_chunk_id'] not in {r['parent_chunk_id'] for r in reserved}), None)
+            if best is None and matching: best=matching[0]
+            coverage[req['id']]=best['parent_chunk_id'] if best else None
+            if best and best not in reserved and len(reserved)<top_k: reserved.append(best)
+        selected_views=reserved+[v for v in selected_views if v not in reserved]
+        diag['requirement_candidates']=coverage
         parents=[]; chosen=[]
         for view in selected_views:
             pid=view['parent_chunk_id']

@@ -1,0 +1,2752 @@
+{
+  "strategy": "llm",
+  "split": "holdout",
+  "freeze_sha256": "99897214cc9cf544f899ecd187d5be4a8750baaa63cb6cc6979978c5e80827c6",
+  "metrics": {
+    "count": 8,
+    "complete_count": 7,
+    "fact_hit_count": 7,
+    "fact_count": 8,
+    "source_hit_count": 8,
+    "wrong_version_count": 0,
+    "wrong_module_count": 0,
+    "complete_rate": 0.875,
+    "fact_recall": 0.875
+  },
+  "assembled_metrics": {
+    "count": 8,
+    "complete_count": 7,
+    "fact_hit_count": 7,
+    "fact_count": 8,
+    "source_hit_count": 8,
+    "wrong_version_count": 0,
+    "wrong_module_count": 0,
+    "complete_rate": 0.875,
+    "fact_recall": 0.875
+  },
+  "rows": [
+    {
+      "id": "v4-13",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "assembled_score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 6295.73,
+      "diagnostics": {
+        "requested_strategy": "contextual_llm_rerank",
+        "actual_strategy": "contextual_llm_rerank",
+        "candidate_budget": 40,
+        "eligible_windows": 114,
+        "rerank_calls": 1,
+        "external_model_calls": 1,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "candidate_windows": 40,
+        "scored_windows": 40,
+        "score_type": "model_order_not_probability",
+        "llm_ranking": {
+          "status": "OK",
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "usage": {
+            "input_tokens": 5713,
+            "output_tokens": 127,
+            "total_tokens": 5840
+          },
+          "candidate_count": 40,
+          "excerpt_truncation": [
+            {
+              "chunk_id": "8ba707444706a7e4417983aa1adadcbc051b9ed0cdf492d7f9e446b23ffd6f9c",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "728936e5baeb3130c50235ffaa398a40ecd6fd6f35c49124a8f60f6a7c700cd8",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "b4ec626f132927d9e6e2ae43ed5edc3717619d81774e01ad743aca8346ec7626",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "7a5860a59bb1b2c8c6d5bb60f0f51e91128d1fd2d428a8895e5d727d96aa04c3",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "07fd4a79b2b964afd5837e4ea5130f5366394fdb3256eae9fe8cacb91f57426a",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "f883a23f8cb32a5431c7a00b3d5068a26c8e8f558d0f3ee2ed14d97617800821",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "f1c04b26bd35fdd71c7bf4d4e132055853ef6f8540563b3bc178ee8fc2ed2726",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "2192af9716affa4a5c59c05d99e22a5600cbf0dbb86907fea1b692cd8bc60e3a",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "631b0fc80056b56814522ffe45eb6a93d66565383284c2a82b832b54e7dd1c6e",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "60e6938b10311da63cffeb1b7a08e02cf1536e1e8680bdaef0e2a6b609877f6a",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "51b213cd5ebb6e319d775d10d82988dd42a8cb4eacd2277515227e64306f725e",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "e9d009b2cd5cd58a7212d1f5370a05407b70344f154b27085be8eef93879bec3",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "6c9d63850403e2db7f3ab9357693f7f08a8251653b3fe878dce5dd3ea217536c",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "3120bca137419aa6dc0ef3a759565b24f68488a7ca6b490648077be74ecc728d",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "4970aa33b443f9debd84222bc8f2f9ee0c47e2a5d1a8397d532b7c49c3318dc6",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "6883ead5718b82c09bf0c0eba2614f00140e514164174105fc22a9acf2506d64",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "edbcb17ea3b88e2ecd40caeb70d9aa1e23612655af46c4d92e044492109f371e",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "ddcdcf154bcb6c3aa1eaabb46f9f4a61190a053912e41accd5eca87e8ef9b496",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "a1ec7b3f1e853f321d3f0711776d7e25daee41b645ae290090be10db88142161",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "c70097ae2a5455cc6cf2e051e2a490271146a7e75a8cab479c59e7c4ca518aff",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "23c2464d8875e3aa05fbc90293f66b76bb37109d8fb64305f8df03f98b067c8a",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "3f37c3a7042de7aaf97e1624f79538c7f8c0b4bb000c2e4661ab416c0b962836",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "fae10fa95d9b7599d38f0a580cac1a78f386abc7a813d06001de01062f5f6fd8",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "760a82c77d34f17f17abe307add860ce04c2bfe60617ad40039bb94861281ceb",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "1aff3cf989f86c4999256b26b782020fb83fd9bfc864c0705f6c2c3102cd74c7",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "705e351dcd651dbb5683ba925feca7e698a4b9257dd20b0a0d039dc53eb9b19b",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "1fac6607a8631284bf83c8c8c646ba32525ec327a0acf9aaf794239206ac5b27",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "7b6d9ea362676ffa6cdf2d9f39eb283a7a1861c8f14cdc92a5c69d586eb71a39",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "673727f0b8287f7c28ff51ffff6573a6ca04bfb027ed189dadd886ccf64d17da",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "5145c44f0b8d700d3670a3c151acc8f7aecbc7281079241862debd2e34e7687b",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "1e2cc21123752cd8ffd87618612d21084b14164a3a430274c3eddde0196dad45",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "a6a31156c4dab01fa9e64456bb8d9fc40a8d53e084993b17b9cb5f4cd041dd83",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "818293e8ba6587c112f93502e24be705c717f46cdb02d4a32561772b3502ea8f",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "723814af2470d80f270a63127b69e2521ab83304cb46febd47b6443d4b0e0034",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "13d8e9391b4322bfe8c9b53a79460a31fc6ba5d38cfd5c4124b573f093446a55",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "9e55d08a3e3e1f08cce778a186289c8a659d437bd7e54131e0ddaf22286d4c81",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "f2f5c00d2e6e9485c3f974147806db0a6f6f412436a591fc47d44d5491286dff",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "270add7971d2faeaa508aed659d9dde5b77fadd8490f6aa392d6d97a5460dba6",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "4674bfbf75390b1580afb380892416a55573008d4b2901174e111c82e6b0aa8c",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "055991d3afad04acf8b40872b48bae77b329eef0a10996e0a3b087b48ec9ffee",
+              "excerpt_truncated": false
+            }
+          ],
+          "rerank_calls": 1
+        },
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 11,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n\n- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类模块\n        - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正模块\n\n",
+          "generation_text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类模块\n        - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正模块\n\n    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n",
+          "evidence_spans": [
+            {
+              "line_start": 538,
+              "line_end": 540,
+              "char_start": 338,
+              "char_end": 574,
+              "content": "    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n"
+            },
+            {
+              "line_start": 527,
+              "line_end": 537,
+              "char_start": 0,
+              "char_end": 338,
+              "content": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类模块\n        - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正模块\n\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:21",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "<td>文本图像矫正模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_doc_orientation_classify</code></td>\n<td>是否加载文档方向分类模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。\n</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n\n<table>\n<thead>\n<tr>\n<th>参数</th>\n<th>参数说明</th>\n<th>参数类型</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><code>doc_orientation_classify_model_name</code></td>\n<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_dir</code></td>\n\n<td>文档方向分类模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_unwarping_model_name</code></td>\n<td>文本图像矫正模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_unwarping_model_dir</code></td>\n\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n</tbody>\n</table>",
+          "generation_text": "<table>\n<thead>\n<tr>\n<th>参数</th>\n<th>参数说明</th>\n<th>参数类型</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><code>doc_orientation_classify_model_name</code></td>\n<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_dir</code></td>\n<td>文档方向分类模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_unwarping_model_name</code></td>\n<td>文本图像矫正模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_unwarping_model_dir</code></td>\n<td>文本图像矫正模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_doc_orientation_classify</code></td>\n<td>是否加载文档方向分类模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。\n</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_doc_unwarping</code></td>\n<td>是否加载文本图像矫正模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。\n</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<td><code>paddlex_config</code></td>\n<td>PaddleX产线配置文件路径。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n</tbody>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 336,
+              "line_end": 347,
+              "char_start": 673,
+              "char_end": 996,
+              "content": "<td>文本图像矫正模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_doc_orientation_classify</code></td>\n<td>是否加载文档方向分类模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。\n</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n"
+            },
+            {
+              "line_start": 306,
+              "line_end": 323,
+              "char_start": 0,
+              "char_end": 338,
+              "content": "<table>\n<thead>\n<tr>\n<th>参数</th>\n<th>参数说明</th>\n<th>参数类型</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><code>doc_orientation_classify_model_name</code></td>\n<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_dir</code></td>\n"
+            },
+            {
+              "line_start": 324,
+              "line_end": 335,
+              "char_start": 338,
+              "char_end": 673,
+              "content": "<td>文档方向分类模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_unwarping_model_name</code></td>\n<td>文本图像矫正模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_unwarping_model_dir</code></td>\n"
+            },
+            {
+              "line_start": 410,
+              "line_end": 414,
+              "char_start": 2630,
+              "char_end": 2706,
+              "content": "<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n</tbody>\n</table>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:14",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_doc_orientation_classify</code></td>\n<td>是否加载文档方向分类模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。\n</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_doc_unwarping</code></td>\n<td>是否加载文本图像矫正模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。\n\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_name</code></td>\n<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_dir</code></td>\n<td>文档方向分类模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n\n<td><code>3</code></td>\n</tr>\n<tr>\n<td><code>precision</code></td>\n<td>计算精度，如 fp32、fp16。</td>\n<td><code>str</code></td>\n<td><code>fp32</code></td>\n</tr>\n<tr>\n<td><code>enable_mkldnn</code></td>\n<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。\n</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>cpu_threads</code></td>\n",
+          "generation_text": "<thead>\n<tr>\n<th>参数</th>\n<th>参数说明</th>\n<th>参数类型</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td><code>save_path</code></td>\n<td>指定推理结果文件保存的路径。如果设置为<code>None</code>, 推理结果将不会保存到本地。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_name</code></td>\n<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_dir</code></td>\n<td>文档方向分类模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_unwarping_model_dir</code></td>\n<td>文本图像矫正模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_doc_orientation_classify</code></td>\n<td>是否加载文档方向分类模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。\n</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_doc_unwarping</code></td>\n<td>是否加载文本图像矫正模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。\n</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>min_subgraph_size</code></td>\n<td>最小子图大小，用于优化模型子图的计算。</td>\n<td><code>int</code></td>\n<td><code>3</code></td>\n</tr>\n<tr>\n<td><code>precision</code></td>\n<td>计算精度，如 fp32、fp16。</td>\n<td><code>str</code></td>\n<td><code>fp32</code></td>\n</tr>\n<tr>\n<td><code>enable_mkldnn</code></td>\n<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。\n</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>cpu_threads</code></td>\n<td>在 CPU 上进行推理时使用的线程数。</td>\n<td><code>int</code></td>\n<td><code>8</code></td>\n</tr>",
+          "evidence_spans": [
+            {
+              "line_start": 193,
+              "line_end": 204,
+              "char_start": 1604,
+              "char_end": 1964,
+              "content": "<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_doc_orientation_classify</code></td>\n<td>是否加载文档方向分类模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。\n</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_doc_unwarping</code></td>\n<td>是否加载文本图像矫正模块。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。\n"
+            },
+            {
+              "line_start": 168,
+              "line_end": 179,
+              "char_start": 886,
+              "char_end": 1243,
+              "content": "<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_name</code></td>\n<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_dir</code></td>\n<td>文档方向分类模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n"
+            },
+            {
+              "line_start": 241,
+              "line_end": 257,
+              "char_start": 2974,
+              "char_end": 3325,
+              "content": "<td><code>3</code></td>\n</tr>\n<tr>\n<td><code>precision</code></td>\n<td>计算精度，如 fp32、fp16。</td>\n<td><code>str</code></td>\n<td><code>fp32</code></td>\n</tr>\n<tr>\n<td><code>enable_mkldnn</code></td>\n<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。\n</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>cpu_threads</code></td>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:23",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_doc_orientation_classify</code></td>\n<td>是否在推理时使用文档方向分类模块。</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_doc_unwarping</code></td>\n<td>是否在推理时使用文本图像矫正模块。</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n\n</table>",
+          "generation_text": "<td>与实例化时的参数相同。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_doc_orientation_classify</code></td>\n<td>是否在推理时使用文档方向分类模块。</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_doc_unwarping</code></td>\n<td>是否在推理时使用文本图像矫正模块。</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 447,
+              "line_end": 462,
+              "char_start": 861,
+              "char_end": 1178,
+              "content": "<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_doc_orientation_classify</code></td>\n<td>是否在推理时使用文档方向分类模块。</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_doc_unwarping</code></td>\n<td>是否在推理时使用文本图像矫正模块。</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n\n</table>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:16",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "```bash\n{'res': {'input_path': '/root/.paddlex/predict_input/doc_test_rotated.jpg', 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 180}}\n```",
+          "generation_text": "```bash\n{'res': {'input_path': '/root/.paddlex/predict_input/doc_test_rotated.jpg', 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 180}}\n```",
+          "evidence_spans": [
+            {
+              "line_start": 275,
+              "line_end": 277,
+              "char_start": 0,
+              "char_end": 207,
+              "content": "```bash\n{'res': {'input_path': '/root/.paddlex/predict_input/doc_test_rotated.jpg', 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 180}}\n```"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-14",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "assembled_score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 5947.08,
+      "diagnostics": {
+        "requested_strategy": "contextual_llm_rerank",
+        "actual_strategy": "contextual_llm_rerank",
+        "candidate_budget": 40,
+        "eligible_windows": 114,
+        "rerank_calls": 1,
+        "external_model_calls": 1,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "candidate_windows": 40,
+        "scored_windows": 40,
+        "score_type": "model_order_not_probability",
+        "llm_ranking": {
+          "status": "OK",
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "usage": {
+            "input_tokens": 5106,
+            "output_tokens": 127,
+            "total_tokens": 5233
+          },
+          "candidate_count": 40,
+          "excerpt_truncation": [
+            {
+              "chunk_id": "728936e5baeb3130c50235ffaa398a40ecd6fd6f35c49124a8f60f6a7c700cd8",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "e9d009b2cd5cd58a7212d1f5370a05407b70344f154b27085be8eef93879bec3",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "3120bca137419aa6dc0ef3a759565b24f68488a7ca6b490648077be74ecc728d",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "4970aa33b443f9debd84222bc8f2f9ee0c47e2a5d1a8397d532b7c49c3318dc6",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "1bea13a6127bf2fb6f607aa5cedabdbcc5806b5a477c7a8158f30caf75a8e74c",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "edbcb17ea3b88e2ecd40caeb70d9aa1e23612655af46c4d92e044492109f371e",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "7a5860a59bb1b2c8c6d5bb60f0f51e91128d1fd2d428a8895e5d727d96aa04c3",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "a1ec7b3f1e853f321d3f0711776d7e25daee41b645ae290090be10db88142161",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "51b213cd5ebb6e319d775d10d82988dd42a8cb4eacd2277515227e64306f725e",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "5145c44f0b8d700d3670a3c151acc8f7aecbc7281079241862debd2e34e7687b",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "3f37c3a7042de7aaf97e1624f79538c7f8c0b4bb000c2e4661ab416c0b962836",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "fae10fa95d9b7599d38f0a580cac1a78f386abc7a813d06001de01062f5f6fd8",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "760a82c77d34f17f17abe307add860ce04c2bfe60617ad40039bb94861281ceb",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "07fd4a79b2b964afd5837e4ea5130f5366394fdb3256eae9fe8cacb91f57426a",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "705e351dcd651dbb5683ba925feca7e698a4b9257dd20b0a0d039dc53eb9b19b",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "619a92f7cc90bf9100390c6249220d41a7cee9ea00f35671907f29ef9fb793bd",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "7b6d9ea362676ffa6cdf2d9f39eb283a7a1861c8f14cdc92a5c69d586eb71a39",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "b4ec626f132927d9e6e2ae43ed5edc3717619d81774e01ad743aca8346ec7626",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "2192af9716affa4a5c59c05d99e22a5600cbf0dbb86907fea1b692cd8bc60e3a",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "1e2cc21123752cd8ffd87618612d21084b14164a3a430274c3eddde0196dad45",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "a6a31156c4dab01fa9e64456bb8d9fc40a8d53e084993b17b9cb5f4cd041dd83",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "57f328ad4eee2a50d2d6059d66b58805e30aad86fa08e206b92bd041d8144f7f",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "5e661dca2b4952f719a017f2409ef58e80fd7e15c7094ff59e5c960ee683d204",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "818293e8ba6587c112f93502e24be705c717f46cdb02d4a32561772b3502ea8f",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "13d8e9391b4322bfe8c9b53a79460a31fc6ba5d38cfd5c4124b573f093446a55",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "58f60de164fda94955a59232f21a8846037d6884bd44c41a715927dd6efdf709",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "9e55d08a3e3e1f08cce778a186289c8a659d437bd7e54131e0ddaf22286d4c81",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "f2f5c00d2e6e9485c3f974147806db0a6f6f412436a591fc47d44d5491286dff",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "e8f15beb7e3cc8f62a09b0ce369a6735d5ce4755b94dbbb61e35f8fdb19e9c48",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "270add7971d2faeaa508aed659d9dde5b77fadd8490f6aa392d6d97a5460dba6",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "4674bfbf75390b1580afb380892416a55573008d4b2901174e111c82e6b0aa8c",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "055991d3afad04acf8b40872b48bae77b329eef0a10996e0a3b087b48ec9ffee",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "b21a41ffb732936e68d78b4c4473451ba062d40d7e6853f5577cd8b75598dee4",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "f883a23f8cb32a5431c7a00b3d5068a26c8e8f558d0f3ee2ed14d97617800821",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "6c9d63850403e2db7f3ab9357693f7f08a8251653b3fe878dce5dd3ea217536c",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "1a0164d026f59f5a7430dbb4eb056c7bd3f01a8a65c0135128a1397e44acdc9d",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "60e6938b10311da63cffeb1b7a08e02cf1536e1e8680bdaef0e2a6b609877f6a",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "03ebce358cda86ba7af8d6242a0060b25f2207ac50f656ee2d8503e8d2737995",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "ddd5b14ffa769ca48f581702221e6abe999f642b6f75c3899afb2adb917380d1",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "8583eca5b146fab3b188c1dd57642c7f291da1bac6003c1733b8a95ce15ccb59",
+              "excerpt_truncated": false
+            }
+          ],
+          "rerank_calls": 1
+        },
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 10,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n\n\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n",
+          "generation_text": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>",
+          "evidence_spans": [
+            {
+              "line_start": 7,
+              "line_end": 10,
+              "char_start": 0,
+              "char_end": 331,
+              "content": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n"
+            },
+            {
+              "line_start": 19,
+              "line_end": 21,
+              "char_start": 690,
+              "char_end": 743,
+              "content": "\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>"
+            },
+            {
+              "line_start": 11,
+              "line_end": 18,
+              "char_start": 331,
+              "char_end": 690,
+              "content": "<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:4",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "<td>3.37 / 1.27</td>\n<td>7</td>\n<td>基于PP-LCNet_x1_0的文档图像分类模型，含有四个类别，即0度，90度，180度，270度</td>\n</tr>\n</tbody>\n</table>\n<td>PP-LCNet_x1_0_doc_ori</td><td><a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar\">推理模型</a>/<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams\">训练模型</a></td>\n<td>99.06</td>\n<td>2.31 / 0.43</td>\n\n<table>\n<thead>\n<tr>\n<th>模型</th><th>模型下载链接</th>\n<th>Top-1 Acc（%）</th>\n<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>\n<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>\n<th>模型存储大小（M)</th>\n<th>介绍</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n",
+          "generation_text": "<table>\n<thead>\n<tr>\n<th>模型</th><th>模型下载链接</th>\n<th>Top-1 Acc（%）</th>\n<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>\n<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>\n<th>模型存储大小（M)</th>\n<th>介绍</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>PP-LCNet_x1_0_doc_ori</td><td><a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar\">推理模型</a>/<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams\">训练模型</a></td>\n<td>99.06</td>\n<td>2.31 / 0.43</td>\n<td>3.37 / 1.27</td>\n<td>7</td>\n<td>基于PP-LCNet_x1_0的文档图像分类模型，含有四个类别，即0度，90度，180度，270度</td>\n</tr>\n</tbody>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 38,
+              "line_end": 43,
+              "char_start": 561,
+              "char_end": 675,
+              "content": "<td>3.37 / 1.27</td>\n<td>7</td>\n<td>基于PP-LCNet_x1_0的文档图像分类模型，含有四个类别，即0度，90度，180度，270度</td>\n</tr>\n</tbody>\n</table>"
+            },
+            {
+              "line_start": 35,
+              "line_end": 37,
+              "char_start": 209,
+              "char_end": 561,
+              "content": "<td>PP-LCNet_x1_0_doc_ori</td><td><a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar\">推理模型</a>/<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams\">训练模型</a></td>\n<td>99.06</td>\n<td>2.31 / 0.43</td>\n"
+            },
+            {
+              "line_start": 22,
+              "line_end": 34,
+              "char_start": 0,
+              "char_end": 209,
+              "content": "<table>\n<thead>\n<tr>\n<th>模型</th><th>模型下载链接</th>\n<th>Top-1 Acc（%）</th>\n<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>\n<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>\n<th>模型存储大小（M)</th>\n<th>介绍</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:16",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "```bash\n{'res': {'input_path': '/root/.paddlex/predict_input/doc_test_rotated.jpg', 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 180}}\n```",
+          "generation_text": "```bash\n{'res': {'input_path': '/root/.paddlex/predict_input/doc_test_rotated.jpg', 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 180}}\n```",
+          "evidence_spans": [
+            {
+              "line_start": 275,
+              "line_end": 277,
+              "char_start": 0,
+              "char_end": 207,
+              "content": "```bash\n{'res': {'input_path': '/root/.paddlex/predict_input/doc_test_rotated.jpg', 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 180}}\n```"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:12",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "```bash\npaddleocr doc_preprocessor -i https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/doc_test_rotated.jpg\n\n# 通过 --use_doc_orientation_classify 指定是否使用文档方向分类模型\npaddleocr doc_preprocessor -i ./doc_test_rotated.jpg --use_doc_orientation_classify True\n\n# 通过 --use_doc_unwarping 指定是否使用文本图像矫正模块\n",
+          "generation_text": "```bash\npaddleocr doc_preprocessor -i https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/doc_test_rotated.jpg\n\n# 通过 --use_doc_orientation_classify 指定是否使用文档方向分类模型\npaddleocr doc_preprocessor -i ./doc_test_rotated.jpg --use_doc_orientation_classify True\n\n# 通过 --use_doc_unwarping 指定是否使用文本图像矫正模块\npaddleocr doc_preprocessor -i ./doc_test_rotated.jpg --use_doc_unwarping True\n\n",
+          "evidence_spans": [
+            {
+              "line_start": 129,
+              "line_end": 135,
+              "char_start": 0,
+              "char_end": 303,
+              "content": "```bash\npaddleocr doc_preprocessor -i https://paddle-model-ecology.bj.bcebos.com/paddlex/demo_image/doc_test_rotated.jpg\n\n# 通过 --use_doc_orientation_classify 指定是否使用文档方向分类模型\npaddleocr doc_preprocessor -i ./doc_test_rotated.jpg --use_doc_orientation_classify True\n\n# 通过 --use_doc_unwarping 指定是否使用文本图像矫正模块\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:19",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "```python\nfrom paddleocr import DocPreprocessor\n\npipeline = DocPreprocessor()\n# docpp = DocPreprocessor(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型\n# docpp = DocPreprocessor(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块\n# docpp = DocPreprocessor(device=\"gpu\") # 通过 device 指定模型推理时使用 GPU\n\noutput = pipeline.predict(\"./doc_test_rotated.jpg\")\nfor res in output:\n    res.print() ## 打印预测的结构化输出\n    res.save_to_img(\"./output/\")\n    res.save_to_json(\"./output/\")\n```",
+          "generation_text": "```python\nfrom paddleocr import DocPreprocessor\n\npipeline = DocPreprocessor()\n# docpp = DocPreprocessor(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型\n# docpp = DocPreprocessor(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块\n# docpp = DocPreprocessor(device=\"gpu\") # 通过 device 指定模型推理时使用 GPU\noutput = pipeline.predict(\"./doc_test_rotated.jpg\")\nfor res in output:\n    res.print() ## 打印预测的结构化输出\n    res.save_to_img(\"./output/\")\n    res.save_to_json(\"./output/\")\n```",
+          "evidence_spans": [
+            {
+              "line_start": 288,
+              "line_end": 294,
+              "char_start": 0,
+              "char_end": 342,
+              "content": "```python\nfrom paddleocr import DocPreprocessor\n\npipeline = DocPreprocessor()\n# docpp = DocPreprocessor(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型\n# docpp = DocPreprocessor(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块\n# docpp = DocPreprocessor(device=\"gpu\") # 通过 device 指定模型推理时使用 GPU\n"
+            },
+            {
+              "line_start": 295,
+              "line_end": 300,
+              "char_start": 342,
+              "char_end": 513,
+              "content": "output = pipeline.predict(\"./doc_test_rotated.jpg\")\nfor res in output:\n    res.print() ## 打印预测的结构化输出\n    res.save_to_img(\"./output/\")\n    res.save_to_json(\"./output/\")\n```"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-15",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "assembled_score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 6428.69,
+      "diagnostics": {
+        "requested_strategy": "contextual_llm_rerank",
+        "actual_strategy": "contextual_llm_rerank",
+        "candidate_budget": 40,
+        "eligible_windows": 114,
+        "rerank_calls": 1,
+        "external_model_calls": 1,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "candidate_windows": 40,
+        "scored_windows": 40,
+        "score_type": "model_order_not_probability",
+        "llm_ranking": {
+          "status": "OK",
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "usage": {
+            "input_tokens": 5348,
+            "output_tokens": 127,
+            "total_tokens": 5475
+          },
+          "candidate_count": 40,
+          "excerpt_truncation": [
+            {
+              "chunk_id": "8ba707444706a7e4417983aa1adadcbc051b9ed0cdf492d7f9e446b23ffd6f9c",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "57f328ad4eee2a50d2d6059d66b58805e30aad86fa08e206b92bd041d8144f7f",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "e9d009b2cd5cd58a7212d1f5370a05407b70344f154b27085be8eef93879bec3",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "3120bca137419aa6dc0ef3a759565b24f68488a7ca6b490648077be74ecc728d",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "728936e5baeb3130c50235ffaa398a40ecd6fd6f35c49124a8f60f6a7c700cd8",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "edbcb17ea3b88e2ecd40caeb70d9aa1e23612655af46c4d92e044492109f371e",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "a1ec7b3f1e853f321d3f0711776d7e25daee41b645ae290090be10db88142161",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "3ed5f4c1bac831be41988b3215422878e00240465b788e017ec12060866b01af",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "3f37c3a7042de7aaf97e1624f79538c7f8c0b4bb000c2e4661ab416c0b962836",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "fae10fa95d9b7599d38f0a580cac1a78f386abc7a813d06001de01062f5f6fd8",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "760a82c77d34f17f17abe307add860ce04c2bfe60617ad40039bb94861281ceb",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "985e0ea6b9f5a9d803b697e5a6de80d2bd75085dee021fab49ca2f7988e66483",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "4970aa33b443f9debd84222bc8f2f9ee0c47e2a5d1a8397d532b7c49c3318dc6",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "b4ec626f132927d9e6e2ae43ed5edc3717619d81774e01ad743aca8346ec7626",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "58f60de164fda94955a59232f21a8846037d6884bd44c41a715927dd6efdf709",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "705e351dcd651dbb5683ba925feca7e698a4b9257dd20b0a0d039dc53eb9b19b",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "13d8e9391b4322bfe8c9b53a79460a31fc6ba5d38cfd5c4124b573f093446a55",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "3b830e086d2d517226a8bf3fe430bac127620f7d1f4e50b88eb7dc359ba94836",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "7b6d9ea362676ffa6cdf2d9f39eb283a7a1861c8f14cdc92a5c69d586eb71a39",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "5145c44f0b8d700d3670a3c151acc8f7aecbc7281079241862debd2e34e7687b",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "1e2cc21123752cd8ffd87618612d21084b14164a3a430274c3eddde0196dad45",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "a6a31156c4dab01fa9e64456bb8d9fc40a8d53e084993b17b9cb5f4cd041dd83",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "818293e8ba6587c112f93502e24be705c717f46cdb02d4a32561772b3502ea8f",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "7a5860a59bb1b2c8c6d5bb60f0f51e91128d1fd2d428a8895e5d727d96aa04c3",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "9e55d08a3e3e1f08cce778a186289c8a659d437bd7e54131e0ddaf22286d4c81",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "f2f5c00d2e6e9485c3f974147806db0a6f6f412436a591fc47d44d5491286dff",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "51b213cd5ebb6e319d775d10d82988dd42a8cb4eacd2277515227e64306f725e",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "f1c04b26bd35fdd71c7bf4d4e132055853ef6f8540563b3bc178ee8fc2ed2726",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "07fd4a79b2b964afd5837e4ea5130f5366394fdb3256eae9fe8cacb91f57426a",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "619a92f7cc90bf9100390c6249220d41a7cee9ea00f35671907f29ef9fb793bd",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "270add7971d2faeaa508aed659d9dde5b77fadd8490f6aa392d6d97a5460dba6",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "4674bfbf75390b1580afb380892416a55573008d4b2901174e111c82e6b0aa8c",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "1a0164d026f59f5a7430dbb4eb056c7bd3f01a8a65c0135128a1397e44acdc9d",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "055991d3afad04acf8b40872b48bae77b329eef0a10996e0a3b087b48ec9ffee",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "2c95c51bb96b9348f9026ffe2d7ae9e98aec38f7f76fe503f01494df36bb4ad5",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "f883a23f8cb32a5431c7a00b3d5068a26c8e8f558d0f3ee2ed14d97617800821",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "45d2195f4db6a4c2bfa3dfb9eb55a4ad5c389a1d5342993304294d0a4db8140f",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "5dd163b3a9500a5a371cadc8cbdd613706a64881073c9c2b5023d0a8b616a21a",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "03ebce358cda86ba7af8d6242a0060b25f2207ac50f656ee2d8503e8d2737995",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "ddd5b14ffa769ca48f581702221e6abe999f642b6f75c3899afb2adb917380d1",
+              "excerpt_truncated": false
+            }
+          ],
+          "rerank_calls": 1
+        },
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 8,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n",
+          "generation_text": "        - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正模块\n\n    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n",
+          "evidence_spans": [
+            {
+              "line_start": 538,
+              "line_end": 540,
+              "char_start": 338,
+              "char_end": 574,
+              "content": "    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:25",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td rowspan=\"3\"><code>save_to_json()</code></td>\n<td rowspan=\"3\">将结果保存为json格式的文件</td>\n<td><code>save_path</code></td>\n\n<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>save_to_img()</code></td>\n<td>将结果保存为图像格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n\n<td><code>str</code></td>\n<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>indent</code></td>\n<td><code>int</code></td>\n<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>\n<td>4</td>\n</tr>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n\n<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n</table>",
+          "generation_text": "<thead>\n<tr>\n<th>方法</th>\n<th>方法说明</th>\n<th>参数</th>\n<th>参数类型</th>\n<th>参数说明</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td rowspan=\"3\"><code>save_to_json()</code></td>\n<td rowspan=\"3\">将结果保存为json格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>indent</code></td>\n<td><code>int</code></td>\n<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>\n<td>4</td>\n</tr>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>save_to_img()</code></td>\n<td>将结果保存为图像格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 494,
+              "line_end": 500,
+              "char_start": 578,
+              "char_end": 926,
+              "content": "<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td rowspan=\"3\"><code>save_to_json()</code></td>\n<td rowspan=\"3\">将结果保存为json格式的文件</td>\n<td><code>save_path</code></td>\n"
+            },
+            {
+              "line_start": 514,
+              "line_end": 521,
+              "char_start": 1258,
+              "char_end": 1605,
+              "content": "<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>save_to_img()</code></td>\n<td>将结果保存为图像格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n"
+            },
+            {
+              "line_start": 501,
+              "line_end": 513,
+              "char_start": 926,
+              "char_end": 1258,
+              "content": "<td><code>str</code></td>\n<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>indent</code></td>\n<td><code>int</code></td>\n<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>\n<td>4</td>\n</tr>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n"
+            },
+            {
+              "line_start": 522,
+              "line_end": 525,
+              "char_start": 1605,
+              "char_end": 1657,
+              "content": "<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n</table>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:28",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "- `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。\n- `img` 属性返回的预测结果是一个字典类型的数据。其中，键为 `preprocessed_img`，对应的值是 `Image.Image` 对象：用于显示 doc_preprocessor 结果的可视化图像。",
+          "generation_text": "- `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。\n- `img` 属性返回的预测结果是一个字典类型的数据。其中，键为 `preprocessed_img`，对应的值是 `Image.Image` 对象：用于显示 doc_preprocessor 结果的可视化图像。",
+          "evidence_spans": [
+            {
+              "line_start": 562,
+              "line_end": 563,
+              "char_start": 0,
+              "char_end": 172,
+              "content": "- `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。\n- `img` 属性返回的预测结果是一个字典类型的数据。其中，键为 `preprocessed_img`，对应的值是 `Image.Image` 对象：用于显示 doc_preprocessor 结果的可视化图像。"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:27",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "<table>\n<thead>\n<tr>\n<th>属性</th>\n<th>属性说明</th>\n</tr>\n</thead>\n<tr>\n<td rowspan=\"1\"><code>json</code></td>\n<td rowspan=\"1\">获取预测的 <code>json</code> 格式的结果</td>\n</tr>\n<tr>\n<td rowspan=\"2\"><code>img</code></td>\n<td rowspan=\"2\">获取格式为 <code>dict</code> 的可视化图像</td>\n</tr>\n</table>",
+          "generation_text": "<table>\n<thead>\n<tr>\n<th>属性</th>\n<th>属性说明</th>\n</tr>\n</thead>\n<tr>\n<td rowspan=\"1\"><code>json</code></td>\n<td rowspan=\"1\">获取预测的 <code>json</code> 格式的结果</td>\n</tr>\n<tr>\n<td rowspan=\"2\"><code>img</code></td>\n<td rowspan=\"2\">获取格式为 <code>dict</code> 的可视化图像</td>\n</tr>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 545,
+              "line_end": 560,
+              "char_start": 0,
+              "char_end": 272,
+              "content": "<table>\n<thead>\n<tr>\n<th>属性</th>\n<th>属性说明</th>\n</tr>\n</thead>\n<tr>\n<td rowspan=\"1\"><code>json</code></td>\n<td rowspan=\"1\">获取预测的 <code>json</code> 格式的结果</td>\n</tr>\n<tr>\n<td rowspan=\"2\"><code>img</code></td>\n<td rowspan=\"2\">获取格式为 <code>dict</code> 的可视化图像</td>\n</tr>\n</table>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:24",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:",
+          "generation_text": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:",
+          "evidence_spans": [
+            {
+              "line_start": 464,
+              "line_end": 464,
+              "char_start": 0,
+              "char_end": 63,
+              "content": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-16",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "assembled_score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 5951.47,
+      "diagnostics": {
+        "requested_strategy": "contextual_llm_rerank",
+        "actual_strategy": "contextual_llm_rerank",
+        "candidate_budget": 40,
+        "eligible_windows": 114,
+        "rerank_calls": 1,
+        "external_model_calls": 1,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "candidate_windows": 40,
+        "scored_windows": 40,
+        "score_type": "model_order_not_probability",
+        "llm_ranking": {
+          "status": "OK",
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "usage": {
+            "input_tokens": 5460,
+            "output_tokens": 127,
+            "total_tokens": 5587
+          },
+          "candidate_count": 40,
+          "excerpt_truncation": [
+            {
+              "chunk_id": "bf0471fa6b7e9121c6c0c92e3519b877efe4919780d5c31f334a36c57910cb85",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "57f328ad4eee2a50d2d6059d66b58805e30aad86fa08e206b92bd041d8144f7f",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "7a5860a59bb1b2c8c6d5bb60f0f51e91128d1fd2d428a8895e5d727d96aa04c3",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "e9d009b2cd5cd58a7212d1f5370a05407b70344f154b27085be8eef93879bec3",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "8ba707444706a7e4417983aa1adadcbc051b9ed0cdf492d7f9e446b23ffd6f9c",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "3ed5f4c1bac831be41988b3215422878e00240465b788e017ec12060866b01af",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "3120bca137419aa6dc0ef3a759565b24f68488a7ca6b490648077be74ecc728d",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "728936e5baeb3130c50235ffaa398a40ecd6fd6f35c49124a8f60f6a7c700cd8",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "edbcb17ea3b88e2ecd40caeb70d9aa1e23612655af46c4d92e044492109f371e",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "a1ec7b3f1e853f321d3f0711776d7e25daee41b645ae290090be10db88142161",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "3f37c3a7042de7aaf97e1624f79538c7f8c0b4bb000c2e4661ab416c0b962836",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "b0508bb69f6a55804898b30079fdae7763211bcad1fa79586a63eb1b4408d863",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "fae10fa95d9b7599d38f0a580cac1a78f386abc7a813d06001de01062f5f6fd8",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "45d2195f4db6a4c2bfa3dfb9eb55a4ad5c389a1d5342993304294d0a4db8140f",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "760a82c77d34f17f17abe307add860ce04c2bfe60617ad40039bb94861281ceb",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "4970aa33b443f9debd84222bc8f2f9ee0c47e2a5d1a8397d532b7c49c3318dc6",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "2192af9716affa4a5c59c05d99e22a5600cbf0dbb86907fea1b692cd8bc60e3a",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "619a92f7cc90bf9100390c6249220d41a7cee9ea00f35671907f29ef9fb793bd",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "07fd4a79b2b964afd5837e4ea5130f5366394fdb3256eae9fe8cacb91f57426a",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "b4ec626f132927d9e6e2ae43ed5edc3717619d81774e01ad743aca8346ec7626",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "58f60de164fda94955a59232f21a8846037d6884bd44c41a715927dd6efdf709",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "705e351dcd651dbb5683ba925feca7e698a4b9257dd20b0a0d039dc53eb9b19b",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "c4e9e4cf1ab1c68e3ec6541e89f2944204d681e2f60b108b8442f98a145d4e79",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "13d8e9391b4322bfe8c9b53a79460a31fc6ba5d38cfd5c4124b573f093446a55",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "6c9d63850403e2db7f3ab9357693f7f08a8251653b3fe878dce5dd3ea217536c",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "7b6d9ea362676ffa6cdf2d9f39eb283a7a1861c8f14cdc92a5c69d586eb71a39",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "5145c44f0b8d700d3670a3c151acc8f7aecbc7281079241862debd2e34e7687b",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "1e2cc21123752cd8ffd87618612d21084b14164a3a430274c3eddde0196dad45",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "a6a31156c4dab01fa9e64456bb8d9fc40a8d53e084993b17b9cb5f4cd041dd83",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "818293e8ba6587c112f93502e24be705c717f46cdb02d4a32561772b3502ea8f",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "9e55d08a3e3e1f08cce778a186289c8a659d437bd7e54131e0ddaf22286d4c81",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "f2f5c00d2e6e9485c3f974147806db0a6f6f412436a591fc47d44d5491286dff",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "ebe6e09af311828e4acef1d2b938fb15a25ff430b613f950c34f485cd9508c52",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "51b213cd5ebb6e319d775d10d82988dd42a8cb4eacd2277515227e64306f725e",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "270add7971d2faeaa508aed659d9dde5b77fadd8490f6aa392d6d97a5460dba6",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "4674bfbf75390b1580afb380892416a55573008d4b2901174e111c82e6b0aa8c",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "1a0164d026f59f5a7430dbb4eb056c7bd3f01a8a65c0135128a1397e44acdc9d",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "055991d3afad04acf8b40872b48bae77b329eef0a10996e0a3b087b48ec9ffee",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "8bc5c626eef67235dd4149e23eef3a82f6fbadfe63154ae4348dd7e6d4d1c950",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "abdafb37487381294f6cb962f9858bdc691e386f4b9c20e52f686b66caf5abeb",
+              "excerpt_truncated": true
+            }
+          ],
+          "rerank_calls": 1
+        },
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 8,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：\n    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n",
+          "generation_text": "        - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正模块\n\n    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：",
+          "evidence_spans": [
+            {
+              "line_start": 541,
+              "line_end": 543,
+              "char_start": 574,
+              "char_end": 819,
+              "content": "- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下："
+            },
+            {
+              "line_start": 538,
+              "line_end": 540,
+              "char_start": 338,
+              "char_end": 574,
+              "content": "    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:25",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "<td><code>str</code></td>\n<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>indent</code></td>\n<td><code>int</code></td>\n<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>\n<td>4</td>\n</tr>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n\n<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n</table>",
+          "generation_text": "<thead>\n<tr>\n<th>方法</th>\n<th>方法说明</th>\n<th>参数</th>\n<th>参数类型</th>\n<th>参数说明</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td rowspan=\"3\"><code>save_to_json()</code></td>\n<td rowspan=\"3\">将结果保存为json格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>indent</code></td>\n<td><code>int</code></td>\n<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>\n<td>4</td>\n</tr>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 501,
+              "line_end": 513,
+              "char_start": 926,
+              "char_end": 1258,
+              "content": "<td><code>str</code></td>\n<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>indent</code></td>\n<td><code>int</code></td>\n<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>\n<td>4</td>\n</tr>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n"
+            },
+            {
+              "line_start": 522,
+              "line_end": 525,
+              "char_start": 1605,
+              "char_end": 1657,
+              "content": "<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n</table>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:21",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n</tbody>\n</table>",
+          "generation_text": "<td><code>paddlex_config</code></td>\n<td>PaddleX产线配置文件路径。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n</tbody>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 410,
+              "line_end": 414,
+              "char_start": 2630,
+              "char_end": 2706,
+              "content": "<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n</tbody>\n</table>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:23",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png\">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>\n",
+          "generation_text": "<thead>\n<tr>\n<th>参数</th>\n<th>参数说明</th>\n<th>参数类型</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td><code>input</code></td>\n<td>待预测数据，支持多种输入类型，必填。\n<ul>\n<li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>\n<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png\">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>\n<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>，<code>[\"/root/data1\", \"/root/data2\"]</code></li>\n</ul>\n</td>\n<td><code>Python Var|str|list</code></td>\n<td></td>\n</tr>",
+          "evidence_spans": [
+            {
+              "line_start": 436,
+              "line_end": 436,
+              "char_start": 214,
+              "char_end": 527,
+              "content": "<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png\">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:14",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>，<code>[\"/root/data1\", \"/root/data2\"]</code></li>\n</ul>\n</td>\n<td><code>Python Var|str|list</code></td>\n<td></td>\n</tr>\n<tr>\n<td><code>save_path</code></td>\n<td>指定推理结果文件保存的路径。如果设置为<code>None</code>, 推理结果将不会保存到本地。</td>\n\n<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png\">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>\n",
+          "generation_text": "<thead>\n<tr>\n<th>参数</th>\n<th>参数说明</th>\n<th>参数类型</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td><code>input</code></td>\n<td>待预测数据，支持多种输入类型，必填。\n<ul>\n<li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>\n<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png\">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>\n<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>，<code>[\"/root/data1\", \"/root/data2\"]</code></li>\n</ul>\n</td>\n<td><code>Python Var|str|list</code></td>\n<td></td>\n</tr>\n<tr>\n<td><code>save_path</code></td>\n<td>指定推理结果文件保存的路径。如果设置为<code>None</code>, 推理结果将不会保存到本地。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>",
+          "evidence_spans": [
+            {
+              "line_start": 159,
+              "line_end": 167,
+              "char_start": 535,
+              "char_end": 886,
+              "content": "<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>，<code>[\"/root/data1\", \"/root/data2\"]</code></li>\n</ul>\n</td>\n<td><code>Python Var|str|list</code></td>\n<td></td>\n</tr>\n<tr>\n<td><code>save_path</code></td>\n<td>指定推理结果文件保存的路径。如果设置为<code>None</code>, 推理结果将不会保存到本地。</td>\n"
+            },
+            {
+              "line_start": 158,
+              "line_end": 158,
+              "char_start": 222,
+              "char_end": 535,
+              "content": "<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png\">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-17",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "assembled_score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 6353.18,
+      "diagnostics": {
+        "requested_strategy": "contextual_llm_rerank",
+        "actual_strategy": "contextual_llm_rerank",
+        "candidate_budget": 40,
+        "eligible_windows": 297,
+        "rerank_calls": 1,
+        "external_model_calls": 1,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "candidate_windows": 40,
+        "scored_windows": 40,
+        "score_type": "model_order_not_probability",
+        "llm_ranking": {
+          "status": "OK",
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "usage": {
+            "input_tokens": 5051,
+            "output_tokens": 127,
+            "total_tokens": 5178
+          },
+          "candidate_count": 40,
+          "excerpt_truncation": [
+            {
+              "chunk_id": "bf32d1ba978894906de4b6f8d0d01d86ac522f3865425777303794f2e03886cc",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "25461fcbcd0c5dc46e57ff884ad309b2b3d2368ff1667684f27c0c0b04bedc97",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "f36b4cd9ba95b2410baf6fe3ef84958daa42964df983732f4e64a5a84e4f6aa5",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "f286ee341469a2df8155eb1a25b965c62181635dc9b9b92974348aab9f7d665e",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "281fecaad2c7dbdf1c0d4d2fc7daf29794fa3d815ab1097500e3f225c9a59973",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "36211d56a833d18991089e2d3f5eec7dd7f6ca423e3ab2c36c905199b55dfb28",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "83da48d0416d98dbefc98141f28614d0687bf237fa0be1ed349a8c7e7fc306b6",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "abb8abb0dec1ec535bbf42cdc5a06f1220f56f9d4a7c8f4dd8117ddf8e567bd9",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "a0fdc3bd4895f7067b53e98eedd32fa49be21ffb0a29af9f2f2261b1f7abb985",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "91a0ee057a17ca08aec8e77c383d5d71aee1ab9bd26b7981673411a7183b8847",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "b5c63c9396b79f9e13ecf12665faf37f4d521d3c41966377a9e8c3011bdc4ea9",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "48b343e5eff4e0744fb942fee454b403e0a227524fe81a0d4ca96e36fabcd8c2",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "c78576fe33a66306e6c201a823477e2a8e5f913ed97962232a2b973b844dea1d",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "f4b0e1c21c617d684b82df34862627f7eb58d060e2b44527831f24a5601ef948",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "df1631201649813ae7588c9eb9ebb9d9c0d579bfc80620ab877288f6f9dd8deb",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "2134e15c6676e08cf9370003d306dcd8ecc04a2edeb3dcd8c2097e44d448daf8",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "80c8e6d2a43d6fe987b26993ececf1a8346923962c98b1ffd6248c3d9b65fc3a",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "6d51917ce3739b5f7c2cd418871a4efc79d238f8e4faa54033a978d661b5f30c",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "989b6d8612df4134994c15d825b765e05b3a77d670e40635b27a45fbf259a0d1",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "ee68ecb62158d931f27f9d0ac9144e08f382d632454ecec43737c30acb783548",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "66f0db886d71f8968d54297b4058330cb9f120ecd839a897ef7a14a0982e3f69",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "b3fa6f2bb99d49771b8311eb7c65269367c2e5ec7d866d83168f5b7d7c30072d",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "4a7d8336171c07e85189fb27e249bc39fb034962678f2307e2c29939fc264272",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "7e506b8dece86c36bdea5e4f44b514e2b28c44588b93a1b947a63ce568d70baf",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "1a04ee7b6d52c33c25c0a460c0a1ca243a51ffb690440f7646710fd6cfb7ba21",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "34eee6bc0aae5fa47fed4044b0df2da4b7a95fae1e103a8200ed29b7acced1fb",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "c9205035d893f8b35c8df742ae1ac51e98fa49bb9e8e6a94849aba45213134b1",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "13264b05dc1182d0371c4188666d78b715c52f0a2cd62960b9a29dcbcfed489e",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "774d0dd70da77dbc08e3d40603de8417f6ad6e633e312220dfdacb5f5108f461",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "319ffcba2152f5ea936f13ac48c6af38c45479798d36b7228d64f46860d4cbd6",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "98702ab2ff4b68c4e9b3f5c1e5f4c6291f88cd5aa926ec97710ce7a0ccab571e",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "8538834b7d7a0f7cc217dca472436e6665ca150e31dc3681f1de08f1d71f948f",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "fd11220fd96179a217d920b116019238b78e1858cec5515630890f93cddc7112",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "f73c674175a57c250d8cbe8d79fc9b09184264289c6d8fd7aa61ae0ec0bc936d",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "f4bcfadfcb4d6c754fa77698e2f33962848208ed971cee42a9fe0c3e7c2f32f0",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "25e78667ed51ecc6e2f42e337a00338512854339f720dd80de1adcadcfc435c3",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "5e1f4af9ec03ebaeda7c1d55b72d51d6f90e468792ba809f650fec2f97bb31d8",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "bb3fbb4b787b1ebe34ca05848260d4c6202daf2695c49090a21f98a8fc643b7e",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "075e77f6baa368c5677898718b4057f64f1af52df1ca8b79769151fd610687fe",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "16844ab837c54c69f18f8e595363d339803f1a5da2aa5b695bdb6da030417830",
+              "excerpt_truncated": false
+            }
+          ],
+          "rerank_calls": 1
+        },
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:58"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 10,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:58",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "- 调用`save_to_html()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_table_1.html`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的HTML形式写入到指定的html文件中。\n- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n",
+          "generation_text": "\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n- 调用`save_to_html()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_table_1.html`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的HTML形式写入到指定的html文件中。\n- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：",
+          "evidence_spans": [
+            {
+              "line_start": 1702,
+              "line_end": 1704,
+              "char_start": 1176,
+              "char_end": 1516,
+              "content": "- 调用`save_to_html()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_table_1.html`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的HTML形式写入到指定的html文件中。\n- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n"
+            },
+            {
+              "line_start": 1701,
+              "line_end": 1701,
+              "char_start": 979,
+              "char_end": 1176,
+              "content": "- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:56",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>save_to_xlsx()</code></td>\n<td>将结果保存为xlsx格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>save_to_html()</code></td>\n<td>将结果保存为html格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n\n<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>save_to_img()</code></td>\n<td>将结果保存为图像格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n\n<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td rowspan=\"3\"><code>save_to_json()</code></td>\n<td rowspan=\"3\">将结果保存为json格式的文件</td>\n<td><code>save_path</code></td>\n\n<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n</table>",
+          "generation_text": "<thead>\n<tr>\n<th>方法</th>\n<th>方法说明</th>\n<th>参数</th>\n<th>参数类型</th>\n<th>参数说明</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td rowspan=\"3\"><code>save_to_json()</code></td>\n<td rowspan=\"3\">将结果保存为json格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>save_to_img()</code></td>\n<td>将结果保存为图像格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>save_to_xlsx()</code></td>\n<td>将结果保存为xlsx格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>save_to_html()</code></td>\n<td>将结果保存为html格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 1631,
+              "line_end": 1646,
+              "char_start": 1605,
+              "char_end": 1943,
+              "content": "<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>save_to_xlsx()</code></td>\n<td>将结果保存为xlsx格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>save_to_html()</code></td>\n<td>将结果保存为html格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n"
+            },
+            {
+              "line_start": 1623,
+              "line_end": 1630,
+              "char_start": 1258,
+              "char_end": 1605,
+              "content": "<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>save_to_img()</code></td>\n<td>将结果保存为图像格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n"
+            },
+            {
+              "line_start": 1603,
+              "line_end": 1609,
+              "char_start": 578,
+              "char_end": 926,
+              "content": "<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td rowspan=\"3\"><code>save_to_json()</code></td>\n<td rowspan=\"3\">将结果保存为json格式的文件</td>\n<td><code>save_path</code></td>\n"
+            },
+            {
+              "line_start": 1647,
+              "line_end": 1650,
+              "char_start": 1943,
+              "char_end": 1995,
+              "content": "<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n</table>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:50",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "# ocr = TableRecognitionPipelineV2(device=\"gpu\") # 通过 device 指定模型推理时使用 GPU\noutput = pipeline.predict(\"./general_formula_recognition_001.png\")\nfor res in output:\n    res.print() ## 打印预测的结构化输出\n    res.save_to_img(\"./output/\")\n    res.save_to_xlsx(\"./output/\")\n    res.save_to_html(\"./output/\")\n    res.save_to_json(\"./output/\")\n```",
+          "generation_text": "# ocr = TableRecognitionPipelineV2(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型\n# ocr = TableRecognitionPipelineV2(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块\n# ocr = TableRecognitionPipelineV2(device=\"gpu\") # 通过 device 指定模型推理时使用 GPU\noutput = pipeline.predict(\"./general_formula_recognition_001.png\")\nfor res in output:\n    res.print() ## 打印预测的结构化输出\n    res.save_to_img(\"./output/\")\n    res.save_to_xlsx(\"./output/\")\n    res.save_to_html(\"./output/\")\n    res.save_to_json(\"./output/\")\n```",
+          "evidence_spans": [
+            {
+              "line_start": 1144,
+              "line_end": 1152,
+              "char_start": 316,
+              "char_end": 645,
+              "content": "# ocr = TableRecognitionPipelineV2(device=\"gpu\") # 通过 device 指定模型推理时使用 GPU\noutput = pipeline.predict(\"./general_formula_recognition_001.png\")\nfor res in output:\n    res.print() ## 打印预测的结构化输出\n    res.save_to_img(\"./output/\")\n    res.save_to_xlsx(\"./output/\")\n    res.save_to_html(\"./output/\")\n    res.save_to_json(\"./output/\")\n```"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:55",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`xlsx`文件、保存为`HTML`文件、保存为`json`文件的操作:",
+          "generation_text": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`xlsx`文件、保存为`HTML`文件、保存为`json`文件的操作:",
+          "evidence_spans": [
+            {
+              "line_start": 1573,
+              "line_end": 1573,
+              "char_start": 0,
+              "char_end": 87,
+              "content": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`xlsx`文件、保存为`HTML`文件、保存为`json`文件的操作:"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:54",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "<td>是否在推理时使用有线表单元格检测结果直转HTML模式,启用则直接基于有线表单元格检测结果的几何关系构建HTML。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_wireless_table_cells_trans_to_html</code></td>\n<td>是否在推理时使用无线表单元格检测结果直转HTML模式，启用则直接基于无线表单元格检测结果的几何关系构建HTML。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n\n<td><code>True</code></td>\n</tr>\n</table>",
+          "generation_text": "<thead>\n<tr>\n<th>参数</th>\n<th>参数说明</th>\n<th>参数类型</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td><code>use_wired_table_cells_trans_to_html</code></td>\n<td>是否在推理时使用有线表单元格检测结果直转HTML模式,启用则直接基于有线表单元格检测结果的几何关系构建HTML。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_wireless_table_cells_trans_to_html</code></td>\n<td>是否在推理时使用无线表单元格检测结果直转HTML模式，启用则直接基于无线表单元格检测结果的几何关系构建HTML。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_table_orientation_classify</code></td>\n<td>是否在推理时使用表格方向分类模式，启用时当图像中的表格存在90/180/270度旋转时，能够将方向校正并正确完成表格识别。</td>\n<td><code>bool</code></td>\n<td><code>True</code></td>\n</tr>\n<td>是否在推理时使用单元格切分OCR模式，启用时会基于单元格预测结果对OCR检测结果进行切分和重识别，避免出现文字缺失情况。</td>\n<td><code>bool</code></td>\n<td><code>True</code></td>\n</tr>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 1549,
+              "line_end": 1559,
+              "char_start": 2569,
+              "char_end": 2894,
+              "content": "<td>是否在推理时使用有线表单元格检测结果直转HTML模式,启用则直接基于有线表单元格检测结果的几何关系构建HTML。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_wireless_table_cells_trans_to_html</code></td>\n<td>是否在推理时使用无线表单元格检测结果直转HTML模式，启用则直接基于无线表单元格检测结果的几何关系构建HTML。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n"
+            },
+            {
+              "line_start": 1569,
+              "line_end": 1571,
+              "char_start": 3235,
+              "char_end": 3276,
+              "content": "<td><code>True</code></td>\n</tr>\n</table>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-18",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "assembled_score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 5894.72,
+      "diagnostics": {
+        "requested_strategy": "contextual_llm_rerank",
+        "actual_strategy": "contextual_llm_rerank",
+        "candidate_budget": 40,
+        "eligible_windows": 297,
+        "rerank_calls": 1,
+        "external_model_calls": 1,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "candidate_windows": 40,
+        "scored_windows": 40,
+        "score_type": "model_order_not_probability",
+        "llm_ranking": {
+          "status": "OK",
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "usage": {
+            "input_tokens": 4748,
+            "output_tokens": 127,
+            "total_tokens": 4875
+          },
+          "candidate_count": 40,
+          "excerpt_truncation": [
+            {
+              "chunk_id": "774d0dd70da77dbc08e3d40603de8417f6ad6e633e312220dfdacb5f5108f461",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "3c8314b1e09b7c7e636a9bee0dee9fc425d5c52e521d04d0697c8d343a86ca66",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "f286ee341469a2df8155eb1a25b965c62181635dc9b9b92974348aab9f7d665e",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "281fecaad2c7dbdf1c0d4d2fc7daf29794fa3d815ab1097500e3f225c9a59973",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "a68d8e6efacbf09baebbbf2cd7c3837cb9d2985073c0c82937ee7fdcfa33f5b9",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "80c8e6d2a43d6fe987b26993ececf1a8346923962c98b1ffd6248c3d9b65fc3a",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "fd11220fd96179a217d920b116019238b78e1858cec5515630890f93cddc7112",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "a6471a5ecef9e4be7a0a1cb842377f648e6d62f054df811614dd419c6dbfd027",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "4a80992e3c804072ca4b43762cecb244611bcf974a157ca5c06fd96439a7ac87",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "76087dffe880ca36cb2b6d7e51cbbfdf27e67d164d53b6eb334b7939331f21aa",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "311cea1ebb8ebc1053f657e77d07b02131e676bc36acdc474183d6acee6be4c3",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "1a04ee7b6d52c33c25c0a460c0a1ca243a51ffb690440f7646710fd6cfb7ba21",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "34eee6bc0aae5fa47fed4044b0df2da4b7a95fae1e103a8200ed29b7acced1fb",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "83da48d0416d98dbefc98141f28614d0687bf237fa0be1ed349a8c7e7fc306b6",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "04c700d42f045e107f46991da4312cd10ec2655da3176046c1fc40635540138b",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "abb8abb0dec1ec535bbf42cdc5a06f1220f56f9d4a7c8f4dd8117ddf8e567bd9",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "a0fdc3bd4895f7067b53e98eedd32fa49be21ffb0a29af9f2f2261b1f7abb985",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "91a0ee057a17ca08aec8e77c383d5d71aee1ab9bd26b7981673411a7183b8847",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "48b343e5eff4e0744fb942fee454b403e0a227524fe81a0d4ca96e36fabcd8c2",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "c78576fe33a66306e6c201a823477e2a8e5f913ed97962232a2b973b844dea1d",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "df1631201649813ae7588c9eb9ebb9d9c0d579bfc80620ab877288f6f9dd8deb",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "6d51917ce3739b5f7c2cd418871a4efc79d238f8e4faa54033a978d661b5f30c",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "5c798eaf103a25f2e40b414b58a74f786de712c9b057dc21e9d3b9b34d1648b5",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "fa83a7af1343e2e1ac1e2ea448ca0e44f6ce4febe262754cf389a59043f45eab",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "6972fe357a9d975d4880c7a0271a7a6a05c56d9aa6bddd4db3b29c276e6187c9",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "ee68ecb62158d931f27f9d0ac9144e08f382d632454ecec43737c30acb783548",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "66f0db886d71f8968d54297b4058330cb9f120ecd839a897ef7a14a0982e3f69",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "b3fa6f2bb99d49771b8311eb7c65269367c2e5ec7d866d83168f5b7d7c30072d",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "8abce7834970c534a8d3b39dcf181a3555c5774b683db1ae5eb184c5921e0f04",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "1498b546211f816ffc5f3a1c2d169ba3ec6e3a19474b12666e73a9a2e35e7d43",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "bfbfc4a989a6c73be0517f9577bd84e2c2cb87ecb0e82aefb59794723ae0f1ba",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "4a7d8336171c07e85189fb27e249bc39fb034962678f2307e2c29939fc264272",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "c9205035d893f8b35c8df742ae1ac51e98fa49bb9e8e6a94849aba45213134b1",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "13264b05dc1182d0371c4188666d78b715c52f0a2cd62960b9a29dcbcfed489e",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "36211d56a833d18991089e2d3f5eec7dd7f6ca423e3ab2c36c905199b55dfb28",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "319ffcba2152f5ea936f13ac48c6af38c45479798d36b7228d64f46860d4cbd6",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "eef6dba552a33c64cdf7ac9558b2556b3708959483dc477d962ff760f4129fb9",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "8538834b7d7a0f7cc217dca472436e6665ca150e31dc3681f1de08f1d71f948f",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "bfdf1f57e41d89d4bab8ef476f09a7c48ae4b4f7cab461d7d469d312c239a0b9",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "dd9bf674becb5c5771b7ef9904bdd60dc55c61e18585220332f7458fde088008",
+              "excerpt_truncated": true
+            }
+          ],
+          "rerank_calls": 1
+        },
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:60"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 6,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:60",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "- `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。\n- `img` 属性返回的预测结果是一个字典类型的数据。其中，键分别为 `table_res_img`、`ocr_res_img` 、`layout_res_img` 和 `preprocessed_img`，对应的值是四个 `Image.Image` 对象，按顺序分别为：表格识别结果的可视化图像、OCR 结果的可视化图像、版面区域检测结果的可视化图像、图像预处理的可视化图像。如果没有使用某个子模块，则字典中不包含对应的结果图像。",
+          "generation_text": "- `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。\n- `img` 属性返回的预测结果是一个字典类型的数据。其中，键分别为 `table_res_img`、`ocr_res_img` 、`layout_res_img` 和 `preprocessed_img`，对应的值是四个 `Image.Image` 对象，按顺序分别为：表格识别结果的可视化图像、OCR 结果的可视化图像、版面区域检测结果的可视化图像、图像预处理的可视化图像。如果没有使用某个子模块，则字典中不包含对应的结果图像。",
+          "evidence_spans": [
+            {
+              "line_start": 1724,
+              "line_end": 1725,
+              "char_start": 0,
+              "char_end": 282,
+              "content": "- `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。\n- `img` 属性返回的预测结果是一个字典类型的数据。其中，键分别为 `table_res_img`、`ocr_res_img` 、`layout_res_img` 和 `preprocessed_img`，对应的值是四个 `Image.Image` 对象，按顺序分别为：表格识别结果的可视化图像、OCR 结果的可视化图像、版面区域检测结果的可视化图像、图像预处理的可视化图像。如果没有使用某个子模块，则字典中不包含对应的结果图像。"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:59",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "<table>\n<thead>\n<tr>\n<th>属性</th>\n<th>属性说明</th>\n</tr>\n</thead>\n<tr>\n<td rowspan=\"1\"><code>json</code></td>\n<td rowspan=\"1\">获取预测的 <code>json</code> 格式的结果</td>\n</tr>\n<tr>\n<td rowspan=\"2\"><code>img</code></td>\n<td rowspan=\"2\">获取格式为 <code>dict</code> 的可视化图像</td>\n</tr>\n</table>",
+          "generation_text": "<table>\n<thead>\n<tr>\n<th>属性</th>\n<th>属性说明</th>\n</tr>\n</thead>\n<tr>\n<td rowspan=\"1\"><code>json</code></td>\n<td rowspan=\"1\">获取预测的 <code>json</code> 格式的结果</td>\n</tr>\n<tr>\n<td rowspan=\"2\"><code>img</code></td>\n<td rowspan=\"2\">获取格式为 <code>dict</code> 的可视化图像</td>\n</tr>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 1707,
+              "line_end": 1722,
+              "char_start": 0,
+              "char_end": 272,
+              "content": "<table>\n<thead>\n<tr>\n<th>属性</th>\n<th>属性说明</th>\n</tr>\n</thead>\n<tr>\n<td rowspan=\"1\"><code>json</code></td>\n<td rowspan=\"1\">获取预测的 <code>json</code> 格式的结果</td>\n</tr>\n<tr>\n<td rowspan=\"2\"><code>img</code></td>\n<td rowspan=\"2\">获取格式为 <code>dict</code> 的可视化图像</td>\n</tr>\n</table>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:58",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：",
+          "generation_text": "- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：",
+          "evidence_spans": [
+            {
+              "line_start": 1705,
+              "line_end": 1705,
+              "char_start": 1516,
+              "char_end": 1550,
+              "content": "* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下："
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:71",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "        with open(img_path, \"wb\") as f:\n            f.write(base64.b64decode(img))\n        print(f\"Output image saved at {img_path}\")\n</code></pre></details>\n</details>\n<br/>\npayload = {\"file\": file_data, \"fileType\": 1}\n\nresponse = requests.post(API_URL, json=payload)\n\nassert response.status_code == 200\nresult = response.json()[\"result\"]\nfor i, res in enumerate(result[\"tableRecResults\"]):\n    print(res[\"prunedResult\"])\n    for img_name, img in res[\"outputImages\"].items():\n        img_path = f\"{img_name}_{i}.jpg\"\n",
+          "generation_text": "    file_data = base64.b64encode(file_bytes).decode(\"ascii\")\n\npayload = {\"file\": file_data, \"fileType\": 1}\n\nresponse = requests.post(API_URL, json=payload)\n\nassert response.status_code == 200\nresult = response.json()[\"result\"]\nfor i, res in enumerate(result[\"tableRecResults\"]):\n    print(res[\"prunedResult\"])\n    for img_name, img in res[\"outputImages\"].items():\n        img_path = f\"{img_name}_{i}.jpg\"\n        with open(img_path, \"wb\") as f:\n            f.write(base64.b64decode(img))\n        print(f\"Output image saved at {img_path}\")\n</code></pre></details>\n</details>\n<br/>",
+          "evidence_spans": [
+            {
+              "line_start": 2024,
+              "line_end": 2029,
+              "char_start": 689,
+              "char_end": 863,
+              "content": "        with open(img_path, \"wb\") as f:\n            f.write(base64.b64decode(img))\n        print(f\"Output image saved at {img_path}\")\n</code></pre></details>\n</details>\n<br/>"
+            },
+            {
+              "line_start": 2014,
+              "line_end": 2023,
+              "char_start": 346,
+              "char_end": 689,
+              "content": "payload = {\"file\": file_data, \"fileType\": 1}\n\nresponse = requests.post(API_URL, json=payload)\n\nassert response.status_code == 200\nresult = response.json()[\"result\"]\nfor i, res in enumerate(result[\"tableRecResults\"]):\n    print(res[\"prunedResult\"])\n    for img_name, img in res[\"outputImages\"].items():\n        img_path = f\"{img_name}_{i}.jpg\"\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:48",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "可视化结果保存在`save_path`下，可视化结果如下：\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/table_recognition_v2/02.jpg\">",
+          "generation_text": "可视化结果保存在`save_path`下，可视化结果如下：\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/table_recognition_v2/02.jpg\">",
+          "evidence_spans": [
+            {
+              "line_start": 1130,
+              "line_end": 1132,
+              "char_start": 0,
+              "char_end": 156,
+              "content": "可视化结果保存在`save_path`下，可视化结果如下：\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/table_recognition_v2/02.jpg\">"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-19",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "assembled_score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 5674.48,
+      "diagnostics": {
+        "requested_strategy": "contextual_llm_rerank",
+        "actual_strategy": "contextual_llm_rerank",
+        "candidate_budget": 40,
+        "eligible_windows": 297,
+        "rerank_calls": 1,
+        "external_model_calls": 1,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "candidate_windows": 40,
+        "scored_windows": 40,
+        "score_type": "model_order_not_probability",
+        "llm_ranking": {
+          "status": "OK",
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "usage": {
+            "input_tokens": 5010,
+            "output_tokens": 127,
+            "total_tokens": 5137
+          },
+          "candidate_count": 40,
+          "excerpt_truncation": [
+            {
+              "chunk_id": "856d83cddc66f41ff3bf724a78ba14d94203e06f748ba5dfb9f2f446c4998352",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "cd90bfa6ed14ed402029ed2b8767def796be680470597690c993a82a3a0b5597",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "5c798eaf103a25f2e40b414b58a74f786de712c9b057dc21e9d3b9b34d1648b5",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "83da48d0416d98dbefc98141f28614d0687bf237fa0be1ed349a8c7e7fc306b6",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "abb8abb0dec1ec535bbf42cdc5a06f1220f56f9d4a7c8f4dd8117ddf8e567bd9",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "a0fdc3bd4895f7067b53e98eedd32fa49be21ffb0a29af9f2f2261b1f7abb985",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "f36b4cd9ba95b2410baf6fe3ef84958daa42964df983732f4e64a5a84e4f6aa5",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "91a0ee057a17ca08aec8e77c383d5d71aee1ab9bd26b7981673411a7183b8847",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "48b343e5eff4e0744fb942fee454b403e0a227524fe81a0d4ca96e36fabcd8c2",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "c78576fe33a66306e6c201a823477e2a8e5f913ed97962232a2b973b844dea1d",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "df1631201649813ae7588c9eb9ebb9d9c0d579bfc80620ab877288f6f9dd8deb",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "80c8e6d2a43d6fe987b26993ececf1a8346923962c98b1ffd6248c3d9b65fc3a",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "6d51917ce3739b5f7c2cd418871a4efc79d238f8e4faa54033a978d661b5f30c",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "ee68ecb62158d931f27f9d0ac9144e08f382d632454ecec43737c30acb783548",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "66f0db886d71f8968d54297b4058330cb9f120ecd839a897ef7a14a0982e3f69",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "b3fa6f2bb99d49771b8311eb7c65269367c2e5ec7d866d83168f5b7d7c30072d",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "4a7d8336171c07e85189fb27e249bc39fb034962678f2307e2c29939fc264272",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "1a04ee7b6d52c33c25c0a460c0a1ca243a51ffb690440f7646710fd6cfb7ba21",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "34eee6bc0aae5fa47fed4044b0df2da4b7a95fae1e103a8200ed29b7acced1fb",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "c9205035d893f8b35c8df742ae1ac51e98fa49bb9e8e6a94849aba45213134b1",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "13264b05dc1182d0371c4188666d78b715c52f0a2cd62960b9a29dcbcfed489e",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "36211d56a833d18991089e2d3f5eec7dd7f6ca423e3ab2c36c905199b55dfb28",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "319ffcba2152f5ea936f13ac48c6af38c45479798d36b7228d64f46860d4cbd6",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "f73c674175a57c250d8cbe8d79fc9b09184264289c6d8fd7aa61ae0ec0bc936d",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "f4bcfadfcb4d6c754fa77698e2f33962848208ed971cee42a9fe0c3e7c2f32f0",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "a610cd20e62cbf793737a2ce1336dbd1c2c556b8d32cbc8a8af7bdd688ff911f",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "25e78667ed51ecc6e2f42e337a00338512854339f720dd80de1adcadcfc435c3",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "bb3fbb4b787b1ebe34ca05848260d4c6202daf2695c49090a21f98a8fc643b7e",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "075e77f6baa368c5677898718b4057f64f1af52df1ca8b79769151fd610687fe",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "16844ab837c54c69f18f8e595363d339803f1a5da2aa5b695bdb6da030417830",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "45efd68148eca594ad468ffbb76951eb4325fa64d318417062b968313b040ce9",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "417909ba30ebe874705e77b163d6d15076c42521fb69f1b913c7c5b5594f3d24",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "ceae19c61f3802c0b676ea0c77715e0aba6378d50e76e19853b0abd49bffd4c5",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "54cbf2007a5b4acfc3c1708633cc68fe7408b973885c8ea25c5742600dc25bf9",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "6c1d1bae8ccc9392b8ab6c764ebd161bd8a8abcbd634bba9b7dd40dbf9fb7544",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "6001f3c7223eeaaeaec63e43b280ebeef3ad2d1f9ec35f8c9b7f00bbd08d05e4",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "96d6c463e0d96d8ec5e8837a743a199d0c6a586e64a1f31baaf1690e48ac8140",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "4d55dfb23147dca6d2e6f1b9770dd82135de8bb1ba4664079a10fc389678322c",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "e56f9fc5c3d6a2be38f12cf430fb84d82773022491efe314b30e63821cf68505",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "eb7da6c48c695f846578804e83c9edd933a343495e34fb9e639f0b4bbf54e538",
+              "excerpt_truncated": false
+            }
+          ],
+          "rerank_calls": 1
+        },
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:58"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 10,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:58",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`\n\n\n- 调用`save_to_html()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_table_1.html`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的HTML形式写入到指定的html文件中。\n- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n",
+          "generation_text": "        - `text_type`: `(str)` 文本检测的类型，当前固定为\"general\"\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`\n\n    - `rec_boxes`: `(numpy.ndarray)` 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形框的[x_min, y_min, x_max, y_max]坐标\n    ，其中(x_min, y_min)为左上角坐标，(x_max, y_max)为右下角坐标\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n- 调用`save_to_html()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_table_1.html`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的HTML形式写入到指定的html文件中。\n- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：",
+          "evidence_spans": [
+            {
+              "line_start": 1689,
+              "line_end": 1696,
+              "char_start": 356,
+              "char_end": 638,
+              "content": "    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`\n\n"
+            },
+            {
+              "line_start": 1702,
+              "line_end": 1704,
+              "char_start": 1176,
+              "char_end": 1516,
+              "content": "- 调用`save_to_html()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_table_1.html`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的HTML形式写入到指定的html文件中。\n- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:47",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "        ...,\n        [  4, 334]]], dtype=int16), 'text_det_params': {'limit_side_len': 960, 'limit_type': 'max', 'thresh': 0.3, 'box_thresh': 0.4, 'unclip_ratio': 2.0}, 'text_type': 'general', 'textline_orientation_angles': array([-1]), 'text_rec_score_thresh': 0, 'rec_texts': ['其'], 'rec_scores': array([0.97335929]), 'rec_polys': array([[[  4, 301],\n\n        ...,\n        [  4, 334]]], dtype=int16), 'rec_boxes': array([[  4, ..., 334]], dtype=int16)}, 'table_res_list': []}}\n```\n```\n",
+          "generation_text": "```\n{'res': {'input_path': '/root/.paddlex/predict_input/table_recognition_v2.jpg', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_layout_detection': True, 'use_ocr_model': True}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 180}, 'layout_det_res': {'input_path': None, 'page_index': None, 'boxes': [{'cls_id': 18, 'label': 'chart', 'score': 0.6778535842895508, 'coordinate': [0, 0, 1281.0206, 585.5999]}]}, 'overall_ocr_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_preprocessor': False, 'use_textline_orientation': False}, 'dt_polys': array([[[  4, 301],\n        ...,\n        [  4, 334]]], dtype=int16), 'text_det_params': {'limit_side_len': 960, 'limit_type': 'max', 'thresh': 0.3, 'box_thresh': 0.4, 'unclip_ratio': 2.0}, 'text_type': 'general', 'textline_orientation_angles': array([-1]), 'text_rec_score_thresh': 0, 'rec_texts': ['其'], 'rec_scores': array([0.97335929]), 'rec_polys': array([[[  4, 301],\n        ...,\n        [  4, 334]]], dtype=int16), 'rec_boxes': array([[  4, ..., 334]], dtype=int16)}, 'table_res_list': []}}\n```",
+          "evidence_spans": [
+            {
+              "line_start": 1124,
+              "line_end": 1125,
+              "char_start": 727,
+              "char_end": 1080,
+              "content": "        ...,\n        [  4, 334]]], dtype=int16), 'text_det_params': {'limit_side_len': 960, 'limit_type': 'max', 'thresh': 0.3, 'box_thresh': 0.4, 'unclip_ratio': 2.0}, 'text_type': 'general', 'textline_orientation_angles': array([-1]), 'text_rec_score_thresh': 0, 'rec_texts': ['其'], 'rec_scores': array([0.97335929]), 'rec_polys': array([[[  4, 301],\n"
+            },
+            {
+              "line_start": 1126,
+              "line_end": 1128,
+              "char_start": 1080,
+              "char_end": 1208,
+              "content": "        ...,\n        [  4, 334]]], dtype=int16), 'rec_boxes': array([[  4, ..., 334]], dtype=int16)}, 'table_res_list': []}}\n```"
+            },
+            {
+              "line_start": 1122,
+              "line_end": 1122,
+              "char_start": 0,
+              "char_end": 4,
+              "content": "```\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:51",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "在上述 Python 脚本中，执行了如下几个步骤：\n\n（1）通过 `TableRecognitionPipelineV2()` 实例化通用表格识别v2产线对象，具体参数说明如下：",
+          "generation_text": "在上述 Python 脚本中，执行了如下几个步骤：\n\n（1）通过 `TableRecognitionPipelineV2()` 实例化通用表格识别v2产线对象，具体参数说明如下：",
+          "evidence_spans": [
+            {
+              "line_start": 1154,
+              "line_end": 1156,
+              "char_start": 0,
+              "char_end": 89,
+              "content": "在上述 Python 脚本中，执行了如下几个步骤：\n\n（1）通过 `TableRecognitionPipelineV2()` 实例化通用表格识别v2产线对象，具体参数说明如下："
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:54",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "<td><code>True</code></td>\n</tr>\n</table>",
+          "generation_text": "<td>是否在推理时使用单元格切分OCR模式，启用时会基于单元格预测结果对OCR检测结果进行切分和重识别，避免出现文字缺失情况。</td>\n<td><code>bool</code></td>\n<td><code>True</code></td>\n</tr>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 1569,
+              "line_end": 1571,
+              "char_start": 3235,
+              "char_end": 3276,
+              "content": "<td><code>True</code></td>\n</tr>\n</table>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "通用表格识别v2产线（PP-TableMagic）用于解决表格识别任务，对图片中的表格进行识别，并以HTML格式输出。与通用表格识别产线不同，本产线新引入了表格分类和表格单元格检测两个模块，通过<b>采用“表格分类+表格结构识别+单元格检测”多模型串联组网方案</b>，实现了相比通用表格识别产线更好的端到端表格识别性能。基于此，通用表格识别v2产线<b>原生支持针对性地模型微调</b>，各类开发者均能对通用表格识别v2产线进行不同程度的自定义微调，使其在不同应用场景下都能得到令人满意的性能。<b>除此之外，通用表格识别v2产线同样支持使用端到端表格结构识别模型（例如 SLANet、SLANet_plus 等），并且支持有线表、无线表独立配置表格识别方式，开发者可以自由选取和组合最佳的表格识别方案。</b>\n\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md) （可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md) （可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary> <b>表格结构识别模块模型：</b></summary>\n- [表格结构识别模块](../module_usage/table_structure_recognition.md)\n- [表格分类模块](../module_usage/table_classification.md)\n- [表格单元格定位模块](../module_usage/table_cells_detection.md)\n- [文本检测模块](../module_usage/text_detection.md)\n- [文本识别模块](../module_usage/text_recognition.md)\n- [版面区域检测模块](../module_usage/layout_detection.md)（可选）\n",
+          "generation_text": "表格识别是一种自动从文档或图像中识别和提取表格内容及其结构的技术，广泛应用于数据录入、信息检索和文档分析等领域。通过使用计算机视觉和机器学习算法，表格识别能够将复杂的表格信息转换为可编辑的格式，方便用户进一步处理和分析数据。\n\n通用表格识别v2产线（PP-TableMagic）用于解决表格识别任务，对图片中的表格进行识别，并以HTML格式输出。与通用表格识别产线不同，本产线新引入了表格分类和表格单元格检测两个模块，通过<b>采用“表格分类+表格结构识别+单元格检测”多模型串联组网方案</b>，实现了相比通用表格识别产线更好的端到端表格识别性能。基于此，通用表格识别v2产线<b>原生支持针对性地模型微调</b>，各类开发者均能对通用表格识别v2产线进行不同程度的自定义微调，使其在不同应用场景下都能得到令人满意的性能。<b>除此之外，通用表格识别v2产线同样支持使用端到端表格结构识别模型（例如 SLANet、SLANet_plus 等），并且支持有线表、无线表独立配置表格识别方式，开发者可以自由选取和组合最佳的表格识别方案。</b>\n\n本产线的使用场景覆盖通用、制造、金融、交通等各个领域。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n\n<b>通用表格识别产线v2中包含以下8个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [表格结构识别模块](../module_usage/table_structure_recognition.md)\n- [表格分类模块](../module_usage/table_classification.md)\n- [表格单元格定位模块](../module_usage/table_cells_detection.md)\n- [文本检测模块](../module_usage/text_detection.md)\n- [文本识别模块](../module_usage/text_recognition.md)\n- [版面区域检测模块](../module_usage/layout_detection.md)（可选）\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md) （可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md) （可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary> <b>表格结构识别模块模型：</b></summary>",
+          "evidence_spans": [
+            {
+              "line_start": 11,
+              "line_end": 12,
+              "char_start": 134,
+              "char_end": 493,
+              "content": "通用表格识别v2产线（PP-TableMagic）用于解决表格识别任务，对图片中的表格进行识别，并以HTML格式输出。与通用表格识别产线不同，本产线新引入了表格分类和表格单元格检测两个模块，通过<b>采用“表格分类+表格结构识别+单元格检测”多模型串联组网方案</b>，实现了相比通用表格识别产线更好的端到端表格识别性能。基于此，通用表格识别v2产线<b>原生支持针对性地模型微调</b>，各类开发者均能对通用表格识别v2产线进行不同程度的自定义微调，使其在不同应用场景下都能得到令人满意的性能。<b>除此之外，通用表格识别v2产线同样支持使用端到端表格结构识别模型（例如 SLANet、SLANet_plus 等），并且支持有线表、无线表独立配置表格识别方式，开发者可以自由选取和组合最佳的表格识别方案。</b>\n\n"
+            },
+            {
+              "line_start": 25,
+              "line_end": 31,
+              "char_start": 1134,
+              "char_end": 1347,
+              "content": "- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md) （可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md) （可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary> <b>表格结构识别模块模型：</b></summary>"
+            },
+            {
+              "line_start": 19,
+              "line_end": 24,
+              "char_start": 817,
+              "char_end": 1134,
+              "content": "- [表格结构识别模块](../module_usage/table_structure_recognition.md)\n- [表格分类模块](../module_usage/table_classification.md)\n- [表格单元格定位模块](../module_usage/table_cells_detection.md)\n- [文本检测模块](../module_usage/text_detection.md)\n- [文本识别模块](../module_usage/text_recognition.md)\n- [版面区域检测模块](../module_usage/layout_detection.md)（可选）\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-20",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "assembled_score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 6076.58,
+      "diagnostics": {
+        "requested_strategy": "contextual_llm_rerank",
+        "actual_strategy": "contextual_llm_rerank",
+        "candidate_budget": 40,
+        "eligible_windows": 297,
+        "rerank_calls": 1,
+        "external_model_calls": 1,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "candidate_windows": 40,
+        "scored_windows": 40,
+        "score_type": "model_order_not_probability",
+        "llm_ranking": {
+          "status": "OK",
+          "provider": "deepseek",
+          "model": "deepseek-flash",
+          "usage": {
+            "input_tokens": 5860,
+            "output_tokens": 127,
+            "total_tokens": 5987
+          },
+          "candidate_count": 40,
+          "excerpt_truncation": [
+            {
+              "chunk_id": "ee68ecb62158d931f27f9d0ac9144e08f382d632454ecec43737c30acb783548",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "2534b96c4604d5943c62750e415daca8a8169886c908c8d8fe19d0400e93b77f",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "2134e15c6676e08cf9370003d306dcd8ecc04a2edeb3dcd8c2097e44d448daf8",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "5f9dff464712e314da9c22eb33d52963024346d76ffd8e565cff6531252a0aea",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "b2c5f1a704efe7b829337ae44ecd65ac442e8fbd259b630f1ceca74a1d19c2ba",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "68552cdeec5b2102a4ad88fe5699816f993196ae64c9cb6faf6c60d05a2f145c",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "312cb08a9717f9a45b81867edd312a3fdb9061ba8dbee0d008546a79cb2382e2",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "621f004c306a8d4e90668be58441ffe3f0fc1d81e61697a3244443df4594baf6",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "36211d56a833d18991089e2d3f5eec7dd7f6ca423e3ab2c36c905199b55dfb28",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "2dc8eca23fb39cbf04ae9d9f0e91365ee984118753228534538b9fe208db4fe5",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "bb3fbb4b787b1ebe34ca05848260d4c6202daf2695c49090a21f98a8fc643b7e",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "763c55e09a4938bd5b627d66d86c16a488c48a578148ef90bb21f00f71c27d10",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "81392c39c10e16a1eb6ffca4890dcaded81ccc9e9244335764b782ce6faf86a3",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "f0229d8575d7f82aa12da7a3df70e9f474f06caedfdd87942201d470f93b8e7b",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "8f6444df1b2d812b71d7717383aaf119f11fd5e40a0a1132b154075dfbaeb004",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "a610cd20e62cbf793737a2ce1336dbd1c2c556b8d32cbc8a8af7bdd688ff911f",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "80c8e6d2a43d6fe987b26993ececf1a8346923962c98b1ffd6248c3d9b65fc3a",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "b3fa6f2bb99d49771b8311eb7c65269367c2e5ec7d866d83168f5b7d7c30072d",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "d44d8996e4564a0ee7d3eec473f415cf0671867d9164a7ce052c1a6dfaa33319",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "4a7d8336171c07e85189fb27e249bc39fb034962678f2307e2c29939fc264272",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "13264b05dc1182d0371c4188666d78b715c52f0a2cd62960b9a29dcbcfed489e",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "f64b8063080cde6b41fc74704d783cede806478d5ff036a7d93d741506871c7e",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "6001f3c7223eeaaeaec63e43b280ebeef3ad2d1f9ec35f8c9b7f00bbd08d05e4",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "96d6c463e0d96d8ec5e8837a743a199d0c6a586e64a1f31baaf1690e48ac8140",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "a7a9d343f8f7368383b6ca55e728ffad7d46b8368dafd9a2de7203638048b5ad",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "0e3d342a990c1f75e789969e254b6926203a5dcc035d76d7bb6cc311b15363d4",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "abb8abb0dec1ec535bbf42cdc5a06f1220f56f9d4a7c8f4dd8117ddf8e567bd9",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "a0fdc3bd4895f7067b53e98eedd32fa49be21ffb0a29af9f2f2261b1f7abb985",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "91a0ee057a17ca08aec8e77c383d5d71aee1ab9bd26b7981673411a7183b8847",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "f36b4cd9ba95b2410baf6fe3ef84958daa42964df983732f4e64a5a84e4f6aa5",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "3cb1f5f12b21942077d241f4ea6384db3f96952b3e07bc69e3c610af43c4025e",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "63ee7853db59282b8ead2102ba70311fa7afd734f1d3abaf7a0e2d584798a460",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "df1631201649813ae7588c9eb9ebb9d9c0d579bfc80620ab877288f6f9dd8deb",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "e40389aa0b61c3b1c77a64de0f0487a5f5ebfc0b551f03f4c304faef52eed919",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "d3281a511ae2f1460850353d8244943c2ac4b38e19e2593566c8a1f64e033414",
+              "excerpt_truncated": true
+            },
+            {
+              "chunk_id": "521659cbd921ca2b964679565a30057c70ec273b25748dd3508a186a95b31526",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "83da48d0416d98dbefc98141f28614d0687bf237fa0be1ed349a8c7e7fc306b6",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "1a04ee7b6d52c33c25c0a460c0a1ca243a51ffb690440f7646710fd6cfb7ba21",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "31e552b13a28ebc1a6af4fcbec459a8371f484c496a2543e5b2df555f57da44e",
+              "excerpt_truncated": false
+            },
+            {
+              "chunk_id": "40a5fc472be7b3b0c99ec7ce9435e1658ea24d1b6eff49bc0c5cd6f2d09969df",
+              "excerpt_truncated": false
+            }
+          ],
+          "rerank_calls": 1
+        },
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:45"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 14,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:45",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "<td><code>wired_table_cells_detection_model_dir</code></td>\n<td>有线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_name</code></td>\n<td>无线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n\n<td>无线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_cells_detection_model_name</code></td>\n<td>有线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n\n<tr>\n<td><code>wireless_table_cells_detection_model_dir</code></td>\n<td>无线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_name</code></td>\n<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_structure_recognition_model_name</code></td>\n<td>有线表格结构识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_structure_recognition_model_dir</code></td>\n<td>有线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n",
+          "generation_text": "<thead>\n<tr>\n<th>参数</th>\n<th>参数说明</th>\n<th>参数类型</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td><code>table_classification_model_dir</code></td>\n<td>表格分类模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_structure_recognition_model_name</code></td>\n<td>有线表格结构识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_structure_recognition_model_dir</code></td>\n<td>有线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_structure_recognition_model_dir</code></td>\n<td>无线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_cells_detection_model_name</code></td>\n<td>有线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_cells_detection_model_dir</code></td>\n<td>有线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_name</code></td>\n<td>无线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_dir</code></td>\n<td>无线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_name</code></td>\n<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_dir</code></td>\n<td>文档方向分类模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>",
+          "evidence_spans": [
+            {
+              "line_start": 899,
+              "line_end": 909,
+              "char_start": 2580,
+              "char_end": 2945,
+              "content": "<td><code>wired_table_cells_detection_model_dir</code></td>\n<td>有线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_name</code></td>\n<td>无线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n"
+            },
+            {
+              "line_start": 888,
+              "line_end": 898,
+              "char_start": 2273,
+              "char_end": 2580,
+              "content": "<td>无线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_cells_detection_model_name</code></td>\n<td>有线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n"
+            },
+            {
+              "line_start": 910,
+              "line_end": 921,
+              "char_start": 2945,
+              "char_end": 3310,
+              "content": "<tr>\n<td><code>wireless_table_cells_detection_model_dir</code></td>\n<td>无线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_name</code></td>\n<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n"
+            },
+            {
+              "line_start": 866,
+              "line_end": 876,
+              "char_start": 1594,
+              "char_end": 1947,
+              "content": "<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_structure_recognition_model_name</code></td>\n<td>有线表格结构识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_structure_recognition_model_dir</code></td>\n<td>有线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:52",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_cells_detection_model_dir</code></td>\n<td>有线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_name</code></td>\n\n<td>无线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_dir</code></td>\n<td>无线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n\n<td><code>wired_table_structure_recognition_model_dir</code></td>\n<td>有线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_structure_recognition_model_name</code></td>\n<td>无线表格结构识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n\n<td>表格分类模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_structure_recognition_model_name</code></td>\n<td>有线表格结构识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n",
+          "generation_text": "<thead>\n<tr>\n<th>参数</th>\n<th>参数说明</th>\n<th>参数类型</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td><code>table_classification_model_dir</code></td>\n<td>表格分类模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_structure_recognition_model_name</code></td>\n<td>有线表格结构识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_structure_recognition_model_dir</code></td>\n<td>有线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_structure_recognition_model_name</code></td>\n<td>无线表格结构识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n\n<tr>\n<td><code>wired_table_cells_detection_model_name</code></td>\n<td>有线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_cells_detection_model_dir</code></td>\n<td>有线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_name</code></td>\n<td>无线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_dir</code></td>\n<td>无线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_name</code></td>\n<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>",
+          "evidence_spans": [
+            {
+              "line_start": 1219,
+              "line_end": 1229,
+              "char_start": 1668,
+              "char_end": 1979,
+              "content": "<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_cells_detection_model_dir</code></td>\n<td>有线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_name</code></td>\n"
+            },
+            {
+              "line_start": 1230,
+              "line_end": 1240,
+              "char_start": 1979,
+              "char_end": 2288,
+              "content": "<td>无线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_dir</code></td>\n<td>无线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n"
+            },
+            {
+              "line_start": 1199,
+              "line_end": 1207,
+              "char_start": 974,
+              "char_end": 1318,
+              "content": "<td><code>wired_table_structure_recognition_model_dir</code></td>\n<td>有线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_structure_recognition_model_name</code></td>\n<td>无线表格结构识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n"
+            },
+            {
+              "line_start": 1188,
+              "line_end": 1198,
+              "char_start": 665,
+              "char_end": 974,
+              "content": "<td>表格分类模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_structure_recognition_model_name</code></td>\n<td>有线表格结构识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:54",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "<td>是否在推理时使用有线表单元格检测结果直转HTML模式,启用则直接基于有线表单元格检测结果的几何关系构建HTML。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_wireless_table_cells_trans_to_html</code></td>\n<td>是否在推理时使用无线表单元格检测结果直转HTML模式，启用则直接基于无线表单元格检测结果的几何关系构建HTML。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n\n<td>是否在推理时使用有线表端到端表格识别模式。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_e2e_wireless_table_rec_model</code></td>\n<td>是否在推理时使用无线表端到端表格识别模式。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_wired_table_cells_trans_to_html</code></td>\n\n<td><code>use_table_orientation_classify</code></td>\n<td>是否在推理时使用表格方向分类模式，启用时当图像中的表格存在90/180/270度旋转时，能够将方向校正并正确完成表格识别。</td>\n<td><code>bool</code></td>\n<td><code>True</code></td>\n</tr>\n<tr>\n<td><code>use_ocr_results_with_table_cells</code></td>\n<td>是否在推理时使用单元格切分OCR模式，启用时会基于单元格预测结果对OCR检测结果进行切分和重识别，避免出现文字缺失情况。</td>\n<td><code>bool</code></td>\n",
+          "generation_text": "<thead>\n<tr>\n<th>参数</th>\n<th>参数说明</th>\n<th>参数类型</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td><code>use_e2e_wired_table_rec_model</code></td>\n<td>是否在推理时使用有线表端到端表格识别模式。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_e2e_wireless_table_rec_model</code></td>\n<td>是否在推理时使用无线表端到端表格识别模式。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_wired_table_cells_trans_to_html</code></td>\n<td>是否在推理时使用有线表单元格检测结果直转HTML模式,启用则直接基于有线表单元格检测结果的几何关系构建HTML。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_wireless_table_cells_trans_to_html</code></td>\n<td>是否在推理时使用无线表单元格检测结果直转HTML模式，启用则直接基于无线表单元格检测结果的几何关系构建HTML。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_table_orientation_classify</code></td>\n<td>是否在推理时使用表格方向分类模式，启用时当图像中的表格存在90/180/270度旋转时，能够将方向校正并正确完成表格识别。</td>\n<td><code>bool</code></td>\n<td><code>True</code></td>\n</tr>\n<tr>\n<td><code>use_ocr_results_with_table_cells</code></td>\n<td>是否在推理时使用单元格切分OCR模式，启用时会基于单元格预测结果对OCR检测结果进行切分和重识别，避免出现文字缺失情况。</td>\n<td><code>bool</code></td>\n<td><code>True</code></td>\n</tr>\n",
+          "evidence_spans": [
+            {
+              "line_start": 1549,
+              "line_end": 1559,
+              "char_start": 2569,
+              "char_end": 2894,
+              "content": "<td>是否在推理时使用有线表单元格检测结果直转HTML模式,启用则直接基于有线表单元格检测结果的几何关系构建HTML。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_wireless_table_cells_trans_to_html</code></td>\n<td>是否在推理时使用无线表单元格检测结果直转HTML模式，启用则直接基于无线表单元格检测结果的几何关系构建HTML。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n"
+            },
+            {
+              "line_start": 1537,
+              "line_end": 1548,
+              "char_start": 2262,
+              "char_end": 2569,
+              "content": "<td>是否在推理时使用有线表端到端表格识别模式。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_e2e_wireless_table_rec_model</code></td>\n<td>是否在推理时使用无线表端到端表格识别模式。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_wired_table_cells_trans_to_html</code></td>\n"
+            },
+            {
+              "line_start": 1560,
+              "line_end": 1568,
+              "char_start": 2894,
+              "char_end": 3235,
+              "content": "<td><code>use_table_orientation_classify</code></td>\n<td>是否在推理时使用表格方向分类模式，启用时当图像中的表格存在90/180/270度旋转时，能够将方向校正并正确完成表格识别。</td>\n<td><code>bool</code></td>\n<td><code>True</code></td>\n</tr>\n<tr>\n<td><code>use_ocr_results_with_table_cells</code></td>\n<td>是否在推理时使用单元格切分OCR模式，启用时会基于单元格预测结果对OCR检测结果进行切分和重识别，避免出现文字缺失情况。</td>\n<td><code>bool</code></td>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "通用表格识别v2产线（PP-TableMagic）用于解决表格识别任务，对图片中的表格进行识别，并以HTML格式输出。与通用表格识别产线不同，本产线新引入了表格分类和表格单元格检测两个模块，通过<b>采用“表格分类+表格结构识别+单元格检测”多模型串联组网方案</b>，实现了相比通用表格识别产线更好的端到端表格识别性能。基于此，通用表格识别v2产线<b>原生支持针对性地模型微调</b>，各类开发者均能对通用表格识别v2产线进行不同程度的自定义微调，使其在不同应用场景下都能得到令人满意的性能。<b>除此之外，通用表格识别v2产线同样支持使用端到端表格结构识别模型（例如 SLANet、SLANet_plus 等），并且支持有线表、无线表独立配置表格识别方式，开发者可以自由选取和组合最佳的表格识别方案。</b>\n\n\n- [表格结构识别模块](../module_usage/table_structure_recognition.md)\n- [表格分类模块](../module_usage/table_classification.md)\n- [表格单元格定位模块](../module_usage/table_cells_detection.md)\n- [文本检测模块](../module_usage/text_detection.md)\n- [文本识别模块](../module_usage/text_recognition.md)\n- [版面区域检测模块](../module_usage/layout_detection.md)（可选）\n",
+          "generation_text": "表格识别是一种自动从文档或图像中识别和提取表格内容及其结构的技术，广泛应用于数据录入、信息检索和文档分析等领域。通过使用计算机视觉和机器学习算法，表格识别能够将复杂的表格信息转换为可编辑的格式，方便用户进一步处理和分析数据。\n\n通用表格识别v2产线（PP-TableMagic）用于解决表格识别任务，对图片中的表格进行识别，并以HTML格式输出。与通用表格识别产线不同，本产线新引入了表格分类和表格单元格检测两个模块，通过<b>采用“表格分类+表格结构识别+单元格检测”多模型串联组网方案</b>，实现了相比通用表格识别产线更好的端到端表格识别性能。基于此，通用表格识别v2产线<b>原生支持针对性地模型微调</b>，各类开发者均能对通用表格识别v2产线进行不同程度的自定义微调，使其在不同应用场景下都能得到令人满意的性能。<b>除此之外，通用表格识别v2产线同样支持使用端到端表格结构识别模型（例如 SLANet、SLANet_plus 等），并且支持有线表、无线表独立配置表格识别方式，开发者可以自由选取和组合最佳的表格识别方案。</b>\n\n本产线的使用场景覆盖通用、制造、金融、交通等各个领域。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n\n<b>通用表格识别产线v2中包含以下8个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [表格结构识别模块](../module_usage/table_structure_recognition.md)\n- [表格分类模块](../module_usage/table_classification.md)\n- [表格单元格定位模块](../module_usage/table_cells_detection.md)\n- [文本检测模块](../module_usage/text_detection.md)\n- [文本识别模块](../module_usage/text_recognition.md)\n- [版面区域检测模块](../module_usage/layout_detection.md)（可选）\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md) （可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md) （可选）\n",
+          "evidence_spans": [
+            {
+              "line_start": 11,
+              "line_end": 12,
+              "char_start": 134,
+              "char_end": 493,
+              "content": "通用表格识别v2产线（PP-TableMagic）用于解决表格识别任务，对图片中的表格进行识别，并以HTML格式输出。与通用表格识别产线不同，本产线新引入了表格分类和表格单元格检测两个模块，通过<b>采用“表格分类+表格结构识别+单元格检测”多模型串联组网方案</b>，实现了相比通用表格识别产线更好的端到端表格识别性能。基于此，通用表格识别v2产线<b>原生支持针对性地模型微调</b>，各类开发者均能对通用表格识别v2产线进行不同程度的自定义微调，使其在不同应用场景下都能得到令人满意的性能。<b>除此之外，通用表格识别v2产线同样支持使用端到端表格结构识别模型（例如 SLANet、SLANet_plus 等），并且支持有线表、无线表独立配置表格识别方式，开发者可以自由选取和组合最佳的表格识别方案。</b>\n\n"
+            },
+            {
+              "line_start": 19,
+              "line_end": 24,
+              "char_start": 817,
+              "char_end": 1134,
+              "content": "- [表格结构识别模块](../module_usage/table_structure_recognition.md)\n- [表格分类模块](../module_usage/table_classification.md)\n- [表格单元格定位模块](../module_usage/table_cells_detection.md)\n- [文本检测模块](../module_usage/text_detection.md)\n- [文本识别模块](../module_usage/text_recognition.md)\n- [版面区域检测模块](../module_usage/layout_detection.md)（可选）\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:58",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "- 调用`save_to_html()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_table_1.html`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的HTML形式写入到指定的html文件中。\n- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n",
+          "generation_text": "- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n- 调用`save_to_html()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_table_1.html`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的HTML形式写入到指定的html文件中。\n- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：",
+          "evidence_spans": [
+            {
+              "line_start": 1702,
+              "line_end": 1704,
+              "char_start": 1176,
+              "char_end": 1516,
+              "content": "- 调用`save_to_html()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_table_1.html`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的HTML形式写入到指定的html文件中。\n- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

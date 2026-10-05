@@ -27,6 +27,7 @@ from src.pphuman_corpus import PPHUMAN_WORKSPACE_ID
 from src.paddleocr_corpus import PADDLEOCR_WORKSPACE_ID
 from src.paddleocr_evaluation import load_paddleocr_acceptance, load_quality_comparison, load_upgrade_demo, load_independent_probes
 from src.paddleocr_impact_evaluation import load_impact_release
+from src.paddleocr_rag_release import load_rag_release
 from src.rd_v2_runtime import _format_context
 from src.public_evaluation_release import validate_public_evaluation_release, validate_pphuman_dev_diagnostic
 from src.public_reranking import (
@@ -225,7 +226,7 @@ class SearchRequest(BaseModel):
     version: str = Field(default="current", min_length=1, max_length=64)
     language: Literal["zh_preferred", "all", "zh", "en"] = "zh_preferred"
     retrieval_policy: Literal["bm25", "bm25_pphuman_term_expansion_rrf", "task_adaptive_rerank", "paddleocr_quality", "paddleocr_evidence"] = "bm25"
-    evidence_strategy: Literal['auto','contextual_bm25','contextual_semantic','contextual_rrf','contextual_rerank','contextual_rrf_rerank'] = 'auto'
+    evidence_strategy: Literal['auto','contextual_bm25','contextual_semantic','contextual_rrf','contextual_rerank','contextual_rrf_rerank','contextual_llm_rerank'] = 'auto'
     candidate_budget: Literal[40,80,120] = 80
     device_model: str | None = Field(default=None, min_length=1, max_length=120)
     module_sku: str | None = Field(default=None, min_length=1, max_length=80)
@@ -235,8 +236,8 @@ class SearchRequest(BaseModel):
 
 
 def _canonical_evidence_text(hit: dict) -> str:
-    from src.paddleocr_retrieval_views import evidence_text
-    return evidence_text(hit)
+    from src.paddleocr_retrieval_views import generation_evidence_text
+    return generation_evidence_text(hit)
 
 
 class BatchSearchCheck(BaseModel):
@@ -415,7 +416,7 @@ def _rerank_candidates(generator, task: str, candidates: list[dict], *, fallback
 
 
 def _claim_scope_mismatches(claims,hits,requirements):
-    from src.paddleocr_query_plan import query_module,explicit_versions
+    from src.paddleocr_query_plan import claim_scope_module,explicit_versions
     from src.paddleocr_retrieval_views import module_for,evidence_text
     by_id={h['chunk_id']:h for h in hits};bad=set()
     modules={r['module'] for r in requirements if r.get('module')}
@@ -424,9 +425,11 @@ def _claim_scope_mismatches(claims,hits,requirements):
         claim_versions=explicit_versions(claim['text'])
         if claim_versions and any(by_id[cid].get('version') not in claim_versions for cid in claim['evidence_ids']):
             bad.add(i);continue
-        module=query_module(claim['text']) or fallback
+        module=claim_scope_module(claim['text'],requirements) or fallback
         applicable=[r for r in requirements if r.get('module')==module] if module else []
-        if not applicable:continue
+        if not applicable:
+            if module and modules: bad.add(i)
+            continue
         for cid in claim['evidence_ids']:
             hit=by_id[cid];scope=hit.get('module',module_for(hit))
             if scope not in (module,'shared','general') or not any(not r.get('version') or r['version']==hit.get('version') for r in applicable):
@@ -449,9 +452,12 @@ def _execute_public_search(index, payload, generator, *, top_k: int) -> dict:
         plan=plan_query(payload.query,versions=versions)
         strategy=payload.evidence_strategy;budget=payload.candidate_budget;use_context=True
         if strategy=='auto':
+            rag_release=load_rag_release(Path(base_index.root))
             release=load_impact_release(Path(base_index.root))
             strategy='contextual_bm25'
-            if release:
+            if rag_release:
+                strategy=rag_release['selected_strategy'];budget=rag_release['candidate_budget']
+            elif release:
                 selected=release['selected_strategy']
                 strategy,budget=release['configs'][selected]
                 use_context=selected!='window_plain_80'
@@ -459,7 +465,8 @@ def _execute_public_search(index, payload, generator, *, top_k: int) -> dict:
                 baseline=payload.model_copy(update={'retrieval_policy':'bm25'})
                 return _execute_public_search(index,baseline,generator,top_k=top_k)
         result=configured_evidence_search(index,strategy,use_context=use_context).search(
-            plan,top_k=top_k,candidate_budget=budget,strategy=strategy)
+            plan,top_k=top_k,candidate_budget=budget,strategy=strategy,
+            ranker=getattr(generator,'rerank_candidate_ids',None))
         details=result['diagnostics']; hits=result['results']
         return {'results':_with_document_relationships(index,hits),'candidates':hits,'route':route,
                 'requirements':result['requirements'],'requested_policy':requested,
@@ -966,6 +973,7 @@ def workspace(request: Request) -> dict:
             }} if manifest['workspace_id']==PADDLEOCR_WORKSPACE_ID else {}),
             **({'quality_comparison':load_quality_comparison(Path(index.root)),
                 'impact_evaluation':_impact_summary(index),
+                'rag_quality_evaluation':load_rag_release(Path(index.root)),
                 'task_coverage':_task_coverage(index),
                 'independent_probes':load_independent_probes(Path(index.root)),
                 'upgrade_demo':load_upgrade_demo()}
@@ -1314,8 +1322,102 @@ def search(payload: SearchRequest, request: Request) -> dict:
     }
 
 
+def _workflow_usage(results):
+    """Sum only provider-reported usage; never fabricate missing billing data."""
+    calls=[]
+    for result in results:
+        calls.append(result.get('generation',{}))
+        verification=result.get('claim_verification')
+        if verification: calls.append(verification.get('diagnostics',{}))
+        ranking=result.get('rerank_diagnostics',{})
+        if ranking.get('llm_ranking'): calls.append(ranking['llm_ranking'])
+        elif ranking.get('usage'): calls.append(ranking)
+    usages=[c.get('usage') for c in calls]
+    known=[u for u in usages if isinstance(u,dict) and type(u.get('total_tokens')) is int]
+    return {'total_tokens':sum(u['total_tokens'] for u in known) if known else None,
+            'reported_calls':len(known),'observed_stages':len(calls),'complete':len(known)==len(calls)}
+
+
+def _merge_evidence(first, second):
+    rows={}
+    for hit in first+second:
+        cid=hit['chunk_id']
+        previous=rows.get(cid)
+        value=dict(hit)
+        if previous:
+            if 'evidence_spans' not in previous or 'evidence_spans' not in hit:
+                value.pop('evidence_spans',None)
+            else:
+                spans=list(previous['evidence_spans'])
+                spans.extend(s for s in hit['evidence_spans'] if s not in spans)
+                value['evidence_spans']=spans
+        rows[cid]=value
+    return list(rows.values())
+
+
 @router.post("/query")
 async def query(payload: SearchRequest, request: Request) -> dict:
+    """One evidence repair, never an unbounded agent loop or provider retry."""
+    first = await _query_once(payload, request)
+    first['correction'] = {'attempts': 0, 'status': 'NOT_NEEDED'}
+    first['workflow_usage'] = _workflow_usage([first])
+    if _index(request).manifest.get('workspace_id') != PADDLEOCR_WORKSPACE_ID:
+        return first
+    reason = first.get('generation', {}).get('failure_reason')
+    content_failure = reason in {
+        'CLAIM_SCOPE_MISMATCH', 'MECHANICAL_FACT_CONTRADICTION',
+        'CLAIM_SUPPORT_REJECTED', 'MODEL_NO_SUPPORTED_ANSWER',
+    }
+    partial = (first.get('status') == 'OK' and first.get('answer_completeness') == 'PARTIAL_SUPPORTED'
+               and first.get('claim_verification', {}).get('status') != 'CHECK_FAILED')
+    if not content_failure and not partial:
+        return first
+    # Keep the question, selected versions, language and namespace unchanged.
+    # Repair the evidence budget/context only; rejected facts are never new queries.
+    strategy = first.get('actual_policy')
+    from src.paddleocr_evidence_search import STRATEGIES
+    if strategy not in STRATEGIES: strategy = 'contextual_bm25'
+    repaired = payload.model_copy(update={
+        'retrieval_policy': 'paddleocr_evidence', 'evidence_strategy': strategy,
+        'candidate_budget': 120, 'top_k': min(20, max(payload.top_k+3, 8)),
+    })
+    second = await _query_once(repaired, request, correction=True)
+    attempts = []
+    for result in (first, second):
+        attempts.append({key: result.get(key) for key in (
+            'status', 'generation', 'claim_verification', 'mechanical_verification',
+            'actual_policy', 'retrieval_latency_ms', 'rerank_diagnostics',
+        )})
+    chosen = second if second.get('status') == 'OK' else first
+    chosen['workflow_usage'] = _workflow_usage([first, second])
+    chosen['correction'] = {'attempts': 1, 'trigger': reason or 'PARTIAL_SUPPORTED',
+                            'status': 'RECOVERED' if second.get('status') == 'OK' else 'UNRESOLVED',
+                            'trace': attempts}
+    # Already verified first-pass claims survive a failed/partial correction.
+    if (first.get('status') == 'OK' and second.get('status') == 'OK'
+            and second.get('answer_completeness') == 'PARTIAL_SUPPORTED'):
+        claims = list(first['claims'])
+        known = {c['text'] for c in claims}
+        claims += [c for c in second['claims'] if c['text'] not in known]
+        all_sources = {h['chunk_id']: h for h in _merge_evidence(first['sources'],second['sources'])}
+        ids = list(dict.fromkeys(cid for c in claims for cid in c['evidence_ids']))
+        chosen['sources'] = [all_sources[cid] for cid in ids]
+        slots = {cid: i+1 for i, cid in enumerate(ids)}
+        chosen['claims'] = [{**c, 'source_indexes': [slots[cid] for cid in c['evidence_ids']]} for c in claims]
+        chosen['answer'] = '\n'.join(c['text'] for c in claims)
+        chosen['evidence'] = _merge_evidence(first['evidence'],second['evidence'])
+        chosen['final_evidence_count'] = len(chosen['evidence'])
+        chosen['answer_completeness'] = 'PARTIAL_SUPPORTED'
+        chosen['claim_verification']={'status':'PARTIAL_SUPPORTED',
+            'assessment_type':'separately_verified_passes_not_reverified_union',
+            'passes':[first.get('claim_verification'),second.get('claim_verification')]}
+        chosen['mechanical_verification']={'assessment_scope':'per_pass_claim_indexes',
+            'passes':[first.get('mechanical_verification'),second.get('mechanical_verification')]}
+        chosen['evidence_support']=_answer_evidence_support(payload.query,chosen['sources'],chosen.get('consistency_notes',[]))
+    return chosen
+
+
+async def _query_once(payload: SearchRequest, request: Request, *, correction: bool = False) -> dict:
     index = _index(request)
     _require_project_query_ready(index, payload)
     started = time.perf_counter()
@@ -1426,6 +1528,10 @@ async def query(payload: SearchRequest, request: Request) -> dict:
         + "page_number=1 只是内部引用槽位，并非原文页码。\n"
         + provenance + "\n" + _format_context(generator_hits)
     )
+    if correction:
+        context += ('\n这是一次证据补查。前次答案存在缺口或不受引用支持的主张。'
+                    '重新核对每个子问题的适用模块、版本、参数条件，只输出原文直接支持的要点；'
+                    '仍缺失的要点写入 evidence_gaps，不能用常识补全或作无条件兼容保证。')
     started = time.perf_counter()
     try:
         generate_with_diagnostics = getattr(generator, "generate_with_diagnostics", None)
@@ -1499,7 +1605,8 @@ async def query(payload: SearchRequest, request: Request) -> dict:
                 base['answer_completeness']='PARTIAL_SUPPORTED'
             base['mechanical_verification']=mechanical
             if not claims:
-                diagnostics['failure_reason']='CLAIM_SCOPE_MISMATCH' if scope_rejected else 'MECHANICAL_FACT_CONTRADICTION'
+                diagnostics['failure_reason']='CLAIM_SCOPE_MISMATCH' if any(
+                    r['status']=='SCOPE_MISMATCH' for r in mechanical['claims']) else 'MECHANICAL_FACT_CONTRADICTION'
                 return {**base,'status':'ABSTAINED'}
             from src.claim_support import check_claim_support
             judge=getattr(generator,'verify_claims_with_diagnostics',None)

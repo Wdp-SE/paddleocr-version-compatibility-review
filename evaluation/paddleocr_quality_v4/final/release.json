@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "selected_strategy": "contextual_llm_rerank",
+  "top_k": 5,
+  "candidate_budget": 40,
+  "retrieval": {
+    "legacy": {
+      "dev": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 9,
+          "fact_hit_count": 9,
+          "fact_count": 12,
+          "source_hit_count": 12,
+          "wrong_version_count": 0,
+          "wrong_module_count": 31,
+          "complete_rate": 0.75,
+          "fact_recall": 0.75
+        }
+      },
+      "holdout": {
+        "metrics": {
+          "count": 8,
+          "complete_count": 5,
+          "fact_hit_count": 5,
+          "fact_count": 8,
+          "source_hit_count": 8,
+          "wrong_version_count": 0,
+          "wrong_module_count": 26,
+          "complete_rate": 0.625,
+          "fact_recall": 0.625
+        }
+      }
+    },
+    "bm25": {
+      "dev": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 10,
+          "fact_hit_count": 10,
+          "fact_count": 12,
+          "source_hit_count": 12,
+          "wrong_version_count": 0,
+          "wrong_module_count": 8,
+          "complete_rate": 0.8333333333333334,
+          "fact_recall": 0.8333333333333334
+        }
+      },
+      "holdout": {
+        "metrics": {
+          "count": 8,
+          "complete_count": 7,
+          "fact_hit_count": 7,
+          "fact_count": 8,
+          "source_hit_count": 8,
+          "wrong_version_count": 0,
+          "wrong_module_count": 0,
+          "complete_rate": 0.875,
+          "fact_recall": 0.875
+        }
+      }
+    },
+    "llm": {
+      "dev": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 11,
+          "fact_hit_count": 11,
+          "fact_count": 12,
+          "source_hit_count": 12,
+          "wrong_version_count": 0,
+          "wrong_module_count": 5,
+          "complete_rate": 0.9166666666666666,
+          "fact_recall": 0.9166666666666666
+        }
+      },
+      "holdout": {
+        "metrics": {
+          "count": 8,
+          "complete_count": 7,
+          "fact_hit_count": 7,
+          "fact_count": 8,
+          "source_hit_count": 8,
+          "wrong_version_count": 0,
+          "wrong_module_count": 0,
+          "complete_rate": 0.875,
+          "fact_recall": 0.875
+        }
+      }
+    }
+  },
+  "promotion_passed": true,
+  "development_candidate": "llm",
+  "candidate_promotion_passed": true,
+  "limitations": "开发者依据固定原文标注的 12 条开发题和 8 条按产线资料分组留出题；不是独立业务专家盲评。指标为 Top-5 原文事实覆盖，不是答案正确率、幻觉率或生产准确率。本轮没有根据留出结果调整策略；模型排序会变化，版本过滤和引用核验仍是硬约束。",
+  "deployment_status": "local_verified_not_publicly_deployed",
+  "selection_record": "evaluation/paddleocr_quality_v4/final/selection.json"
+}

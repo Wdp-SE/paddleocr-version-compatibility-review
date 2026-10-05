@@ -743,7 +743,11 @@ def _knowledge(client: PublicKnowledgeClient, ready: bool, workspace: dict | Non
     versions = _published_versions(workspace)
     current = _confirmed_current_version(workspace)
     name = _workspace_name(workspace)
-    default_policy = str(workspace.get("retrieval_policy", "由服务配置") if workspace else "由服务配置").upper()
+    rag_release=(workspace or {}).get('rag_quality_evaluation')
+    default_policy = ('产线范围检索 + 模型重排' if isinstance(rag_release,dict) and
+                      rag_release.get('selected_strategy')=='contextual_llm_rerank' else
+                      '产线范围检索 + 上下文补齐' if isinstance(rag_release,dict) else
+                      str(workspace.get("retrieval_policy", "由服务配置") if workspace else "由服务配置").upper())
     default_version_label = _version_option_label(current, workspace) if current else "无法确认最新已收录版本"
     st.markdown(
         f'<div class="context-strip"><span><strong>知识空间</strong> {escape(name)}</span>'
@@ -955,6 +959,13 @@ def _knowledge(client: PublicKnowledgeClient, ready: bool, workspace: dict | Non
             primary = sources[0] if sources else None
             _consistency(payload.get("consistency_notes", []), primary=primary)
             _answer_gaps_panel(payload)
+            correction=payload.get('correction') or {}
+            if correction.get('attempts'):
+                st.caption('已补查一次并重新核验。' + (
+                    '下方保留通过核验的内容。' if correction.get('status')=='RECOVERED'
+                    else '现有证据仍有缺口，请查看原文及具体核验原因。'))
+                with st.expander('查看补查与核验过程'):
+                    st.json(correction)
             st.caption("请对照引用原文核验回答。")
             verification=payload.get('claim_verification')
             if isinstance(verification,dict):
@@ -2406,6 +2417,19 @@ def _benchmark(workspace: dict | None) -> None:
     st.markdown(f"**当前策略：{policy}**")
     if _is_paddleocr(workspace):
         current=workspace.get('impact_evaluation')
+        rag_quality=workspace.get('rag_quality_evaluation')
+        if isinstance(rag_quality,dict):
+            st.caption(f"问答默认策略：{rag_quality['selected_strategy']}；上方服务策略为保留的基础检索策略。")
+            st.subheader('当前 RAG 验证结果')
+            rows=[]
+            for name,splits in rag_quality['retrieval'].items():
+                for split,value in splits.items():
+                    m=value['metrics']
+                    rows.append({'策略':name,'题集':'开发' if split=='dev' else '新分组留出',
+                                 '完整证据题':f"{m['complete_count']} / {m['count']}",
+                                 '非目标模块片段':m['wrong_module_count'],'错版片段':m['wrong_version_count']})
+            st.dataframe(rows,hide_index=True,width='stretch')
+            st.caption(rag_quality['limitations'])
         if isinstance(current,dict):
             st.subheader('当前语料与实现的冻结评测')
             rows=[]

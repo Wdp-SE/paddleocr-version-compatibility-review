@@ -1,0 +1,392 @@
+{
+  "label_origin": "developer-authored source-grounded diagnostic sample; not independent expert evaluation",
+  "split_method": "pipeline document groups; holdout opened only after development selection; no V3 sealed retuning",
+  "cases": [
+    {
+      "id": "v4-01",
+      "split": "dev",
+      "group": "docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "OCR 产线的 rec_texts 和 rec_scores 分别保存什么，是否经过过滤？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "rec_texts",
+            "rec_scores",
+            "text_rec_score_thresh"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-02",
+      "split": "dev",
+      "group": "docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "OCR 结果如何调用 save_to_json 保存到目录？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "save_to_json",
+            "save_path"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-03",
+      "split": "dev",
+      "group": "docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "OCR 产线 predict 返回结果后，怎么逐个打印并保存图片？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "for res in",
+            "print",
+            "save_to_img"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-04",
+      "split": "dev",
+      "group": "docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "OCR 产线用哪些开关关闭文档方向、矫正与文本行方向？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "use_doc_orientation_classify",
+            "use_doc_unwarping",
+            "use_textline_orientation"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-05",
+      "split": "dev",
+      "group": "docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "OCR 的 text_det_box_thresh 是像素阈值还是框内平均得分阈值？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "text_det_box_thresh",
+            "平均"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-06",
+      "split": "dev",
+      "group": "docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "OCR 结果中 rec_boxes 的形状和坐标顺序是什么？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "rec_boxes",
+            "x_min",
+            "y_max"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-07",
+      "split": "dev",
+      "group": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+      "version": "v3.0.0",
+      "query": "PPStructureV3 如何导出 Markdown 文档？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md"
+          ],
+          "module": "structure",
+          "tokens": [
+            "save_to_markdown"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-08",
+      "split": "dev",
+      "group": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+      "version": "v3.0.0",
+      "query": "PPStructureV3 的 overall_ocr_res 中识别文本和得分字段是什么？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md"
+          ],
+          "module": "structure",
+          "tokens": [
+            "overall_ocr_res",
+            "rec_texts",
+            "rec_scores"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-09",
+      "split": "dev",
+      "group": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+      "version": "v3.0.0",
+      "query": "PPStructureV3 是否能通过 use_table_recognition 控制表格识别？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md"
+          ],
+          "module": "structure",
+          "tokens": [
+            "use_table_recognition"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-10",
+      "split": "dev",
+      "group": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+      "version": "v3.0.0",
+      "query": "PPStructureV3 结果如何合并为一个 Markdown 文件？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md"
+          ],
+          "module": "structure",
+          "tokens": [
+            "concatenate_markdown_pages",
+            "save_to_markdown"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-11",
+      "split": "dev",
+      "group": "docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "OCR 产线的 cpu_threads 参数类型和默认值是什么？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "cpu_threads",
+            "8"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-12",
+      "split": "dev",
+      "group": "docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "OCR 的 json 和 img 属性分别返回哪种数据？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "json",
+            "img",
+            "dict"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-13",
+      "split": "holdout",
+      "group": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+      "version": "v3.0.0",
+      "query": "文档预处理未启用方向分类时 angle 的值是什么？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/doc_preprocessor.md"
+          ],
+          "module": "doc_preprocessor",
+          "tokens": [
+            "angle",
+            "-1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-14",
+      "split": "holdout",
+      "group": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+      "version": "v3.0.0",
+      "query": "文档预处理能输出哪些角度分类结果？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/doc_preprocessor.md"
+          ],
+          "module": "doc_preprocessor",
+          "tokens": [
+            "angle",
+            "0,90,180,270"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-15",
+      "split": "holdout",
+      "group": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+      "version": "v3.0.0",
+      "query": "文档预处理保存 JSON 时 numpy.array 如何处理？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/doc_preprocessor.md"
+          ],
+          "module": "doc_preprocessor",
+          "tokens": [
+            "save_to_json",
+            "numpy.array",
+            "列表"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-16",
+      "split": "holdout",
+      "group": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+      "version": "v3.0.0",
+      "query": "文档预处理同时处理多张图，保存图片指定单个文件有什么后果？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/doc_preprocessor.md"
+          ],
+          "module": "doc_preprocessor",
+          "tokens": [
+            "save_to_img",
+            "覆盖"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-17",
+      "split": "holdout",
+      "group": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+      "version": "v3.0.0",
+      "query": "表格识别产线如何保存 HTML 格式的结果？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/table_recognition_v2.md"
+          ],
+          "module": "table_recognition_v2",
+          "tokens": [
+            "save_to_html"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-18",
+      "split": "holdout",
+      "group": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+      "version": "v3.0.0",
+      "query": "表格识别产线的 img 属性有哪些可视化图像？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/table_recognition_v2.md"
+          ],
+          "module": "table_recognition_v2",
+          "tokens": [
+            "table_res_img",
+            "ocr_res_img",
+            "layout_res_img",
+            "preprocessed_img"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-19",
+      "split": "holdout",
+      "group": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+      "version": "v3.0.0",
+      "query": "表格识别产线中 rec_texts 和 rec_scores 是什么？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/table_recognition_v2.md"
+          ],
+          "module": "table_recognition_v2",
+          "tokens": [
+            "rec_texts",
+            "rec_scores"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-20",
+      "split": "holdout",
+      "group": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+      "version": "v3.0.0",
+      "query": "表格识别产线如何指定有线表格单元格检测模型和模型目录？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/table_recognition_v2.md"
+          ],
+          "module": "table_recognition_v2",
+          "tokens": [
+            "wired_table_cells_detection_model_name",
+            "wired_table_cells_detection_model_dir"
+          ]
+        }
+      ]
+    }
+  ]
+}
