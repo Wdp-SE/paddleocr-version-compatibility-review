@@ -9,7 +9,11 @@ def retrieval_policy_options(workspace: dict | None) -> list[dict[str, str | boo
     ]
     quality=(workspace or {}).get('quality_retrieval',{})
     impact=(workspace or {}).get('impact_evaluation')
-    if (workspace or {}).get('workspace_id')=='paddleocr' and isinstance(impact,dict):
+    rag=(workspace or {}).get('rag_quality_evaluation')
+    if (workspace or {}).get('workspace_id')=='paddleocr' and isinstance(rag,dict):
+        options[0]['label']='BM25 基线（对照）'
+        options.insert(0,{'id':'paddleocr_evidence','label':'按产线范围检索与证据核验（默认）','experimental':False})
+    if (workspace or {}).get('workspace_id')=='paddleocr' and isinstance(impact,dict) and not isinstance(rag,dict):
         selected=impact.get('selected_strategy','bm25')
         if selected!='bm25':
             option={'id':'paddleocr_evidence','label':'当前验证通过的证据检索（默认）','experimental':False}
@@ -17,7 +21,9 @@ def retrieval_policy_options(workspace: dict | None) -> list[dict[str, str | boo
             options.insert(0,option)
     if ((workspace or {}).get('workspace_id')=='paddleocr' and quality.get('configured')
             and quality.get('strategy') in {'semantic','bm25_rerank','hybrid','hybrid_rerank'}):
-        options.insert(0,{'id':'paddleocr_quality','label':'质量优先检索（语义召回 / 重排）','experimental':True})
+        option={'id':'paddleocr_quality','label':'质量优先检索（语义召回 / 重排）','experimental':True}
+        if isinstance(rag,dict):options.append(option)
+        else:options.insert(0,option)
     if (workspace or {}).get("workspace_id") == "pphuman":
         options.append({
             "id": "bm25_pphuman_term_expansion_rrf",
@@ -41,6 +47,14 @@ def _format_ms(value: object) -> str | None:
 def retrieval_diagnostic_lines(result: dict) -> list[str]:
     """Summarize known strategy, rerank outcome, evidence counts, and timings."""
     lines: list[str] = []
+    correction = result.get('correction') or {}
+    if correction.get('attempts'):
+        outcome = '已获得核验通过的回答' if correction.get('status') == 'RECOVERED' else '仍有缺口，需核对原文'
+        lines.append(f"证据补查 {correction['attempts']} 次：{outcome}")
+    usage = result.get('workflow_usage') or {}
+    if usage.get('total_tokens') is not None:
+        suffix = '' if usage.get('complete') else '（仅统计已返回用量的调用）'
+        lines.append(f"生成、核验与重排合计 Token：{usage['total_tokens']}{suffix}")
     trace = result.get("retrieval_trace") if isinstance(result.get("retrieval_trace"), dict) else {}
     actual = result.get("actual_policy") or result.get("retrieval_policy")
     requested = result.get("requested_policy") or result.get("retrieval_policy_requested")

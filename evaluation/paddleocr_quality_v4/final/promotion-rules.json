@@ -1,0 +1,5 @@
+{
+  "recorded_at_utc": "2026-10-05T09:51:17.592986+00:00",
+  "holdout_candidate_report_exists": true,
+  "rule": "Retain scoped BM25 if the development winner decreases holdout complete/fact coverage relative to scoped BM25 or returns a wrong version. Never retune holdout labels or rerun after seeing result."
+}

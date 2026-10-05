@@ -3,6 +3,22 @@ from __future__ import annotations
 from services.retrieval_diagnostics import retrieval_diagnostic_lines, retrieval_policy_options
 
 
+def test_verified_rag_release_stays_default_with_optional_experiments():
+    options=retrieval_policy_options({'workspace_id':'paddleocr','rag_quality_evaluation':{},
+        'impact_evaluation':{'selected_strategy':'window_rerank_120'},
+        'quality_retrieval':{'configured':True,'strategy':'hybrid_rerank'}})
+    assert options[0]['id']=='paddleocr_evidence'
+    assert sum(o['id']=='paddleocr_evidence' for o in options)==1
+    assert options[-1]['experimental']
+
+
+def test_diagnostics_disclose_corrective_pass_and_all_stage_token_usage():
+    lines = retrieval_diagnostic_lines({'correction': {'attempts': 1, 'status': 'UNRESOLVED'},
+        'workflow_usage': {'total_tokens': 1234}, 'final_evidence_count': 8})
+    assert any('补查' in line and '1' in line and '仍有缺口' in line for line in lines)
+    assert any('1234' in line for line in lines)
+
+
 def test_policy_options_limit_experiment_to_pphuman():
     options = retrieval_policy_options({"workspace_id": "pphuman"})
     assert [row["id"] for row in options] == [

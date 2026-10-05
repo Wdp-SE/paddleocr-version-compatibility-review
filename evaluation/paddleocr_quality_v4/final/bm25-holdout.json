@@ -1,0 +1,1316 @@
+{
+  "strategy": "bm25",
+  "split": "holdout",
+  "freeze_sha256": "99897214cc9cf544f899ecd187d5be4a8750baaa63cb6cc6979978c5e80827c6",
+  "metrics": {
+    "count": 8,
+    "complete_count": 7,
+    "fact_hit_count": 7,
+    "fact_count": 8,
+    "source_hit_count": 8,
+    "wrong_version_count": 0,
+    "wrong_module_count": 0,
+    "complete_rate": 0.875,
+    "fact_recall": 0.875
+  },
+  "assembled_metrics": {
+    "count": 8,
+    "complete_count": 7,
+    "fact_hit_count": 7,
+    "fact_count": 8,
+    "source_hit_count": 8,
+    "wrong_version_count": 0,
+    "wrong_module_count": 0,
+    "complete_rate": 0.875,
+    "fact_recall": 0.875
+  },
+  "rows": [
+    {
+      "id": "v4-13",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "assembled_score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 4.08,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 114,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 10,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n\n- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类模块\n        - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正模块\n\n",
+          "generation_text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类模块\n        - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正模块\n\n    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n",
+          "evidence_spans": [
+            {
+              "line_start": 538,
+              "line_end": 540,
+              "char_start": 338,
+              "char_end": 574,
+              "content": "    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n"
+            },
+            {
+              "line_start": 527,
+              "line_end": 537,
+              "char_start": 0,
+              "char_end": 338,
+              "content": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类模块\n        - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正模块\n\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>\n## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n",
+          "generation_text": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>",
+          "evidence_spans": [
+            {
+              "line_start": 19,
+              "line_end": 21,
+              "char_start": 690,
+              "char_end": 743,
+              "content": "\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>"
+            },
+            {
+              "line_start": 7,
+              "line_end": 10,
+              "char_start": 0,
+              "char_end": 331,
+              "content": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n"
+            },
+            {
+              "line_start": 11,
+              "line_end": 18,
+              "char_start": 331,
+              "char_end": 690,
+              "content": "<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:31",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "<ul>\n<li>当请求处理未成功时，响应体的属性如下：</li>\n</ul>",
+          "generation_text": "<ul>\n<li>当请求处理未成功时，响应体的属性如下：</li>\n</ul>",
+          "evidence_spans": [
+            {
+              "line_start": 617,
+              "line_end": 619,
+              "char_start": 0,
+              "char_end": 39,
+              "content": "<ul>\n<li>当请求处理未成功时，响应体的属性如下：</li>\n</ul>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:7",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "</details>\n\n<details>\n<summary> <b>测试环境说明：</b></summary>\n\n  <ul>\n      <li><b>性能测试环境</b>\n          <ul>\n                      <li><strong>测试数据集：\n             </strong>\n                <ul>\n                  <li>文档图像方向分类模型：自建的内部数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n\n                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>\n                  </ul>\n              </li>\n          </ul>\n      </li>\n      <li><b>推理模式说明</b></li>\n  </ul>\n                  <li> 文本图像矫正模型：<a href=\"https://www3.cs.stonybrook.edu/~cvl/docunet.html\">DocUNet。</a></li>\n                </ul>\n             </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>\n",
+          "generation_text": "</details>\n\n<details>\n<summary> <b>测试环境说明：</b></summary>\n\n  <ul>\n      <li><b>性能测试环境</b>\n          <ul>\n                      <li><strong>测试数据集：\n             </strong>\n                <ul>\n                  <li>文档图像方向分类模型：自建的内部数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                  <li> 文本图像矫正模型：<a href=\"https://www3.cs.stonybrook.edu/~cvl/docunet.html\">DocUNet。</a></li>\n                </ul>\n             </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>\n                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>\n                  </ul>\n              </li>\n          </ul>\n      </li>\n      <li><b>推理模式说明</b></li>\n  </ul>",
+          "evidence_spans": [
+            {
+              "line_start": 66,
+              "line_end": 77,
+              "char_start": 0,
+              "char_end": 262,
+              "content": "</details>\n\n<details>\n<summary> <b>测试环境说明：</b></summary>\n\n  <ul>\n      <li><b>性能测试环境</b>\n          <ul>\n                      <li><strong>测试数据集：\n             </strong>\n                <ul>\n                  <li>文档图像方向分类模型：自建的内部数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n"
+            },
+            {
+              "line_start": 85,
+              "line_end": 91,
+              "char_start": 594,
+              "char_end": 782,
+              "content": "                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>\n                  </ul>\n              </li>\n          </ul>\n      </li>\n      <li><b>推理模式说明</b></li>\n  </ul>"
+            },
+            {
+              "line_start": 78,
+              "line_end": 84,
+              "char_start": 262,
+              "char_end": 594,
+              "content": "                  <li> 文本图像矫正模型：<a href=\"https://www3.cs.stonybrook.edu/~cvl/docunet.html\">DocUNet。</a></li>\n                </ul>\n             </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:16",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "```bash\n{'res': {'input_path': '/root/.paddlex/predict_input/doc_test_rotated.jpg', 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 180}}\n```",
+          "generation_text": "```bash\n{'res': {'input_path': '/root/.paddlex/predict_input/doc_test_rotated.jpg', 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 180}}\n```",
+          "evidence_spans": [
+            {
+              "line_start": 275,
+              "line_end": 277,
+              "char_start": 0,
+              "char_end": 207,
+              "content": "```bash\n{'res': {'input_path': '/root/.paddlex/predict_input/doc_test_rotated.jpg', 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 180}}\n```"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-14",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "assembled_score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 3.25,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 114,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 10,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n",
+          "generation_text": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>",
+          "evidence_spans": [
+            {
+              "line_start": 19,
+              "line_end": 21,
+              "char_start": 690,
+              "char_end": 743,
+              "content": "\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>"
+            },
+            {
+              "line_start": 11,
+              "line_end": 18,
+              "char_start": 331,
+              "char_end": 690,
+              "content": "<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n"
+            },
+            {
+              "line_start": 7,
+              "line_end": 10,
+              "char_start": 0,
+              "char_end": 331,
+              "content": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:2",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "# 文档图像预处理产线使用教程",
+          "generation_text": "# 文档图像预处理产线使用教程",
+          "evidence_spans": [
+            {
+              "line_start": 5,
+              "line_end": 5,
+              "char_start": 0,
+              "char_end": 15,
+              "content": "# 文档图像预处理产线使用教程"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:9",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "</details>",
+          "generation_text": "</details>",
+          "evidence_spans": [
+            {
+              "line_start": 117,
+              "line_end": 117,
+              "char_start": 0,
+              "char_end": 10,
+              "content": "</details>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:4",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "<td>3.37 / 1.27</td>\n<td>7</td>\n<td>基于PP-LCNet_x1_0的文档图像分类模型，含有四个类别，即0度，90度，180度，270度</td>\n</tr>\n</tbody>\n</table>\n<td>PP-LCNet_x1_0_doc_ori</td><td><a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar\">推理模型</a>/<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams\">训练模型</a></td>\n<td>99.06</td>\n<td>2.31 / 0.43</td>\n\n<table>\n<thead>\n<tr>\n<th>模型</th><th>模型下载链接</th>\n<th>Top-1 Acc（%）</th>\n<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>\n<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>\n<th>模型存储大小（M)</th>\n<th>介绍</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n",
+          "generation_text": "<table>\n<thead>\n<tr>\n<th>模型</th><th>模型下载链接</th>\n<th>Top-1 Acc（%）</th>\n<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>\n<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>\n<th>模型存储大小（M)</th>\n<th>介绍</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>PP-LCNet_x1_0_doc_ori</td><td><a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar\">推理模型</a>/<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams\">训练模型</a></td>\n<td>99.06</td>\n<td>2.31 / 0.43</td>\n<td>3.37 / 1.27</td>\n<td>7</td>\n<td>基于PP-LCNet_x1_0的文档图像分类模型，含有四个类别，即0度，90度，180度，270度</td>\n</tr>\n</tbody>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 38,
+              "line_end": 43,
+              "char_start": 561,
+              "char_end": 675,
+              "content": "<td>3.37 / 1.27</td>\n<td>7</td>\n<td>基于PP-LCNet_x1_0的文档图像分类模型，含有四个类别，即0度，90度，180度，270度</td>\n</tr>\n</tbody>\n</table>"
+            },
+            {
+              "line_start": 35,
+              "line_end": 37,
+              "char_start": 209,
+              "char_end": 561,
+              "content": "<td>PP-LCNet_x1_0_doc_ori</td><td><a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar\">推理模型</a>/<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams\">训练模型</a></td>\n<td>99.06</td>\n<td>2.31 / 0.43</td>\n"
+            },
+            {
+              "line_start": 22,
+              "line_end": 34,
+              "char_start": 0,
+              "char_end": 209,
+              "content": "<table>\n<thead>\n<tr>\n<th>模型</th><th>模型下载链接</th>\n<th>Top-1 Acc（%）</th>\n<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>\n<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>\n<th>模型存储大小（M)</th>\n<th>介绍</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:19",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "output = pipeline.predict(\"./doc_test_rotated.jpg\")\nfor res in output:\n    res.print() ## 打印预测的结构化输出\n    res.save_to_img(\"./output/\")\n    res.save_to_json(\"./output/\")\n```\n```python\nfrom paddleocr import DocPreprocessor\n\npipeline = DocPreprocessor()\n# docpp = DocPreprocessor(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型\n# docpp = DocPreprocessor(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块\n# docpp = DocPreprocessor(device=\"gpu\") # 通过 device 指定模型推理时使用 GPU\n",
+          "generation_text": "```python\nfrom paddleocr import DocPreprocessor\n\npipeline = DocPreprocessor()\n# docpp = DocPreprocessor(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型\n# docpp = DocPreprocessor(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块\n# docpp = DocPreprocessor(device=\"gpu\") # 通过 device 指定模型推理时使用 GPU\noutput = pipeline.predict(\"./doc_test_rotated.jpg\")\nfor res in output:\n    res.print() ## 打印预测的结构化输出\n    res.save_to_img(\"./output/\")\n    res.save_to_json(\"./output/\")\n```",
+          "evidence_spans": [
+            {
+              "line_start": 295,
+              "line_end": 300,
+              "char_start": 342,
+              "char_end": 513,
+              "content": "output = pipeline.predict(\"./doc_test_rotated.jpg\")\nfor res in output:\n    res.print() ## 打印预测的结构化输出\n    res.save_to_img(\"./output/\")\n    res.save_to_json(\"./output/\")\n```"
+            },
+            {
+              "line_start": 288,
+              "line_end": 294,
+              "char_start": 0,
+              "char_end": 342,
+              "content": "```python\nfrom paddleocr import DocPreprocessor\n\npipeline = DocPreprocessor()\n# docpp = DocPreprocessor(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型\n# docpp = DocPreprocessor(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块\n# docpp = DocPreprocessor(device=\"gpu\") # 通过 device 指定模型推理时使用 GPU\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-15",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "assembled_score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 2.98,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 114,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 7,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n",
+          "generation_text": "        - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正模块\n\n    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n",
+          "evidence_spans": [
+            {
+              "line_start": 538,
+              "line_end": 540,
+              "char_start": 338,
+              "char_end": 574,
+              "content": "    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:24",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:",
+          "generation_text": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:",
+          "evidence_spans": [
+            {
+              "line_start": 464,
+              "line_end": 464,
+              "char_start": 0,
+              "char_end": 63,
+              "content": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:2",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "# 文档图像预处理产线使用教程",
+          "generation_text": "# 文档图像预处理产线使用教程",
+          "evidence_spans": [
+            {
+              "line_start": 5,
+              "line_end": 5,
+              "char_start": 0,
+              "char_end": 15,
+              "content": "# 文档图像预处理产线使用教程"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:9",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "</details>",
+          "generation_text": "</details>",
+          "evidence_spans": [
+            {
+              "line_start": 117,
+              "line_end": 117,
+              "char_start": 0,
+              "char_end": 10,
+              "content": "</details>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n",
+          "generation_text": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>",
+          "evidence_spans": [
+            {
+              "line_start": 19,
+              "line_end": 21,
+              "char_start": 690,
+              "char_end": 743,
+              "content": "\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>"
+            },
+            {
+              "line_start": 11,
+              "line_end": 18,
+              "char_start": 331,
+              "char_end": 690,
+              "content": "<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n"
+            },
+            {
+              "line_start": 7,
+              "line_end": 10,
+              "char_start": 0,
+              "char_end": 331,
+              "content": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-16",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "assembled_score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 2.96,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 114,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 9,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：\n    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n",
+          "generation_text": "        - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正模块\n\n    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：",
+          "evidence_spans": [
+            {
+              "line_start": 541,
+              "line_end": 543,
+              "char_start": 574,
+              "char_end": 819,
+              "content": "- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下："
+            },
+            {
+              "line_start": 538,
+              "line_end": 540,
+              "char_start": 338,
+              "char_end": 574,
+              "content": "    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:24",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:",
+          "generation_text": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:",
+          "evidence_spans": [
+            {
+              "line_start": 464,
+              "line_end": 464,
+              "char_start": 0,
+              "char_end": 63,
+              "content": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:7",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "</details>\n\n<details>\n<summary> <b>测试环境说明：</b></summary>\n\n  <ul>\n      <li><b>性能测试环境</b>\n          <ul>\n                      <li><strong>测试数据集：\n             </strong>\n                <ul>\n                  <li>文档图像方向分类模型：自建的内部数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n\n                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>\n                  </ul>\n              </li>\n          </ul>\n      </li>\n      <li><b>推理模式说明</b></li>\n  </ul>\n                  <li> 文本图像矫正模型：<a href=\"https://www3.cs.stonybrook.edu/~cvl/docunet.html\">DocUNet。</a></li>\n                </ul>\n             </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>\n",
+          "generation_text": "</details>\n\n<details>\n<summary> <b>测试环境说明：</b></summary>\n\n  <ul>\n      <li><b>性能测试环境</b>\n          <ul>\n                      <li><strong>测试数据集：\n             </strong>\n                <ul>\n                  <li>文档图像方向分类模型：自建的内部数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                  <li> 文本图像矫正模型：<a href=\"https://www3.cs.stonybrook.edu/~cvl/docunet.html\">DocUNet。</a></li>\n                </ul>\n             </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>\n                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>\n                  </ul>\n              </li>\n          </ul>\n      </li>\n      <li><b>推理模式说明</b></li>\n  </ul>",
+          "evidence_spans": [
+            {
+              "line_start": 66,
+              "line_end": 77,
+              "char_start": 0,
+              "char_end": 262,
+              "content": "</details>\n\n<details>\n<summary> <b>测试环境说明：</b></summary>\n\n  <ul>\n      <li><b>性能测试环境</b>\n          <ul>\n                      <li><strong>测试数据集：\n             </strong>\n                <ul>\n                  <li>文档图像方向分类模型：自建的内部数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n"
+            },
+            {
+              "line_start": 85,
+              "line_end": 91,
+              "char_start": 594,
+              "char_end": 782,
+              "content": "                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>\n                  </ul>\n              </li>\n          </ul>\n      </li>\n      <li><b>推理模式说明</b></li>\n  </ul>"
+            },
+            {
+              "line_start": 78,
+              "line_end": 84,
+              "char_start": 262,
+              "char_end": 594,
+              "content": "                  <li> 文本图像矫正模型：<a href=\"https://www3.cs.stonybrook.edu/~cvl/docunet.html\">DocUNet。</a></li>\n                </ul>\n             </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:2",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "# 文档图像预处理产线使用教程",
+          "generation_text": "# 文档图像预处理产线使用教程",
+          "evidence_spans": [
+            {
+              "line_start": 5,
+              "line_end": 5,
+              "char_start": 0,
+              "char_end": 15,
+              "content": "# 文档图像预处理产线使用教程"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:25",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n</table>\n<td><code>str</code></td>\n<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>indent</code></td>\n<td><code>int</code></td>\n<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>\n<td>4</td>\n</tr>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n",
+          "generation_text": "<thead>\n<tr>\n<th>方法</th>\n<th>方法说明</th>\n<th>参数</th>\n<th>参数类型</th>\n<th>参数说明</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td rowspan=\"3\"><code>save_to_json()</code></td>\n<td rowspan=\"3\">将结果保存为json格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>indent</code></td>\n<td><code>int</code></td>\n<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>\n<td>4</td>\n</tr>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 522,
+              "line_end": 525,
+              "char_start": 1605,
+              "char_end": 1657,
+              "content": "<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n</table>"
+            },
+            {
+              "line_start": 501,
+              "line_end": 513,
+              "char_start": 926,
+              "char_end": 1258,
+              "content": "<td><code>str</code></td>\n<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>indent</code></td>\n<td><code>int</code></td>\n<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>\n<td>4</td>\n</tr>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-17",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "assembled_score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 5.63,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 297,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:56"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 9,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:56",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>save_to_xlsx()</code></td>\n<td>将结果保存为xlsx格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>save_to_html()</code></td>\n<td>将结果保存为html格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n\n<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n</table>\n<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td rowspan=\"3\"><code>save_to_json()</code></td>\n<td rowspan=\"3\">将结果保存为json格式的文件</td>\n<td><code>save_path</code></td>\n\n<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>save_to_img()</code></td>\n<td>将结果保存为图像格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n",
+          "generation_text": "<thead>\n<tr>\n<th>方法</th>\n<th>方法说明</th>\n<th>参数</th>\n<th>参数类型</th>\n<th>参数说明</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td rowspan=\"3\"><code>save_to_json()</code></td>\n<td rowspan=\"3\">将结果保存为json格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>save_to_img()</code></td>\n<td>将结果保存为图像格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>save_to_xlsx()</code></td>\n<td>将结果保存为xlsx格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>save_to_html()</code></td>\n<td>将结果保存为html格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 1631,
+              "line_end": 1646,
+              "char_start": 1605,
+              "char_end": 1943,
+              "content": "<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>save_to_xlsx()</code></td>\n<td>将结果保存为xlsx格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>save_to_html()</code></td>\n<td>将结果保存为html格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n"
+            },
+            {
+              "line_start": 1647,
+              "line_end": 1650,
+              "char_start": 1943,
+              "char_end": 1995,
+              "content": "<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n</table>"
+            },
+            {
+              "line_start": 1603,
+              "line_end": 1609,
+              "char_start": 578,
+              "char_end": 926,
+              "content": "<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td rowspan=\"3\"><code>save_to_json()</code></td>\n<td rowspan=\"3\">将结果保存为json格式的文件</td>\n<td><code>save_path</code></td>\n"
+            },
+            {
+              "line_start": 1623,
+              "line_end": 1630,
+              "char_start": 1258,
+              "char_end": 1605,
+              "content": "<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>save_to_img()</code></td>\n<td>将结果保存为图像格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:55",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`xlsx`文件、保存为`HTML`文件、保存为`json`文件的操作:",
+          "generation_text": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`xlsx`文件、保存为`HTML`文件、保存为`json`文件的操作:",
+          "evidence_spans": [
+            {
+              "line_start": 1573,
+              "line_end": 1573,
+              "char_start": 0,
+              "char_end": 87,
+              "content": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`xlsx`文件、保存为`HTML`文件、保存为`json`文件的操作:"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:58",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "- 调用`save_to_html()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_table_1.html`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的HTML形式写入到指定的html文件中。\n- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n",
+          "generation_text": "\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n- 调用`save_to_html()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_table_1.html`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的HTML形式写入到指定的html文件中。\n- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：",
+          "evidence_spans": [
+            {
+              "line_start": 1702,
+              "line_end": 1704,
+              "char_start": 1176,
+              "char_end": 1516,
+              "content": "- 调用`save_to_html()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_table_1.html`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的HTML形式写入到指定的html文件中。\n- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n"
+            },
+            {
+              "line_start": 1701,
+              "line_end": 1701,
+              "char_start": 979,
+              "char_end": 1176,
+              "content": "- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:59",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "<table>\n<thead>\n<tr>\n<th>属性</th>\n<th>属性说明</th>\n</tr>\n</thead>\n<tr>\n<td rowspan=\"1\"><code>json</code></td>\n<td rowspan=\"1\">获取预测的 <code>json</code> 格式的结果</td>\n</tr>\n<tr>\n<td rowspan=\"2\"><code>img</code></td>\n<td rowspan=\"2\">获取格式为 <code>dict</code> 的可视化图像</td>\n</tr>\n</table>",
+          "generation_text": "<table>\n<thead>\n<tr>\n<th>属性</th>\n<th>属性说明</th>\n</tr>\n</thead>\n<tr>\n<td rowspan=\"1\"><code>json</code></td>\n<td rowspan=\"1\">获取预测的 <code>json</code> 格式的结果</td>\n</tr>\n<tr>\n<td rowspan=\"2\"><code>img</code></td>\n<td rowspan=\"2\">获取格式为 <code>dict</code> 的可视化图像</td>\n</tr>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 1707,
+              "line_end": 1722,
+              "char_start": 0,
+              "char_end": 272,
+              "content": "<table>\n<thead>\n<tr>\n<th>属性</th>\n<th>属性说明</th>\n</tr>\n</thead>\n<tr>\n<td rowspan=\"1\"><code>json</code></td>\n<td rowspan=\"1\">获取预测的 <code>json</code> 格式的结果</td>\n</tr>\n<tr>\n<td rowspan=\"2\"><code>img</code></td>\n<td rowspan=\"2\">获取格式为 <code>dict</code> 的可视化图像</td>\n</tr>\n</table>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:48",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "可视化结果保存在`save_path`下，可视化结果如下：\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/table_recognition_v2/02.jpg\">",
+          "generation_text": "可视化结果保存在`save_path`下，可视化结果如下：\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/table_recognition_v2/02.jpg\">",
+          "evidence_spans": [
+            {
+              "line_start": 1130,
+              "line_end": 1132,
+              "char_start": 0,
+              "char_end": 156,
+              "content": "可视化结果保存在`save_path`下，可视化结果如下：\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/table_recognition_v2/02.jpg\">"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-18",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "assembled_score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 5.67,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 297,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:60"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 5,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:60",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "- `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。\n- `img` 属性返回的预测结果是一个字典类型的数据。其中，键分别为 `table_res_img`、`ocr_res_img` 、`layout_res_img` 和 `preprocessed_img`，对应的值是四个 `Image.Image` 对象，按顺序分别为：表格识别结果的可视化图像、OCR 结果的可视化图像、版面区域检测结果的可视化图像、图像预处理的可视化图像。如果没有使用某个子模块，则字典中不包含对应的结果图像。",
+          "generation_text": "- `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。\n- `img` 属性返回的预测结果是一个字典类型的数据。其中，键分别为 `table_res_img`、`ocr_res_img` 、`layout_res_img` 和 `preprocessed_img`，对应的值是四个 `Image.Image` 对象，按顺序分别为：表格识别结果的可视化图像、OCR 结果的可视化图像、版面区域检测结果的可视化图像、图像预处理的可视化图像。如果没有使用某个子模块，则字典中不包含对应的结果图像。",
+          "evidence_spans": [
+            {
+              "line_start": 1724,
+              "line_end": 1725,
+              "char_start": 0,
+              "char_end": 282,
+              "content": "- `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。\n- `img` 属性返回的预测结果是一个字典类型的数据。其中，键分别为 `table_res_img`、`ocr_res_img` 、`layout_res_img` 和 `preprocessed_img`，对应的值是四个 `Image.Image` 对象，按顺序分别为：表格识别结果的可视化图像、OCR 结果的可视化图像、版面区域检测结果的可视化图像、图像预处理的可视化图像。如果没有使用某个子模块，则字典中不包含对应的结果图像。"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:58",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：",
+          "generation_text": "- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：",
+          "evidence_spans": [
+            {
+              "line_start": 1705,
+              "line_end": 1705,
+              "char_start": 1516,
+              "char_end": 1550,
+              "content": "* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下："
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:59",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "<table>\n<thead>\n<tr>\n<th>属性</th>\n<th>属性说明</th>\n</tr>\n</thead>\n<tr>\n<td rowspan=\"1\"><code>json</code></td>\n<td rowspan=\"1\">获取预测的 <code>json</code> 格式的结果</td>\n</tr>\n<tr>\n<td rowspan=\"2\"><code>img</code></td>\n<td rowspan=\"2\">获取格式为 <code>dict</code> 的可视化图像</td>\n</tr>\n</table>",
+          "generation_text": "<table>\n<thead>\n<tr>\n<th>属性</th>\n<th>属性说明</th>\n</tr>\n</thead>\n<tr>\n<td rowspan=\"1\"><code>json</code></td>\n<td rowspan=\"1\">获取预测的 <code>json</code> 格式的结果</td>\n</tr>\n<tr>\n<td rowspan=\"2\"><code>img</code></td>\n<td rowspan=\"2\">获取格式为 <code>dict</code> 的可视化图像</td>\n</tr>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 1707,
+              "line_end": 1722,
+              "char_start": 0,
+              "char_end": 272,
+              "content": "<table>\n<thead>\n<tr>\n<th>属性</th>\n<th>属性说明</th>\n</tr>\n</thead>\n<tr>\n<td rowspan=\"1\"><code>json</code></td>\n<td rowspan=\"1\">获取预测的 <code>json</code> 格式的结果</td>\n</tr>\n<tr>\n<td rowspan=\"2\"><code>img</code></td>\n<td rowspan=\"2\">获取格式为 <code>dict</code> 的可视化图像</td>\n</tr>\n</table>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:48",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "可视化结果保存在`save_path`下，可视化结果如下：\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/table_recognition_v2/02.jpg\">",
+          "generation_text": "可视化结果保存在`save_path`下，可视化结果如下：\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/table_recognition_v2/02.jpg\">",
+          "evidence_spans": [
+            {
+              "line_start": 1130,
+              "line_end": 1132,
+              "char_start": 0,
+              "char_end": 156,
+              "content": "可视化结果保存在`save_path`下，可视化结果如下：\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/table_recognition_v2/02.jpg\">"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:70",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "<td><code>object</code> | <code>null</code></td>\n<td>参见产线预测结果的 <code>img</code> 属性说明。图像为JPEG格式，使用Base64编码。</td>\n</tr>\n<tr>\n<td><code>inputImage</code></td>\n<td><code>string</code> | <code>null</code></td>\n<td>输入图像。图像为JPEG格式，使用Base64编码。</td>\n</tr>\n</tbody>\n</table></details>",
+          "generation_text": "<tr>\n<td><code>outputImages</code></td>\n<td><code>object</code> | <code>null</code></td>\n<td>参见产线预测结果的 <code>img</code> 属性说明。图像为JPEG格式，使用Base64编码。</td>\n</tr>\n<tr>\n<td><code>inputImage</code></td>\n<td><code>string</code> | <code>null</code></td>\n<td>输入图像。图像为JPEG格式，使用Base64编码。</td>\n</tr>\n</tbody>\n</table></details>",
+          "evidence_spans": [
+            {
+              "line_start": 1990,
+              "line_end": 1999,
+              "char_start": 333,
+              "char_end": 607,
+              "content": "<td><code>object</code> | <code>null</code></td>\n<td>参见产线预测结果的 <code>img</code> 属性说明。图像为JPEG格式，使用Base64编码。</td>\n</tr>\n<tr>\n<td><code>inputImage</code></td>\n<td><code>string</code> | <code>null</code></td>\n<td>输入图像。图像为JPEG格式，使用Base64编码。</td>\n</tr>\n</tbody>\n</table></details>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-19",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "assembled_score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 5.33,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 297,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:47"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 10,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:47",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "        ...,\n        [  4, 334]]], dtype=int16), 'text_det_params': {'limit_side_len': 960, 'limit_type': 'max', 'thresh': 0.3, 'box_thresh': 0.4, 'unclip_ratio': 2.0}, 'text_type': 'general', 'textline_orientation_angles': array([-1]), 'text_rec_score_thresh': 0, 'rec_texts': ['其'], 'rec_scores': array([0.97335929]), 'rec_polys': array([[[  4, 301],\n\n```\n\n        ...,\n        [  4, 334]]], dtype=int16), 'rec_boxes': array([[  4, ..., 334]], dtype=int16)}, 'table_res_list': []}}\n```",
+          "generation_text": "```\n{'res': {'input_path': '/root/.paddlex/predict_input/table_recognition_v2.jpg', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_layout_detection': True, 'use_ocr_model': True}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 180}, 'layout_det_res': {'input_path': None, 'page_index': None, 'boxes': [{'cls_id': 18, 'label': 'chart', 'score': 0.6778535842895508, 'coordinate': [0, 0, 1281.0206, 585.5999]}]}, 'overall_ocr_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_preprocessor': False, 'use_textline_orientation': False}, 'dt_polys': array([[[  4, 301],\n        ...,\n        [  4, 334]]], dtype=int16), 'text_det_params': {'limit_side_len': 960, 'limit_type': 'max', 'thresh': 0.3, 'box_thresh': 0.4, 'unclip_ratio': 2.0}, 'text_type': 'general', 'textline_orientation_angles': array([-1]), 'text_rec_score_thresh': 0, 'rec_texts': ['其'], 'rec_scores': array([0.97335929]), 'rec_polys': array([[[  4, 301],\n        ...,\n        [  4, 334]]], dtype=int16), 'rec_boxes': array([[  4, ..., 334]], dtype=int16)}, 'table_res_list': []}}\n```",
+          "evidence_spans": [
+            {
+              "line_start": 1124,
+              "line_end": 1125,
+              "char_start": 727,
+              "char_end": 1080,
+              "content": "        ...,\n        [  4, 334]]], dtype=int16), 'text_det_params': {'limit_side_len': 960, 'limit_type': 'max', 'thresh': 0.3, 'box_thresh': 0.4, 'unclip_ratio': 2.0}, 'text_type': 'general', 'textline_orientation_angles': array([-1]), 'text_rec_score_thresh': 0, 'rec_texts': ['其'], 'rec_scores': array([0.97335929]), 'rec_polys': array([[[  4, 301],\n"
+            },
+            {
+              "line_start": 1122,
+              "line_end": 1122,
+              "char_start": 0,
+              "char_end": 4,
+              "content": "```\n"
+            },
+            {
+              "line_start": 1126,
+              "line_end": 1128,
+              "char_start": 1080,
+              "char_end": 1208,
+              "content": "        ...,\n        [  4, 334]]], dtype=int16), 'rec_boxes': array([[  4, ..., 334]], dtype=int16)}, 'table_res_list': []}}\n```"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:58",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`\n\n\n- 调用`save_to_html()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_table_1.html`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的HTML形式写入到指定的html文件中。\n- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n",
+          "generation_text": "        - `text_type`: `(str)` 文本检测的类型，当前固定为\"general\"\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`\n\n    - `rec_boxes`: `(numpy.ndarray)` 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形框的[x_min, y_min, x_max, y_max]坐标\n    ，其中(x_min, y_min)为左上角坐标，(x_max, y_max)为右下角坐标\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n- 调用`save_to_html()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_table_1.html`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的HTML形式写入到指定的html文件中。\n- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：",
+          "evidence_spans": [
+            {
+              "line_start": 1689,
+              "line_end": 1696,
+              "char_start": 356,
+              "char_end": 638,
+              "content": "    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`\n\n"
+            },
+            {
+              "line_start": 1702,
+              "line_end": 1704,
+              "char_start": 1176,
+              "char_end": 1516,
+              "content": "- 调用`save_to_html()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_table_1.html`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的HTML形式写入到指定的html文件中。\n- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md) （可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md) （可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary> <b>表格结构识别模块模型：</b></summary>\n通用表格识别v2产线（PP-TableMagic）用于解决表格识别任务，对图片中的表格进行识别，并以HTML格式输出。与通用表格识别产线不同，本产线新引入了表格分类和表格单元格检测两个模块，通过<b>采用“表格分类+表格结构识别+单元格检测”多模型串联组网方案</b>，实现了相比通用表格识别产线更好的端到端表格识别性能。基于此，通用表格识别v2产线<b>原生支持针对性地模型微调</b>，各类开发者均能对通用表格识别v2产线进行不同程度的自定义微调，使其在不同应用场景下都能得到令人满意的性能。<b>除此之外，通用表格识别v2产线同样支持使用端到端表格结构识别模型（例如 SLANet、SLANet_plus 等），并且支持有线表、无线表独立配置表格识别方式，开发者可以自由选取和组合最佳的表格识别方案。</b>\n\n\n- [表格结构识别模块](../module_usage/table_structure_recognition.md)\n- [表格分类模块](../module_usage/table_classification.md)\n- [表格单元格定位模块](../module_usage/table_cells_detection.md)\n- [文本检测模块](../module_usage/text_detection.md)\n- [文本识别模块](../module_usage/text_recognition.md)\n- [版面区域检测模块](../module_usage/layout_detection.md)（可选）\n",
+          "generation_text": "表格识别是一种自动从文档或图像中识别和提取表格内容及其结构的技术，广泛应用于数据录入、信息检索和文档分析等领域。通过使用计算机视觉和机器学习算法，表格识别能够将复杂的表格信息转换为可编辑的格式，方便用户进一步处理和分析数据。\n\n通用表格识别v2产线（PP-TableMagic）用于解决表格识别任务，对图片中的表格进行识别，并以HTML格式输出。与通用表格识别产线不同，本产线新引入了表格分类和表格单元格检测两个模块，通过<b>采用“表格分类+表格结构识别+单元格检测”多模型串联组网方案</b>，实现了相比通用表格识别产线更好的端到端表格识别性能。基于此，通用表格识别v2产线<b>原生支持针对性地模型微调</b>，各类开发者均能对通用表格识别v2产线进行不同程度的自定义微调，使其在不同应用场景下都能得到令人满意的性能。<b>除此之外，通用表格识别v2产线同样支持使用端到端表格结构识别模型（例如 SLANet、SLANet_plus 等），并且支持有线表、无线表独立配置表格识别方式，开发者可以自由选取和组合最佳的表格识别方案。</b>\n\n本产线的使用场景覆盖通用、制造、金融、交通等各个领域。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n\n<b>通用表格识别产线v2中包含以下8个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [表格结构识别模块](../module_usage/table_structure_recognition.md)\n- [表格分类模块](../module_usage/table_classification.md)\n- [表格单元格定位模块](../module_usage/table_cells_detection.md)\n- [文本检测模块](../module_usage/text_detection.md)\n- [文本识别模块](../module_usage/text_recognition.md)\n- [版面区域检测模块](../module_usage/layout_detection.md)（可选）\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md) （可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md) （可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary> <b>表格结构识别模块模型：</b></summary>",
+          "evidence_spans": [
+            {
+              "line_start": 25,
+              "line_end": 31,
+              "char_start": 1134,
+              "char_end": 1347,
+              "content": "- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md) （可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md) （可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary> <b>表格结构识别模块模型：</b></summary>"
+            },
+            {
+              "line_start": 11,
+              "line_end": 12,
+              "char_start": 134,
+              "char_end": 493,
+              "content": "通用表格识别v2产线（PP-TableMagic）用于解决表格识别任务，对图片中的表格进行识别，并以HTML格式输出。与通用表格识别产线不同，本产线新引入了表格分类和表格单元格检测两个模块，通过<b>采用“表格分类+表格结构识别+单元格检测”多模型串联组网方案</b>，实现了相比通用表格识别产线更好的端到端表格识别性能。基于此，通用表格识别v2产线<b>原生支持针对性地模型微调</b>，各类开发者均能对通用表格识别v2产线进行不同程度的自定义微调，使其在不同应用场景下都能得到令人满意的性能。<b>除此之外，通用表格识别v2产线同样支持使用端到端表格结构识别模型（例如 SLANet、SLANet_plus 等），并且支持有线表、无线表独立配置表格识别方式，开发者可以自由选取和组合最佳的表格识别方案。</b>\n\n"
+            },
+            {
+              "line_start": 19,
+              "line_end": 24,
+              "char_start": 817,
+              "char_end": 1134,
+              "content": "- [表格结构识别模块](../module_usage/table_structure_recognition.md)\n- [表格分类模块](../module_usage/table_classification.md)\n- [表格单元格定位模块](../module_usage/table_cells_detection.md)\n- [文本检测模块](../module_usage/text_detection.md)\n- [文本识别模块](../module_usage/text_recognition.md)\n- [版面区域检测模块](../module_usage/layout_detection.md)（可选）\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:2",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "# 通用表格识别v2产线使用教程",
+          "generation_text": "# 通用表格识别v2产线使用教程",
+          "evidence_spans": [
+            {
+              "line_start": 5,
+              "line_end": 5,
+              "char_start": 0,
+              "char_end": 16,
+              "content": "# 通用表格识别v2产线使用教程"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:15",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "* <b>中文识别模型</b>",
+          "generation_text": "* <b>中文识别模型</b>",
+          "evidence_spans": [
+            {
+              "line_start": 276,
+              "line_end": 276,
+              "char_start": 0,
+              "char_end": 15,
+              "content": "* <b>中文识别模型</b>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "v4-20",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "assembled_score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 7.08,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 297,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:7"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 13,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:7",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "</details>\n\n<details>\n<summary> <b>表格单元格检测模块模型：</b></summary>",
+          "generation_text": "</details>\n\n<details>\n<summary> <b>表格单元格检测模块模型：</b></summary>",
+          "evidence_spans": [
+            {
+              "line_start": 92,
+              "line_end": 95,
+              "char_start": 0,
+              "char_end": 61,
+              "content": "</details>\n\n<details>\n<summary> <b>表格单元格检测模块模型：</b></summary>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:8",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "<td rowspan=\"2\">35.00 / 10.45</td>\n<td rowspan=\"2\">495.51 / 495.51</td>\n<td rowspan=\"2\">124M</td>\n<td rowspan=\"2\">RT-DETR 是第一个实时的端到端目标检测模型。百度飞桨视觉团队基于 RT-DETR-L 作为基础模型，在自建表格单元格检测数据集上完成预训练，实现了对有线表格、无线表格均有较好性能的表格单元格检测。\n</td>\n</tr>\n<tr>\n<td>RT-DETR-L_wireless_table_cell_det</td>\n",
+          "generation_text": "<tr>\n<td>RT-DETR-L_wired_table_cell_det</td>\n<td><a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-L_wired_table_cell_det_infer.tar\">推理模型</a>/<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-L_wired_table_cell_det_pretrained.pdparams\">训练模型</a></td>\n<td rowspan=\"2\">82.7</td>\n<td rowspan=\"2\">35.00 / 10.45</td>\n<td rowspan=\"2\">495.51 / 495.51</td>\n<td rowspan=\"2\">124M</td>\n<td rowspan=\"2\">RT-DETR 是第一个实时的端到端目标检测模型。百度飞桨视觉团队基于 RT-DETR-L 作为基础模型，在自建表格单元格检测数据集上完成预训练，实现了对有线表格、无线表格均有较好性能的表格单元格检测。\n</td>\n</tr>\n<tr>\n<td>RT-DETR-L_wireless_table_cell_det</td>\n<td><a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/RT-DETR-L_wireless_table_cell_det_infer.tar\">推理模型</a>/<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/RT-DETR-L_wireless_table_cell_det_pretrained.pdparams\">训练模型</a></td>\n</tr>\n",
+          "evidence_spans": [
+            {
+              "line_start": 109,
+              "line_end": 116,
+              "char_start": 549,
+              "char_end": 825,
+              "content": "<td rowspan=\"2\">35.00 / 10.45</td>\n<td rowspan=\"2\">495.51 / 495.51</td>\n<td rowspan=\"2\">124M</td>\n<td rowspan=\"2\">RT-DETR 是第一个实时的端到端目标检测模型。百度飞桨视觉团队基于 RT-DETR-L 作为基础模型，在自建表格单元格检测数据集上完成预训练，实现了对有线表格、无线表格均有较好性能的表格单元格检测。\n</td>\n</tr>\n<tr>\n<td>RT-DETR-L_wireless_table_cell_det</td>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:54",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "<td>是否在推理时使用有线表单元格检测结果直转HTML模式,启用则直接基于有线表单元格检测结果的几何关系构建HTML。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_wireless_table_cells_trans_to_html</code></td>\n<td>是否在推理时使用无线表单元格检测结果直转HTML模式，启用则直接基于无线表单元格检测结果的几何关系构建HTML。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n\n<td>是否在推理时使用有线表端到端表格识别模式。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_e2e_wireless_table_rec_model</code></td>\n<td>是否在推理时使用无线表端到端表格识别模式。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_wired_table_cells_trans_to_html</code></td>\n\n<td><code>use_table_orientation_classify</code></td>\n<td>是否在推理时使用表格方向分类模式，启用时当图像中的表格存在90/180/270度旋转时，能够将方向校正并正确完成表格识别。</td>\n<td><code>bool</code></td>\n<td><code>True</code></td>\n</tr>\n<tr>\n<td><code>use_ocr_results_with_table_cells</code></td>\n<td>是否在推理时使用单元格切分OCR模式，启用时会基于单元格预测结果对OCR检测结果进行切分和重识别，避免出现文字缺失情况。</td>\n<td><code>bool</code></td>\n",
+          "generation_text": "<thead>\n<tr>\n<th>参数</th>\n<th>参数说明</th>\n<th>参数类型</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td><code>use_e2e_wired_table_rec_model</code></td>\n<td>是否在推理时使用有线表端到端表格识别模式。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_e2e_wireless_table_rec_model</code></td>\n<td>是否在推理时使用无线表端到端表格识别模式。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_wired_table_cells_trans_to_html</code></td>\n<td>是否在推理时使用有线表单元格检测结果直转HTML模式,启用则直接基于有线表单元格检测结果的几何关系构建HTML。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_wireless_table_cells_trans_to_html</code></td>\n<td>是否在推理时使用无线表单元格检测结果直转HTML模式，启用则直接基于无线表单元格检测结果的几何关系构建HTML。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_table_orientation_classify</code></td>\n<td>是否在推理时使用表格方向分类模式，启用时当图像中的表格存在90/180/270度旋转时，能够将方向校正并正确完成表格识别。</td>\n<td><code>bool</code></td>\n<td><code>True</code></td>\n</tr>\n<tr>\n<td><code>use_ocr_results_with_table_cells</code></td>\n<td>是否在推理时使用单元格切分OCR模式，启用时会基于单元格预测结果对OCR检测结果进行切分和重识别，避免出现文字缺失情况。</td>\n<td><code>bool</code></td>\n<td><code>True</code></td>\n</tr>\n",
+          "evidence_spans": [
+            {
+              "line_start": 1549,
+              "line_end": 1559,
+              "char_start": 2569,
+              "char_end": 2894,
+              "content": "<td>是否在推理时使用有线表单元格检测结果直转HTML模式,启用则直接基于有线表单元格检测结果的几何关系构建HTML。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_wireless_table_cells_trans_to_html</code></td>\n<td>是否在推理时使用无线表单元格检测结果直转HTML模式，启用则直接基于无线表单元格检测结果的几何关系构建HTML。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n"
+            },
+            {
+              "line_start": 1537,
+              "line_end": 1548,
+              "char_start": 2262,
+              "char_end": 2569,
+              "content": "<td>是否在推理时使用有线表端到端表格识别模式。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_e2e_wireless_table_rec_model</code></td>\n<td>是否在推理时使用无线表端到端表格识别模式。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_wired_table_cells_trans_to_html</code></td>\n"
+            },
+            {
+              "line_start": 1560,
+              "line_end": 1568,
+              "char_start": 2894,
+              "char_end": 3235,
+              "content": "<td><code>use_table_orientation_classify</code></td>\n<td>是否在推理时使用表格方向分类模式，启用时当图像中的表格存在90/180/270度旋转时，能够将方向校正并正确完成表格识别。</td>\n<td><code>bool</code></td>\n<td><code>True</code></td>\n</tr>\n<tr>\n<td><code>use_ocr_results_with_table_cells</code></td>\n<td>是否在推理时使用单元格切分OCR模式，启用时会基于单元格预测结果对OCR检测结果进行切分和重识别，避免出现文字缺失情况。</td>\n<td><code>bool</code></td>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:45",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "<td><code>wired_table_cells_detection_model_dir</code></td>\n<td>有线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_name</code></td>\n<td>无线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n\n<td>无线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_cells_detection_model_name</code></td>\n<td>有线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_structure_recognition_model_name</code></td>\n<td>有线表格结构识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_structure_recognition_model_dir</code></td>\n<td>有线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n\n<tr>\n<td><code>wireless_table_cells_detection_model_dir</code></td>\n<td>无线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_name</code></td>\n<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n",
+          "generation_text": "<thead>\n<tr>\n<th>参数</th>\n<th>参数说明</th>\n<th>参数类型</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td><code>table_classification_model_dir</code></td>\n<td>表格分类模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_structure_recognition_model_name</code></td>\n<td>有线表格结构识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_structure_recognition_model_dir</code></td>\n<td>有线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_structure_recognition_model_dir</code></td>\n<td>无线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_cells_detection_model_name</code></td>\n<td>有线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_cells_detection_model_dir</code></td>\n<td>有线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_name</code></td>\n<td>无线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_dir</code></td>\n<td>无线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_name</code></td>\n<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_dir</code></td>\n<td>文档方向分类模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>",
+          "evidence_spans": [
+            {
+              "line_start": 899,
+              "line_end": 909,
+              "char_start": 2580,
+              "char_end": 2945,
+              "content": "<td><code>wired_table_cells_detection_model_dir</code></td>\n<td>有线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_name</code></td>\n<td>无线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n"
+            },
+            {
+              "line_start": 888,
+              "line_end": 898,
+              "char_start": 2273,
+              "char_end": 2580,
+              "content": "<td>无线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_cells_detection_model_name</code></td>\n<td>有线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n"
+            },
+            {
+              "line_start": 866,
+              "line_end": 876,
+              "char_start": 1594,
+              "char_end": 1947,
+              "content": "<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_structure_recognition_model_name</code></td>\n<td>有线表格结构识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_structure_recognition_model_dir</code></td>\n<td>有线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n"
+            },
+            {
+              "line_start": 910,
+              "line_end": 921,
+              "char_start": 2945,
+              "char_end": 3310,
+              "content": "<tr>\n<td><code>wireless_table_cells_detection_model_dir</code></td>\n<td>无线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_name</code></td>\n<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:52",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "<td>无线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_dir</code></td>\n<td>无线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_cells_detection_model_dir</code></td>\n<td>有线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_name</code></td>\n\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_structure_recognition_model_dir</code></td>\n<td>无线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_cells_detection_model_name</code></td>\n<td>有线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n\n<td><code>wired_table_structure_recognition_model_dir</code></td>\n<td>有线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_structure_recognition_model_name</code></td>\n<td>无线表格结构识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n",
+          "generation_text": "<thead>\n<tr>\n<th>参数</th>\n<th>参数说明</th>\n<th>参数类型</th>\n<th>默认值</th>\n</tr>\n</thead>\n</tr>\n<tr>\n<td><code>wired_table_structure_recognition_model_dir</code></td>\n<td>有线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_structure_recognition_model_name</code></td>\n<td>无线表格结构识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_structure_recognition_model_dir</code></td>\n<td>无线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_cells_detection_model_name</code></td>\n<td>有线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_cells_detection_model_dir</code></td>\n<td>有线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_name</code></td>\n<td>无线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_dir</code></td>\n<td>无线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_name</code></td>\n<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>",
+          "evidence_spans": [
+            {
+              "line_start": 1230,
+              "line_end": 1240,
+              "char_start": 1979,
+              "char_end": 2288,
+              "content": "<td>无线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_dir</code></td>\n<td>无线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n"
+            },
+            {
+              "line_start": 1219,
+              "line_end": 1229,
+              "char_start": 1668,
+              "char_end": 1979,
+              "content": "<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_cells_detection_model_dir</code></td>\n<td>有线表格单元检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_cells_detection_model_name</code></td>\n"
+            },
+            {
+              "line_start": 1208,
+              "line_end": 1218,
+              "char_start": 1318,
+              "char_end": 1668,
+              "content": "<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_structure_recognition_model_dir</code></td>\n<td>无线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wired_table_cells_detection_model_name</code></td>\n<td>有线表格单元检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n"
+            },
+            {
+              "line_start": 1199,
+              "line_end": 1207,
+              "char_start": 974,
+              "char_end": 1318,
+              "content": "<td><code>wired_table_structure_recognition_model_dir</code></td>\n<td>有线表格结构识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>wireless_table_structure_recognition_model_name</code></td>\n<td>无线表格结构识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

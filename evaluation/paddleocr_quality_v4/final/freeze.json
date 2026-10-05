@@ -1,0 +1,20 @@
+{
+  "files": {
+    "versioned-rag-service/public_corpus_paddleocr/chunks.json": "caaa3593e38c7939a07b97038c000346ce954b5ebcf7d845cbf70302486da4c1",
+    "versioned-rag-service/src/paddleocr_query_plan.py": "213207d222783a19ebe2e301d7f17d90ad22ceeefb86f7935ce46c35cd3909f0",
+    "versioned-rag-service/src/paddleocr_retrieval_views.py": "a2caa6432523bd2d392d92627c9bf64fc6ebb4b7b7e303503b47cb6d8b40e7ee",
+    "versioned-rag-service/src/paddleocr_evidence_search.py": "d5cd9e3e0e7fa2a1e102f4f63e1c53a0549a883fc81e2d3ebe141e4e0b89e9c9",
+    "versioned-rag-service/src/paddleocr_fact_checks.py": "a4cd69f2609b3ca3cb9e68d1c8c0019718431d5c3f2f1f2a4ae05d14ab28ada2",
+    "versioned-rag-service/src/public_api.py": "83faf586f57327f07f6b9cf94046fe32815dce45fd0659b0a764daf54d381fd4",
+    "versioned-rag-service/src/claim_support.py": "6f03cafb630f820011c84bd81357c81deb1944372afb146bfac3bdd69d3a04c2",
+    "versioned-rag-service/src/paddleocr_impact_evaluation.py": "18f0f00413e1cf85c8d8df2f7ef03bdb9aea808f2d6b50b4adf1e1820de4896d",
+    "versioned-rag-service/src/public_knowledge.py": "211792d8206e1de61891754d31a25041a06ee5a7526fc4b547c23e1ace50509a",
+    "versioned-rag-service/src/paddleocr_rag_release.py": "3ecface35ef0d30cdeeec900dcdc9de97d1ee3e2d2aa11e89e00ddefc9c502f3",
+    "versioned-rag-service/src/answer_generation.py": "7166dcaae5210ed537b0f4b673ac4eb28464aeeab2082ee9a8b6c561b7a30f1f",
+    "evaluation/paddleocr_quality_v4/run.py": "5f90b3484a05b52dd347fa51600ddb3194285d2cf68e1db17f0d6ebdd848d0a5",
+    "evaluation/paddleocr_quality_v4/final/dataset.json": "d304b7eaf9a77ddd08f3cf221272e182254b3421ee01761bc7ca9f907e0ffff4"
+  },
+  "top_k": 5,
+  "candidate_budget": 40,
+  "selection": "maximize dev complete, then minimize wrong modules; no holdout tuning"
+}

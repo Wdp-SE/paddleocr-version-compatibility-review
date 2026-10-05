@@ -1,6 +1,7 @@
 """Bounded retrieval windows; citations always point into unchanged source blocks."""
 from __future__ import annotations
 import hashlib
+import re
 from collections import OrderedDict
 
 
@@ -8,6 +9,10 @@ def module_for(chunk: dict) -> str:
     path = chunk.get('document_path', '').lower()
     if 'module_usage/' in path:
         return path.rsplit('/', 1)[-1].split('.')[0]
+    if 'pipeline_usage/' in path:
+        name=path.rsplit('/',1)[-1].split('.')[0]
+        return {'ocr':'ocr','pp-structurev3':'structure','doc_preprocessor':'doc_preprocessor',
+                'table_recognition_v2':'table_recognition_v2'}.get(name,'general')
     if 'preprocessor' in path: return 'doc_preprocessor'
     if 'structure' in path: return 'structure'
     if path.endswith('/ocr.md') or path.endswith('/ocr.py') or path == 'paddleocr.py': return 'ocr'
@@ -114,7 +119,64 @@ def materialize_evidence(chunks: list[dict], selected: list[dict]) -> list[dict]
 
 
 def evidence_text(hit: dict) -> str:
+    """Exact retrieval spans, used by retrieval metrics and provenance checks."""
+    spans = hit.get('evidence_spans')
+    if spans is None: return hit['content']
+    if not isinstance(spans, list) or not spans: raise ValueError('empty evidence spans')
+    return '\n'.join(_span_text(hit, span) for span in spans)
+
+
+def generation_evidence_text(hit: dict) -> str:
     spans=hit.get('evidence_spans')
     if spans is None: return hit['content']
     if not isinstance(spans,list) or not spans: raise ValueError('empty evidence spans')
-    return '\n'.join(_span_text(hit,s) for s in spans)
+    # Retrieve short windows, then reconstruct bounded source units for the
+    # answer/checker. Added context is copied from the same canonical block only.
+    text = hit['content']; lines = text.splitlines(keepends=True)
+    offsets = [0]
+    for line in lines: offsets.append(offsets[-1] + len(line))
+    ranges = []
+    for span in spans:
+        _span_text(hit, span)  # Reject forged spans before expanding anything.
+        start = span['line_start'] - hit['line_start']
+        end = span['line_end'] - hit['line_start'] + 1
+        lo, hi = max(0, start-2), min(len(lines), end+2)
+        # PaddleOCR guides use HTML tables as well as Markdown tables.
+        char_lo = span.get('char_start', offsets[start])
+        char_hi = span.get('char_end', offsets[end])
+        table_start = text.rfind('<table', 0, char_hi)
+        table_end = text.find('</table>', char_hi)
+        if table_start >= 0 and table_end >= 0 and text.rfind('</table>', 0, char_lo) < table_start:
+            header = re.search(r'<thead\b.*?</thead>', text[table_start:table_end], re.S)
+            if header:
+                ranges.append((table_start+header.start(), table_start+header.end()))
+            row_start = text.rfind('<tr', table_start, char_lo+1)
+            row_end = text.find('</tr>', char_hi)
+            if row_start >= 0 and row_end >= char_hi and row_end+5-row_start <= 6000:
+                ranges.append((row_start, row_end+5))
+        # Preserve a Markdown table's header even when the hit is a later row.
+        if any(lines[i].lstrip().startswith('|') for i in range(start, end)):
+            header = start
+            while header > 0 and lines[header-1].lstrip().startswith('|'): header -= 1
+            if header+1 < len(lines) and '---' in lines[header+1]:
+                if offsets[hi]-offsets[header] <= 6000: lo = min(lo, header)
+                else:
+                    ranges.append((offsets[header], offsets[header+2]))
+        # A complete fenced example is more useful than an isolated code line.
+        fences = [i for i in range(start) if lines[i].lstrip().startswith('```')]
+        if len(fences) % 2:
+            close = next((i for i in range(end, len(lines)) if lines[i].lstrip().startswith('```')), None)
+            if close is not None and offsets[close+1]-offsets[fences[-1]] <= 6000:
+                lo, hi = fences[-1], close+1
+        if offsets[hi]-offsets[lo] > 6000:
+            ranges.append((char_lo,char_hi))
+            continue
+        ranges.append((offsets[lo], offsets[hi]))
+    merged = []
+    for lo, hi in sorted(ranges):
+        if merged and lo <= merged[-1][1]: merged[-1] = (merged[-1][0], max(hi, merged[-1][1]))
+        else: merged.append((lo, hi))
+    value='\n'.join(text[lo:hi] for lo, hi in merged)
+    # Exact selected windows take precedence over optional surrounding context.
+    if len(value)>6000: value=evidence_text(hit)
+    return value[:6000]

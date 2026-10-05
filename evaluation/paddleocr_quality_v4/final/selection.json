@@ -1,0 +1,120 @@
+{
+  "selected": "llm",
+  "selected_at_utc": "2026-10-05T09:49:47.576697+00:00",
+  "holdout_status_at_selection": "NOT_OPENED",
+  "rule": "maximum development complete evidence coverage; then fewer non-target-module fragments; latency is not the selection objective",
+  "freeze_sha256": "99897214cc9cf544f899ecd187d5be4a8750baaa63cb6cc6979978c5e80827c6",
+  "development": {
+    "bm25": {
+      "metrics": {
+        "count": 12,
+        "complete_count": 10,
+        "fact_hit_count": 10,
+        "fact_count": 12,
+        "source_hit_count": 12,
+        "wrong_version_count": 0,
+        "wrong_module_count": 8,
+        "complete_rate": 0.8333333333333334,
+        "fact_recall": 0.8333333333333334
+      },
+      "sha256": "6bdd3a4ad1c6bda8716e2a9e45ee105ce38c76d74f742c83eaba17cec759e808",
+      "model_identity": {
+        "embedding": "NOT_CONFIGURED",
+        "reranker": "NOT_CONFIGURED",
+        "attention": "eager"
+      },
+      "actual_strategies": [
+        "contextual_bm25"
+      ]
+    },
+    "minilm": {
+      "metrics": {
+        "count": 12,
+        "complete_count": 10,
+        "fact_hit_count": 10,
+        "fact_count": 12,
+        "source_hit_count": 12,
+        "wrong_version_count": 0,
+        "wrong_module_count": 2,
+        "complete_rate": 0.8333333333333334,
+        "fact_recall": 0.8333333333333334
+      },
+      "sha256": "928eeeaac034c6d4dc55296d9782f0e597ded0849f0c3da001a8e0fe87ce45fe",
+      "model_identity": {
+        "embedding": "ba70b41bd018d3b7d57bf31b7111833db90564128f699220113ae16d00c155e5",
+        "reranker": "e9ea27058a9390012dd6d156d3de756aa56e0936add44bfbb333cf8982b80b68",
+        "attention": "eager"
+      },
+      "actual_strategies": [
+        "contextual_rerank"
+      ]
+    },
+    "bge": {
+      "metrics": {
+        "count": 12,
+        "complete_count": 11,
+        "fact_hit_count": 11,
+        "fact_count": 12,
+        "source_hit_count": 12,
+        "wrong_version_count": 0,
+        "wrong_module_count": 6,
+        "complete_rate": 0.9166666666666666,
+        "fact_recall": 0.9166666666666666
+      },
+      "sha256": "3b11d88f751ac2e0119079ca46c0b6afed6d10d3c11456c38fd99d0dd217c16d",
+      "model_identity": {
+        "embedding": "ba70b41bd018d3b7d57bf31b7111833db90564128f699220113ae16d00c155e5",
+        "reranker": "81651ea46f23519d88f5c4ce5bb72589a37c93552e44aaca1e941f5f9d81ffe3",
+        "attention": "eager"
+      },
+      "actual_strategies": [
+        "contextual_rerank"
+      ]
+    },
+    "rrf": {
+      "metrics": {
+        "count": 12,
+        "complete_count": 10,
+        "fact_hit_count": 10,
+        "fact_count": 12,
+        "source_hit_count": 12,
+        "wrong_version_count": 0,
+        "wrong_module_count": 4,
+        "complete_rate": 0.8333333333333334,
+        "fact_recall": 0.8333333333333334
+      },
+      "sha256": "3385b0e52446bce98507415ca7be5d1c698386c8a5d2335d3f292d2d337d8fd8",
+      "model_identity": {
+        "embedding": "ba70b41bd018d3b7d57bf31b7111833db90564128f699220113ae16d00c155e5",
+        "reranker": "81651ea46f23519d88f5c4ce5bb72589a37c93552e44aaca1e941f5f9d81ffe3",
+        "attention": "eager"
+      },
+      "actual_strategies": [
+        "contextual_rrf_rerank"
+      ]
+    },
+    "llm": {
+      "metrics": {
+        "count": 12,
+        "complete_count": 11,
+        "fact_hit_count": 11,
+        "fact_count": 12,
+        "source_hit_count": 12,
+        "wrong_version_count": 0,
+        "wrong_module_count": 5,
+        "complete_rate": 0.9166666666666666,
+        "fact_recall": 0.9166666666666666
+      },
+      "sha256": "c77d516dff5854d2ba7b9952a9e886c27b3b0bec6719ef3432fc6b6dd14f7791",
+      "model_identity": {
+        "embedding": "NOT_CONFIGURED",
+        "reranker": "NOT_CONFIGURED",
+        "attention": "eager"
+      },
+      "actual_strategies": [
+        "contextual_llm_rerank"
+      ]
+    }
+  },
+  "comparison_note": "end-to-end configurations share fixed scope, Top-5 and candidate budget 40; neural tokenizers create different windows, so this is not a pure reranker ablation"
+}

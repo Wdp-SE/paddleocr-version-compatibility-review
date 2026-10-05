@@ -14,3 +14,17 @@ versioned-rag-service/public_corpus_paddleocr/*.npy binary
 # The frozen V3 retrieval candidate hashes the exact code bytes. Preserve its
 # mixed historical line endings so Linux deployments match the evaluation lock.
 versioned-rag-service/src/public_knowledge.py -text whitespace=cr-at-eol
+
+# Frozen V4 code and experiment artifacts retain exact bytes on every platform.
+evaluation/paddleocr_quality_v4/** -text whitespace=cr-at-eol
+versioned-rag-service/src/answer_generation.py -text whitespace=cr-at-eol
+versioned-rag-service/src/claim_support.py -text whitespace=cr-at-eol
+versioned-rag-service/src/paddleocr_evidence_search.py -text whitespace=cr-at-eol
+versioned-rag-service/src/paddleocr_fact_checks.py -text whitespace=cr-at-eol
+versioned-rag-service/src/paddleocr_impact_evaluation.py -text whitespace=cr-at-eol
+versioned-rag-service/src/paddleocr_quality.py -text whitespace=cr-at-eol
+versioned-rag-service/src/paddleocr_query_plan.py -text whitespace=cr-at-eol
+versioned-rag-service/src/paddleocr_rag_release.py -text whitespace=cr-at-eol
+versioned-rag-service/src/paddleocr_retrieval_views.py -text whitespace=cr-at-eol
+versioned-rag-service/src/public_api.py -text whitespace=cr-at-eol
+versioned-rag-service/src/public_knowledge.py -text whitespace=cr-at-eol
