@@ -226,13 +226,16 @@ def _module_mutations(statements):
 
 
 class _Analyzer:
-    def __init__(self, file, evidence, report):
+    def __init__(self, file, evidence, report, *, summaries=None):
         self.file, self.evidence, self.report = file, evidence, report
         self.related_names = set()
         self.seen = set()
         self.ocr_seen = False
         self.module_mutations = set()
         self.module_attribute_writes = set()
+        self.return_values = []
+        from src.paddleocr_function_results import function_bindings
+        self.imported_functions, self.local_functions = function_bindings(file, summaries or {})
 
     def prepare(self, statements):
         self.module_mutations, self.module_attribute_writes = _module_mutations(statements)
@@ -380,6 +383,8 @@ class _Analyzer:
                 if api == "PaddleOCR" and not allowed and not dynamic:
                     self.gap("unreviewed_parameter", "该构造参数不在已核对的基础调用范围；不能据此断言参数被移除或仍兼容。", node)
                 return ("instance", api, allowed)
+            if function[0] == 'function_result':
+                return function[1]
             if function[0] == "method":
                 _, api, method, supported = function
                 self.ocr_seen = True
@@ -455,7 +460,7 @@ class _Analyzer:
                             self.gap("wildcard_import", "星号导入无法可靠解析 PaddleOCR 符号。", node)
                         self.bind(name, ("api", alias.name) if alias.name in {"PPStructure", "PaddleOCR"} else _UNKNOWN, env)
                     else:
-                        self.bind(name, _UNKNOWN, env)
+                        self.bind(name, self.imported_functions.get((node.level, node.module, alias.name), _UNKNOWN), env)
             elif isinstance(node, (ast.Assign, ast.AnnAssign)):
                 value = self.value(node.value, env) if node.value else _UNKNOWN
                 targets = node.targets if isinstance(node, ast.Assign) else [node.target]
@@ -466,6 +471,8 @@ class _Analyzer:
                 self.assign(node.target, _UNKNOWN, env)
             elif isinstance(node, ast.Expr):
                 self.value(node.value, env)
+            elif isinstance(node, ast.Return):
+                self.return_values.append(self.value(node.value, env) if node.value else _UNKNOWN)
             elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
                 for decorator in node.decorator_list:
                     self.value(decorator, env)
@@ -486,7 +493,7 @@ class _Analyzer:
                             local_names.add(name)
                             self.bind(name, _UNKNOWN, local)
                 self.deferred_env(node, local, local_names)
-                self.bind(node.name, _UNKNOWN, env)
+                self.bind(node.name, self.local_functions.get(node.name, _UNKNOWN), env)
                 self.block(node.body, local)
             elif isinstance(node, ast.ClassDef):
                 self.bind(node.name, _UNKNOWN, env)
@@ -547,8 +554,10 @@ def review_compatibility(index, *, source_version: str, target_version: str, fil
         ],
     }
     any_usage = False
+    from src.paddleocr_function_results import summarize_functions
+    summaries = summarize_functions(application_files, evidence)
     for file in application_files:
-        analyzer = _Analyzer(file, evidence, report)
+        analyzer = _Analyzer(file, evidence, report, summaries=summaries)
         if PurePosixPath(file["path"]).suffix.casefold() != ".py":
             node = ast.Constant(value=None)
             node.lineno = node.end_lineno = 1
@@ -585,6 +594,8 @@ def review_compatibility(index, *, source_version: str, target_version: str, fil
     graph=analyze_application(files)
     report.update(impact_schema_version=1,application_graph=graph,
                   impact_paths=trace_impacts(graph,report['findings']))
+    report['result_flow_coverage'] = {'analysis': 'straight_line_local_wrappers',
+        'summary_count': len(summaries), 'max_wrapper_depth': 6, 'runtime_verified': False}
     graph_gaps=[]
     for gap in graph['gaps']:
         item=dict(gap)

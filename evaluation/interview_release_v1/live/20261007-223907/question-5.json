@@ -1,0 +1,541 @@
+{
+  "question": "PaddleOCR 3.0.0 的官方 OCR 测试检查了哪些返回字段？",
+  "version": "v3.0.0",
+  "http_status": 200,
+  "elapsed_seconds": 11.47,
+  "result": {
+    "answer": "PaddleOCR v3.0.0 的 tests/pipelines/test_ocr.py 中 test_predict 检查返回结果包含 dt_polys 字段，且断言其长度大于 0。\ntest_predict 检查返回结果包含 rec_texts 字段，断言其为 list、长度大于 0，且其中每个元素都是 str。\ntest_predict 还调用 check_simple_inference_result(result) 对结果做通用检查。",
+    "sources": [
+      {
+        "source_id": "v3-0-0-tests-pipelines-test-ocr-py-e61d8a41",
+        "version": "v3.0.0",
+        "source_snapshot": "v3.0.0",
+        "document_key": "tests/pipelines/test_ocr",
+        "document_title": "OCR 官方 API 测试（仅参考，未执行）",
+        "document_path": "tests/pipelines/test_ocr.py",
+        "path": "tests/pipelines/test_ocr.py",
+        "local_path": "sources/v3.0.0/tests/pipelines/test_ocr.py",
+        "source_type": "official_api_contract",
+        "source_format": "python",
+        "source_content_language": "python",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "git_blob_sha": "88e6f7826d1eda698fe6eb7e5c6b4545225dabb1",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/LICENSE",
+        "attribution": "PaddleOCR · v3.0.0 · tests/pipelines/test_ocr.py · Apache-2.0 · commit a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "document_family": "api_test",
+        "scope_note": "代码/配置辅助证据；不计为中文教程",
+        "chunk_id": "v3.0.0:zh:tests/pipelines/test_ocr:3",
+        "document_id": "v3.0.0:zh:tests/pipelines/test_ocr",
+        "source_sha256": "55b9d4c5c92123d114e701230bf5e1a282097acdd8e383fc5166d84b07e31a51",
+        "heading": "test_predict",
+        "heading_path": [
+          "test_predict"
+        ],
+        "line_start": 17,
+        "line_end": 42,
+        "block_type": "python_definition",
+        "content": "@pytest.mark.parametrize(\n    \"image_path\",\n    [\n        TEST_DATA_DIR / \"table.jpg\",\n    ],\n)\ndef test_predict(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR's OCR functionality.\n\n    Args:\n        ocr_engine: An instance of `PaddleOCR`.\n        image_path: Path to the image to be processed.\n    \"\"\"\n    result = ocr_engine.predict(str(image_path))\n\n    check_simple_inference_result(result)\n    res = result[0]\n    assert len(res[\"dt_polys\"]) > 0\n    assert isinstance(res[\"rec_texts\"], list)\n    assert len(res[\"rec_texts\"]) > 0\n    for text in res[\"rec_texts\"]:\n        assert isinstance(text, str)\n\n\n# TODO: Also check passing `None`",
+        "module": "ocr",
+        "evidence_spans": [
+          {
+            "line_start": 31,
+            "line_end": 42,
+            "char_start": 332,
+            "char_end": 669,
+            "content": "    result = ocr_engine.predict(str(image_path))\n\n    check_simple_inference_result(result)\n    res = result[0]\n    assert len(res[\"dt_polys\"]) > 0\n    assert isinstance(res[\"rec_texts\"], list)\n    assert len(res[\"rec_texts\"]) > 0\n    for text in res[\"rec_texts\"]:\n        assert isinstance(text, str)\n\n\n# TODO: Also check passing `None`"
+          },
+          {
+            "line_start": 17,
+            "line_end": 30,
+            "char_start": 0,
+            "char_end": 332,
+            "content": "@pytest.mark.parametrize(\n    \"image_path\",\n    [\n        TEST_DATA_DIR / \"table.jpg\",\n    ],\n)\ndef test_predict(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR's OCR functionality.\n\n    Args:\n        ocr_engine: An instance of `PaddleOCR`.\n        image_path: Path to the image to be processed.\n    \"\"\"\n"
+          }
+        ],
+        "rank": 1,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.04813947436898257,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      }
+    ],
+    "evidence": [
+      {
+        "source_id": "v3-0-0-tests-pipelines-test-ocr-py-e61d8a41",
+        "version": "v3.0.0",
+        "source_snapshot": "v3.0.0",
+        "document_key": "tests/pipelines/test_ocr",
+        "document_title": "OCR 官方 API 测试（仅参考，未执行）",
+        "document_path": "tests/pipelines/test_ocr.py",
+        "path": "tests/pipelines/test_ocr.py",
+        "local_path": "sources/v3.0.0/tests/pipelines/test_ocr.py",
+        "source_type": "official_api_contract",
+        "source_format": "python",
+        "source_content_language": "python",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "git_blob_sha": "88e6f7826d1eda698fe6eb7e5c6b4545225dabb1",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/LICENSE",
+        "attribution": "PaddleOCR · v3.0.0 · tests/pipelines/test_ocr.py · Apache-2.0 · commit a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "document_family": "api_test",
+        "scope_note": "代码/配置辅助证据；不计为中文教程",
+        "chunk_id": "v3.0.0:zh:tests/pipelines/test_ocr:3",
+        "document_id": "v3.0.0:zh:tests/pipelines/test_ocr",
+        "source_sha256": "55b9d4c5c92123d114e701230bf5e1a282097acdd8e383fc5166d84b07e31a51",
+        "heading": "test_predict",
+        "heading_path": [
+          "test_predict"
+        ],
+        "line_start": 17,
+        "line_end": 42,
+        "block_type": "python_definition",
+        "content": "@pytest.mark.parametrize(\n    \"image_path\",\n    [\n        TEST_DATA_DIR / \"table.jpg\",\n    ],\n)\ndef test_predict(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR's OCR functionality.\n\n    Args:\n        ocr_engine: An instance of `PaddleOCR`.\n        image_path: Path to the image to be processed.\n    \"\"\"\n    result = ocr_engine.predict(str(image_path))\n\n    check_simple_inference_result(result)\n    res = result[0]\n    assert len(res[\"dt_polys\"]) > 0\n    assert isinstance(res[\"rec_texts\"], list)\n    assert len(res[\"rec_texts\"]) > 0\n    for text in res[\"rec_texts\"]:\n        assert isinstance(text, str)\n\n\n# TODO: Also check passing `None`",
+        "module": "ocr",
+        "evidence_spans": [
+          {
+            "line_start": 31,
+            "line_end": 42,
+            "char_start": 332,
+            "char_end": 669,
+            "content": "    result = ocr_engine.predict(str(image_path))\n\n    check_simple_inference_result(result)\n    res = result[0]\n    assert len(res[\"dt_polys\"]) > 0\n    assert isinstance(res[\"rec_texts\"], list)\n    assert len(res[\"rec_texts\"]) > 0\n    for text in res[\"rec_texts\"]:\n        assert isinstance(text, str)\n\n\n# TODO: Also check passing `None`"
+          },
+          {
+            "line_start": 17,
+            "line_end": 30,
+            "char_start": 0,
+            "char_end": 332,
+            "content": "@pytest.mark.parametrize(\n    \"image_path\",\n    [\n        TEST_DATA_DIR / \"table.jpg\",\n    ],\n)\ndef test_predict(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR's OCR functionality.\n\n    Args:\n        ocr_engine: An instance of `PaddleOCR`.\n        image_path: Path to the image to be processed.\n    \"\"\"\n"
+          }
+        ],
+        "rank": 1,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.04813947436898257,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v3-0-0-tests-pipelines-test-ocr-py-e61d8a41",
+        "version": "v3.0.0",
+        "source_snapshot": "v3.0.0",
+        "document_key": "tests/pipelines/test_ocr",
+        "document_title": "OCR 官方 API 测试（仅参考，未执行）",
+        "document_path": "tests/pipelines/test_ocr.py",
+        "path": "tests/pipelines/test_ocr.py",
+        "local_path": "sources/v3.0.0/tests/pipelines/test_ocr.py",
+        "source_type": "official_api_contract",
+        "source_format": "python",
+        "source_content_language": "python",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "git_blob_sha": "88e6f7826d1eda698fe6eb7e5c6b4545225dabb1",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/LICENSE",
+        "attribution": "PaddleOCR · v3.0.0 · tests/pipelines/test_ocr.py · Apache-2.0 · commit a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "document_family": "api_test",
+        "scope_note": "代码/配置辅助证据；不计为中文教程",
+        "chunk_id": "v3.0.0:zh:tests/pipelines/test_ocr:5",
+        "document_id": "v3.0.0:zh:tests/pipelines/test_ocr",
+        "source_sha256": "55b9d4c5c92123d114e701230bf5e1a282097acdd8e383fc5166d84b07e31a51",
+        "heading": "test_lang_and_ocr_version",
+        "heading_path": [
+          "test_lang_and_ocr_version"
+        ],
+        "line_start": 73,
+        "line_end": 113,
+        "block_type": "python_definition",
+        "content": "def test_lang_and_ocr_version():\n    ocr_engine = PaddleOCR(lang=\"ch\", ocr_version=\"PP-OCRv4\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv4_mobile_det\"\n    assert ocr_engine._params[\"text_recognition_model_name\"] == \"PP-OCRv4_mobile_rec\"\n    ocr_engine = PaddleOCR(lang=\"en\", ocr_version=\"PP-OCRv4\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv4_mobile_det\"\n    assert ocr_engine._params[\"text_recognition_model_name\"] == \"en_PP-OCRv4_mobile_rec\"\n    ocr_engine = PaddleOCR(lang=\"ch\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert ocr_engine._params[\"text_recognition_model_name\"] == \"PP-OCRv3_mobile_rec\"\n    ocr_engine = PaddleOCR(lang=\"en\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert ocr_engine._params[\"text_recognition_model_name\"] == \"en_PP-OCRv3_mobile_rec\"\n    ocr_engine = PaddleOCR(lang=\"fr\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"] == \"latin_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"ar\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"]\n        == \"arabic_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"ru\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"]\n        == \"cyrillic_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"hi\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"]\n        == \"devanagari_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"japan\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"] == \"japan_PP-OCRv3_mobile_rec\"\n    )",
+        "module": "ocr",
+        "evidence_spans": [
+          {
+            "line_start": 92,
+            "line_end": 97,
+            "char_start": 1283,
+            "char_end": 1546,
+            "content": "    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"]\n        == \"arabic_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"ru\", ocr_version=\"PP-OCRv3\")\n"
+          },
+          {
+            "line_start": 98,
+            "line_end": 103,
+            "char_start": 1546,
+            "char_end": 1811,
+            "content": "    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"]\n        == \"cyrillic_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"hi\", ocr_version=\"PP-OCRv3\")\n"
+          },
+          {
+            "line_start": 104,
+            "line_end": 109,
+            "char_start": 1811,
+            "char_end": 2081,
+            "content": "    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"]\n        == \"devanagari_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"japan\", ocr_version=\"PP-OCRv3\")\n"
+          },
+          {
+            "line_start": 78,
+            "line_end": 81,
+            "char_start": 327,
+            "char_end": 646,
+            "content": "    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv4_mobile_det\"\n    assert ocr_engine._params[\"text_recognition_model_name\"] == \"en_PP-OCRv4_mobile_rec\"\n    ocr_engine = PaddleOCR(lang=\"ch\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n"
+          }
+        ],
+        "rank": 2,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.045228403437358664,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v3-0-0-tests-pipelines-test-ocr-py-e61d8a41",
+        "version": "v3.0.0",
+        "source_snapshot": "v3.0.0",
+        "document_key": "tests/pipelines/test_ocr",
+        "document_title": "OCR 官方 API 测试（仅参考，未执行）",
+        "document_path": "tests/pipelines/test_ocr.py",
+        "path": "tests/pipelines/test_ocr.py",
+        "local_path": "sources/v3.0.0/tests/pipelines/test_ocr.py",
+        "source_type": "official_api_contract",
+        "source_format": "python",
+        "source_content_language": "python",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "git_blob_sha": "88e6f7826d1eda698fe6eb7e5c6b4545225dabb1",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/LICENSE",
+        "attribution": "PaddleOCR · v3.0.0 · tests/pipelines/test_ocr.py · Apache-2.0 · commit a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "document_family": "api_test",
+        "scope_note": "代码/配置辅助证据；不计为中文教程",
+        "chunk_id": "v3.0.0:zh:tests/pipelines/test_ocr:4",
+        "document_id": "v3.0.0:zh:tests/pipelines/test_ocr",
+        "source_sha256": "55b9d4c5c92123d114e701230bf5e1a282097acdd8e383fc5166d84b07e31a51",
+        "heading": "test_predict_params",
+        "heading_path": [
+          "test_predict_params"
+        ],
+        "line_start": 43,
+        "line_end": 70,
+        "block_type": "python_definition",
+        "content": "@pytest.mark.parametrize(\n    \"params\",\n    [\n        {\"use_doc_orientation_classify\": False},\n        {\"use_doc_unwarping\": False},\n        {\"use_textline_orientation\": False},\n        {\"text_det_limit_side_len\": 640, \"text_det_limit_type\": \"min\"},\n        {\"text_det_thresh\": 0.5},\n        {\"text_det_box_thresh\": 0.3},\n        {\"text_det_unclip_ratio\": 3.0},\n        {\"text_rec_score_thresh\": 0.5},\n    ],\n)\ndef test_predict_params(\n    monkeypatch,\n    ocr_engine: PaddleOCR,\n    params: dict,\n) -> None:\n    check_wrapper_simple_inference_param_forwarding(\n        monkeypatch,\n        ocr_engine,\n        \"paddlex_pipeline\",\n        \"dummy_path\",\n        params,\n    )\n\n\n# TODO: Test init params",
+        "module": "ocr",
+        "evidence_spans": [
+          {
+            "line_start": 52,
+            "line_end": 65,
+            "char_start": 322,
+            "char_end": 653,
+            "content": "        {\"text_det_unclip_ratio\": 3.0},\n        {\"text_rec_score_thresh\": 0.5},\n    ],\n)\ndef test_predict_params(\n    monkeypatch,\n    ocr_engine: PaddleOCR,\n    params: dict,\n) -> None:\n    check_wrapper_simple_inference_param_forwarding(\n        monkeypatch,\n        ocr_engine,\n        \"paddlex_pipeline\",\n        \"dummy_path\",\n"
+          },
+          {
+            "line_start": 43,
+            "line_end": 51,
+            "char_start": 0,
+            "char_end": 322,
+            "content": "@pytest.mark.parametrize(\n    \"params\",\n    [\n        {\"use_doc_orientation_classify\": False},\n        {\"use_doc_unwarping\": False},\n        {\"use_textline_orientation\": False},\n        {\"text_det_limit_side_len\": 640, \"text_det_limit_type\": \"min\"},\n        {\"text_det_thresh\": 0.5},\n        {\"text_det_box_thresh\": 0.3},\n"
+          },
+          {
+            "line_start": 66,
+            "line_end": 70,
+            "char_start": 653,
+            "char_end": 701,
+            "content": "        params,\n    )\n\n\n# TODO: Test init params"
+          }
+        ],
+        "rank": 3,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.03278688524590164,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v3-0-0-tests-pipelines-test-ocr-py-e61d8a41",
+        "version": "v3.0.0",
+        "source_snapshot": "v3.0.0",
+        "document_key": "tests/pipelines/test_ocr",
+        "document_title": "OCR 官方 API 测试（仅参考，未执行）",
+        "document_path": "tests/pipelines/test_ocr.py",
+        "path": "tests/pipelines/test_ocr.py",
+        "local_path": "sources/v3.0.0/tests/pipelines/test_ocr.py",
+        "source_type": "official_api_contract",
+        "source_format": "python",
+        "source_content_language": "python",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "git_blob_sha": "88e6f7826d1eda698fe6eb7e5c6b4545225dabb1",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/LICENSE",
+        "attribution": "PaddleOCR · v3.0.0 · tests/pipelines/test_ocr.py · Apache-2.0 · commit a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "document_family": "api_test",
+        "scope_note": "代码/配置辅助证据；不计为中文教程",
+        "chunk_id": "v3.0.0:zh:tests/pipelines/test_ocr:1",
+        "document_id": "v3.0.0:zh:tests/pipelines/test_ocr",
+        "source_sha256": "55b9d4c5c92123d114e701230bf5e1a282097acdd8e383fc5166d84b07e31a51",
+        "heading": "",
+        "heading_path": [],
+        "line_start": 1,
+        "line_end": 8,
+        "block_type": "python_definition",
+        "content": "import pytest\n\nfrom paddleocr import PaddleOCR\nfrom ..testing_utils import (\n    TEST_DATA_DIR,\n    check_simple_inference_result,\n    check_wrapper_simple_inference_param_forwarding,\n)",
+        "module": "ocr",
+        "evidence_spans": [
+          {
+            "line_start": 1,
+            "line_end": 8,
+            "char_start": 0,
+            "char_end": 185,
+            "content": "import pytest\n\nfrom paddleocr import PaddleOCR\nfrom ..testing_utils import (\n    TEST_DATA_DIR,\n    check_simple_inference_result,\n    check_wrapper_simple_inference_param_forwarding,\n)"
+          }
+        ],
+        "rank": 4,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.03125,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v3-0-0-tests-pipelines-test-ocr-py-e61d8a41",
+        "version": "v3.0.0",
+        "source_snapshot": "v3.0.0",
+        "document_key": "tests/pipelines/test_ocr",
+        "document_title": "OCR 官方 API 测试（仅参考，未执行）",
+        "document_path": "tests/pipelines/test_ocr.py",
+        "path": "tests/pipelines/test_ocr.py",
+        "local_path": "sources/v3.0.0/tests/pipelines/test_ocr.py",
+        "source_type": "official_api_contract",
+        "source_format": "python",
+        "source_content_language": "python",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "git_blob_sha": "88e6f7826d1eda698fe6eb7e5c6b4545225dabb1",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/LICENSE",
+        "attribution": "PaddleOCR · v3.0.0 · tests/pipelines/test_ocr.py · Apache-2.0 · commit a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "document_family": "api_test",
+        "scope_note": "代码/配置辅助证据；不计为中文教程",
+        "chunk_id": "v3.0.0:zh:tests/pipelines/test_ocr:2",
+        "document_id": "v3.0.0:zh:tests/pipelines/test_ocr",
+        "source_sha256": "55b9d4c5c92123d114e701230bf5e1a282097acdd8e383fc5166d84b07e31a51",
+        "heading": "ocr_engine",
+        "heading_path": [
+          "ocr_engine"
+        ],
+        "line_start": 11,
+        "line_end": 16,
+        "block_type": "python_definition",
+        "content": "@pytest.fixture(scope=\"module\")\ndef ocr_engine() -> PaddleOCR:\n    return PaddleOCR()\n\n\n# TODO: Should we separate unit tests and integration tests?",
+        "module": "ocr",
+        "evidence_spans": [
+          {
+            "line_start": 11,
+            "line_end": 16,
+            "char_start": 0,
+            "char_end": 148,
+            "content": "@pytest.fixture(scope=\"module\")\ndef ocr_engine() -> PaddleOCR:\n    return PaddleOCR()\n\n\n# TODO: Should we separate unit tests and integration tests?"
+          }
+        ],
+        "rank": 5,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.03076923076923077,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      }
+    ],
+    "requirements": [
+      {
+        "id": "r1",
+        "query": "PaddleOCR 3.0.0 的官方 OCR 测试检查了哪些返回字段",
+        "module": "ocr",
+        "symbols": [],
+        "version": "v3.0.0"
+      }
+    ],
+    "consistency_notes": [],
+    "generation": {
+      "request_id": "ce66fd791fb1432897aa04f7794e26aa",
+      "provider": "deepseek",
+      "requested_model": "deepseek-v4-flash",
+      "returned_model": "deepseek-flash",
+      "finish_reason": "stop",
+      "usage": {
+        "input_tokens": 2232,
+        "output_tokens": 156,
+        "total_tokens": 2388
+      },
+      "latency_ms": 11438.967,
+      "failure_reason": null,
+      "candidate_count": 5,
+      "evidence_coverage": null,
+      "claimed_citation_count": 3,
+      "valid_citation_count": 3,
+      "generation_latency_ms": 5797
+    },
+    "retrieval_policy": "paddleocr_evidence",
+    "requested_policy": "paddleocr_evidence",
+    "actual_policy": "contextual_bm25",
+    "route": "CONCEPTUAL_LOOKUP",
+    "rerank_status": "NOT_REQUESTED",
+    "rerank_diagnostics": {
+      "requested_strategy": "contextual_bm25",
+      "actual_strategy": "contextual_bm25",
+      "candidate_budget": 40,
+      "eligible_windows": 566,
+      "rerank_calls": 0,
+      "external_model_calls": 0,
+      "fallback_reason": null,
+      "window_failures": [],
+      "model_identity": {
+        "embedding": "NOT_CONFIGURED",
+        "reranker": "NOT_CONFIGURED",
+        "attention": "eager"
+      },
+      "window_budget": 384,
+      "window_unit": "characters",
+      "source_intent": "test_contract",
+      "candidate_windows": 40,
+      "requirement_candidates": {
+        "r1": "v3.0.0:zh:tests/pipelines/test_ocr:3"
+      },
+      "final_evidence_count": 5,
+      "selected_windows": 11,
+      "status": "OK"
+    },
+    "candidate_count": 40,
+    "final_evidence_count": 5,
+    "retrieval_latency_ms": 12.43,
+    "rerank_latency_ms": null,
+    "evidence_gaps": [],
+    "answer_completeness": "NOT_ASSESSED",
+    "mechanical_verification": {
+      "assessment_type": "mechanical_scope_and_parsed_defaults_not_complete_answer_validation",
+      "requirements": {
+        "r1": {
+          "status": "APPLICABLE_EVIDENCE_FOUND",
+          "evidence_ids": [
+            "v3.0.0:zh:tests/pipelines/test_ocr:3",
+            "v3.0.0:zh:tests/pipelines/test_ocr:5",
+            "v3.0.0:zh:tests/pipelines/test_ocr:4",
+            "v3.0.0:zh:tests/pipelines/test_ocr:1",
+            "v3.0.0:zh:tests/pipelines/test_ocr:2"
+          ],
+          "assessment": "scope_and_symbol_only"
+        }
+      },
+      "claims": [
+        {
+          "claim_index": 0,
+          "status": "NOT_MECHANICALLY_CHECKABLE",
+          "symbols": []
+        },
+        {
+          "claim_index": 1,
+          "status": "NOT_MECHANICALLY_CHECKABLE",
+          "symbols": []
+        },
+        {
+          "claim_index": 2,
+          "status": "NOT_MECHANICALLY_CHECKABLE",
+          "symbols": []
+        }
+      ]
+    },
+    "claim_verification": {
+      "status": "SUPPORTED",
+      "rejected": [],
+      "diagnostics": {
+        "provider": "deepseek",
+        "requested_model": "deepseek-v4-flash",
+        "returned_model": "deepseek-flash",
+        "finish_reason": "stop",
+        "usage": {
+          "input_tokens": 1254,
+          "output_tokens": 127,
+          "total_tokens": 1381
+        }
+      },
+      "assessment_type": "model_assessment_not_human_validation",
+      "latency_ms": 5641.465
+    },
+    "claims": [
+      {
+        "text": "PaddleOCR v3.0.0 的 tests/pipelines/test_ocr.py 中 test_predict 检查返回结果包含 dt_polys 字段，且断言其长度大于 0。",
+        "evidence_ids": [
+          "v3.0.0:zh:tests/pipelines/test_ocr:3"
+        ],
+        "source_indexes": [
+          1
+        ]
+      },
+      {
+        "text": "test_predict 检查返回结果包含 rec_texts 字段，断言其为 list、长度大于 0，且其中每个元素都是 str。",
+        "evidence_ids": [
+          "v3.0.0:zh:tests/pipelines/test_ocr:3"
+        ],
+        "source_indexes": [
+          1
+        ]
+      },
+      {
+        "text": "test_predict 还调用 check_simple_inference_result(result) 对结果做通用检查。",
+        "evidence_ids": [
+          "v3.0.0:zh:tests/pipelines/test_ocr:3"
+        ],
+        "source_indexes": [
+          1
+        ]
+      }
+    ],
+    "evidence_support": {
+      "level": "limited",
+      "label": "有限",
+      "matched_terms": 4,
+      "missing_terms": 8,
+      "total_terms": 12,
+      "summary": "引用内容覆盖问题关键词 4/12；这是规则估算的证据覆盖提示，不代表答案正确率。"
+    },
+    "status": "OK",
+    "correction": {
+      "attempts": 0,
+      "status": "NOT_NEEDED"
+    },
+    "workflow_usage": {
+      "total_tokens": 3769,
+      "reported_calls": 2,
+      "observed_stages": 2,
+      "complete": true
+    }
+  }
+}

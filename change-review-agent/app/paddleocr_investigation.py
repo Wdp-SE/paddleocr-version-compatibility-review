@@ -59,13 +59,21 @@ def build_checks(report:dict)->list[dict]:
                        'versions':list(VERSIONS),'finding_ids':[f['finding_id'] for f in report['findings'] if f['rule_id']==key],
                        'application':finding['application'],'required_tokens':{},
                        'required_facts':copy.deepcopy(_FACTS.get(key, {}))})
+        # Component contracts have source anchors. Application regression
+        # instructions are not facts the official SDK can establish.
+        facts=checks[-1]['required_facts']
+        if facts:
+            checks[-1]['query']='PaddleOCR '+key+' '+ ' '.join(dict.fromkeys(
+                value for rows in facts.values() for row in rows
+                for value in [row['path'], *row['tokens']]))
     for gap in report.get('gaps',[]):
         if len(checks)>=12:break
         key=gap['code']
         if key in seen:continue
         seen.add(key)
         checks.append({'check_id':f'check-{len(checks)+1}','query':'PaddleOCR '+gap['detail'][:400],
-                       'versions':list(VERSIONS),'gap_code':key,'required_tokens':{}})
+                       'versions':list(VERSIONS),'gap_code':key,'required_tokens':{},
+                       'evidence_domain':'application_validation'})
     if not checks:checks=[{'check_id':'check-1','query':'PaddleOCR 安装 推理 结果契约', 'versions':list(VERSIONS)}]
     return checks[:12]
 
@@ -131,6 +139,14 @@ def investigate(checks:list[dict],gateway,*,clock,deadline_seconds:float=240,pla
         if not batch:break
         for batch_index,check in enumerate(batch):
             processed+=1; parent_id=check.get('parent_check_id',check['check_id'])
+            if check.get('evidence_domain')=='application_validation':
+                for version in check['versions']:
+                    outcomes[(parent_id,version)]={'check_id':parent_id,'version':version,
+                        'status':'APPLICATION_VALIDATION_REQUIRED',
+                        'reason':'application_validation_required','missing_facts':[], 'evidence_ids':[]}
+                trace.append({'check_id':check['check_id'],'status':'APPLICATION_VALIDATION_REQUIRED',
+                              'query':check['query'],'reason':'application_validation_required'})
+                continue
             if on_progress:on_progress({'stage':'official_lookup','round':round_no,'check_id':check['check_id'],'processed':processed,'elapsed_seconds':round(prior_elapsed+clock()-started,2)})
             for version in dict.fromkeys(check['versions']):
                 if cancelled and cancelled():stop='CANCELLED';break

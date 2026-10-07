@@ -1,0 +1,1055 @@
+{
+  "case": "资料缺口：调用层未提交",
+  "result": {
+    "schema_version": 1,
+    "task_id": "paddleocr-1ca05f813a0e1bb9ef51e9e7",
+    "request_fingerprint": "1ca05f813a0e1bb9ef51e9e7702eb888f3b89b693ad4cfba2b47bfc0a6087105",
+    "report_fingerprint": "f493dab047d1bdcd77c9db17d097533483681777b32a57b6682885087049e503",
+    "request_mode": "paddleocr_compatibility",
+    "workspace_id": "paddleocr",
+    "project_id": "paddleocr",
+    "source_version": "v2.9.1",
+    "target_version": "v3.0.0",
+    "request_summary": "PaddleOCR v2.9.1 → v3.0.0：application/normalizer.py、application/consumer.py、application/pipeline.py、application/contract.json、application/requirements-v2.txt、application/design.md、application/upgrade.md、application/tests/test_contract.py、result_adapter.py",
+    "status": "needs_verification",
+    "mode": "static",
+    "runtime_verified": false,
+    "model_calls": 0,
+    "model_planning_request_count": 0,
+    "model_support_request_count": 0,
+    "task_elapsed_seconds": 1.1100000001024455,
+    "model_advice_request_count": 0,
+    "model_status": "NOT_REQUESTED",
+    "model_suggestions": [],
+    "model_generation": {},
+    "answer_source": "validated_static_tool",
+    "compatibility_report": {
+      "schema_version": 1,
+      "project_id": "paddleocr",
+      "workspace_id": "paddleocr",
+      "source_version": "v2.9.1",
+      "target_version": "v3.0.0",
+      "status": "needs_verification",
+      "runtime_verified": false,
+      "model_call_count": 0,
+      "files": [
+        {
+          "path": "application/normalizer.py",
+          "sha256": "f9d64d79fddf39ba153bda3ce810c9e6b73b43daaee86497c48d9f7a2c385f4c",
+          "line_count": 6,
+          "role": "application_code"
+        },
+        {
+          "path": "application/consumer.py",
+          "sha256": "8fd5daf27099a7e2e26c54fb9880bc8be44d5a9091e3cb336a965d74e1b494b6",
+          "line_count": 17,
+          "role": "application_code"
+        },
+        {
+          "path": "application/pipeline.py",
+          "sha256": "db6cb5ad4b44247fb67eed3f5ce37eb4bdf9ed69205e462b3688cdd64ec69bce",
+          "line_count": 6,
+          "role": "application_code"
+        },
+        {
+          "path": "application/contract.json",
+          "sha256": "af1f2cbf8acddd2a171927dde96a6c55fe43225497f32768b1054ace0d5ba4e3",
+          "line_count": 1,
+          "role": "output_contract"
+        },
+        {
+          "path": "application/requirements-v2.txt",
+          "sha256": "33e42943a1f915eb34f36b649f706e774cf3f904f113f792540c46a15c9fe23e",
+          "line_count": 3,
+          "role": "dependency_manifest"
+        },
+        {
+          "path": "application/design.md",
+          "sha256": "f75c362bd0b23653646154dd490effa4a0b453f9f339d76043f525471ad11648",
+          "line_count": 9,
+          "role": "design_document"
+        },
+        {
+          "path": "application/upgrade.md",
+          "sha256": "4b7a4d558cb57a1221cac4a55c663d87ca4dab9b343295b11a7543127d6f0601",
+          "line_count": 5,
+          "role": "design_document"
+        },
+        {
+          "path": "application/tests/test_contract.py",
+          "sha256": "2e03f3e29a9ec8129ee8237a70ca55c47b9b0d3ef88cd17f582948ed5d65298c",
+          "line_count": 27,
+          "role": "application_test"
+        },
+        {
+          "path": "result_adapter.py",
+          "sha256": "702df5052cf64c19c524bdb7ee2a1b931fdc7030e9f09cf2db9842cedb3681cf",
+          "line_count": 38,
+          "role": "application_code"
+        }
+      ],
+      "findings": [],
+      "gaps": [
+        {
+          "code": "uncertain_control_flow",
+          "detail": "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+          "application": {
+            "path": "application/consumer.py",
+            "line": 10,
+            "end_line": 11,
+            "snippet": "        if type(page) is not int or page<0 or not isinstance(text,str):\n            raise ValueError('invalid normalized line')"
+          }
+        },
+        {
+          "code": "uncertain_control_flow",
+          "detail": "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+          "application": {
+            "path": "application/consumer.py",
+            "line": 12,
+            "end_line": 13,
+            "snippet": "        if not isinstance(confidence,(int,float)) or not math.isfinite(confidence) or not 0<=confidence<=1:\n            raise ValueError('invalid OCR confidence')"
+          }
+        },
+        {
+          "code": "unreviewed_configuration",
+          "detail": "已识别配置/依赖声明；未证明完整环境及配置迁移兼容。",
+          "application": {
+            "path": "application/requirements-v2.txt",
+            "line": 1,
+            "end_line": 1,
+            "snippet": "paddleocr==2.9.1"
+          }
+        },
+        {
+          "code": "uncertain_control_flow",
+          "detail": "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+          "application": {
+            "path": "application/tests/test_contract.py",
+            "line": 26,
+            "end_line": 27,
+            "snippet": "    with pytest.raises((KeyError,TypeError,IndexError,ValueError)):\n        normalizer.normalize_legacy([{'rec_texts':['合同编号 DEMO'],'rec_scores':[.98]}])"
+          }
+        },
+        {
+          "code": "uncertain_control_flow",
+          "detail": "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+          "application": {
+            "path": "result_adapter.py",
+            "line": 7,
+            "end_line": 7,
+            "snippet": "    if not isinstance(text,str) or isinstance(score,bool):raise ValueError('invalid OCR text or score')"
+          }
+        },
+        {
+          "code": "uncertain_control_flow",
+          "detail": "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+          "application": {
+            "path": "result_adapter.py",
+            "line": 8,
+            "end_line": 9,
+            "snippet": "    try:score=float(score)\n    except (ValueError,TypeError):raise ValueError('invalid OCR score') from None"
+          }
+        },
+        {
+          "code": "uncertain_control_flow",
+          "detail": "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+          "application": {
+            "path": "result_adapter.py",
+            "line": 10,
+            "end_line": 10,
+            "snippet": "    if not math.isfinite(score) or not 0<=score<=1:raise ValueError('invalid OCR score')"
+          }
+        },
+        {
+          "code": "uncertain_control_flow",
+          "detail": "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+          "application": {
+            "path": "result_adapter.py",
+            "line": 15,
+            "end_line": 15,
+            "snippet": "    if not isinstance(result,list):raise ValueError('expected v2 page list')"
+          }
+        },
+        {
+          "code": "uncertain_control_flow",
+          "detail": "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+          "application": {
+            "path": "result_adapter.py",
+            "line": 18,
+            "end_line": 18,
+            "snippet": "        if page is None:continue"
+          }
+        },
+        {
+          "code": "uncertain_control_flow",
+          "detail": "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+          "application": {
+            "path": "result_adapter.py",
+            "line": 19,
+            "end_line": 19,
+            "snippet": "        if not isinstance(page,list):raise ValueError('invalid v2 page')"
+          }
+        },
+        {
+          "code": "uncertain_control_flow",
+          "detail": "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+          "application": {
+            "path": "result_adapter.py",
+            "line": 21,
+            "end_line": 21,
+            "snippet": "            if not isinstance(line,(list,tuple)) or len(line)!=2:raise ValueError('invalid v2 line')"
+          }
+        },
+        {
+          "code": "uncertain_control_flow",
+          "detail": "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+          "application": {
+            "path": "result_adapter.py",
+            "line": 23,
+            "end_line": 23,
+            "snippet": "            if not isinstance(text_score,(list,tuple)) or len(text_score)!=2:raise ValueError('invalid v2 text/score')"
+          }
+        },
+        {
+          "code": "uncertain_control_flow",
+          "detail": "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+          "application": {
+            "path": "result_adapter.py",
+            "line": 31,
+            "end_line": 32,
+            "snippet": "        if not isinstance(page,dict) or 'rec_texts' not in page or 'rec_scores' not in page:\n            raise ValueError('expected v3 rec_texts/rec_scores')"
+          }
+        },
+        {
+          "code": "uncertain_control_flow",
+          "detail": "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+          "application": {
+            "path": "result_adapter.py",
+            "line": 34,
+            "end_line": 35,
+            "snippet": "        if not isinstance(texts,(list,tuple)) or not (isinstance(scores,(list,tuple)) or isinstance(scores,np.ndarray) and scores.ndim==1):\n            raise ValueError('expected v3 text/score arrays')"
+          }
+        },
+        {
+          "code": "uncertain_control_flow",
+          "detail": "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+          "application": {
+            "path": "result_adapter.py",
+            "line": 36,
+            "end_line": 36,
+            "snippet": "        if len(texts)!=len(scores):raise ValueError('v3 text/score length mismatch')"
+          }
+        },
+        {
+          "code": "no_resolved_paddleocr_usage",
+          "detail": "提交范围未识别到可证明的 PaddleOCR 调用；需要补充应用入口，不能判为兼容。",
+          "application": {
+            "path": "application/normalizer.py",
+            "line": 1,
+            "end_line": 1,
+            "snippet": "from .ocr_client import recognize"
+          }
+        },
+        {
+          "code": "missing_local_module",
+          "detail": "未提供本地模块/函数；不能证明包装器结果流。",
+          "application": {
+            "path": "application/normalizer.py",
+            "line": 1,
+            "end_line": 1,
+            "snippet": "from .ocr_client import recognize"
+          }
+        },
+        {
+          "code": "conditional_or_dynamic_flow",
+          "detail": "条件、循环或上下文内结果流尚未证明。",
+          "application": {
+            "path": "application/consumer.py",
+            "line": 8,
+            "end_line": 11,
+            "snippet": "    for line in lines:\n        page=line['page_index']; text=line['text']; confidence=line['confidence']\n        if type(page) is not int or page<0 or not isinstance(text,str):\n            raise ValueError('invalid normalized line')"
+          }
+        },
+        {
+          "code": "conditional_or_dynamic_flow",
+          "detail": "条件、循环或上下文内结果流尚未证明。",
+          "application": {
+            "path": "application/tests/test_contract.py",
+            "line": 26,
+            "end_line": 27,
+            "snippet": "    with pytest.raises((KeyError,TypeError,IndexError,ValueError)):\n        normalizer.normalize_legacy([{'rec_texts':['合同编号 DEMO'],'rec_scores':[.98]}])"
+          }
+        },
+        {
+          "code": "conditional_or_dynamic_flow",
+          "detail": "条件、循环或上下文内结果流尚未证明。",
+          "application": {
+            "path": "result_adapter.py",
+            "line": 7,
+            "end_line": 7,
+            "snippet": "    if not isinstance(text,str) or isinstance(score,bool):raise ValueError('invalid OCR text or score')"
+          }
+        },
+        {
+          "code": "conditional_or_dynamic_flow",
+          "detail": "条件、循环或上下文内结果流尚未证明。",
+          "application": {
+            "path": "result_adapter.py",
+            "line": 8,
+            "end_line": 9,
+            "snippet": "    try:score=float(score)\n    except (ValueError,TypeError):raise ValueError('invalid OCR score') from None"
+          }
+        },
+        {
+          "code": "conditional_or_dynamic_flow",
+          "detail": "条件、循环或上下文内结果流尚未证明。",
+          "application": {
+            "path": "result_adapter.py",
+            "line": 10,
+            "end_line": 10,
+            "snippet": "    if not math.isfinite(score) or not 0<=score<=1:raise ValueError('invalid OCR score')"
+          }
+        },
+        {
+          "code": "conditional_or_dynamic_flow",
+          "detail": "条件、循环或上下文内结果流尚未证明。",
+          "application": {
+            "path": "result_adapter.py",
+            "line": 15,
+            "end_line": 15,
+            "snippet": "    if not isinstance(result,list):raise ValueError('expected v2 page list')"
+          }
+        },
+        {
+          "code": "conditional_or_dynamic_flow",
+          "detail": "条件、循环或上下文内结果流尚未证明。",
+          "application": {
+            "path": "result_adapter.py",
+            "line": 17,
+            "end_line": 20,
+            "snippet": "    for page_index,page in enumerate(result):\n        if page is None:continue\n        if not isinstance(page,list):raise ValueError('invalid v2 page')\n        for line in page:"
+          }
+        },
+        {
+          "code": "conditional_or_dynamic_flow",
+          "detail": "条件、循环或上下文内结果流尚未证明。",
+          "application": {
+            "path": "result_adapter.py",
+            "line": 30,
+            "end_line": 33,
+            "snippet": "    for page_index,page in enumerate(result):\n        if not isinstance(page,dict) or 'rec_texts' not in page or 'rec_scores' not in page:\n            raise ValueError('expected v3 rec_texts/rec_scores')\n        texts,scores=page['rec_texts'],page['rec_scores']"
+          }
+        }
+      ],
+      "verification_steps": [
+        "开发者审核每个应用位置与固定版本官方证据，确认升级调整。",
+        "在目标依赖环境执行真实扫描文档推理；核对模型加载、文本/版面质量、空页、多页和下游结果契约。静态审查不等于实际推理验证。"
+      ],
+      "impact_schema_version": 1,
+      "application_graph": {
+        "schema_version": 1,
+        "nodes": [
+          {
+            "id": "application/normalizer.py::<module>",
+            "module": "application.normalizer",
+            "symbol": "<module>",
+            "application": {
+              "path": "application/normalizer.py",
+              "sha256": "f9d64d79fddf39ba153bda3ce810c9e6b73b43daaee86497c48d9f7a2c385f4c",
+              "line_start": 1,
+              "line_end": 1,
+              "excerpt": "from .ocr_client import recognize"
+            }
+          },
+          {
+            "id": "application/normalizer.py::normalize_legacy",
+            "module": "application.normalizer",
+            "symbol": "normalize_legacy",
+            "application": {
+              "path": "application/normalizer.py",
+              "sha256": "f9d64d79fddf39ba153bda3ce810c9e6b73b43daaee86497c48d9f7a2c385f4c",
+              "line_start": 4,
+              "line_end": 6,
+              "excerpt": "def normalize_legacy(path):\n    pages = recognize(path)\n    return [{'text': line[1][0], 'confidence': line[1][1], 'page_index': 0} for line in pages[0]]"
+            }
+          },
+          {
+            "id": "application/consumer.py::<module>",
+            "module": "application.consumer",
+            "symbol": "<module>",
+            "application": {
+              "path": "application/consumer.py",
+              "sha256": "8fd5daf27099a7e2e26c54fb9880bc8be44d5a9091e3cb336a965d74e1b494b6",
+              "line_start": 1,
+              "line_end": 1,
+              "excerpt": "\"\"\"Downstream contract independent of OCR vendor result shape.\"\"\""
+            }
+          },
+          {
+            "id": "application/consumer.py::to_json",
+            "module": "application.consumer",
+            "symbol": "to_json",
+            "application": {
+              "path": "application/consumer.py",
+              "sha256": "8fd5daf27099a7e2e26c54fb9880bc8be44d5a9091e3cb336a965d74e1b494b6",
+              "line_start": 6,
+              "line_end": 17,
+              "excerpt": "def to_json(lines):\n    pages={}\n    for line in lines:\n        page=line['page_index']; text=line['text']; confidence=line['confidence']\n        if type(page) is not int or page<0 or not isinstance(text,str):\n            raise ValueError('invalid normalized line')\n        if not isinstance(confidence,(int,float)) or not math.isfinite(confidence) or not 0<=confidence<=1:\n            raise ValueError('invalid OCR confidence')\n        pages.setdefault(page,[]).append(text)\n    result={'schema_version':1,'pages':[{'page_index':i,'text':'\\n'.join(pages[i])} for i in sorted(pages)]}\n    json.dumps(result,ensure_ascii=False,allow_nan=False)\n    return result"
+            }
+          },
+          {
+            "id": "application/pipeline.py::<module>",
+            "module": "application.pipeline",
+            "symbol": "<module>",
+            "application": {
+              "path": "application/pipeline.py",
+              "sha256": "db6cb5ad4b44247fb67eed3f5ce37eb4bdf9ed69205e462b3688cdd64ec69bce",
+              "line_start": 1,
+              "line_end": 1,
+              "excerpt": "from .normalizer import normalize_legacy"
+            }
+          },
+          {
+            "id": "application/pipeline.py::process",
+            "module": "application.pipeline",
+            "symbol": "process",
+            "application": {
+              "path": "application/pipeline.py",
+              "sha256": "db6cb5ad4b44247fb67eed3f5ce37eb4bdf9ed69205e462b3688cdd64ec69bce",
+              "line_start": 4,
+              "line_end": 6,
+              "excerpt": "def process(path):\n    lines = normalize_legacy(path)\n    return to_json(lines)"
+            }
+          },
+          {
+            "id": "application/tests/test_contract.py::<module>",
+            "module": "application.tests.test_contract",
+            "symbol": "<module>",
+            "application": {
+              "path": "application/tests/test_contract.py",
+              "sha256": "2e03f3e29a9ec8129ee8237a70ca55c47b9b0d3ef88cd17f582948ed5d65298c",
+              "line_start": 1,
+              "line_end": 1,
+              "excerpt": "import importlib.util"
+            }
+          },
+          {
+            "id": "application/tests/test_contract.py::load",
+            "module": "application.tests.test_contract",
+            "symbol": "load",
+            "application": {
+              "path": "application/tests/test_contract.py",
+              "sha256": "2e03f3e29a9ec8129ee8237a70ca55c47b9b0d3ef88cd17f582948ed5d65298c",
+              "line_start": 9,
+              "line_end": 13,
+              "excerpt": "def load(name):\n    sys.path.insert(0,str(ROOT.parent))\n    spec=importlib.util.spec_from_file_location(name,ROOT/(name+'.py'))\n    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)\n    return module"
+            }
+          },
+          {
+            "id": "application/tests/test_contract.py::test_normalized_results_work_with_downstream_contract",
+            "module": "application.tests.test_contract",
+            "symbol": "test_normalized_results_work_with_downstream_contract",
+            "application": {
+              "path": "application/tests/test_contract.py",
+              "sha256": "2e03f3e29a9ec8129ee8237a70ca55c47b9b0d3ef88cd17f582948ed5d65298c",
+              "line_start": 16,
+              "line_end": 21,
+              "excerpt": "def test_normalized_results_work_with_downstream_contract():\n    normalizer=load('normalizer'); consumer=load('consumer')\n    old=[[[[0,0],[1,0],[1,1],[0,1]],('合同编号 DEMO',.98)]]\n    result=normalizer.normalize_legacy([old])\n    assert consumer.to_json(result)['pages'][0]['text']=='合同编号 DEMO'\n    assert consumer.to_json(result)['schema_version']==1"
+            }
+          },
+          {
+            "id": "application/tests/test_contract.py::test_v3_dictionary_cannot_be_consumed_as_legacy_list",
+            "module": "application.tests.test_contract",
+            "symbol": "test_v3_dictionary_cannot_be_consumed_as_legacy_list",
+            "application": {
+              "path": "application/tests/test_contract.py",
+              "sha256": "2e03f3e29a9ec8129ee8237a70ca55c47b9b0d3ef88cd17f582948ed5d65298c",
+              "line_start": 24,
+              "line_end": 27,
+              "excerpt": "def test_v3_dictionary_cannot_be_consumed_as_legacy_list():\n    normalizer=load('normalizer')\n    with pytest.raises((KeyError,TypeError,IndexError,ValueError)):\n        normalizer.normalize_legacy([{'rec_texts':['合同编号 DEMO'],'rec_scores':[.98]}])"
+            }
+          },
+          {
+            "id": "result_adapter.py::<module>",
+            "module": "result_adapter",
+            "symbol": "<module>",
+            "application": {
+              "path": "result_adapter.py",
+              "sha256": "702df5052cf64c19c524bdb7ee2a1b931fdc7030e9f09cf2db9842cedb3681cf",
+              "line_start": 1,
+              "line_end": 1,
+              "excerpt": "\"\"\"Original downstream contract adapter; this module does not execute review inputs.\"\"\""
+            }
+          },
+          {
+            "id": "result_adapter.py::_row",
+            "module": "result_adapter",
+            "symbol": "_row",
+            "application": {
+              "path": "result_adapter.py",
+              "sha256": "702df5052cf64c19c524bdb7ee2a1b931fdc7030e9f09cf2db9842cedb3681cf",
+              "line_start": 6,
+              "line_end": 11,
+              "excerpt": "def _row(text, score, page):\n    if not isinstance(text,str) or isinstance(score,bool):raise ValueError('invalid OCR text or score')\n    try:score=float(score)\n    except (ValueError,TypeError):raise ValueError('invalid OCR score') from None\n    if not math.isfinite(score) or not 0<=score<=1:raise ValueError('invalid OCR score')\n    return {'text':text,'confidence':score,'page_index':page}"
+            }
+          },
+          {
+            "id": "result_adapter.py::normalize_v2",
+            "module": "result_adapter",
+            "symbol": "normalize_v2",
+            "application": {
+              "path": "result_adapter.py",
+              "sha256": "702df5052cf64c19c524bdb7ee2a1b931fdc7030e9f09cf2db9842cedb3681cf",
+              "line_start": 14,
+              "line_end": 25,
+              "excerpt": "def normalize_v2(result):\n    if not isinstance(result,list):raise ValueError('expected v2 page list')\n    rows=[]\n    for page_index,page in enumerate(result):\n        if page is None:continue\n        if not isinstance(page,list):raise ValueError('invalid v2 page')\n        for line in page:\n            if not isinstance(line,(list,tuple)) or len(line)!=2:raise ValueError('invalid v2 line')\n            text_score=line[1]\n            if not isinstance(text_score,(list,tuple)) or len(text_score)!=2:raise ValueError('invalid v2 text/score')\n            rows.append(_row(text_score[0],text_score[1],page_index))\n    return rows"
+            }
+          },
+          {
+            "id": "result_adapter.py::normalize_v3",
+            "module": "result_adapter",
+            "symbol": "normalize_v3",
+            "application": {
+              "path": "result_adapter.py",
+              "sha256": "702df5052cf64c19c524bdb7ee2a1b931fdc7030e9f09cf2db9842cedb3681cf",
+              "line_start": 28,
+              "line_end": 38,
+              "excerpt": "def normalize_v3(result):\n    rows=[]\n    for page_index,page in enumerate(result):\n        if not isinstance(page,dict) or 'rec_texts' not in page or 'rec_scores' not in page:\n            raise ValueError('expected v3 rec_texts/rec_scores')\n        texts,scores=page['rec_texts'],page['rec_scores']\n        if not isinstance(texts,(list,tuple)) or not (isinstance(scores,(list,tuple)) or isinstance(scores,np.ndarray) and scores.ndim==1):\n            raise ValueError('expected v3 text/score arrays')\n        if len(texts)!=len(scores):raise ValueError('v3 text/score length mismatch')\n        rows.extend(_row(text,score,page_index) for text,score in zip(texts,scores))\n    return rows"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "source": "application/pipeline.py::process",
+            "target": "application/normalizer.py::normalize_legacy",
+            "kind": "reference",
+            "application": {
+              "path": "application/pipeline.py",
+              "sha256": "db6cb5ad4b44247fb67eed3f5ce37eb4bdf9ed69205e462b3688cdd64ec69bce",
+              "line_start": 5,
+              "line_end": 5,
+              "excerpt": "    lines = normalize_legacy(path)"
+            }
+          },
+          {
+            "source": "application/normalizer.py::normalize_legacy",
+            "target": "application/pipeline.py::process",
+            "kind": "result_flow",
+            "application": {
+              "path": "application/pipeline.py",
+              "sha256": "db6cb5ad4b44247fb67eed3f5ce37eb4bdf9ed69205e462b3688cdd64ec69bce",
+              "line_start": 5,
+              "line_end": 5,
+              "excerpt": "    lines = normalize_legacy(path)"
+            }
+          },
+          {
+            "source": "application/pipeline.py::process",
+            "target": "application/consumer.py::to_json",
+            "kind": "reference",
+            "application": {
+              "path": "application/pipeline.py",
+              "sha256": "db6cb5ad4b44247fb67eed3f5ce37eb4bdf9ed69205e462b3688cdd64ec69bce",
+              "line_start": 6,
+              "line_end": 6,
+              "excerpt": "    return to_json(lines)"
+            }
+          },
+          {
+            "source": "application/normalizer.py::normalize_legacy",
+            "target": "application/consumer.py::to_json",
+            "kind": "result_flow",
+            "application": {
+              "path": "application/pipeline.py",
+              "sha256": "db6cb5ad4b44247fb67eed3f5ce37eb4bdf9ed69205e462b3688cdd64ec69bce",
+              "line_start": 6,
+              "line_end": 6,
+              "excerpt": "    return to_json(lines)"
+            }
+          },
+          {
+            "source": "application/consumer.py::to_json",
+            "target": "application/pipeline.py::process",
+            "kind": "result_flow",
+            "application": {
+              "path": "application/pipeline.py",
+              "sha256": "db6cb5ad4b44247fb67eed3f5ce37eb4bdf9ed69205e462b3688cdd64ec69bce",
+              "line_start": 6,
+              "line_end": 6,
+              "excerpt": "    return to_json(lines)"
+            }
+          },
+          {
+            "source": "application/tests/test_contract.py::test_normalized_results_work_with_downstream_contract",
+            "target": "application/tests/test_contract.py::load",
+            "kind": "reference",
+            "application": {
+              "path": "application/tests/test_contract.py",
+              "sha256": "2e03f3e29a9ec8129ee8237a70ca55c47b9b0d3ef88cd17f582948ed5d65298c",
+              "line_start": 17,
+              "line_end": 17,
+              "excerpt": "    normalizer=load('normalizer'); consumer=load('consumer')"
+            }
+          },
+          {
+            "source": "application/tests/test_contract.py::load",
+            "target": "application/tests/test_contract.py::test_normalized_results_work_with_downstream_contract",
+            "kind": "result_flow",
+            "application": {
+              "path": "application/tests/test_contract.py",
+              "sha256": "2e03f3e29a9ec8129ee8237a70ca55c47b9b0d3ef88cd17f582948ed5d65298c",
+              "line_start": 17,
+              "line_end": 17,
+              "excerpt": "    normalizer=load('normalizer'); consumer=load('consumer')"
+            }
+          },
+          {
+            "source": "application/tests/test_contract.py::test_v3_dictionary_cannot_be_consumed_as_legacy_list",
+            "target": "application/tests/test_contract.py::load",
+            "kind": "reference",
+            "application": {
+              "path": "application/tests/test_contract.py",
+              "sha256": "2e03f3e29a9ec8129ee8237a70ca55c47b9b0d3ef88cd17f582948ed5d65298c",
+              "line_start": 25,
+              "line_end": 25,
+              "excerpt": "    normalizer=load('normalizer')"
+            }
+          },
+          {
+            "source": "application/tests/test_contract.py::load",
+            "target": "application/tests/test_contract.py::test_v3_dictionary_cannot_be_consumed_as_legacy_list",
+            "kind": "result_flow",
+            "application": {
+              "path": "application/tests/test_contract.py",
+              "sha256": "2e03f3e29a9ec8129ee8237a70ca55c47b9b0d3ef88cd17f582948ed5d65298c",
+              "line_start": 25,
+              "line_end": 25,
+              "excerpt": "    normalizer=load('normalizer')"
+            }
+          }
+        ],
+        "gaps": [
+          {
+            "code": "missing_local_module",
+            "detail": "未提供本地模块/函数；不能证明包装器结果流。",
+            "application": {
+              "path": "application/normalizer.py",
+              "sha256": "f9d64d79fddf39ba153bda3ce810c9e6b73b43daaee86497c48d9f7a2c385f4c",
+              "line_start": 1,
+              "line_end": 1,
+              "excerpt": "from .ocr_client import recognize"
+            }
+          },
+          {
+            "code": "conditional_or_dynamic_flow",
+            "detail": "条件、循环或上下文内结果流尚未证明。",
+            "application": {
+              "path": "application/consumer.py",
+              "sha256": "8fd5daf27099a7e2e26c54fb9880bc8be44d5a9091e3cb336a965d74e1b494b6",
+              "line_start": 8,
+              "line_end": 14,
+              "excerpt": "    for line in lines:\n        page=line['page_index']; text=line['text']; confidence=line['confidence']\n        if type(page) is not int or page<0 or not isinstance(text,str):\n            raise ValueError('invalid normalized line')\n        if not isinstance(confidence,(int,float)) or not math.isfinite(confidence) or not 0<=confidence<=1:\n            raise ValueError('invalid OCR confidence')\n        pages.setdefault(page,[]).append(text)"
+            }
+          },
+          {
+            "code": "conditional_or_dynamic_flow",
+            "detail": "条件、循环或上下文内结果流尚未证明。",
+            "application": {
+              "path": "application/tests/test_contract.py",
+              "sha256": "2e03f3e29a9ec8129ee8237a70ca55c47b9b0d3ef88cd17f582948ed5d65298c",
+              "line_start": 26,
+              "line_end": 27,
+              "excerpt": "    with pytest.raises((KeyError,TypeError,IndexError,ValueError)):\n        normalizer.normalize_legacy([{'rec_texts':['合同编号 DEMO'],'rec_scores':[.98]}])"
+            }
+          },
+          {
+            "code": "conditional_or_dynamic_flow",
+            "detail": "条件、循环或上下文内结果流尚未证明。",
+            "application": {
+              "path": "result_adapter.py",
+              "sha256": "702df5052cf64c19c524bdb7ee2a1b931fdc7030e9f09cf2db9842cedb3681cf",
+              "line_start": 7,
+              "line_end": 7,
+              "excerpt": "    if not isinstance(text,str) or isinstance(score,bool):raise ValueError('invalid OCR text or score')"
+            }
+          },
+          {
+            "code": "conditional_or_dynamic_flow",
+            "detail": "条件、循环或上下文内结果流尚未证明。",
+            "application": {
+              "path": "result_adapter.py",
+              "sha256": "702df5052cf64c19c524bdb7ee2a1b931fdc7030e9f09cf2db9842cedb3681cf",
+              "line_start": 8,
+              "line_end": 9,
+              "excerpt": "    try:score=float(score)\n    except (ValueError,TypeError):raise ValueError('invalid OCR score') from None"
+            }
+          },
+          {
+            "code": "conditional_or_dynamic_flow",
+            "detail": "条件、循环或上下文内结果流尚未证明。",
+            "application": {
+              "path": "result_adapter.py",
+              "sha256": "702df5052cf64c19c524bdb7ee2a1b931fdc7030e9f09cf2db9842cedb3681cf",
+              "line_start": 10,
+              "line_end": 10,
+              "excerpt": "    if not math.isfinite(score) or not 0<=score<=1:raise ValueError('invalid OCR score')"
+            }
+          },
+          {
+            "code": "conditional_or_dynamic_flow",
+            "detail": "条件、循环或上下文内结果流尚未证明。",
+            "application": {
+              "path": "result_adapter.py",
+              "sha256": "702df5052cf64c19c524bdb7ee2a1b931fdc7030e9f09cf2db9842cedb3681cf",
+              "line_start": 15,
+              "line_end": 15,
+              "excerpt": "    if not isinstance(result,list):raise ValueError('expected v2 page list')"
+            }
+          },
+          {
+            "code": "conditional_or_dynamic_flow",
+            "detail": "条件、循环或上下文内结果流尚未证明。",
+            "application": {
+              "path": "result_adapter.py",
+              "sha256": "702df5052cf64c19c524bdb7ee2a1b931fdc7030e9f09cf2db9842cedb3681cf",
+              "line_start": 17,
+              "line_end": 24,
+              "excerpt": "    for page_index,page in enumerate(result):\n        if page is None:continue\n        if not isinstance(page,list):raise ValueError('invalid v2 page')\n        for line in page:\n            if not isinstance(line,(list,tuple)) or len(line)!=2:raise ValueError('invalid v2 line')\n            text_score=line[1]\n            if not isinstance(text_score,(list,tuple)) or len(text_score)!=2:raise ValueError('invalid v2 text/score')\n            rows.append(_row(text_score[0],text_score[1],page_index))"
+            }
+          },
+          {
+            "code": "conditional_or_dynamic_flow",
+            "detail": "条件、循环或上下文内结果流尚未证明。",
+            "application": {
+              "path": "result_adapter.py",
+              "sha256": "702df5052cf64c19c524bdb7ee2a1b931fdc7030e9f09cf2db9842cedb3681cf",
+              "line_start": 30,
+              "line_end": 37,
+              "excerpt": "    for page_index,page in enumerate(result):\n        if not isinstance(page,dict) or 'rec_texts' not in page or 'rec_scores' not in page:\n            raise ValueError('expected v3 rec_texts/rec_scores')\n        texts,scores=page['rec_texts'],page['rec_scores']\n        if not isinstance(texts,(list,tuple)) or not (isinstance(scores,(list,tuple)) or isinstance(scores,np.ndarray) and scores.ndim==1):\n            raise ValueError('expected v3 text/score arrays')\n        if len(texts)!=len(scores):raise ValueError('v3 text/score length mismatch')\n        rows.extend(_row(text,score,page_index) for text,score in zip(texts,scores))"
+            }
+          }
+        ],
+        "coverage": {
+          "analysis": "bounded_direct_calls_and_result_flow",
+          "runtime_verified": false
+        }
+      },
+      "impact_paths": [],
+      "result_flow_coverage": {
+        "analysis": "straight_line_local_wrappers",
+        "summary_count": 0,
+        "max_wrapper_depth": 6,
+        "runtime_verified": false
+      },
+      "regression_requirements": [],
+      "summary": {
+        "finding_count": 0,
+        "risk_count": 0,
+        "gap_count": 25
+      },
+      "model_calls": 0,
+      "impact_status": "REQUIRES_HUMAN_REVIEW",
+      "latency_ms": 25.833
+    },
+    "rendered_report": "PaddleOCR v2.9.1 → v3.0.0 应用兼容性审查\n静态结果：需要补充验证。实际 OCR 推理未验证。\n- 待验证：条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。\n- 待验证：条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。\n- 待验证：已识别配置/依赖声明；未证明完整环境及配置迁移兼容。\n- 待验证：条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。\n- 待验证：条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。\n- 待验证：条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。\n- 待验证：条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。\n- 待验证：条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。\n- 待验证：条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。\n- 待验证：条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。\n- 待验证：条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。\n- 待验证：条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。\n- 待验证：条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。\n- 待验证：条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。\n- 待验证：条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。\n- 待验证：提交范围未识别到可证明的 PaddleOCR 调用；需要补充应用入口，不能判为兼容。\n- 待验证：未提供本地模块/函数；不能证明包装器结果流。\n- 待验证：条件、循环或上下文内结果流尚未证明。\n- 待验证：条件、循环或上下文内结果流尚未证明。\n- 待验证：条件、循环或上下文内结果流尚未证明。\n- 待验证：条件、循环或上下文内结果流尚未证明。\n- 待验证：条件、循环或上下文内结果流尚未证明。\n- 待验证：条件、循环或上下文内结果流尚未证明。\n- 待验证：条件、循环或上下文内结果流尚未证明。\n- 待验证：条件、循环或上下文内结果流尚未证明。",
+    "retrieved_results": [],
+    "related_materials": [],
+    "lookup_gaps": [
+      "check-1 / v2.9.1：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。",
+      "check-1 / v3.0.0：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。",
+      "check-2 / v2.9.1：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。",
+      "check-2 / v3.0.0：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。",
+      "check-3 / v2.9.1：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。",
+      "check-3 / v3.0.0：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。",
+      "check-4 / v2.9.1：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。",
+      "check-4 / v3.0.0：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。",
+      "check-5 / v2.9.1：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。",
+      "check-5 / v3.0.0：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。"
+    ],
+    "investigation": {
+      "schema_version": 1,
+      "stop_reason": "NO_NEW_EVIDENCE",
+      "trace": [
+        {
+          "check_id": "check-1",
+          "status": "APPLICATION_VALIDATION_REQUIRED",
+          "query": "PaddleOCR 条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+          "reason": "application_validation_required"
+        },
+        {
+          "check_id": "check-2",
+          "status": "APPLICATION_VALIDATION_REQUIRED",
+          "query": "PaddleOCR 已识别配置/依赖声明；未证明完整环境及配置迁移兼容。",
+          "reason": "application_validation_required"
+        },
+        {
+          "check_id": "check-3",
+          "status": "APPLICATION_VALIDATION_REQUIRED",
+          "query": "PaddleOCR 提交范围未识别到可证明的 PaddleOCR 调用；需要补充应用入口，不能判为兼容。",
+          "reason": "application_validation_required"
+        },
+        {
+          "check_id": "check-4",
+          "status": "APPLICATION_VALIDATION_REQUIRED",
+          "query": "PaddleOCR 未提供本地模块/函数；不能证明包装器结果流。",
+          "reason": "application_validation_required"
+        },
+        {
+          "check_id": "check-5",
+          "status": "APPLICATION_VALIDATION_REQUIRED",
+          "query": "PaddleOCR 条件、循环或上下文内结果流尚未证明。",
+          "reason": "application_validation_required"
+        }
+      ],
+      "checked_evidence": [],
+      "check_assessments": [
+        {
+          "check_id": "check-1",
+          "version": "v2.9.1",
+          "status": "APPLICATION_VALIDATION_REQUIRED",
+          "reason": "application_validation_required",
+          "missing_facts": [],
+          "evidence_ids": []
+        },
+        {
+          "check_id": "check-1",
+          "version": "v3.0.0",
+          "status": "APPLICATION_VALIDATION_REQUIRED",
+          "reason": "application_validation_required",
+          "missing_facts": [],
+          "evidence_ids": []
+        },
+        {
+          "check_id": "check-2",
+          "version": "v2.9.1",
+          "status": "APPLICATION_VALIDATION_REQUIRED",
+          "reason": "application_validation_required",
+          "missing_facts": [],
+          "evidence_ids": []
+        },
+        {
+          "check_id": "check-2",
+          "version": "v3.0.0",
+          "status": "APPLICATION_VALIDATION_REQUIRED",
+          "reason": "application_validation_required",
+          "missing_facts": [],
+          "evidence_ids": []
+        },
+        {
+          "check_id": "check-3",
+          "version": "v2.9.1",
+          "status": "APPLICATION_VALIDATION_REQUIRED",
+          "reason": "application_validation_required",
+          "missing_facts": [],
+          "evidence_ids": []
+        },
+        {
+          "check_id": "check-3",
+          "version": "v3.0.0",
+          "status": "APPLICATION_VALIDATION_REQUIRED",
+          "reason": "application_validation_required",
+          "missing_facts": [],
+          "evidence_ids": []
+        },
+        {
+          "check_id": "check-4",
+          "version": "v2.9.1",
+          "status": "APPLICATION_VALIDATION_REQUIRED",
+          "reason": "application_validation_required",
+          "missing_facts": [],
+          "evidence_ids": []
+        },
+        {
+          "check_id": "check-4",
+          "version": "v3.0.0",
+          "status": "APPLICATION_VALIDATION_REQUIRED",
+          "reason": "application_validation_required",
+          "missing_facts": [],
+          "evidence_ids": []
+        },
+        {
+          "check_id": "check-5",
+          "version": "v2.9.1",
+          "status": "APPLICATION_VALIDATION_REQUIRED",
+          "reason": "application_validation_required",
+          "missing_facts": [],
+          "evidence_ids": []
+        },
+        {
+          "check_id": "check-5",
+          "version": "v3.0.0",
+          "status": "APPLICATION_VALIDATION_REQUIRED",
+          "reason": "application_validation_required",
+          "missing_facts": [],
+          "evidence_ids": []
+        }
+      ],
+      "unresolved": [
+        {
+          "check_id": "check-1",
+          "versions": [
+            "v2.9.1"
+          ],
+          "reason": "application_validation_required",
+          "query": "PaddleOCR 条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+          "missing_facts": []
+        },
+        {
+          "check_id": "check-1",
+          "versions": [
+            "v3.0.0"
+          ],
+          "reason": "application_validation_required",
+          "query": "PaddleOCR 条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+          "missing_facts": []
+        },
+        {
+          "check_id": "check-2",
+          "versions": [
+            "v2.9.1"
+          ],
+          "reason": "application_validation_required",
+          "query": "PaddleOCR 已识别配置/依赖声明；未证明完整环境及配置迁移兼容。",
+          "missing_facts": []
+        },
+        {
+          "check_id": "check-2",
+          "versions": [
+            "v3.0.0"
+          ],
+          "reason": "application_validation_required",
+          "query": "PaddleOCR 已识别配置/依赖声明；未证明完整环境及配置迁移兼容。",
+          "missing_facts": []
+        },
+        {
+          "check_id": "check-3",
+          "versions": [
+            "v2.9.1"
+          ],
+          "reason": "application_validation_required",
+          "query": "PaddleOCR 提交范围未识别到可证明的 PaddleOCR 调用；需要补充应用入口，不能判为兼容。",
+          "missing_facts": []
+        },
+        {
+          "check_id": "check-3",
+          "versions": [
+            "v3.0.0"
+          ],
+          "reason": "application_validation_required",
+          "query": "PaddleOCR 提交范围未识别到可证明的 PaddleOCR 调用；需要补充应用入口，不能判为兼容。",
+          "missing_facts": []
+        },
+        {
+          "check_id": "check-4",
+          "versions": [
+            "v2.9.1"
+          ],
+          "reason": "application_validation_required",
+          "query": "PaddleOCR 未提供本地模块/函数；不能证明包装器结果流。",
+          "missing_facts": []
+        },
+        {
+          "check_id": "check-4",
+          "versions": [
+            "v3.0.0"
+          ],
+          "reason": "application_validation_required",
+          "query": "PaddleOCR 未提供本地模块/函数；不能证明包装器结果流。",
+          "missing_facts": []
+        },
+        {
+          "check_id": "check-5",
+          "versions": [
+            "v2.9.1"
+          ],
+          "reason": "application_validation_required",
+          "query": "PaddleOCR 条件、循环或上下文内结果流尚未证明。",
+          "missing_facts": []
+        },
+        {
+          "check_id": "check-5",
+          "versions": [
+            "v3.0.0"
+          ],
+          "reason": "application_validation_required",
+          "query": "PaddleOCR 条件、循环或上下文内结果流尚未证明。",
+          "missing_facts": []
+        }
+      ],
+      "search_calls": 0,
+      "planner_calls": 0,
+      "elapsed_seconds": 1.1100000001024455,
+      "resume": {
+        "identity": "9f3e05208980b703a89f66e3979b3aae590986d0aa98672e7369fd9ffa260078",
+        "completed": {},
+        "search_calls": 0,
+        "planner_calls": 0,
+        "elapsed_seconds": 1.1100000001024455,
+        "planned_checks": []
+      },
+      "assessment": "source_verified_candidates_not_confirmed_business_impact"
+    },
+    "impact_schema_version": 1,
+    "resume_state": {
+      "task_identity": "f260cf9ac7cc3b1cc1897d382925b4085c86e732a3690faf1c12e76ab4fcdd06",
+      "investigation": {
+        "identity": "9f3e05208980b703a89f66e3979b3aae590986d0aa98672e7369fd9ffa260078",
+        "completed": {},
+        "search_calls": 0,
+        "planner_calls": 0,
+        "elapsed_seconds": 1.1100000001024455,
+        "planned_checks": []
+      },
+      "advice_request_count": 0,
+      "support_request_count": 0,
+      "advice_response": null
+    },
+    "evidence_gaps": [
+      "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+      "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+      "已识别配置/依赖声明；未证明完整环境及配置迁移兼容。",
+      "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+      "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+      "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+      "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+      "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+      "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+      "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+      "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+      "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+      "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+      "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+      "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。",
+      "提交范围未识别到可证明的 PaddleOCR 调用；需要补充应用入口，不能判为兼容。",
+      "未提供本地模块/函数；不能证明包装器结果流。",
+      "条件、循环或上下文内结果流尚未证明。",
+      "条件、循环或上下文内结果流尚未证明。",
+      "条件、循环或上下文内结果流尚未证明。",
+      "条件、循环或上下文内结果流尚未证明。",
+      "条件、循环或上下文内结果流尚未证明。",
+      "条件、循环或上下文内结果流尚未证明。",
+      "条件、循环或上下文内结果流尚未证明。",
+      "条件、循环或上下文内结果流尚未证明。",
+      "check-1 / v2.9.1：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。",
+      "check-1 / v3.0.0：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。",
+      "check-2 / v2.9.1：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。",
+      "check-2 / v3.0.0：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。",
+      "check-3 / v2.9.1：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。",
+      "check-3 / v3.0.0：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。",
+      "check-4 / v2.9.1：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。",
+      "check-4 / v3.0.0：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。",
+      "check-5 / v2.9.1：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。",
+      "check-5 / v3.0.0：查证未完成（application_validation_required，停止状态 NO_NEW_EVIDENCE）。"
+    ],
+    "stage_status": {
+      "input_validation": "completed",
+      "static_review": "completed",
+      "evidence_validation": "completed",
+      "official_lookup": "partial",
+      "model_advice": "skipped",
+      "human_review": "pending"
+    },
+    "public_baseline_written": false,
+    "manual_review_required": true
+  }
+}

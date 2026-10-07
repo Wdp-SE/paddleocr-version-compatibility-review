@@ -1,0 +1,380 @@
+- log
+- log
+- button "keyboard_double_arrow_left":
+  - generic: keyboard_double_arrow_left
+- generic: 工作台导航
+- generic: 版本化知识服务
+- button "总览":
+  - paragraph: 总览
+- button "版本化知识检索":
+  - paragraph: 版本化知识检索
+- button "版本与历史":
+  - paragraph: 版本与历史
+- button "资料来源":
+  - paragraph: 资料来源
+- generic: 变更影响审查
+- button "发起兼容性审查":
+  - paragraph: 发起兼容性审查
+- button "影响与证据":
+  - paragraph: 影响与证据
+- button "升级审查报告":
+  - paragraph: 升级审查报告
+- button "人工审核":
+  - paragraph: 人工审核
+- generic: 系统说明
+- button "检索评测":
+  - paragraph: 检索评测
+- button "已知限制":
+  - paragraph: 已知限制
+- button "系统说明":
+  - paragraph: 系统说明
+- button "刷新知识库状态":
+  - paragraph: 刷新知识库状态
+- banner:
+  - button "keyboard_double_arrow_right":
+    - generic: keyboard_double_arrow_right
+  - generic: info
+  - generic: File change.
+  - button "Rerun":
+    - generic: Rerun
+  - button "Always rerun":
+    - generic: Always rerun
+- button "←":
+  - paragraph: ←
+- button "首页":
+  - paragraph: 首页
+- generic: ›
+- button "版本化知识服务":
+  - generic "版本化知识服务":
+    - paragraph: 版本化知识服务
+- generic: ›
+- generic: 版本化知识检索与问答
+- heading "版本化知识检索与问答" [level=1]:
+  - text: 版本化知识检索与问答
+  - link "Link to heading":
+    - /url: "#b1ba0547"
+- paragraph: 查询任务
+- radiogroup "查询任务":
+  - radio "当前应用依赖 · v2.9.1"
+  - paragraph: 当前应用依赖 · v2.9.1
+  - radio "升级目标依赖 · v3.0.0" [checked]
+  - paragraph: 升级目标依赖 · v3.0.0
+  - radio "手动选择依赖资料范围"
+  - paragraph: 手动选择依赖资料范围
+- paragraph: v3.0.0 · 最新已收录版本 · 中文资料 · 选择示例后可编辑问题
+- generic "keyboard_arrow_right 资料范围与来源":
+  - generic: keyboard_arrow_right
+  - paragraph: 资料范围与来源
+- paragraph: 示例问题（选择后可编辑）
+- combobox "示例问题（选择后可编辑）": PaddleOCR 3.0.0 结果归一化时，如何对应 rec_texts 与 rec_scores？为什么部分识别结果可能未保留？
+- button "Open":
+- generic: 提出问题
+- paragraph: 你的问题
+- textbox "你的问题":
+  - /placeholder: PaddleOCR 2.9.1 的 OCR 调用如何只识别文字而不检测？
+  - text: PaddleOCR 3.0.0 结果归一化时，如何对应 rec_texts 与 rec_scores？为什么部分识别结果可能未保留？
+- button "生成带引用回答" [active]:
+  - generic "生成带引用回答":
+    - paragraph: 生成带引用回答
+- button "仅查看检索原文":
+  - generic "仅查看检索原文":
+    - paragraph: 仅查看检索原文
+- button "检索设置":
+  - generic "检索设置":
+    - paragraph: 检索设置
+  - generic: expand_more
+- generic: 结果与核验
+- heading "回答" [level=3]:
+  - text: 回答
+  - link "Link to heading":
+    - /url: "#3a622f65"
+- alert:
+  - paragraph: 部分要点有证据支持；其余要点仍需补充资料。
+- paragraph:
+  - strong: 直接回答
+- paragraph:
+  - text: 在 PaddleOCR 3.0.0 的结果归一化结构中，
+  - code: rec_texts
+  - text: 与
+  - code: rec_scores
+  - text: 是两个平行列表：
+  - code: rec_scores
+  - text: 是与
+  - code: rec_texts
+  - text: 按相同过滤条件得到的置信度列表，二者按下标位置一一对应。
+- paragraph: 依据：[1]、[3]
+- paragraph:
+  - strong: 必要说明
+- paragraph:
+  - code: rec_texts
+  - text: 仅包含置信度超过
+  - code: text_rec_score_thresh
+  - text: 的文本，
+  - code: rec_scores
+  - text: 也已按同一个
+  - code: text_rec_score_thresh
+  - text: 过滤，因此非
+  - code: rec_texts
+  - text: 索引位置不能与未过滤前的原始识别结果对应。
+- paragraph: 依据：[1]、[3]
+- paragraph:
+  - text: 部分识别结果可能未保留，是因为它们被
+  - code: text_rec_score_thresh
+  - text: 这一文本识别结果过滤阈值过滤掉了：
+  - code: rec_texts
+  - text: 、
+  - code: rec_scores
+  - text: 、
+  - code: rec_polys
+  - text: 都仅保留过滤后的结果。
+- paragraph: 依据：[1]、[3]、[4]
+- paragraph:
+  - text: 在印章识别子结果中同样存在
+  - code: rec_texts
+  - text: 与
+  - code: rec_scores
+  - text: 的平行列表，且按
+  - code: text_rec_score_thresh
+  - text: 过滤的规则一致。
+- paragraph: 依据：[2]
+- paragraph:
+  - text: 在表格识别结果的
+  - code: table_ocr_pred
+  - text: 中，
+  - code: rec_texts
+  - text: 是单元格识别结果，
+  - code: rec_scores
+  - text: 是单元格识别置信度，两者随单元格识别结果一起返回。
+- paragraph: 依据：[2]
+- generic "keyboard_arrow_right 回答核验说明":
+  - generic: keyboard_arrow_right
+  - paragraph: 回答核验说明
+- paragraph:
+  - strong: 待补充的资料与信息
+- list:
+  - text: 证据未给出结果归一化时对
+  - code: rec_texts
+  - text: 与
+  - code: rec_scores
+  - text: 做下标对齐的具体代码或伪代码步骤。
+- paragraph: 这些是模型指出的证据缺口，需要人工核对；不代表已确认不存在相关资料。
+- paragraph: 已补查一次并重新核验。下方保留通过核验的内容。
+- generic "keyboard_arrow_right 查看补查与核验过程":
+  - generic: keyboard_arrow_right
+  - paragraph: 查看补查与核验过程
+- generic "keyboard_arrow_right 查看原文支持度复核":
+  - generic: keyboard_arrow_right
+  - paragraph: 查看原文支持度复核
+- heading "引用依据" [level=3]:
+  - text: 引用依据
+  - link "Link to heading":
+    - /url: "#9405135c"
+- paragraph:
+  - strong: "[1] 表格识别产线"
+- paragraph: 章节：2.2 Python脚本方式集成 ｜ 最新资料范围 ｜ v3.0.0 · 最新已收录版本 ｜ zh-CN ｜ 官方文档
+- paragraph: 原文第 1689–1696 行
+- list:
+  - paragraph:
+    - code: text_rec_score_thresh
+    - text: ":"
+    - code: (float)
+    - text: 文本识别结果的过滤阈值
+  - paragraph:
+    - code: rec_texts
+    - text: ":"
+    - code: (List[str])
+    - text: 文本识别结果列表，仅包含置信度超过
+    - code: text_rec_score_thresh
+    - text: 的文本
+  - paragraph:
+    - code: rec_scores
+    - text: ":"
+    - code: (List[float])
+    - text: 文本识别的置信度列表，已按
+    - code: text_rec_score_thresh
+    - text: 过滤
+  - paragraph:
+    - code: rec_polys
+    - text: ":"
+    - code: (List[numpy.ndarray])
+    - text: 经过置信度过滤的文本检测框列表，格式同
+    - code: dt_polys
+- paragraph:
+  - link "阅读原始页面":
+    - /url: https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/table_recognition_v2.md
+- generic "keyboard_arrow_right 技术详情":
+  - generic: keyboard_arrow_right
+  - paragraph: 技术详情
+- paragraph:
+  - strong: "[2] PP-StructureV3 产线使用与结果格式"
+- paragraph: 章节：2.2 Python脚本方式集成 ｜ 最新资料范围 ｜ v3.0.0 · 最新已收录版本 ｜ zh-CN ｜ 官方文档
+- paragraph: 原文第 2439–2443 行
+- list:
+  - code: seal_res_list
+  - text: ":"
+  - code: (List[Dict[str, Union[numpy.ndarray, List[float], str]]])
+  - text: 印章识别结果列表，每个元素为一个字典
+  - list:
+    - code: input_path
+    - text: ":"
+    - code: (str)
+    - text: 印章图像的输入路径
+    - code: page_index
+    - text: ":"
+    - code: None
+    - text: ，此处的输入为
+    - code: numpy.ndarray
+    - text: ，所以值为
+    - code: None
+    - code: model_settings
+    - text: ":"
+    - code: (Dict)
+    - text: 印章识别子产线的模型配置参数
+    - code: dt_polys
+    - text: ":"
+    - code: (List[numpy.ndarray])
+    - text: 印章检测框列表，格式同
+    - code: dt_polys
+- paragraph: 原文第 2444–2447 行
+- list:
+  - code: text_det_params
+  - text: ":"
+  - code: (Dict[str, Dict[str, int, float]])
+  - text: 印章检测模块的配置参数, 具体参数含义同上
+  - code: text_type
+  - text: ":"
+  - code: (str)
+  - text: 印章检测的类型，当前固定为"seal"
+  - code: text_rec_score_thresh
+  - text: ":"
+  - code: (float)
+  - text: 印章识别结果的过滤阈值
+  - code: rec_texts
+  - text: ":"
+  - code: (List[str])
+  - text: 印章识别结果列表，仅包含置信度超过
+  - code: text_rec_score_thresh
+  - text: 的文本
+- paragraph: 原文第 2452–2456 行
+- list:
+  - code: table_res_list
+  - text: ":"
+  - code: (List[Dict[str, Union[numpy.ndarray, List[float], str]]])
+  - text: 表格识别结果列表，每个元素为一个字典
+  - list:
+    - code: cell_box_list
+    - text: ":"
+    - code: (List[numpy.ndarray])
+    - text: 表格单元格的边界框列表
+    - code: pred_html
+    - text: ":"
+    - code: (str)
+    - text: 表格的HTML格式字符串
+    - code: table_ocr_pred
+    - text: ":"
+    - code: (dict)
+    - text: 表格的OCR识别结果
+    - list:
+      - code: rec_polys
+      - text: ":"
+      - code: (List[numpy.ndarray])
+      - text: 单元格的检测框列表
+- paragraph: 原文第 2457–2459 行
+- list:
+  - code: rec_texts
+  - text: ":"
+  - code: (List[str])
+  - text: 单元格的识别结果
+  - code: rec_scores
+  - text: ":"
+  - code: (List[float])
+  - text: 单元格的识别置信度
+  - code: rec_boxes
+  - text: ":"
+  - code: (numpy.ndarray)
+  - text: 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形
+- paragraph:
+  - link "阅读原始页面":
+    - /url: https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/PP-StructureV3.md
+- generic "keyboard_arrow_right 技术详情":
+  - generic: keyboard_arrow_right
+  - paragraph: 技术详情
+- paragraph:
+  - strong: "[3] 通用 OCR 产线使用与结果格式"
+- paragraph: 章节：2.2 Python脚本方式集成 ｜ 最新资料范围 ｜ v3.0.0 · 最新已收录版本 ｜ zh-CN ｜ 官方文档
+- paragraph: 原文第 1383–1389 行
+- list:
+  - paragraph:
+    - code: use_doc_unwarping
+    - text: ":"
+    - code: (bool)
+    - text: 控制是否启用文本图像矫正
+  - list:
+    - code: angle
+    - text: ":"
+    - code: (int)
+    - text: 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1
+  - paragraph:
+    - code: dt_polys
+    - text: ":"
+    - code: (List[numpy.ndarray])
+    - text: 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16
+  - paragraph:
+    - code: dt_scores
+    - text: ":"
+    - code: (List[float])
+    - text: 文本检测框的置信度列表
+- paragraph: 原文第 1396–1403 行
+- list:
+  - paragraph:
+    - code: text_type
+    - text: ":"
+    - code: (str)
+    - text: 文本检测的类型，当前固定为"general"
+  - paragraph:
+    - code: textline_orientation_angles
+    - text: ":"
+    - code: (List[int])
+    - text: 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]
+  - paragraph:
+    - code: text_rec_score_thresh
+    - text: ":"
+    - code: (float)
+    - text: 文本识别结果的过滤阈值
+  - paragraph:
+    - code: rec_texts
+    - text: ":"
+    - code: (List[str])
+    - text: 文本识别结果列表，仅包含置信度超过
+    - code: text_rec_score_thresh
+    - text: 的文本
+- paragraph: 原文第 1404–1406 行
+- list:
+  - paragraph:
+    - code: rec_scores
+    - text: ":"
+    - code: (List[float])
+    - text: 文本识别的置信度列表，已按
+    - code: text_rec_score_thresh
+    - text: 过滤
+  - paragraph:
+    - code: rec_polys
+    - text: ":"
+    - code: (List[numpy.ndarray])
+    - text: 经过置信度过滤的文本检测框列表，格式同
+    - code: dt_polys
+- paragraph:
+  - link "阅读原始页面":
+    - /url: https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md
+- generic "keyboard_arrow_right 技术详情":
+  - generic: keyboard_arrow_right
+  - paragraph: 技术详情
+- generic "keyboard_arrow_right 查看更多结果（1）":
+  - generic: keyboard_arrow_right
+  - paragraph: 查看更多结果（1）
+- generic "keyboard_arrow_right 查看其余检索结果（4）":
+  - generic: keyboard_arrow_right
+  - paragraph: 查看其余检索结果（4）
+- generic "keyboard_arrow_right 本次检索技术详情":
+  - generic: keyboard_arrow_right
+  - paragraph: 本次检索技术详情

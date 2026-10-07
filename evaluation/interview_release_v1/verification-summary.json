@@ -1,0 +1,21 @@
+{
+  "service": {
+    "passed": 466,
+    "skipped": 1
+  },
+  "agent": {
+    "passed": 184,
+    "skipped": 0
+  },
+  "ui": {
+    "passed": 185,
+    "skipped": 10
+  },
+  "test_commands": "Full suites; PYTEST_DISABLE_PLUGIN_AUTOLOAD=1, -p no:cacheprovider, isolated basetemp; real Windows runtime.",
+  "browser_checks": [
+    "Local RAG generation succeeded with direct answer, source indexes and folded explanation",
+    "Agent case selector contained three cases; missing-call case changed 10 files to 9",
+    "Actual Agent submit rendered risk location, version evidence, pending verification and human review"
+  ],
+  "limitations": "Skipped tests are not passed. Real provider smoke contains one blocked invalid response and one partial migration answer; unit tests do not establish general answer accuracy."
+}

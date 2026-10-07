@@ -231,6 +231,13 @@ button:focus-visible,a:focus-visible,textarea:focus-visible,input:focus-visible 
 .st-key-knowledge_generate button:hover,.st-key-knowledge_search button:hover {
   background:var(--paper)!important;color:var(--ink)!important;border-color:var(--ink)!important;
 }
+.st-key-knowledge_actions [data-testid="stHorizontalBlock"] {align-items:flex-start;}
+#knowledge-request-anchor,#knowledge-results-anchor {scroll-margin-top:4.25rem;}
+.st-key-knowledge_actions [data-testid="stPopover"] button {min-height:3rem;width:100%;}
+@media (max-width:760px) {
+  .st-key-knowledge_actions [data-testid="stHorizontalBlock"] {flex-wrap:wrap!important;gap:.5rem!important;}
+  .st-key-knowledge_actions [data-testid="stColumn"] {min-width:9rem!important;flex:1 1 9rem!important;}
+}
 .citation-index {font-size:.98rem;color:var(--ink);font-weight:720;}
 .st-key-knowledge_scope {border:0!important;border-top:1px solid var(--line)!important;
   border-bottom:1px solid var(--line)!important;border-radius:0!important;}

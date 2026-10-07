@@ -1,0 +1,1718 @@
+{
+  "strategy": "scoped_384",
+  "split": "holdout",
+  "freeze_sha256": "b324aab9b4fdf99cd43562681e8d9a8a0c917316270beb211a80f151c77e3b70",
+  "metrics": {
+    "count": 12,
+    "complete_count": 8,
+    "fact_hit_count": 8,
+    "fact_count": 12,
+    "source_hit_count": 12,
+    "wrong_version_count": 0,
+    "wrong_module_count": 0,
+    "complete_rate": 0.6666666666666666,
+    "fact_recall": 0.6666666666666666
+  },
+  "rows": [
+    {
+      "id": "internal-21",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 5.4,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 540,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "window_budget": 384,
+        "window_unit": "characters",
+        "source_intent": "test_contract",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v2.9.1:zh:tests/test_paddleocr_api:4"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 8,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v2.9.1:zh:tests/test_paddleocr_api:4",
+          "version": "v2.9.1",
+          "document_path": "tests/test_paddleocr_api.py",
+          "text": "    result = ocr_engine.ocr(image_path)\n    assert result is not None\n    assert isinstance(result, list)\n@pytest.mark.parametrize(\"image_path\", IMAGE_PATHS_OCR)\ndef test_ocr_function(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR OCR functionality with different images.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n        image_path: Path to the image to be processed.\n    \"\"\"\n",
+          "generation_text": "@pytest.mark.parametrize(\"image_path\", IMAGE_PATHS_OCR)\ndef test_ocr_function(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR OCR functionality with different images.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n        image_path: Path to the image to be processed.\n    \"\"\"\n    result = ocr_engine.ocr(image_path)\n    assert result is not None\n    assert isinstance(result, list)",
+          "evidence_spans": [
+            {
+              "line_start": 48,
+              "line_end": 50,
+              "char_start": 315,
+              "char_end": 420,
+              "content": "    result = ocr_engine.ocr(image_path)\n    assert result is not None\n    assert isinstance(result, list)"
+            },
+            {
+              "line_start": 39,
+              "line_end": 47,
+              "char_start": 0,
+              "char_end": 315,
+              "content": "@pytest.mark.parametrize(\"image_path\", IMAGE_PATHS_OCR)\ndef test_ocr_function(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR OCR functionality with different images.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n        image_path: Path to the image to be processed.\n    \"\"\"\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:tests/test_paddleocr_api:5",
+          "version": "v2.9.1",
+          "document_path": "tests/test_paddleocr_api.py",
+          "text": "    result = ocr_engine.ocr(image_path, det=True, rec=False)\n    assert result is not None\n    assert isinstance(result, list)\n@pytest.mark.parametrize(\"image_path\", IMAGE_PATHS_OCR)\ndef test_ocr_det_only(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR OCR functionality with detection only.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n        image_path: Path to the image to be processed.\n    \"\"\"\n",
+          "generation_text": "@pytest.mark.parametrize(\"image_path\", IMAGE_PATHS_OCR)\ndef test_ocr_det_only(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR OCR functionality with detection only.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n        image_path: Path to the image to be processed.\n    \"\"\"\n    result = ocr_engine.ocr(image_path, det=True, rec=False)\n    assert result is not None\n    assert isinstance(result, list)",
+          "evidence_spans": [
+            {
+              "line_start": 62,
+              "line_end": 64,
+              "char_start": 313,
+              "char_end": 439,
+              "content": "    result = ocr_engine.ocr(image_path, det=True, rec=False)\n    assert result is not None\n    assert isinstance(result, list)"
+            },
+            {
+              "line_start": 53,
+              "line_end": 61,
+              "char_start": 0,
+              "char_end": 313,
+              "content": "@pytest.mark.parametrize(\"image_path\", IMAGE_PATHS_OCR)\ndef test_ocr_det_only(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR OCR functionality with detection only.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n        image_path: Path to the image to be processed.\n    \"\"\"\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:tests/test_paddleocr_api:6",
+          "version": "v2.9.1",
+          "document_path": "tests/test_paddleocr_api.py",
+          "text": "    result = ocr_engine.ocr(image_path, det=False, rec=True)\n    assert result is not None\n    assert isinstance(result, list)\n@pytest.mark.parametrize(\"image_path\", IMAGE_PATHS_OCR)\ndef test_ocr_rec_only(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR OCR functionality with recognition only.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n        image_path: Path to the image to be processed.\n    \"\"\"\n",
+          "generation_text": "@pytest.mark.parametrize(\"image_path\", IMAGE_PATHS_OCR)\ndef test_ocr_rec_only(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR OCR functionality with recognition only.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n        image_path: Path to the image to be processed.\n    \"\"\"\n    result = ocr_engine.ocr(image_path, det=False, rec=True)\n    assert result is not None\n    assert isinstance(result, list)",
+          "evidence_spans": [
+            {
+              "line_start": 76,
+              "line_end": 78,
+              "char_start": 315,
+              "char_end": 441,
+              "content": "    result = ocr_engine.ocr(image_path, det=False, rec=True)\n    assert result is not None\n    assert isinstance(result, list)"
+            },
+            {
+              "line_start": 67,
+              "line_end": 75,
+              "char_start": 0,
+              "char_end": 315,
+              "content": "@pytest.mark.parametrize(\"image_path\", IMAGE_PATHS_OCR)\ndef test_ocr_rec_only(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR OCR functionality with recognition only.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n        image_path: Path to the image to be processed.\n    \"\"\"\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:tests/test_paddleocr_api:3",
+          "version": "v2.9.1",
+          "document_path": "tests/test_paddleocr_api.py",
+          "text": "def test_ocr_initialization(ocr_engine: PaddleOCR) -> None:\n    \"\"\"\n    Test PaddleOCR initialization.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n    \"\"\"\n    assert ocr_engine is not None",
+          "generation_text": "def test_ocr_initialization(ocr_engine: PaddleOCR) -> None:\n    \"\"\"\n    Test PaddleOCR initialization.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n    \"\"\"\n    assert ocr_engine is not None",
+          "evidence_spans": [
+            {
+              "line_start": 29,
+              "line_end": 36,
+              "char_start": 0,
+              "char_end": 201,
+              "content": "def test_ocr_initialization(ocr_engine: PaddleOCR) -> None:\n    \"\"\"\n    Test PaddleOCR initialization.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n    \"\"\"\n    assert ocr_engine is not None"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:tests/test_paddleocr_api:2",
+          "version": "v2.9.1",
+          "document_path": "tests/test_paddleocr_api.py",
+          "text": "@pytest.fixture(params=[\"en\", \"ch\"])\ndef ocr_engine(request: Any) -> PaddleOCR:\n    \"\"\"\n    Initialize PaddleOCR engine with different languages.\n\n    Args:\n        request: pytest fixture request object.\n\n    Returns:\n        An instance of PaddleOCR.\n    \"\"\"\n    return PaddleOCR(lang=request.param)",
+          "generation_text": "@pytest.fixture(params=[\"en\", \"ch\"])\ndef ocr_engine(request: Any) -> PaddleOCR:\n    \"\"\"\n    Initialize PaddleOCR engine with different languages.\n\n    Args:\n        request: pytest fixture request object.\n\n    Returns:\n        An instance of PaddleOCR.\n    \"\"\"\n    return PaddleOCR(lang=request.param)",
+          "evidence_spans": [
+            {
+              "line_start": 15,
+              "line_end": 26,
+              "char_start": 0,
+              "char_end": 301,
+              "content": "@pytest.fixture(params=[\"en\", \"ch\"])\ndef ocr_engine(request: Any) -> PaddleOCR:\n    \"\"\"\n    Initialize PaddleOCR engine with different languages.\n\n    Args:\n        request: pytest fixture request object.\n\n    Returns:\n        An instance of PaddleOCR.\n    \"\"\"\n    return PaddleOCR(lang=request.param)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-22",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 6.16,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 540,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "window_budget": 384,
+        "window_unit": "characters",
+        "source_intent": "test_contract",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v2.9.1:zh:tests/test_paddleocr_api:4"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 8,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v2.9.1:zh:tests/test_paddleocr_api:4",
+          "version": "v2.9.1",
+          "document_path": "tests/test_paddleocr_api.py",
+          "text": "    result = ocr_engine.ocr(image_path)\n    assert result is not None\n    assert isinstance(result, list)\n@pytest.mark.parametrize(\"image_path\", IMAGE_PATHS_OCR)\ndef test_ocr_function(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR OCR functionality with different images.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n        image_path: Path to the image to be processed.\n    \"\"\"\n",
+          "generation_text": "@pytest.mark.parametrize(\"image_path\", IMAGE_PATHS_OCR)\ndef test_ocr_function(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR OCR functionality with different images.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n        image_path: Path to the image to be processed.\n    \"\"\"\n    result = ocr_engine.ocr(image_path)\n    assert result is not None\n    assert isinstance(result, list)",
+          "evidence_spans": [
+            {
+              "line_start": 48,
+              "line_end": 50,
+              "char_start": 315,
+              "char_end": 420,
+              "content": "    result = ocr_engine.ocr(image_path)\n    assert result is not None\n    assert isinstance(result, list)"
+            },
+            {
+              "line_start": 39,
+              "line_end": 47,
+              "char_start": 0,
+              "char_end": 315,
+              "content": "@pytest.mark.parametrize(\"image_path\", IMAGE_PATHS_OCR)\ndef test_ocr_function(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR OCR functionality with different images.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n        image_path: Path to the image to be processed.\n    \"\"\"\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:tests/test_paddleocr_api:5",
+          "version": "v2.9.1",
+          "document_path": "tests/test_paddleocr_api.py",
+          "text": "    result = ocr_engine.ocr(image_path, det=True, rec=False)\n    assert result is not None\n    assert isinstance(result, list)\n@pytest.mark.parametrize(\"image_path\", IMAGE_PATHS_OCR)\ndef test_ocr_det_only(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR OCR functionality with detection only.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n        image_path: Path to the image to be processed.\n    \"\"\"\n",
+          "generation_text": "@pytest.mark.parametrize(\"image_path\", IMAGE_PATHS_OCR)\ndef test_ocr_det_only(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR OCR functionality with detection only.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n        image_path: Path to the image to be processed.\n    \"\"\"\n    result = ocr_engine.ocr(image_path, det=True, rec=False)\n    assert result is not None\n    assert isinstance(result, list)",
+          "evidence_spans": [
+            {
+              "line_start": 62,
+              "line_end": 64,
+              "char_start": 313,
+              "char_end": 439,
+              "content": "    result = ocr_engine.ocr(image_path, det=True, rec=False)\n    assert result is not None\n    assert isinstance(result, list)"
+            },
+            {
+              "line_start": 53,
+              "line_end": 61,
+              "char_start": 0,
+              "char_end": 313,
+              "content": "@pytest.mark.parametrize(\"image_path\", IMAGE_PATHS_OCR)\ndef test_ocr_det_only(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR OCR functionality with detection only.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n        image_path: Path to the image to be processed.\n    \"\"\"\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:tests/test_paddleocr_api:6",
+          "version": "v2.9.1",
+          "document_path": "tests/test_paddleocr_api.py",
+          "text": "    result = ocr_engine.ocr(image_path, det=False, rec=True)\n    assert result is not None\n    assert isinstance(result, list)\n@pytest.mark.parametrize(\"image_path\", IMAGE_PATHS_OCR)\ndef test_ocr_rec_only(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR OCR functionality with recognition only.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n        image_path: Path to the image to be processed.\n    \"\"\"\n",
+          "generation_text": "@pytest.mark.parametrize(\"image_path\", IMAGE_PATHS_OCR)\ndef test_ocr_rec_only(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR OCR functionality with recognition only.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n        image_path: Path to the image to be processed.\n    \"\"\"\n    result = ocr_engine.ocr(image_path, det=False, rec=True)\n    assert result is not None\n    assert isinstance(result, list)",
+          "evidence_spans": [
+            {
+              "line_start": 76,
+              "line_end": 78,
+              "char_start": 315,
+              "char_end": 441,
+              "content": "    result = ocr_engine.ocr(image_path, det=False, rec=True)\n    assert result is not None\n    assert isinstance(result, list)"
+            },
+            {
+              "line_start": 67,
+              "line_end": 75,
+              "char_start": 0,
+              "char_end": 315,
+              "content": "@pytest.mark.parametrize(\"image_path\", IMAGE_PATHS_OCR)\ndef test_ocr_rec_only(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR OCR functionality with recognition only.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n        image_path: Path to the image to be processed.\n    \"\"\"\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:tests/test_paddleocr_api:3",
+          "version": "v2.9.1",
+          "document_path": "tests/test_paddleocr_api.py",
+          "text": "def test_ocr_initialization(ocr_engine: PaddleOCR) -> None:\n    \"\"\"\n    Test PaddleOCR initialization.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n    \"\"\"\n    assert ocr_engine is not None",
+          "generation_text": "def test_ocr_initialization(ocr_engine: PaddleOCR) -> None:\n    \"\"\"\n    Test PaddleOCR initialization.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n    \"\"\"\n    assert ocr_engine is not None",
+          "evidence_spans": [
+            {
+              "line_start": 29,
+              "line_end": 36,
+              "char_start": 0,
+              "char_end": 201,
+              "content": "def test_ocr_initialization(ocr_engine: PaddleOCR) -> None:\n    \"\"\"\n    Test PaddleOCR initialization.\n\n    Args:\n        ocr_engine: An instance of PaddleOCR.\n    \"\"\"\n    assert ocr_engine is not None"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:tests/test_paddleocr_api:2",
+          "version": "v2.9.1",
+          "document_path": "tests/test_paddleocr_api.py",
+          "text": "@pytest.fixture(params=[\"en\", \"ch\"])\ndef ocr_engine(request: Any) -> PaddleOCR:\n    \"\"\"\n    Initialize PaddleOCR engine with different languages.\n\n    Args:\n        request: pytest fixture request object.\n\n    Returns:\n        An instance of PaddleOCR.\n    \"\"\"\n    return PaddleOCR(lang=request.param)",
+          "generation_text": "@pytest.fixture(params=[\"en\", \"ch\"])\ndef ocr_engine(request: Any) -> PaddleOCR:\n    \"\"\"\n    Initialize PaddleOCR engine with different languages.\n\n    Args:\n        request: pytest fixture request object.\n\n    Returns:\n        An instance of PaddleOCR.\n    \"\"\"\n    return PaddleOCR(lang=request.param)",
+          "evidence_spans": [
+            {
+              "line_start": 15,
+              "line_end": 26,
+              "char_start": 0,
+              "char_end": 301,
+              "content": "@pytest.fixture(params=[\"en\", \"ch\"])\ndef ocr_engine(request: Any) -> PaddleOCR:\n    \"\"\"\n    Initialize PaddleOCR engine with different languages.\n\n    Args:\n        request: pytest fixture request object.\n\n    Returns:\n        An instance of PaddleOCR.\n    \"\"\"\n    return PaddleOCR(lang=request.param)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-23",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 5.54,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 566,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "window_budget": 384,
+        "window_unit": "characters",
+        "source_intent": "test_contract",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:tests/pipelines/test_ocr:5"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 11,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:tests/pipelines/test_ocr:5",
+          "version": "v3.0.0",
+          "document_path": "tests/pipelines/test_ocr.py",
+          "text": "    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"] == \"japan_PP-OCRv3_mobile_rec\"\n    )\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"]\n        == \"arabic_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"ru\", ocr_version=\"PP-OCRv3\")\n\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"]\n        == \"cyrillic_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"hi\", ocr_version=\"PP-OCRv3\")\n\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv4_mobile_det\"\n    assert ocr_engine._params[\"text_recognition_model_name\"] == \"en_PP-OCRv4_mobile_rec\"\n    ocr_engine = PaddleOCR(lang=\"ch\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n",
+          "generation_text": "    assert ocr_engine._params[\"text_recognition_model_name\"] == \"PP-OCRv4_mobile_rec\"\n    ocr_engine = PaddleOCR(lang=\"en\", ocr_version=\"PP-OCRv4\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv4_mobile_det\"\n    assert ocr_engine._params[\"text_recognition_model_name\"] == \"en_PP-OCRv4_mobile_rec\"\n    ocr_engine = PaddleOCR(lang=\"ch\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert ocr_engine._params[\"text_recognition_model_name\"] == \"PP-OCRv3_mobile_rec\"\n    ocr_engine = PaddleOCR(lang=\"en\", ocr_version=\"PP-OCRv3\")\n\n    )\n    ocr_engine = PaddleOCR(lang=\"ar\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"]\n        == \"arabic_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"ru\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"]\n        == \"cyrillic_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"hi\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n\n    )\n    ocr_engine = PaddleOCR(lang=\"japan\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"] == \"japan_PP-OCRv3_mobile_rec\"\n    )",
+          "evidence_spans": [
+            {
+              "line_start": 110,
+              "line_end": 113,
+              "char_start": 2081,
+              "char_end": 2272,
+              "content": "    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"] == \"japan_PP-OCRv3_mobile_rec\"\n    )"
+            },
+            {
+              "line_start": 92,
+              "line_end": 97,
+              "char_start": 1283,
+              "char_end": 1546,
+              "content": "    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"]\n        == \"arabic_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"ru\", ocr_version=\"PP-OCRv3\")\n"
+            },
+            {
+              "line_start": 98,
+              "line_end": 103,
+              "char_start": 1546,
+              "char_end": 1811,
+              "content": "    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"]\n        == \"cyrillic_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"hi\", ocr_version=\"PP-OCRv3\")\n"
+            },
+            {
+              "line_start": 78,
+              "line_end": 81,
+              "char_start": 327,
+              "char_end": 646,
+              "content": "    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv4_mobile_det\"\n    assert ocr_engine._params[\"text_recognition_model_name\"] == \"en_PP-OCRv4_mobile_rec\"\n    ocr_engine = PaddleOCR(lang=\"ch\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:tests/pipelines/test_ocr:3",
+          "version": "v3.0.0",
+          "document_path": "tests/pipelines/test_ocr.py",
+          "text": "    result = ocr_engine.predict(str(image_path))\n\n    check_simple_inference_result(result)\n    res = result[0]\n    assert len(res[\"dt_polys\"]) > 0\n    assert isinstance(res[\"rec_texts\"], list)\n    assert len(res[\"rec_texts\"]) > 0\n    for text in res[\"rec_texts\"]:\n        assert isinstance(text, str)\n\n\n# TODO: Also check passing `None`\n@pytest.mark.parametrize(\n    \"image_path\",\n    [\n        TEST_DATA_DIR / \"table.jpg\",\n    ],\n)\ndef test_predict(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR's OCR functionality.\n\n    Args:\n        ocr_engine: An instance of `PaddleOCR`.\n        image_path: Path to the image to be processed.\n    \"\"\"\n",
+          "generation_text": "@pytest.mark.parametrize(\n    \"image_path\",\n    [\n        TEST_DATA_DIR / \"table.jpg\",\n    ],\n)\ndef test_predict(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR's OCR functionality.\n\n    Args:\n        ocr_engine: An instance of `PaddleOCR`.\n        image_path: Path to the image to be processed.\n    \"\"\"\n    result = ocr_engine.predict(str(image_path))\n\n    check_simple_inference_result(result)\n    res = result[0]\n    assert len(res[\"dt_polys\"]) > 0\n    assert isinstance(res[\"rec_texts\"], list)\n    assert len(res[\"rec_texts\"]) > 0\n    for text in res[\"rec_texts\"]:\n        assert isinstance(text, str)\n\n\n# TODO: Also check passing `None`",
+          "evidence_spans": [
+            {
+              "line_start": 31,
+              "line_end": 42,
+              "char_start": 332,
+              "char_end": 669,
+              "content": "    result = ocr_engine.predict(str(image_path))\n\n    check_simple_inference_result(result)\n    res = result[0]\n    assert len(res[\"dt_polys\"]) > 0\n    assert isinstance(res[\"rec_texts\"], list)\n    assert len(res[\"rec_texts\"]) > 0\n    for text in res[\"rec_texts\"]:\n        assert isinstance(text, str)\n\n\n# TODO: Also check passing `None`"
+            },
+            {
+              "line_start": 17,
+              "line_end": 30,
+              "char_start": 0,
+              "char_end": 332,
+              "content": "@pytest.mark.parametrize(\n    \"image_path\",\n    [\n        TEST_DATA_DIR / \"table.jpg\",\n    ],\n)\ndef test_predict(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR's OCR functionality.\n\n    Args:\n        ocr_engine: An instance of `PaddleOCR`.\n        image_path: Path to the image to be processed.\n    \"\"\"\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:tests/pipelines/test_ocr:4",
+          "version": "v3.0.0",
+          "document_path": "tests/pipelines/test_ocr.py",
+          "text": "        params,\n    )\n\n\n# TODO: Test init params\n@pytest.mark.parametrize(\n    \"params\",\n    [\n        {\"use_doc_orientation_classify\": False},\n        {\"use_doc_unwarping\": False},\n        {\"use_textline_orientation\": False},\n        {\"text_det_limit_side_len\": 640, \"text_det_limit_type\": \"min\"},\n        {\"text_det_thresh\": 0.5},\n        {\"text_det_box_thresh\": 0.3},\n\n        {\"text_det_unclip_ratio\": 3.0},\n        {\"text_rec_score_thresh\": 0.5},\n    ],\n)\ndef test_predict_params(\n    monkeypatch,\n    ocr_engine: PaddleOCR,\n    params: dict,\n) -> None:\n    check_wrapper_simple_inference_param_forwarding(\n        monkeypatch,\n        ocr_engine,\n        \"paddlex_pipeline\",\n        \"dummy_path\",\n",
+          "generation_text": "@pytest.mark.parametrize(\n    \"params\",\n    [\n        {\"use_doc_orientation_classify\": False},\n        {\"use_doc_unwarping\": False},\n        {\"use_textline_orientation\": False},\n        {\"text_det_limit_side_len\": 640, \"text_det_limit_type\": \"min\"},\n        {\"text_det_thresh\": 0.5},\n        {\"text_det_box_thresh\": 0.3},\n        {\"text_det_unclip_ratio\": 3.0},\n        {\"text_rec_score_thresh\": 0.5},\n    ],\n)\ndef test_predict_params(\n    monkeypatch,\n    ocr_engine: PaddleOCR,\n    params: dict,\n) -> None:\n    check_wrapper_simple_inference_param_forwarding(\n        monkeypatch,\n        ocr_engine,\n        \"paddlex_pipeline\",\n        \"dummy_path\",\n        params,\n    )\n\n\n# TODO: Test init params",
+          "evidence_spans": [
+            {
+              "line_start": 66,
+              "line_end": 70,
+              "char_start": 653,
+              "char_end": 701,
+              "content": "        params,\n    )\n\n\n# TODO: Test init params"
+            },
+            {
+              "line_start": 43,
+              "line_end": 51,
+              "char_start": 0,
+              "char_end": 322,
+              "content": "@pytest.mark.parametrize(\n    \"params\",\n    [\n        {\"use_doc_orientation_classify\": False},\n        {\"use_doc_unwarping\": False},\n        {\"use_textline_orientation\": False},\n        {\"text_det_limit_side_len\": 640, \"text_det_limit_type\": \"min\"},\n        {\"text_det_thresh\": 0.5},\n        {\"text_det_box_thresh\": 0.3},\n"
+            },
+            {
+              "line_start": 52,
+              "line_end": 65,
+              "char_start": 322,
+              "char_end": 653,
+              "content": "        {\"text_det_unclip_ratio\": 3.0},\n        {\"text_rec_score_thresh\": 0.5},\n    ],\n)\ndef test_predict_params(\n    monkeypatch,\n    ocr_engine: PaddleOCR,\n    params: dict,\n) -> None:\n    check_wrapper_simple_inference_param_forwarding(\n        monkeypatch,\n        ocr_engine,\n        \"paddlex_pipeline\",\n        \"dummy_path\",\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:tests/pipelines/test_ocr:1",
+          "version": "v3.0.0",
+          "document_path": "tests/pipelines/test_ocr.py",
+          "text": "import pytest\n\nfrom paddleocr import PaddleOCR\nfrom ..testing_utils import (\n    TEST_DATA_DIR,\n    check_simple_inference_result,\n    check_wrapper_simple_inference_param_forwarding,\n)",
+          "generation_text": "import pytest\n\nfrom paddleocr import PaddleOCR\nfrom ..testing_utils import (\n    TEST_DATA_DIR,\n    check_simple_inference_result,\n    check_wrapper_simple_inference_param_forwarding,\n)",
+          "evidence_spans": [
+            {
+              "line_start": 1,
+              "line_end": 8,
+              "char_start": 0,
+              "char_end": 185,
+              "content": "import pytest\n\nfrom paddleocr import PaddleOCR\nfrom ..testing_utils import (\n    TEST_DATA_DIR,\n    check_simple_inference_result,\n    check_wrapper_simple_inference_param_forwarding,\n)"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:tests/pipelines/test_ocr:2",
+          "version": "v3.0.0",
+          "document_path": "tests/pipelines/test_ocr.py",
+          "text": "@pytest.fixture(scope=\"module\")\ndef ocr_engine() -> PaddleOCR:\n    return PaddleOCR()\n\n\n# TODO: Should we separate unit tests and integration tests?",
+          "generation_text": "@pytest.fixture(scope=\"module\")\ndef ocr_engine() -> PaddleOCR:\n    return PaddleOCR()\n\n\n# TODO: Should we separate unit tests and integration tests?",
+          "evidence_spans": [
+            {
+              "line_start": 11,
+              "line_end": 16,
+              "char_start": 0,
+              "char_end": 148,
+              "content": "@pytest.fixture(scope=\"module\")\ndef ocr_engine() -> PaddleOCR:\n    return PaddleOCR()\n\n\n# TODO: Should we separate unit tests and integration tests?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-24",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 15.26,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 2003,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "window_budget": 384,
+        "window_unit": "characters",
+        "source_intent": "test_contract",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:tests/pipelines/test_ocr:5"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 10,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:tests/pipelines/test_ocr:5",
+          "version": "v3.0.0",
+          "document_path": "tests/pipelines/test_ocr.py",
+          "text": "def test_lang_and_ocr_version():\n    ocr_engine = PaddleOCR(lang=\"ch\", ocr_version=\"PP-OCRv4\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv4_mobile_det\"\n    assert ocr_engine._params[\"text_recognition_model_name\"] == \"PP-OCRv4_mobile_rec\"\n    ocr_engine = PaddleOCR(lang=\"en\", ocr_version=\"PP-OCRv4\")\n\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"] == \"japan_PP-OCRv3_mobile_rec\"\n    )\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"]\n        == \"arabic_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"ru\", ocr_version=\"PP-OCRv3\")\n\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"]\n        == \"cyrillic_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"hi\", ocr_version=\"PP-OCRv3\")\n",
+          "generation_text": "def test_lang_and_ocr_version():\n    ocr_engine = PaddleOCR(lang=\"ch\", ocr_version=\"PP-OCRv4\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv4_mobile_det\"\n    assert ocr_engine._params[\"text_recognition_model_name\"] == \"PP-OCRv4_mobile_rec\"\n    ocr_engine = PaddleOCR(lang=\"en\", ocr_version=\"PP-OCRv4\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv4_mobile_det\"\n    assert ocr_engine._params[\"text_recognition_model_name\"] == \"en_PP-OCRv4_mobile_rec\"\n\n    )\n    ocr_engine = PaddleOCR(lang=\"ar\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"]\n        == \"arabic_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"ru\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"]\n        == \"cyrillic_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"hi\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n\n    )\n    ocr_engine = PaddleOCR(lang=\"japan\", ocr_version=\"PP-OCRv3\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"] == \"japan_PP-OCRv3_mobile_rec\"\n    )",
+          "evidence_spans": [
+            {
+              "line_start": 73,
+              "line_end": 77,
+              "char_start": 0,
+              "char_end": 327,
+              "content": "def test_lang_and_ocr_version():\n    ocr_engine = PaddleOCR(lang=\"ch\", ocr_version=\"PP-OCRv4\")\n    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv4_mobile_det\"\n    assert ocr_engine._params[\"text_recognition_model_name\"] == \"PP-OCRv4_mobile_rec\"\n    ocr_engine = PaddleOCR(lang=\"en\", ocr_version=\"PP-OCRv4\")\n"
+            },
+            {
+              "line_start": 110,
+              "line_end": 113,
+              "char_start": 2081,
+              "char_end": 2272,
+              "content": "    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"] == \"japan_PP-OCRv3_mobile_rec\"\n    )"
+            },
+            {
+              "line_start": 92,
+              "line_end": 97,
+              "char_start": 1283,
+              "char_end": 1546,
+              "content": "    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"]\n        == \"arabic_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"ru\", ocr_version=\"PP-OCRv3\")\n"
+            },
+            {
+              "line_start": 98,
+              "line_end": 103,
+              "char_start": 1546,
+              "char_end": 1811,
+              "content": "    assert ocr_engine._params[\"text_detection_model_name\"] == \"PP-OCRv3_mobile_det\"\n    assert (\n        ocr_engine._params[\"text_recognition_model_name\"]\n        == \"cyrillic_PP-OCRv3_mobile_rec\"\n    )\n    ocr_engine = PaddleOCR(lang=\"hi\", ocr_version=\"PP-OCRv3\")\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:tests/pipelines/test_ocr:3",
+          "version": "v3.0.0",
+          "document_path": "tests/pipelines/test_ocr.py",
+          "text": "    result = ocr_engine.predict(str(image_path))\n\n    check_simple_inference_result(result)\n    res = result[0]\n    assert len(res[\"dt_polys\"]) > 0\n    assert isinstance(res[\"rec_texts\"], list)\n    assert len(res[\"rec_texts\"]) > 0\n    for text in res[\"rec_texts\"]:\n        assert isinstance(text, str)\n\n\n# TODO: Also check passing `None`",
+          "generation_text": "        image_path: Path to the image to be processed.\n    \"\"\"\n    result = ocr_engine.predict(str(image_path))\n\n    check_simple_inference_result(result)\n    res = result[0]\n    assert len(res[\"dt_polys\"]) > 0\n    assert isinstance(res[\"rec_texts\"], list)\n    assert len(res[\"rec_texts\"]) > 0\n    for text in res[\"rec_texts\"]:\n        assert isinstance(text, str)\n\n\n# TODO: Also check passing `None`",
+          "evidence_spans": [
+            {
+              "line_start": 31,
+              "line_end": 42,
+              "char_start": 332,
+              "char_end": 669,
+              "content": "    result = ocr_engine.predict(str(image_path))\n\n    check_simple_inference_result(result)\n    res = result[0]\n    assert len(res[\"dt_polys\"]) > 0\n    assert isinstance(res[\"rec_texts\"], list)\n    assert len(res[\"rec_texts\"]) > 0\n    for text in res[\"rec_texts\"]:\n        assert isinstance(text, str)\n\n\n# TODO: Also check passing `None`"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:tests/pipelines/test_ocr:4",
+          "version": "v3.0.0",
+          "document_path": "tests/pipelines/test_ocr.py",
+          "text": "        params,\n    )\n\n\n# TODO: Test init params\n@pytest.mark.parametrize(\n    \"params\",\n    [\n        {\"use_doc_orientation_classify\": False},\n        {\"use_doc_unwarping\": False},\n        {\"use_textline_orientation\": False},\n        {\"text_det_limit_side_len\": 640, \"text_det_limit_type\": \"min\"},\n        {\"text_det_thresh\": 0.5},\n        {\"text_det_box_thresh\": 0.3},\n\n        {\"text_det_unclip_ratio\": 3.0},\n        {\"text_rec_score_thresh\": 0.5},\n    ],\n)\ndef test_predict_params(\n    monkeypatch,\n    ocr_engine: PaddleOCR,\n    params: dict,\n) -> None:\n    check_wrapper_simple_inference_param_forwarding(\n        monkeypatch,\n        ocr_engine,\n        \"paddlex_pipeline\",\n        \"dummy_path\",\n",
+          "generation_text": "@pytest.mark.parametrize(\n    \"params\",\n    [\n        {\"use_doc_orientation_classify\": False},\n        {\"use_doc_unwarping\": False},\n        {\"use_textline_orientation\": False},\n        {\"text_det_limit_side_len\": 640, \"text_det_limit_type\": \"min\"},\n        {\"text_det_thresh\": 0.5},\n        {\"text_det_box_thresh\": 0.3},\n        {\"text_det_unclip_ratio\": 3.0},\n        {\"text_rec_score_thresh\": 0.5},\n    ],\n)\ndef test_predict_params(\n    monkeypatch,\n    ocr_engine: PaddleOCR,\n    params: dict,\n) -> None:\n    check_wrapper_simple_inference_param_forwarding(\n        monkeypatch,\n        ocr_engine,\n        \"paddlex_pipeline\",\n        \"dummy_path\",\n        params,\n    )\n\n\n# TODO: Test init params",
+          "evidence_spans": [
+            {
+              "line_start": 66,
+              "line_end": 70,
+              "char_start": 653,
+              "char_end": 701,
+              "content": "        params,\n    )\n\n\n# TODO: Test init params"
+            },
+            {
+              "line_start": 43,
+              "line_end": 51,
+              "char_start": 0,
+              "char_end": 322,
+              "content": "@pytest.mark.parametrize(\n    \"params\",\n    [\n        {\"use_doc_orientation_classify\": False},\n        {\"use_doc_unwarping\": False},\n        {\"use_textline_orientation\": False},\n        {\"text_det_limit_side_len\": 640, \"text_det_limit_type\": \"min\"},\n        {\"text_det_thresh\": 0.5},\n        {\"text_det_box_thresh\": 0.3},\n"
+            },
+            {
+              "line_start": 52,
+              "line_end": 65,
+              "char_start": 322,
+              "char_end": 653,
+              "content": "        {\"text_det_unclip_ratio\": 3.0},\n        {\"text_rec_score_thresh\": 0.5},\n    ],\n)\ndef test_predict_params(\n    monkeypatch,\n    ocr_engine: PaddleOCR,\n    params: dict,\n) -> None:\n    check_wrapper_simple_inference_param_forwarding(\n        monkeypatch,\n        ocr_engine,\n        \"paddlex_pipeline\",\n        \"dummy_path\",\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:tests/pipelines/test_ocr:1",
+          "version": "v3.0.0",
+          "document_path": "tests/pipelines/test_ocr.py",
+          "text": "import pytest\n\nfrom paddleocr import PaddleOCR\nfrom ..testing_utils import (\n    TEST_DATA_DIR,\n    check_simple_inference_result,\n    check_wrapper_simple_inference_param_forwarding,\n)",
+          "generation_text": "import pytest\n\nfrom paddleocr import PaddleOCR\nfrom ..testing_utils import (\n    TEST_DATA_DIR,\n    check_simple_inference_result,\n    check_wrapper_simple_inference_param_forwarding,\n)",
+          "evidence_spans": [
+            {
+              "line_start": 1,
+              "line_end": 8,
+              "char_start": 0,
+              "char_end": 185,
+              "content": "import pytest\n\nfrom paddleocr import PaddleOCR\nfrom ..testing_utils import (\n    TEST_DATA_DIR,\n    check_simple_inference_result,\n    check_wrapper_simple_inference_param_forwarding,\n)"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:tests/pipelines/test_ocr:2",
+          "version": "v3.0.0",
+          "document_path": "tests/pipelines/test_ocr.py",
+          "text": "@pytest.fixture(scope=\"module\")\ndef ocr_engine() -> PaddleOCR:\n    return PaddleOCR()\n\n\n# TODO: Should we separate unit tests and integration tests?",
+          "generation_text": "@pytest.fixture(scope=\"module\")\ndef ocr_engine() -> PaddleOCR:\n    return PaddleOCR()\n\n\n# TODO: Should we separate unit tests and integration tests?",
+          "evidence_spans": [
+            {
+              "line_start": 11,
+              "line_end": 16,
+              "char_start": 0,
+              "char_end": 148,
+              "content": "@pytest.fixture(scope=\"module\")\ndef ocr_engine() -> PaddleOCR:\n    return PaddleOCR()\n\n\n# TODO: Should we separate unit tests and integration tests?"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-25",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 3.02,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 114,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "window_budget": 384,
+        "window_unit": "characters",
+        "source_intent": "knowledge",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 9,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n",
+          "generation_text": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>",
+          "evidence_spans": [
+            {
+              "line_start": 19,
+              "line_end": 21,
+              "char_start": 690,
+              "char_end": 743,
+              "content": "\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>"
+            },
+            {
+              "line_start": 11,
+              "line_end": 18,
+              "char_start": 331,
+              "char_end": 690,
+              "content": "<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n"
+            },
+            {
+              "line_start": 7,
+              "line_end": 10,
+              "char_start": 0,
+              "char_end": 331,
+              "content": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:16",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "```bash\n{'res': {'input_path': '/root/.paddlex/predict_input/doc_test_rotated.jpg', 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 180}}\n```",
+          "generation_text": "```bash\n{'res': {'input_path': '/root/.paddlex/predict_input/doc_test_rotated.jpg', 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 180}}\n```",
+          "evidence_spans": [
+            {
+              "line_start": 275,
+              "line_end": 277,
+              "char_start": 0,
+              "char_end": 207,
+              "content": "```bash\n{'res': {'input_path': '/root/.paddlex/predict_input/doc_test_rotated.jpg', 'page_index': None, 'model_settings': {'use_doc_orientation_classify': True, 'use_doc_unwarping': True}, 'angle': 180}}\n```"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:2",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "# 文档图像预处理产线使用教程",
+          "generation_text": "# 文档图像预处理产线使用教程",
+          "evidence_spans": [
+            {
+              "line_start": 5,
+              "line_end": 5,
+              "char_start": 0,
+              "char_end": 15,
+              "content": "# 文档图像预处理产线使用教程"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:9",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "</details>",
+          "generation_text": "</details>",
+          "evidence_spans": [
+            {
+              "line_start": 117,
+              "line_end": 117,
+              "char_start": 0,
+              "char_end": 10,
+              "content": "</details>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:4",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "<td>3.37 / 1.27</td>\n<td>7</td>\n<td>基于PP-LCNet_x1_0的文档图像分类模型，含有四个类别，即0度，90度，180度，270度</td>\n</tr>\n</tbody>\n</table>\n<td>PP-LCNet_x1_0_doc_ori</td><td><a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar\">推理模型</a>/<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams\">训练模型</a></td>\n<td>99.06</td>\n<td>2.31 / 0.43</td>\n\n<table>\n<thead>\n<tr>\n<th>模型</th><th>模型下载链接</th>\n<th>Top-1 Acc（%）</th>\n<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>\n<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>\n<th>模型存储大小（M)</th>\n<th>介绍</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n",
+          "generation_text": "<table>\n<thead>\n<tr>\n<th>模型</th><th>模型下载链接</th>\n<th>Top-1 Acc（%）</th>\n<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>\n<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>\n<th>模型存储大小（M)</th>\n<th>介绍</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>PP-LCNet_x1_0_doc_ori</td><td><a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar\">推理模型</a>/<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams\">训练模型</a></td>\n<td>99.06</td>\n<td>2.31 / 0.43</td>\n<td>3.37 / 1.27</td>\n<td>7</td>\n<td>基于PP-LCNet_x1_0的文档图像分类模型，含有四个类别，即0度，90度，180度，270度</td>\n</tr>\n</tbody>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 38,
+              "line_end": 43,
+              "char_start": 561,
+              "char_end": 675,
+              "content": "<td>3.37 / 1.27</td>\n<td>7</td>\n<td>基于PP-LCNet_x1_0的文档图像分类模型，含有四个类别，即0度，90度，180度，270度</td>\n</tr>\n</tbody>\n</table>"
+            },
+            {
+              "line_start": 35,
+              "line_end": 37,
+              "char_start": 209,
+              "char_end": 561,
+              "content": "<td>PP-LCNet_x1_0_doc_ori</td><td><a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/PP-LCNet_x1_0_doc_ori_infer.tar\">推理模型</a>/<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-LCNet_x1_0_doc_ori_pretrained.pdparams\">训练模型</a></td>\n<td>99.06</td>\n<td>2.31 / 0.43</td>\n"
+            },
+            {
+              "line_start": 22,
+              "line_end": 34,
+              "char_start": 0,
+              "char_end": 209,
+              "content": "<table>\n<thead>\n<tr>\n<th>模型</th><th>模型下载链接</th>\n<th>Top-1 Acc（%）</th>\n<th>GPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>\n<th>CPU推理耗时（ms）<br/>[常规模式 / 高性能模式]</th>\n<th>模型存储大小（M)</th>\n<th>介绍</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-26",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 2.52,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 114,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "window_budget": 384,
+        "window_unit": "characters",
+        "source_intent": "knowledge",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 7,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n",
+          "generation_text": "        - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正模块\n\n    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n",
+          "evidence_spans": [
+            {
+              "line_start": 538,
+              "line_end": 540,
+              "char_start": 338,
+              "char_end": 574,
+              "content": "    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:24",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:",
+          "generation_text": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:",
+          "evidence_spans": [
+            {
+              "line_start": 464,
+              "line_end": 464,
+              "char_start": 0,
+              "char_end": 63,
+              "content": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:2",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "# 文档图像预处理产线使用教程",
+          "generation_text": "# 文档图像预处理产线使用教程",
+          "evidence_spans": [
+            {
+              "line_start": 5,
+              "line_end": 5,
+              "char_start": 0,
+              "char_end": 15,
+              "content": "# 文档图像预处理产线使用教程"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:9",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "</details>",
+          "generation_text": "</details>",
+          "evidence_spans": [
+            {
+              "line_start": 117,
+              "line_end": 117,
+              "char_start": 0,
+              "char_end": 10,
+              "content": "</details>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n",
+          "generation_text": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>",
+          "evidence_spans": [
+            {
+              "line_start": 19,
+              "line_end": 21,
+              "char_start": 690,
+              "char_end": 743,
+              "content": "\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>"
+            },
+            {
+              "line_start": 11,
+              "line_end": 18,
+              "char_start": 331,
+              "char_end": 690,
+              "content": "<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n"
+            },
+            {
+              "line_start": 7,
+              "line_end": 10,
+              "char_start": 0,
+              "char_end": 331,
+              "content": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-27",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 3.47,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 114,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "window_budget": 384,
+        "window_unit": "characters",
+        "source_intent": "knowledge",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:25"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 9,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:25",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n</table>\n<td><code>str</code></td>\n<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>indent</code></td>\n<td><code>int</code></td>\n<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>\n<td>4</td>\n</tr>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n",
+          "generation_text": "<thead>\n<tr>\n<th>方法</th>\n<th>方法说明</th>\n<th>参数</th>\n<th>参数类型</th>\n<th>参数说明</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td rowspan=\"3\"><code>save_to_json()</code></td>\n<td rowspan=\"3\">将结果保存为json格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>indent</code></td>\n<td><code>int</code></td>\n<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>\n<td>4</td>\n</tr>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 522,
+              "line_end": 525,
+              "char_start": 1605,
+              "char_end": 1657,
+              "content": "<td>保存的文件路径，支持目录或文件路径</td>\n<td>无</td>\n</tr>\n</table>"
+            },
+            {
+              "line_start": 501,
+              "line_end": 513,
+              "char_start": 926,
+              "char_end": 1258,
+              "content": "<td><code>str</code></td>\n<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>indent</code></td>\n<td><code>int</code></td>\n<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>\n<td>4</td>\n</tr>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：\n    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n",
+          "generation_text": "        - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正模块\n\n    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：",
+          "evidence_spans": [
+            {
+              "line_start": 541,
+              "line_end": 543,
+              "char_start": 574,
+              "char_end": 819,
+              "content": "- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下："
+            },
+            {
+              "line_start": 538,
+              "line_end": 540,
+              "char_start": 338,
+              "char_end": 574,
+              "content": "    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:24",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:",
+          "generation_text": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:",
+          "evidence_spans": [
+            {
+              "line_start": 464,
+              "line_end": 464,
+              "char_start": 0,
+              "char_end": 63,
+              "content": "（3）对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:14",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>，<code>[\"/root/data1\", \"/root/data2\"]</code></li>\n</ul>\n</td>\n<td><code>Python Var|str|list</code></td>\n<td></td>\n</tr>\n<tr>\n<td><code>save_path</code></td>\n<td>指定推理结果文件保存的路径。如果设置为<code>None</code>, 推理结果将不会保存到本地。</td>\n\n<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png\">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>\n\n<td>在 CPU 上进行推理时使用的线程数。</td>\n<td><code>int</code></td>\n<td><code>8</code></td>\n</tr>\n<tr>\n<td><code>paddlex_config</code></td>\n<td>PaddleX产线配置文件路径。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n</tbody>\n</table>",
+          "generation_text": "<thead>\n<tr>\n<th>参数</th>\n<th>参数说明</th>\n<th>参数类型</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td><code>input</code></td>\n<td>待预测数据，支持多种输入类型，必填。\n<ul>\n<li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>\n<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png\">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>\n<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>，<code>[\"/root/data1\", \"/root/data2\"]</code></li>\n</ul>\n</td>\n<td><code>Python Var|str|list</code></td>\n<td></td>\n</tr>\n<tr>\n<td><code>save_path</code></td>\n<td>指定推理结果文件保存的路径。如果设置为<code>None</code>, 推理结果将不会保存到本地。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>cpu_threads</code></td>\n<td>在 CPU 上进行推理时使用的线程数。</td>\n<td><code>int</code></td>\n<td><code>8</code></td>\n</tr>\n<tr>\n<td><code>paddlex_config</code></td>\n<td>PaddleX产线配置文件路径。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n</tbody>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 159,
+              "line_end": 167,
+              "char_start": 535,
+              "char_end": 886,
+              "content": "<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>，<code>[\"/root/data1\", \"/root/data2\"]</code></li>\n</ul>\n</td>\n<td><code>Python Var|str|list</code></td>\n<td></td>\n</tr>\n<tr>\n<td><code>save_path</code></td>\n<td>指定推理结果文件保存的路径。如果设置为<code>None</code>, 推理结果将不会保存到本地。</td>\n"
+            },
+            {
+              "line_start": 158,
+              "line_end": 158,
+              "char_start": 222,
+              "char_end": 535,
+              "content": "<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png\">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>\n"
+            },
+            {
+              "line_start": 258,
+              "line_end": 269,
+              "char_start": 3325,
+              "char_end": 3554,
+              "content": "<td>在 CPU 上进行推理时使用的线程数。</td>\n<td><code>int</code></td>\n<td><code>8</code></td>\n</tr>\n<tr>\n<td><code>paddlex_config</code></td>\n<td>PaddleX产线配置文件路径。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n</tbody>\n</table>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:23",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png\">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>\n",
+          "generation_text": "<thead>\n<tr>\n<th>参数</th>\n<th>参数说明</th>\n<th>参数类型</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td><code>input</code></td>\n<td>待预测数据，支持多种输入类型，必填。\n<ul>\n<li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>\n<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png\">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>\n<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>，<code>[\"/root/data1\", \"/root/data2\"]</code></li>\n</ul>\n</td>\n<td><code>Python Var|str|list</code></td>\n<td></td>\n</tr>",
+          "evidence_spans": [
+            {
+              "line_start": 436,
+              "line_end": 436,
+              "char_start": 214,
+              "char_end": 527,
+              "content": "<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png\">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-28",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 2.66,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 114,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "window_budget": 384,
+        "window_unit": "characters",
+        "source_intent": "knowledge",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 8,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>\n## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n",
+          "generation_text": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>",
+          "evidence_spans": [
+            {
+              "line_start": 19,
+              "line_end": 21,
+              "char_start": 690,
+              "char_end": 743,
+              "content": "\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>"
+            },
+            {
+              "line_start": 7,
+              "line_end": 10,
+              "char_start": 0,
+              "char_end": 331,
+              "content": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n"
+            },
+            {
+              "line_start": 11,
+              "line_end": 18,
+              "char_start": 331,
+              "char_end": 690,
+              "content": "<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:2",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "# 文档图像预处理产线使用教程",
+          "generation_text": "# 文档图像预处理产线使用教程",
+          "evidence_spans": [
+            {
+              "line_start": 5,
+              "line_end": 5,
+              "char_start": 0,
+              "char_end": 15,
+              "content": "# 文档图像预处理产线使用教程"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:9",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "</details>",
+          "generation_text": "</details>",
+          "evidence_spans": [
+            {
+              "line_start": 117,
+              "line_end": 117,
+              "char_start": 0,
+              "char_end": 10,
+              "content": "</details>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:19",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "output = pipeline.predict(\"./doc_test_rotated.jpg\")\nfor res in output:\n    res.print() ## 打印预测的结构化输出\n    res.save_to_img(\"./output/\")\n    res.save_to_json(\"./output/\")\n```\n```python\nfrom paddleocr import DocPreprocessor\n\npipeline = DocPreprocessor()\n# docpp = DocPreprocessor(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型\n# docpp = DocPreprocessor(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块\n# docpp = DocPreprocessor(device=\"gpu\") # 通过 device 指定模型推理时使用 GPU\n",
+          "generation_text": "```python\nfrom paddleocr import DocPreprocessor\n\npipeline = DocPreprocessor()\n# docpp = DocPreprocessor(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型\n# docpp = DocPreprocessor(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块\n# docpp = DocPreprocessor(device=\"gpu\") # 通过 device 指定模型推理时使用 GPU\noutput = pipeline.predict(\"./doc_test_rotated.jpg\")\nfor res in output:\n    res.print() ## 打印预测的结构化输出\n    res.save_to_img(\"./output/\")\n    res.save_to_json(\"./output/\")\n```",
+          "evidence_spans": [
+            {
+              "line_start": 295,
+              "line_end": 300,
+              "char_start": 342,
+              "char_end": 513,
+              "content": "output = pipeline.predict(\"./doc_test_rotated.jpg\")\nfor res in output:\n    res.print() ## 打印预测的结构化输出\n    res.save_to_img(\"./output/\")\n    res.save_to_json(\"./output/\")\n```"
+            },
+            {
+              "line_start": 288,
+              "line_end": 294,
+              "char_start": 0,
+              "char_end": 342,
+              "content": "```python\nfrom paddleocr import DocPreprocessor\n\npipeline = DocPreprocessor()\n# docpp = DocPreprocessor(use_doc_orientation_classify=True) # 通过 use_doc_orientation_classify 指定是否使用文档方向分类模型\n# docpp = DocPreprocessor(use_doc_unwarping=True) # 通过 use_doc_unwarping 指定是否使用文本图像矫正模块\n# docpp = DocPreprocessor(device=\"gpu\") # 通过 device 指定模型推理时使用 GPU\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:5",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "</details>\n\n<details>\n<summary> <b>文本图像矫正模块（可选）：</b></summary>",
+          "generation_text": "</details>\n\n<details>\n<summary> <b>文本图像矫正模块（可选）：</b></summary>",
+          "evidence_spans": [
+            {
+              "line_start": 44,
+              "line_end": 47,
+              "char_start": 0,
+              "char_end": 62,
+              "content": "</details>\n\n<details>\n<summary> <b>文本图像矫正模块（可选）：</b></summary>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-45",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 3.04,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 127,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "window_budget": 384,
+        "window_unit": "characters",
+        "source_intent": "knowledge",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:2"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 5,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:2",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "# 文本识别模块使用教程",
+          "generation_text": "# 文本识别模块使用教程",
+          "evidence_spans": [
+            {
+              "line_start": 5,
+              "line_end": 5,
+              "char_start": 0,
+              "char_end": 12,
+              "content": "# 文本识别模块使用教程"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:23",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "运行后，得到的结果为：",
+          "generation_text": "运行后，得到的结果为：",
+          "evidence_spans": [
+            {
+              "line_start": 422,
+              "line_end": 422,
+              "char_start": 0,
+              "char_end": 11,
+              "content": "运行后，得到的结果为："
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:1",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "---\ncomments: true\n---",
+          "generation_text": "---\ncomments: true\n---",
+          "evidence_spans": [
+            {
+              "line_start": 1,
+              "line_end": 3,
+              "char_start": 0,
+              "char_end": 22,
+              "content": "---\ncomments: true\n---"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:25",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "* `TextRecognition`实例化文本识别模型（此处以`PP-OCRv5_server_rec`为例），具体说明如下：",
+          "generation_text": "相关方法、参数等说明如下：\n\n* `TextRecognition`实例化文本识别模型（此处以`PP-OCRv5_server_rec`为例），具体说明如下：",
+          "evidence_spans": [
+            {
+              "line_start": 440,
+              "line_end": 440,
+              "char_start": 319,
+              "char_end": 383,
+              "content": "* `TextRecognition`实例化文本识别模型（此处以`PP-OCRv5_server_rec`为例），具体说明如下："
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:48",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "## 五、FAQ",
+          "generation_text": "## 五、FAQ",
+          "evidence_spans": [
+            {
+              "line_start": 677,
+              "line_end": 677,
+              "char_start": 0,
+              "char_end": 8,
+              "content": "## 五、FAQ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-46",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 3.12,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 127,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "window_budget": 384,
+        "window_unit": "characters",
+        "source_intent": "knowledge",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:3"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 5,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "## 一、概述\n\n文本识别模块是OCR（光学字符识别）系统中的核心部分，负责从图像中的文本区域提取出文本信息。该模块的性能直接影响到整个OCR系统的准确性和效率。文本识别模块通常接收文本检测模块输出的文本区域的边界框（Bounding Boxes）作为输入，然后通过复杂的图像处理和深度学习算法，将图像中的文本转化为可编辑和可搜索的电子文本。文本识别结果的准确性，对于后续的信息提取和数据挖掘等应用至关重要。",
+          "generation_text": "## 一、概述\n\n文本识别模块是OCR（光学字符识别）系统中的核心部分，负责从图像中的文本区域提取出文本信息。该模块的性能直接影响到整个OCR系统的准确性和效率。文本识别模块通常接收文本检测模块输出的文本区域的边界框（Bounding Boxes）作为输入，然后通过复杂的图像处理和深度学习算法，将图像中的文本转化为可编辑和可搜索的电子文本。文本识别结果的准确性，对于后续的信息提取和数据挖掘等应用至关重要。",
+          "evidence_spans": [
+            {
+              "line_start": 7,
+              "line_end": 9,
+              "char_start": 0,
+              "char_end": 204,
+              "content": "## 一、概述\n\n文本识别模块是OCR（光学字符识别）系统中的核心部分，负责从图像中的文本区域提取出文本信息。该模块的性能直接影响到整个OCR系统的准确性和效率。文本识别模块通常接收文本检测模块输出的文本区域的边界框（Bounding Boxes）作为输入，然后通过复杂的图像处理和深度学习算法，将图像中的文本转化为可编辑和可搜索的电子文本。文本识别结果的准确性，对于后续的信息提取和数据挖掘等应用至关重要。"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:2",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "# 文本识别模块使用教程",
+          "generation_text": "# 文本识别模块使用教程",
+          "evidence_spans": [
+            {
+              "line_start": 5,
+              "line_end": 5,
+              "char_start": 0,
+              "char_end": 12,
+              "content": "# 文本识别模块使用教程"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:8",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "* <b>中文识别模型</b>",
+          "generation_text": "* <b>中文识别模型</b>",
+          "evidence_spans": [
+            {
+              "line_start": 118,
+              "line_end": 118,
+              "char_start": 0,
+              "char_end": 15,
+              "content": "* <b>中文识别模型</b>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:12",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "* <b>英文识别模型</b>",
+          "generation_text": "* <b>英文识别模型</b>",
+          "evidence_spans": [
+            {
+              "line_start": 204,
+              "line_end": 204,
+              "char_start": 0,
+              "char_end": 15,
+              "content": "* <b>英文识别模型</b>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:18",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "</details>",
+          "generation_text": "</details>",
+          "evidence_spans": [
+            {
+              "line_start": 398,
+              "line_end": 398,
+              "char_start": 0,
+              "char_end": 10,
+              "content": "</details>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-47",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 2.52,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 127,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "window_budget": 384,
+        "window_unit": "characters",
+        "source_intent": "knowledge",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:27"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 5,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:27",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "* 其中，`model_name` 必须指定，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。\n\n* 调用文本识别模型的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。`predict()` 方法参数有 `input` 和 `batch_size`，具体说明如下：",
+          "generation_text": "* 其中，`model_name` 必须指定，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。\n\n* 调用文本识别模型的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。`predict()` 方法参数有 `input` 和 `batch_size`，具体说明如下：",
+          "evidence_spans": [
+            {
+              "line_start": 488,
+              "line_end": 490,
+              "char_start": 0,
+              "char_end": 304,
+              "content": "* 其中，`model_name` 必须指定，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。\n\n* 调用文本识别模型的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。`predict()` 方法参数有 `input` 和 `batch_size`，具体说明如下："
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:2",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "# 文本识别模块使用教程",
+          "generation_text": "# 文本识别模块使用教程",
+          "evidence_spans": [
+            {
+              "line_start": 5,
+              "line_end": 5,
+              "char_start": 0,
+              "char_end": 12,
+              "content": "# 文本识别模块使用教程"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:25",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "* `TextRecognition`实例化文本识别模型（此处以`PP-OCRv5_server_rec`为例），具体说明如下：",
+          "generation_text": "相关方法、参数等说明如下：\n\n* `TextRecognition`实例化文本识别模型（此处以`PP-OCRv5_server_rec`为例），具体说明如下：",
+          "evidence_spans": [
+            {
+              "line_start": 440,
+              "line_end": 440,
+              "char_start": 319,
+              "char_end": 383,
+              "content": "* `TextRecognition`实例化文本识别模型（此处以`PP-OCRv5_server_rec`为例），具体说明如下："
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:1",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "---\ncomments: true\n---",
+          "generation_text": "---\ncomments: true\n---",
+          "evidence_spans": [
+            {
+              "line_start": 1,
+              "line_end": 3,
+              "char_start": 0,
+              "char_end": 22,
+              "content": "---\ncomments: true\n---"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:48",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "## 五、FAQ",
+          "generation_text": "## 五、FAQ",
+          "evidence_spans": [
+            {
+              "line_start": 677,
+              "line_end": 677,
+              "char_start": 0,
+              "char_end": 8,
+              "content": "## 五、FAQ"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-48",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 3.24,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 127,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "NOT_CONFIGURED",
+          "attention": "eager"
+        },
+        "window_budget": 384,
+        "window_unit": "characters",
+        "source_intent": "knowledge",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:29"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 7,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:29",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "* 对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:",
+          "generation_text": "* 对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:",
+          "evidence_spans": [
+            {
+              "line_start": 526,
+              "line_end": 526,
+              "char_start": 0,
+              "char_end": 62,
+              "content": "* 对预测结果进行处理，每个样本的预测结果均为对应的Result对象，且支持打印、保存为图片、保存为`json`文件的操作:"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:30",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td rowspan=\"3\"><code>save_to_json()</code></td>\n<td rowspan=\"3\">将结果保存为json格式的文件</td>\n<td><code>save_path</code></td>\n\n<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>save_to_img()</code></td>\n<td>将结果保存为图像格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n\n<td><code>int</code></td>\n<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>\n<td>4</td>\n</tr>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n",
+          "generation_text": "<thead>\n<tr>\n<th>方法</th>\n<th>方法说明</th>\n<th>参数</th>\n<th>参数类型</th>\n<th>参数说明</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td><code>indent</code></td>\n<td><code>int</code></td>\n<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>\n<td>4</td>\n</tr>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td rowspan=\"3\"><code>save_to_json()</code></td>\n<td rowspan=\"3\">将结果保存为json格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>\n<td>无</td>\n</tr>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>save_to_img()</code></td>\n<td>将结果保存为图像格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n<td>保存的文件路径，当为目录时，保存文件命名与输入文件类型命名一致</td>\n<td>无</td>\n</tr>",
+          "evidence_spans": [
+            {
+              "line_start": 556,
+              "line_end": 562,
+              "char_start": 578,
+              "char_end": 926,
+              "content": "<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td rowspan=\"3\"><code>save_to_json()</code></td>\n<td rowspan=\"3\">将结果保存为json格式的文件</td>\n<td><code>save_path</code></td>\n"
+            },
+            {
+              "line_start": 576,
+              "line_end": 583,
+              "char_start": 1258,
+              "char_end": 1605,
+              "content": "<td>控制是否将非 <code>ASCII</code> 字符转义为 <code>Unicode</code>。设置为 <code>True</code> 时，所有非 <code>ASCII</code> 字符将被转义；<code>False</code> 则保留原始字符，仅当<code>format_json</code>为<code>True</code>时有效</td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>save_to_img()</code></td>\n<td>将结果保存为图像格式的文件</td>\n<td><code>save_path</code></td>\n<td><code>str</code></td>\n"
+            },
+            {
+              "line_start": 549,
+              "line_end": 555,
+              "char_start": 364,
+              "char_end": 578,
+              "content": "<td><code>int</code></td>\n<td>指定缩进级别，以美化输出的 <code>JSON</code> 数据，使其更具可读性，仅当 <code>format_json</code> 为 <code>True</code> 时有效</td>\n<td>4</td>\n</tr>\n<tr>\n<td><code>ensure_ascii</code></td>\n<td><code>bool</code></td>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:2",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "# 文本识别模块使用教程",
+          "generation_text": "# 文本识别模块使用教程",
+          "evidence_spans": [
+            {
+              "line_start": 5,
+              "line_end": 5,
+              "char_start": 0,
+              "char_end": 12,
+              "content": "# 文本识别模块使用教程"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:23",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "运行后，得到的结果为：",
+          "generation_text": "运行后，得到的结果为：",
+          "evidence_spans": [
+            {
+              "line_start": 422,
+              "line_end": 422,
+              "char_start": 0,
+              "char_end": 11,
+              "content": "运行后，得到的结果为："
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:1",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "---\ncomments: true\n---",
+          "generation_text": "---\ncomments: true\n---",
+          "evidence_spans": [
+            {
+              "line_start": 1,
+              "line_end": 3,
+              "char_start": 0,
+              "char_end": 22,
+              "content": "---\ncomments: true\n---"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

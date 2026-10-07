@@ -1,0 +1,1127 @@
+{
+  "question": "PaddleOCR 2.9.1 如何用 lang=\"ch\" 初始化中文 OCR？",
+  "version": "v2.9.1",
+  "http_status": 200,
+  "elapsed_seconds": 25.74,
+  "result": {
+    "answer": "在 PaddleOCR v2.9.1 中，使用 lang=\"ch\" 初始化中文 OCR 引擎的写法为：ocr = PaddleOCR(use_angle_cls=True, lang=\"ch\")。\nPaddleOCR 的 lang 参数支持传入 'ch' 来切换到中文模型。\nparse_lang 内部对 lang == \"ch\" 时返回的 det_lang 也为 \"ch\"。",
+    "sources": [
+      {
+        "source_id": "v2-9-1-paddleocr-py-02eb1820",
+        "version": "v2.9.1",
+        "source_snapshot": "v2.9.1",
+        "document_key": "paddleocr",
+        "document_title": "PaddleOCR paddleocr 公共 API 实现",
+        "document_path": "paddleocr.py",
+        "path": "paddleocr.py",
+        "local_path": "sources/v2.9.1/paddleocr.py",
+        "source_type": "official_api_contract",
+        "source_format": "python",
+        "source_content_language": "python",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/paddleocr.py",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/07603421c20a96bb94bb87d0c4211032527ae706/paddleocr.py",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+        "git_blob_sha": "bdf367cf1a41c873783ba0a4c82a71c5f7ff0a82",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/LICENSE",
+        "attribution": "PaddleOCR · v2.9.1 · paddleocr.py · Apache-2.0 · commit 07603421c20a96bb94bb87d0c4211032527ae706",
+        "document_family": "ocr_api",
+        "scope_note": "代码/配置辅助证据；不计为中文教程",
+        "chunk_id": "v2.9.1:zh:paddleocr:4",
+        "document_id": "v2.9.1:zh:paddleocr",
+        "source_sha256": "37da5a58692bcd37c8d9cf60765c449fa3662de82d416f04358bd8ead87e7162",
+        "heading": "parse_lang",
+        "heading_path": [
+          "parse_lang"
+        ],
+        "line_start": 423,
+        "line_end": 523,
+        "block_type": "python_definition",
+        "content": "def parse_lang(lang):\n    latin_lang = [\n        \"af\",\n        \"az\",\n        \"bs\",\n        \"cs\",\n        \"cy\",\n        \"da\",\n        \"de\",\n        \"es\",\n        \"et\",\n        \"fr\",\n        \"ga\",\n        \"hr\",\n        \"hu\",\n        \"id\",\n        \"is\",\n        \"it\",\n        \"ku\",\n        \"la\",\n        \"lt\",\n        \"lv\",\n        \"mi\",\n        \"ms\",\n        \"mt\",\n        \"nl\",\n        \"no\",\n        \"oc\",\n        \"pi\",\n        \"pl\",\n        \"pt\",\n        \"ro\",\n        \"rs_latin\",\n        \"sk\",\n        \"sl\",\n        \"sq\",\n        \"sv\",\n        \"sw\",\n        \"tl\",\n        \"tr\",\n        \"uz\",\n        \"vi\",\n        \"french\",\n        \"german\",\n    ]\n    arabic_lang = [\"ar\", \"fa\", \"ug\", \"ur\"]\n    cyrillic_lang = [\n        \"ru\",\n        \"rs_cyrillic\",\n        \"be\",\n        \"bg\",\n        \"uk\",\n        \"mn\",\n        \"abq\",\n        \"ady\",\n        \"kbd\",\n        \"ava\",\n        \"dar\",\n        \"inh\",\n        \"che\",\n        \"lbe\",\n        \"lez\",\n        \"tab\",\n    ]\n    devanagari_lang = [\n        \"hi\",\n        \"mr\",\n        \"ne\",\n        \"bh\",\n        \"mai\",\n        \"ang\",\n        \"bho\",\n        \"mah\",\n        \"sck\",\n        \"new\",\n        \"gom\",\n        \"sa\",\n        \"bgc\",\n    ]\n    if lang in latin_lang:\n        lang = \"latin\"\n    elif lang in arabic_lang:\n        lang = \"arabic\"\n    elif lang in cyrillic_lang:\n        lang = \"cyrillic\"\n    elif lang in devanagari_lang:\n        lang = \"devanagari\"\n    assert (\n        lang in MODEL_URLS[\"OCR\"][DEFAULT_OCR_MODEL_VERSION][\"rec\"]\n    ), \"param lang must in {}, but got {}\".format(\n        MODEL_URLS[\"OCR\"][DEFAULT_OCR_MODEL_VERSION][\"rec\"].keys(), lang\n    )\n    if lang == \"ch\":\n        det_lang = \"ch\"\n    elif lang == \"structure\":\n        det_lang = \"structure\"\n    elif lang in [\"en\", \"latin\"]:\n        det_lang = \"en\"\n    else:\n        det_lang = \"ml\"\n    return lang, det_lang",
+        "module": "ocr",
+        "evidence_spans": [
+          {
+            "line_start": 507,
+            "line_end": 515,
+            "char_start": 1319,
+            "char_end": 1639,
+            "content": "        lang = \"cyrillic\"\n    elif lang in devanagari_lang:\n        lang = \"devanagari\"\n    assert (\n        lang in MODEL_URLS[\"OCR\"][DEFAULT_OCR_MODEL_VERSION][\"rec\"]\n    ), \"param lang must in {}, but got {}\".format(\n        MODEL_URLS[\"OCR\"][DEFAULT_OCR_MODEL_VERSION][\"rec\"].keys(), lang\n    )\n    if lang == \"ch\":\n"
+          },
+          {
+            "line_start": 516,
+            "line_end": 523,
+            "char_start": 1639,
+            "char_end": 1841,
+            "content": "        det_lang = \"ch\"\n    elif lang == \"structure\":\n        det_lang = \"structure\"\n    elif lang in [\"en\", \"latin\"]:\n        det_lang = \"en\"\n    else:\n        det_lang = \"ml\"\n    return lang, det_lang"
+          },
+          {
+            "line_start": 488,
+            "line_end": 506,
+            "char_start": 987,
+            "char_end": 1319,
+            "content": "        \"hi\",\n        \"mr\",\n        \"ne\",\n        \"bh\",\n        \"mai\",\n        \"ang\",\n        \"bho\",\n        \"mah\",\n        \"sck\",\n        \"new\",\n        \"gom\",\n        \"sa\",\n        \"bgc\",\n    ]\n    if lang in latin_lang:\n        lang = \"latin\"\n    elif lang in arabic_lang:\n        lang = \"arabic\"\n    elif lang in cyrillic_lang:\n"
+          },
+          {
+            "line_start": 423,
+            "line_end": 445,
+            "char_start": 0,
+            "char_end": 335,
+            "content": "def parse_lang(lang):\n    latin_lang = [\n        \"af\",\n        \"az\",\n        \"bs\",\n        \"cs\",\n        \"cy\",\n        \"da\",\n        \"de\",\n        \"es\",\n        \"et\",\n        \"fr\",\n        \"ga\",\n        \"hr\",\n        \"hu\",\n        \"id\",\n        \"is\",\n        \"it\",\n        \"ku\",\n        \"la\",\n        \"lt\",\n        \"lv\",\n        \"mi\",\n"
+          }
+        ],
+        "rank": 1,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.03225806451612903,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v2-9-1-doc-doc-ch-whl-md-f1bd9719",
+        "version": "v2.9.1",
+        "source_snapshot": "v2.9.1",
+        "document_key": "doc/doc_ch/whl",
+        "document_title": "Python 包安装与 OCR 结果用法",
+        "document_path": "doc/doc_ch/whl.md",
+        "path": "doc/doc_ch/whl.md",
+        "local_path": "sources/v2.9.1/doc/doc_ch/whl.md",
+        "source_type": "official_documentation",
+        "source_format": "markdown",
+        "source_content_language": "zh-CN",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/whl.md",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/whl.md",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+        "git_blob_sha": "2f9976f6d80d14145afab5fffeb85f9f790fc023",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/LICENSE",
+        "attribution": "PaddleOCR · v2.9.1 · doc/doc_ch/whl.md · Apache-2.0 · commit 07603421c20a96bb94bb87d0c4211032527ae706",
+        "document_family": "python_package",
+        "scope_note": "官方中文文档",
+        "chunk_id": "v2.9.1:zh:doc/doc_ch/whl:9",
+        "document_id": "v2.9.1:zh:doc/doc_ch/whl",
+        "source_sha256": "9bc1fb30acf1da3ef10613fc44b8748f70ac7fb17d5b449b281fa49d869e455a",
+        "heading": "2.1 代码使用",
+        "heading_path": [
+          "paddleocr package使用说明",
+          "2 使用",
+          "2.1 代码使用"
+        ],
+        "line_start": 28,
+        "line_end": 51,
+        "block_type": "code_fence",
+        "content": "```python\nfrom paddleocr import PaddleOCR, draw_ocr\n\n# Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换\n# 参数依次为`ch`, `en`, `french`, `german`, `korean`, `japan`。\nocr = PaddleOCR(use_angle_cls=True, lang=\"ch\")  # need to run only once to download and load model into memory\nimg_path = 'PaddleOCR/doc/imgs/11.jpg'\nresult = ocr.ocr(img_path, cls=True)\nfor idx in range(len(result)):\n    res = result[idx]\n    for line in res:\n        print(line)\n\n# 显示结果\nfrom PIL import Image\nresult = result[0]\nimage = Image.open(img_path).convert('RGB')\nboxes = [line[0] for line in result]\ntxts = [line[1][0] for line in result]\nscores = [line[1][1] for line in result]\nim_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')\nim_show = Image.fromarray(im_show)\nim_show.save('result.jpg')\n```",
+        "module": "ocr",
+        "evidence_spans": [
+          {
+            "line_start": 28,
+            "line_end": 35,
+            "char_start": 0,
+            "char_end": 349,
+            "content": "```python\nfrom paddleocr import PaddleOCR, draw_ocr\n\n# Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换\n# 参数依次为`ch`, `en`, `french`, `german`, `korean`, `japan`。\nocr = PaddleOCR(use_angle_cls=True, lang=\"ch\")  # need to run only once to download and load model into memory\nimg_path = 'PaddleOCR/doc/imgs/11.jpg'\nresult = ocr.ocr(img_path, cls=True)\n"
+          },
+          {
+            "line_start": 48,
+            "line_end": 51,
+            "char_start": 653,
+            "char_end": 819,
+            "content": "im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')\nim_show = Image.fromarray(im_show)\nim_show.save('result.jpg')\n```"
+          }
+        ],
+        "rank": 5,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.03076923076923077,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v2-9-1-doc-doc-ch-quickstart-md-16a9690b",
+        "version": "v2.9.1",
+        "source_snapshot": "v2.9.1",
+        "document_key": "doc/doc_ch/quickstart",
+        "document_title": "OCR 或结构化解析快速开始",
+        "document_path": "doc/doc_ch/quickstart.md",
+        "path": "doc/doc_ch/quickstart.md",
+        "local_path": "sources/v2.9.1/doc/doc_ch/quickstart.md",
+        "source_type": "official_documentation",
+        "source_format": "markdown",
+        "source_content_language": "zh-CN",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/quickstart.md",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/quickstart.md",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+        "git_blob_sha": "65b29b18792d7550ecd73f43a1783017f7087c46",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/LICENSE",
+        "attribution": "PaddleOCR · v2.9.1 · doc/doc_ch/quickstart.md · Apache-2.0 · commit 07603421c20a96bb94bb87d0c4211032527ae706",
+        "document_family": "quick_start",
+        "scope_note": "官方中文文档",
+        "chunk_id": "v2.9.1:zh:doc/doc_ch/quickstart:41",
+        "document_id": "v2.9.1:zh:doc/doc_ch/quickstart",
+        "source_sha256": "17605d9dfafc66aab465cbf73f91c8c8800bc389fef4fec4925fe1076a72e981",
+        "heading": "2.2.1 中英文与多语言使用",
+        "heading_path": [
+          "PaddleOCR 快速开始",
+          "2. 便捷使用",
+          "2.2 Python脚本使用",
+          "2.2.1 中英文与多语言使用"
+        ],
+        "line_start": 163,
+        "line_end": 186,
+        "block_type": "code_fence",
+        "content": "```python\nfrom paddleocr import PaddleOCR, draw_ocr\n\n# Paddleocr目前支持的多语言语种可以通过修改lang参数进行切换\n# 例如`ch`, `en`, `fr`, `german`, `korean`, `japan`\nocr = PaddleOCR(use_angle_cls=True, lang=\"ch\")  # need to run only once to download and load model into memory\nimg_path = './imgs/11.jpg'\nresult = ocr.ocr(img_path, cls=True)\nfor idx in range(len(result)):\n    res = result[idx]\n    for line in res:\n        print(line)\n\n# 显示结果\nfrom PIL import Image\nresult = result[0]\nimage = Image.open(img_path).convert('RGB')\nboxes = [line[0] for line in result]\ntxts = [line[1][0] for line in result]\nscores = [line[1][1] for line in result]\nim_show = draw_ocr(image, boxes, txts, scores, font_path='./fonts/simfang.ttf')\nim_show = Image.fromarray(im_show)\nim_show.save('result.jpg')\n```",
+        "module": "general",
+        "evidence_spans": [
+          {
+            "line_start": 163,
+            "line_end": 171,
+            "char_start": 0,
+            "char_end": 347,
+            "content": "```python\nfrom paddleocr import PaddleOCR, draw_ocr\n\n# Paddleocr目前支持的多语言语种可以通过修改lang参数进行切换\n# 例如`ch`, `en`, `fr`, `german`, `korean`, `japan`\nocr = PaddleOCR(use_angle_cls=True, lang=\"ch\")  # need to run only once to download and load model into memory\nimg_path = './imgs/11.jpg'\nresult = ocr.ocr(img_path, cls=True)\nfor idx in range(len(result)):\n"
+          }
+        ],
+        "rank": 7,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.029850746268656716,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v2-9-1-doc-doc-ch-whl-md-f1bd9719",
+        "version": "v2.9.1",
+        "source_snapshot": "v2.9.1",
+        "document_key": "doc/doc_ch/whl",
+        "document_title": "Python 包安装与 OCR 结果用法",
+        "document_path": "doc/doc_ch/whl.md",
+        "path": "doc/doc_ch/whl.md",
+        "local_path": "sources/v2.9.1/doc/doc_ch/whl.md",
+        "source_type": "official_documentation",
+        "source_format": "markdown",
+        "source_content_language": "zh-CN",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/whl.md",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/whl.md",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+        "git_blob_sha": "2f9976f6d80d14145afab5fffeb85f9f790fc023",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/LICENSE",
+        "attribution": "PaddleOCR · v2.9.1 · doc/doc_ch/whl.md · Apache-2.0 · commit 07603421c20a96bb94bb87d0c4211032527ae706",
+        "document_family": "python_package",
+        "scope_note": "官方中文文档",
+        "chunk_id": "v2.9.1:zh:doc/doc_ch/whl:67",
+        "document_id": "v2.9.1:zh:doc/doc_ch/whl",
+        "source_sha256": "9bc1fb30acf1da3ef10613fc44b8748f70ac7fb17d5b449b281fa49d869e455a",
+        "heading": "4.1 网络图片",
+        "heading_path": [
+          "paddleocr package使用说明",
+          "4 使用网络图片或者numpy数组作为输入",
+          "4.1 网络图片"
+        ],
+        "line_start": 339,
+        "line_end": 363,
+        "block_type": "code_fence",
+        "content": "```python\nfrom paddleocr import PaddleOCR, draw_ocr, download_with_progressbar\n\n# Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换\n# 参数依次为`ch`, `en`, `french`, `german`, `korean`, `japan`。\nocr = PaddleOCR(use_angle_cls=True, lang=\"ch\")  # need to run only once to download and load model into memory\nimg_path = 'http://n.sinaimg.cn/ent/transform/w630h933/20171222/o111-fypvuqf1838418.jpg'\nresult = ocr.ocr(img_path, cls=True)\nfor idx in range(len(result)):\n    res = result[idx]\n    for line in res:\n        print(line)\n\n# 显示结果\nfrom PIL import Image\nresult = result[0]\ndownload_with_progressbar(img_path, 'tmp.jpg')\nimage = Image.open('tmp.jpg').convert('RGB')\nboxes = [line[0] for line in result]\ntxts = [line[1][0] for line in result]\nscores = [line[1][1] for line in result]\nim_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')\nim_show = Image.fromarray(im_show)\nim_show.save('result.jpg')\n```",
+        "module": "ocr",
+        "evidence_spans": [
+          {
+            "line_start": 339,
+            "line_end": 344,
+            "char_start": 0,
+            "char_end": 300,
+            "content": "```python\nfrom paddleocr import PaddleOCR, draw_ocr, download_with_progressbar\n\n# Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换\n# 参数依次为`ch`, `en`, `french`, `german`, `korean`, `japan`。\nocr = PaddleOCR(use_angle_cls=True, lang=\"ch\")  # need to run only once to download and load model into memory\n"
+          }
+        ],
+        "rank": 8,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.029411764705882353,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      }
+    ],
+    "evidence": [
+      {
+        "source_id": "v2-9-1-paddleocr-py-02eb1820",
+        "version": "v2.9.1",
+        "source_snapshot": "v2.9.1",
+        "document_key": "paddleocr",
+        "document_title": "PaddleOCR paddleocr 公共 API 实现",
+        "document_path": "paddleocr.py",
+        "path": "paddleocr.py",
+        "local_path": "sources/v2.9.1/paddleocr.py",
+        "source_type": "official_api_contract",
+        "source_format": "python",
+        "source_content_language": "python",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/paddleocr.py",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/07603421c20a96bb94bb87d0c4211032527ae706/paddleocr.py",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+        "git_blob_sha": "bdf367cf1a41c873783ba0a4c82a71c5f7ff0a82",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/LICENSE",
+        "attribution": "PaddleOCR · v2.9.1 · paddleocr.py · Apache-2.0 · commit 07603421c20a96bb94bb87d0c4211032527ae706",
+        "document_family": "ocr_api",
+        "scope_note": "代码/配置辅助证据；不计为中文教程",
+        "chunk_id": "v2.9.1:zh:paddleocr:4",
+        "document_id": "v2.9.1:zh:paddleocr",
+        "source_sha256": "37da5a58692bcd37c8d9cf60765c449fa3662de82d416f04358bd8ead87e7162",
+        "heading": "parse_lang",
+        "heading_path": [
+          "parse_lang"
+        ],
+        "line_start": 423,
+        "line_end": 523,
+        "block_type": "python_definition",
+        "content": "def parse_lang(lang):\n    latin_lang = [\n        \"af\",\n        \"az\",\n        \"bs\",\n        \"cs\",\n        \"cy\",\n        \"da\",\n        \"de\",\n        \"es\",\n        \"et\",\n        \"fr\",\n        \"ga\",\n        \"hr\",\n        \"hu\",\n        \"id\",\n        \"is\",\n        \"it\",\n        \"ku\",\n        \"la\",\n        \"lt\",\n        \"lv\",\n        \"mi\",\n        \"ms\",\n        \"mt\",\n        \"nl\",\n        \"no\",\n        \"oc\",\n        \"pi\",\n        \"pl\",\n        \"pt\",\n        \"ro\",\n        \"rs_latin\",\n        \"sk\",\n        \"sl\",\n        \"sq\",\n        \"sv\",\n        \"sw\",\n        \"tl\",\n        \"tr\",\n        \"uz\",\n        \"vi\",\n        \"french\",\n        \"german\",\n    ]\n    arabic_lang = [\"ar\", \"fa\", \"ug\", \"ur\"]\n    cyrillic_lang = [\n        \"ru\",\n        \"rs_cyrillic\",\n        \"be\",\n        \"bg\",\n        \"uk\",\n        \"mn\",\n        \"abq\",\n        \"ady\",\n        \"kbd\",\n        \"ava\",\n        \"dar\",\n        \"inh\",\n        \"che\",\n        \"lbe\",\n        \"lez\",\n        \"tab\",\n    ]\n    devanagari_lang = [\n        \"hi\",\n        \"mr\",\n        \"ne\",\n        \"bh\",\n        \"mai\",\n        \"ang\",\n        \"bho\",\n        \"mah\",\n        \"sck\",\n        \"new\",\n        \"gom\",\n        \"sa\",\n        \"bgc\",\n    ]\n    if lang in latin_lang:\n        lang = \"latin\"\n    elif lang in arabic_lang:\n        lang = \"arabic\"\n    elif lang in cyrillic_lang:\n        lang = \"cyrillic\"\n    elif lang in devanagari_lang:\n        lang = \"devanagari\"\n    assert (\n        lang in MODEL_URLS[\"OCR\"][DEFAULT_OCR_MODEL_VERSION][\"rec\"]\n    ), \"param lang must in {}, but got {}\".format(\n        MODEL_URLS[\"OCR\"][DEFAULT_OCR_MODEL_VERSION][\"rec\"].keys(), lang\n    )\n    if lang == \"ch\":\n        det_lang = \"ch\"\n    elif lang == \"structure\":\n        det_lang = \"structure\"\n    elif lang in [\"en\", \"latin\"]:\n        det_lang = \"en\"\n    else:\n        det_lang = \"ml\"\n    return lang, det_lang",
+        "module": "ocr",
+        "evidence_spans": [
+          {
+            "line_start": 507,
+            "line_end": 515,
+            "char_start": 1319,
+            "char_end": 1639,
+            "content": "        lang = \"cyrillic\"\n    elif lang in devanagari_lang:\n        lang = \"devanagari\"\n    assert (\n        lang in MODEL_URLS[\"OCR\"][DEFAULT_OCR_MODEL_VERSION][\"rec\"]\n    ), \"param lang must in {}, but got {}\".format(\n        MODEL_URLS[\"OCR\"][DEFAULT_OCR_MODEL_VERSION][\"rec\"].keys(), lang\n    )\n    if lang == \"ch\":\n"
+          },
+          {
+            "line_start": 516,
+            "line_end": 523,
+            "char_start": 1639,
+            "char_end": 1841,
+            "content": "        det_lang = \"ch\"\n    elif lang == \"structure\":\n        det_lang = \"structure\"\n    elif lang in [\"en\", \"latin\"]:\n        det_lang = \"en\"\n    else:\n        det_lang = \"ml\"\n    return lang, det_lang"
+          },
+          {
+            "line_start": 488,
+            "line_end": 506,
+            "char_start": 987,
+            "char_end": 1319,
+            "content": "        \"hi\",\n        \"mr\",\n        \"ne\",\n        \"bh\",\n        \"mai\",\n        \"ang\",\n        \"bho\",\n        \"mah\",\n        \"sck\",\n        \"new\",\n        \"gom\",\n        \"sa\",\n        \"bgc\",\n    ]\n    if lang in latin_lang:\n        lang = \"latin\"\n    elif lang in arabic_lang:\n        lang = \"arabic\"\n    elif lang in cyrillic_lang:\n"
+          },
+          {
+            "line_start": 423,
+            "line_end": 445,
+            "char_start": 0,
+            "char_end": 335,
+            "content": "def parse_lang(lang):\n    latin_lang = [\n        \"af\",\n        \"az\",\n        \"bs\",\n        \"cs\",\n        \"cy\",\n        \"da\",\n        \"de\",\n        \"es\",\n        \"et\",\n        \"fr\",\n        \"ga\",\n        \"hr\",\n        \"hu\",\n        \"id\",\n        \"is\",\n        \"it\",\n        \"ku\",\n        \"la\",\n        \"lt\",\n        \"lv\",\n        \"mi\",\n"
+          }
+        ],
+        "rank": 1,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.03225806451612903,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v2-9-1-doc-doc-ch-faq-md-f46bd39c",
+        "version": "v2.9.1",
+        "source_snapshot": "v2.9.1",
+        "document_key": "doc/doc_ch/FAQ",
+        "document_title": "OCR 常见问题",
+        "document_path": "doc/doc_ch/FAQ.md",
+        "path": "doc/doc_ch/FAQ.md",
+        "local_path": "sources/v2.9.1/doc/doc_ch/FAQ.md",
+        "source_type": "official_documentation",
+        "source_format": "markdown",
+        "source_content_language": "zh-CN",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/FAQ.md",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/FAQ.md",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+        "git_blob_sha": "5c93d1cbd6f420390e8ecb86f4e7a1776649938a",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/LICENSE",
+        "attribution": "PaddleOCR · v2.9.1 · doc/doc_ch/FAQ.md · Apache-2.0 · commit 07603421c20a96bb94bb87d0c4211032527ae706",
+        "document_family": "module_usage",
+        "scope_note": "官方中文文档",
+        "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:36",
+        "document_id": "v2.9.1:zh:doc/doc_ch/FAQ",
+        "source_sha256": "b50c9d0955f1a81038285cad126462d49e1b626d0c98f5304afd86506694b6e2",
+        "heading": "Q: 如何用PaddleOCR识别视频中的文字？",
+        "heading_path": [
+          "FAQ",
+          "1. 通用问题",
+          "1.5 垂类场景实现思路",
+          "Q: 如何用PaddleOCR识别视频中的文字？"
+        ],
+        "line_start": 202,
+        "line_end": 204,
+        "block_type": "section",
+        "content": "#### Q: 如何用PaddleOCR识别视频中的文字？\n\n**A**: 目前PaddleOCR主要针对图像做处理，如果需要视频识别，可以先对视频抽帧，然后用PPOCR识别。",
+        "module": "general",
+        "evidence_spans": [
+          {
+            "line_start": 202,
+            "line_end": 204,
+            "char_start": 0,
+            "char_end": 88,
+            "content": "#### Q: 如何用PaddleOCR识别视频中的文字？\n\n**A**: 目前PaddleOCR主要针对图像做处理，如果需要视频识别，可以先对视频抽帧，然后用PPOCR识别。"
+          }
+        ],
+        "rank": 2,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.03278688524590164,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v2-9-1-doc-doc-ch-quickstart-md-16a9690b",
+        "version": "v2.9.1",
+        "source_snapshot": "v2.9.1",
+        "document_key": "doc/doc_ch/quickstart",
+        "document_title": "OCR 或结构化解析快速开始",
+        "document_path": "doc/doc_ch/quickstart.md",
+        "path": "doc/doc_ch/quickstart.md",
+        "local_path": "sources/v2.9.1/doc/doc_ch/quickstart.md",
+        "source_type": "official_documentation",
+        "source_format": "markdown",
+        "source_content_language": "zh-CN",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/quickstart.md",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/quickstart.md",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+        "git_blob_sha": "65b29b18792d7550ecd73f43a1783017f7087c46",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/LICENSE",
+        "attribution": "PaddleOCR · v2.9.1 · doc/doc_ch/quickstart.md · Apache-2.0 · commit 07603421c20a96bb94bb87d0c4211032527ae706",
+        "document_family": "quick_start",
+        "scope_note": "官方中文文档",
+        "chunk_id": "v2.9.1:zh:doc/doc_ch/quickstart:47",
+        "document_id": "v2.9.1:zh:doc/doc_ch/quickstart",
+        "source_sha256": "17605d9dfafc66aab465cbf73f91c8c8800bc389fef4fec4925fe1076a72e981",
+        "heading": "2.2.1 中英文与多语言使用",
+        "heading_path": [
+          "PaddleOCR 快速开始",
+          "2. 便捷使用",
+          "2.2 Python脚本使用",
+          "2.2.1 中英文与多语言使用"
+        ],
+        "line_start": 257,
+        "line_end": 287,
+        "block_type": "code_fence",
+        "content": "```Python\nfrom paddleocr import PaddleOCR\nfrom PIL import Image, ImageDraw, ImageFont\n\n# 初始化OCR引擎\nocr = PaddleOCR(use_angle_cls=True, lang=\"en\")\n\nimg_path = \"./very_large_image.jpg\"\nslice = {'horizontal_stride': 300, 'vertical_stride': 500, 'merge_x_thres': 50, 'merge_y_thres': 35}\nresults = ocr.ocr(img_path, cls=True, slice=slice)\n\n# 加载图像\nimage = Image.open(img_path).convert(\"RGB\")\ndraw = ImageDraw.Draw(image)\nfont = ImageFont.truetype(\"./doc/fonts/simfang.ttf\", size=20)  # 根据需要调整大小\n\n# 处理并绘制结果\nfor res in results:\n    for line in res:\n        box = [tuple(point) for point in line[0]]\n        # 找出边界框\n        box = [(min(point[0] for point in box), min(point[1] for point in box)),\n               (max(point[0] for point in box), max(point[1] for point in box))]\n        txt = line[1][0]\n        draw.rectangle(box, outline=\"red\", width=2)  # 绘制矩形\n        draw.text((box[0][0], box[0][1] - 25), txt, fill=\"blue\", font=font)  # 在矩形上方绘制文本\n\n# 保存结果\nimage.save(\"result.jpg\")\n\n```",
+        "module": "general",
+        "evidence_spans": [
+          {
+            "line_start": 257,
+            "line_end": 268,
+            "char_start": 0,
+            "char_end": 342,
+            "content": "```Python\nfrom paddleocr import PaddleOCR\nfrom PIL import Image, ImageDraw, ImageFont\n\n# 初始化OCR引擎\nocr = PaddleOCR(use_angle_cls=True, lang=\"en\")\n\nimg_path = \"./very_large_image.jpg\"\nslice = {'horizontal_stride': 300, 'vertical_stride': 500, 'merge_x_thres': 50, 'merge_y_thres': 35}\nresults = ocr.ocr(img_path, cls=True, slice=slice)\n\n# 加载图像\n"
+          }
+        ],
+        "rank": 3,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.031746031746031744,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v2-9-1-paddleocr-py-02eb1820",
+        "version": "v2.9.1",
+        "source_snapshot": "v2.9.1",
+        "document_key": "paddleocr",
+        "document_title": "PaddleOCR paddleocr 公共 API 实现",
+        "document_path": "paddleocr.py",
+        "path": "paddleocr.py",
+        "local_path": "sources/v2.9.1/paddleocr.py",
+        "source_type": "official_api_contract",
+        "source_format": "python",
+        "source_content_language": "python",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/paddleocr.py",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/07603421c20a96bb94bb87d0c4211032527ae706/paddleocr.py",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+        "git_blob_sha": "bdf367cf1a41c873783ba0a4c82a71c5f7ff0a82",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/LICENSE",
+        "attribution": "PaddleOCR · v2.9.1 · paddleocr.py · Apache-2.0 · commit 07603421c20a96bb94bb87d0c4211032527ae706",
+        "document_family": "ocr_api",
+        "scope_note": "代码/配置辅助证据；不计为中文教程",
+        "chunk_id": "v2.9.1:zh:paddleocr:12",
+        "document_id": "v2.9.1:zh:paddleocr",
+        "source_sha256": "37da5a58692bcd37c8d9cf60765c449fa3662de82d416f04358bd8ead87e7162",
+        "heading": "__init__",
+        "heading_path": [
+          "PPStructure",
+          "__init__"
+        ],
+        "line_start": 801,
+        "line_end": 894,
+        "block_type": "python_definition",
+        "content": "    def __init__(self, **kwargs):\n        \"\"\"\n        Initializes the PPStructure object with the given parameters.\n\n        Args:\n            **kwargs: Additional keyword arguments to customize the behavior of the structure analysis system.\n\n        Raises:\n            AssertionError: If the structure version is not supported.\n\n        \"\"\"\n        params = parse_args(mMain=False)\n        params.__dict__.update(**kwargs)\n        assert (\n            params.structure_version in SUPPORT_STRUCTURE_MODEL_VERSION\n        ), \"structure_version must in {}, but get {}\".format(\n            SUPPORT_STRUCTURE_MODEL_VERSION, params.structure_version\n        )\n        params.use_gpu = check_gpu(params.use_gpu)\n        params.mode = \"structure\"\n\n        if not params.show_log:\n            logger.setLevel(logging.INFO)\n        lang, det_lang = parse_lang(params.lang)\n        if lang == \"ch\":\n            table_lang = \"ch\"\n        else:\n            table_lang = \"en\"\n        if params.structure_version == \"PP-Structure\":\n            params.merge_no_span_structure = False\n\n        # init model dir\n        det_model_config = get_model_config(\"OCR\", params.ocr_version, \"det\", det_lang)\n        params.det_model_dir, det_url = confirm_model_dir_url(\n            params.det_model_dir,\n            os.path.join(BASE_DIR, \"whl\", \"det\", det_lang),\n            det_model_config[\"url\"],\n        )\n        rec_model_config = get_model_config(\"OCR\", params.ocr_version, \"rec\", lang)\n        params.rec_model_dir, rec_url = confirm_model_dir_url(\n            params.rec_model_dir,\n            os.path.join(BASE_DIR, \"whl\", \"rec\", lang),\n            rec_model_config[\"url\"],\n        )\n        table_model_config = get_model_config(\n            \"STRUCTURE\", params.structure_version, \"table\", table_lang\n        )\n        params.table_model_dir, table_url = confirm_model_dir_url(\n            params.table_model_dir,\n            os.path.join(BASE_DIR, \"whl\", \"table\"),\n            table_model_config[\"url\"],\n        )\n        layout_model_config = get_model_config(\n            \"STRUCTURE\", params.structure_version, \"layout\", lang\n        )\n        params.layout_model_dir, layout_url = confirm_model_dir_url(\n            params.layout_model_dir,\n            os.path.join(BASE_DIR, \"whl\", \"layout\"),\n            layout_model_config[\"url\"],\n        )\n        formula_model_config = get_model_config(\n            \"STRUCTURE\", params.structure_version, \"formula\", lang\n        )\n        params.formula_model_dir, formula_url = confirm_model_dir_url(\n            params.formula_model_dir,\n            os.path.join(BASE_DIR, \"whl\", \"formula\"),\n            formula_model_config[\"url\"],\n        )\n        # download model\n        if not params.use_onnx:\n            maybe_download(params.det_model_dir, det_url)\n            maybe_download(params.rec_model_dir, rec_url)\n            maybe_download(params.table_model_dir, table_url)\n            maybe_download(params.layout_model_dir, layout_url)\n            maybe_download(params.formula_model_dir, formula_url)\n\n        if params.rec_char_dict_path is None:\n            params.rec_char_dict_path = str(\n                Path(__file__).parent / rec_model_config[\"dict_path\"]\n            )\n        if params.table_char_dict_path is None:\n            params.table_char_dict_path = str(\n                Path(__file__).parent / table_model_config[\"dict_path\"]\n            )\n        if params.layout_dict_path is None:\n            params.layout_dict_path = str(\n                Path(__file__).parent / layout_model_config[\"dict_path\"]\n            )\n        if params.formula_char_dict_path is None:\n            params.formula_char_dict_path = str(\n                Path(__file__).parent / formula_model_config[\"dict_path\"]\n            )\n        logger.debug(params)\n        super().__init__(params)",
+        "module": "ocr",
+        "evidence_spans": [
+          {
+            "line_start": 819,
+            "line_end": 828,
+            "char_start": 656,
+            "char_end": 964,
+            "content": "        params.use_gpu = check_gpu(params.use_gpu)\n        params.mode = \"structure\"\n\n        if not params.show_log:\n            logger.setLevel(logging.INFO)\n        lang, det_lang = parse_lang(params.lang)\n        if lang == \"ch\":\n            table_lang = \"ch\"\n        else:\n            table_lang = \"en\"\n"
+          },
+          {
+            "line_start": 836,
+            "line_end": 842,
+            "char_start": 1281,
+            "char_end": 1625,
+            "content": "            os.path.join(BASE_DIR, \"whl\", \"det\", det_lang),\n            det_model_config[\"url\"],\n        )\n        rec_model_config = get_model_config(\"OCR\", params.ocr_version, \"rec\", lang)\n        params.rec_model_dir, rec_url = confirm_model_dir_url(\n            params.rec_model_dir,\n            os.path.join(BASE_DIR, \"whl\", \"rec\", lang),\n"
+          },
+          {
+            "line_start": 851,
+            "line_end": 858,
+            "char_start": 1955,
+            "char_end": 2287,
+            "content": "            table_model_config[\"url\"],\n        )\n        layout_model_config = get_model_config(\n            \"STRUCTURE\", params.structure_version, \"layout\", lang\n        )\n        params.layout_model_dir, layout_url = confirm_model_dir_url(\n            params.layout_model_dir,\n            os.path.join(BASE_DIR, \"whl\", \"layout\"),\n"
+          },
+          {
+            "line_start": 859,
+            "line_end": 866,
+            "char_start": 2287,
+            "char_end": 2626,
+            "content": "            layout_model_config[\"url\"],\n        )\n        formula_model_config = get_model_config(\n            \"STRUCTURE\", params.structure_version, \"formula\", lang\n        )\n        params.formula_model_dir, formula_url = confirm_model_dir_url(\n            params.formula_model_dir,\n            os.path.join(BASE_DIR, \"whl\", \"formula\"),\n"
+          }
+        ],
+        "rank": 4,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.03125,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v2-9-1-doc-doc-ch-whl-md-f1bd9719",
+        "version": "v2.9.1",
+        "source_snapshot": "v2.9.1",
+        "document_key": "doc/doc_ch/whl",
+        "document_title": "Python 包安装与 OCR 结果用法",
+        "document_path": "doc/doc_ch/whl.md",
+        "path": "doc/doc_ch/whl.md",
+        "local_path": "sources/v2.9.1/doc/doc_ch/whl.md",
+        "source_type": "official_documentation",
+        "source_format": "markdown",
+        "source_content_language": "zh-CN",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/whl.md",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/whl.md",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+        "git_blob_sha": "2f9976f6d80d14145afab5fffeb85f9f790fc023",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/LICENSE",
+        "attribution": "PaddleOCR · v2.9.1 · doc/doc_ch/whl.md · Apache-2.0 · commit 07603421c20a96bb94bb87d0c4211032527ae706",
+        "document_family": "python_package",
+        "scope_note": "官方中文文档",
+        "chunk_id": "v2.9.1:zh:doc/doc_ch/whl:9",
+        "document_id": "v2.9.1:zh:doc/doc_ch/whl",
+        "source_sha256": "9bc1fb30acf1da3ef10613fc44b8748f70ac7fb17d5b449b281fa49d869e455a",
+        "heading": "2.1 代码使用",
+        "heading_path": [
+          "paddleocr package使用说明",
+          "2 使用",
+          "2.1 代码使用"
+        ],
+        "line_start": 28,
+        "line_end": 51,
+        "block_type": "code_fence",
+        "content": "```python\nfrom paddleocr import PaddleOCR, draw_ocr\n\n# Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换\n# 参数依次为`ch`, `en`, `french`, `german`, `korean`, `japan`。\nocr = PaddleOCR(use_angle_cls=True, lang=\"ch\")  # need to run only once to download and load model into memory\nimg_path = 'PaddleOCR/doc/imgs/11.jpg'\nresult = ocr.ocr(img_path, cls=True)\nfor idx in range(len(result)):\n    res = result[idx]\n    for line in res:\n        print(line)\n\n# 显示结果\nfrom PIL import Image\nresult = result[0]\nimage = Image.open(img_path).convert('RGB')\nboxes = [line[0] for line in result]\ntxts = [line[1][0] for line in result]\nscores = [line[1][1] for line in result]\nim_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')\nim_show = Image.fromarray(im_show)\nim_show.save('result.jpg')\n```",
+        "module": "ocr",
+        "evidence_spans": [
+          {
+            "line_start": 28,
+            "line_end": 35,
+            "char_start": 0,
+            "char_end": 349,
+            "content": "```python\nfrom paddleocr import PaddleOCR, draw_ocr\n\n# Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换\n# 参数依次为`ch`, `en`, `french`, `german`, `korean`, `japan`。\nocr = PaddleOCR(use_angle_cls=True, lang=\"ch\")  # need to run only once to download and load model into memory\nimg_path = 'PaddleOCR/doc/imgs/11.jpg'\nresult = ocr.ocr(img_path, cls=True)\n"
+          },
+          {
+            "line_start": 48,
+            "line_end": 51,
+            "char_start": 653,
+            "char_end": 819,
+            "content": "im_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')\nim_show = Image.fromarray(im_show)\nim_show.save('result.jpg')\n```"
+          }
+        ],
+        "rank": 5,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.03076923076923077,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v2-9-1-doc-doc-ch-quickstart-md-16a9690b",
+        "version": "v2.9.1",
+        "source_snapshot": "v2.9.1",
+        "document_key": "doc/doc_ch/quickstart",
+        "document_title": "OCR 或结构化解析快速开始",
+        "document_path": "doc/doc_ch/quickstart.md",
+        "path": "doc/doc_ch/quickstart.md",
+        "local_path": "sources/v2.9.1/doc/doc_ch/quickstart.md",
+        "source_type": "official_documentation",
+        "source_format": "markdown",
+        "source_content_language": "zh-CN",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/quickstart.md",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/quickstart.md",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+        "git_blob_sha": "65b29b18792d7550ecd73f43a1783017f7087c46",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/LICENSE",
+        "attribution": "PaddleOCR · v2.9.1 · doc/doc_ch/quickstart.md · Apache-2.0 · commit 07603421c20a96bb94bb87d0c4211032527ae706",
+        "document_family": "quick_start",
+        "scope_note": "官方中文文档",
+        "chunk_id": "v2.9.1:zh:doc/doc_ch/quickstart:45",
+        "document_id": "v2.9.1:zh:doc/doc_ch/quickstart",
+        "source_sha256": "17605d9dfafc66aab465cbf73f91c8c8800bc389fef4fec4925fe1076a72e981",
+        "heading": "2.2.1 中英文与多语言使用",
+        "heading_path": [
+          "PaddleOCR 快速开始",
+          "2. 便捷使用",
+          "2.2 Python脚本使用",
+          "2.2.1 中英文与多语言使用"
+        ],
+        "line_start": 206,
+        "line_end": 251,
+        "block_type": "code_fence",
+        "content": "```python\nfrom paddleocr import PaddleOCR, draw_ocr\n\n# Paddleocr目前支持的多语言语种可以通过修改lang参数进行切换\n# 例如`ch`, `en`, `fr`, `german`, `korean`, `japan`\nPAGE_NUM = 10 # 将识别页码前置作为全局，防止后续打开pdf的参数和前文识别参数不一致 / Set the recognition page number\npdf_path = 'default.pdf'\nocr = PaddleOCR(use_angle_cls=True, lang=\"ch\", page_num=PAGE_NUM)  # need to run only once to download and load model into memory\n# ocr = PaddleOCR(use_angle_cls=True, lang=\"ch\", page_num=PAGE_NUM,use_gpu=0) # 如果需要使用GPU，请取消此行的注释 并注释上一行 / To Use GPU,uncomment this line and comment the above one.\nresult = ocr.ocr(pdf_path, cls=True)\nfor idx in range(len(result)):\n    res = result[idx]\n    if res == None: # 识别到空页就跳过，防止程序报错 / Skip when empty result detected to avoid TypeError:NoneType\n        print(f\"[DEBUG] Empty page {idx+1} detected, skip it.\")\n        continue\n    for line in res:\n        print(line)\n# 显示结果\nimport fitz\nfrom PIL import Image\nimport cv2\nimport numpy as np\nimgs = []\nwith fitz.open(pdf_path) as pdf:\n    for pg in range(0, PAGE_NUM):\n        page = pdf[pg]\n        mat = fitz.Matrix(2, 2)\n        pm = page.get_pixmap(matrix=mat, alpha=False)\n        # if width or height > 2000 pixels, don't enlarge the image\n        if pm.width > 2000 or pm.height > 2000:\n            pm = page.get_pixmap(matrix=fitz.Matrix(1, 1), alpha=False)\n        img = Image.frombytes(\"RGB\", [pm.width, pm.height], pm.samples)\n        img = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)\n        imgs.append(img)\nfor idx in range(len(result)):\n    res = result[idx]\n    if res == None:\n        continue\n    image = imgs[idx]\n    boxes = [line[0] for line in res]\n    txts = [line[1][0] for line in res]\n    scores = [line[1][1] for line in res]\n    im_show = draw_ocr(image, boxes, txts, scores, font_path='doc/fonts/simfang.ttf')\n    im_show = Image.fromarray(im_show)\n    im_show.save('result_page_{}.jpg'.format(idx))\n```",
+        "module": "general",
+        "evidence_spans": [
+          {
+            "line_start": 213,
+            "line_end": 215,
+            "char_start": 251,
+            "char_end": 584,
+            "content": "ocr = PaddleOCR(use_angle_cls=True, lang=\"ch\", page_num=PAGE_NUM)  # need to run only once to download and load model into memory\n# ocr = PaddleOCR(use_angle_cls=True, lang=\"ch\", page_num=PAGE_NUM,use_gpu=0) # 如果需要使用GPU，请取消此行的注释 并注释上一行 / To Use GPU,uncomment this line and comment the above one.\nresult = ocr.ocr(pdf_path, cls=True)\n"
+          },
+          {
+            "line_start": 206,
+            "line_end": 212,
+            "char_start": 0,
+            "char_end": 251,
+            "content": "```python\nfrom paddleocr import PaddleOCR, draw_ocr\n\n# Paddleocr目前支持的多语言语种可以通过修改lang参数进行切换\n# 例如`ch`, `en`, `fr`, `german`, `korean`, `japan`\nPAGE_NUM = 10 # 将识别页码前置作为全局，防止后续打开pdf的参数和前文识别参数不一致 / Set the recognition page number\npdf_path = 'default.pdf'\n"
+          }
+        ],
+        "rank": 6,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.030303030303030304,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v2-9-1-doc-doc-ch-quickstart-md-16a9690b",
+        "version": "v2.9.1",
+        "source_snapshot": "v2.9.1",
+        "document_key": "doc/doc_ch/quickstart",
+        "document_title": "OCR 或结构化解析快速开始",
+        "document_path": "doc/doc_ch/quickstart.md",
+        "path": "doc/doc_ch/quickstart.md",
+        "local_path": "sources/v2.9.1/doc/doc_ch/quickstart.md",
+        "source_type": "official_documentation",
+        "source_format": "markdown",
+        "source_content_language": "zh-CN",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/quickstart.md",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/quickstart.md",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+        "git_blob_sha": "65b29b18792d7550ecd73f43a1783017f7087c46",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/LICENSE",
+        "attribution": "PaddleOCR · v2.9.1 · doc/doc_ch/quickstart.md · Apache-2.0 · commit 07603421c20a96bb94bb87d0c4211032527ae706",
+        "document_family": "quick_start",
+        "scope_note": "官方中文文档",
+        "chunk_id": "v2.9.1:zh:doc/doc_ch/quickstart:41",
+        "document_id": "v2.9.1:zh:doc/doc_ch/quickstart",
+        "source_sha256": "17605d9dfafc66aab465cbf73f91c8c8800bc389fef4fec4925fe1076a72e981",
+        "heading": "2.2.1 中英文与多语言使用",
+        "heading_path": [
+          "PaddleOCR 快速开始",
+          "2. 便捷使用",
+          "2.2 Python脚本使用",
+          "2.2.1 中英文与多语言使用"
+        ],
+        "line_start": 163,
+        "line_end": 186,
+        "block_type": "code_fence",
+        "content": "```python\nfrom paddleocr import PaddleOCR, draw_ocr\n\n# Paddleocr目前支持的多语言语种可以通过修改lang参数进行切换\n# 例如`ch`, `en`, `fr`, `german`, `korean`, `japan`\nocr = PaddleOCR(use_angle_cls=True, lang=\"ch\")  # need to run only once to download and load model into memory\nimg_path = './imgs/11.jpg'\nresult = ocr.ocr(img_path, cls=True)\nfor idx in range(len(result)):\n    res = result[idx]\n    for line in res:\n        print(line)\n\n# 显示结果\nfrom PIL import Image\nresult = result[0]\nimage = Image.open(img_path).convert('RGB')\nboxes = [line[0] for line in result]\ntxts = [line[1][0] for line in result]\nscores = [line[1][1] for line in result]\nim_show = draw_ocr(image, boxes, txts, scores, font_path='./fonts/simfang.ttf')\nim_show = Image.fromarray(im_show)\nim_show.save('result.jpg')\n```",
+        "module": "general",
+        "evidence_spans": [
+          {
+            "line_start": 163,
+            "line_end": 171,
+            "char_start": 0,
+            "char_end": 347,
+            "content": "```python\nfrom paddleocr import PaddleOCR, draw_ocr\n\n# Paddleocr目前支持的多语言语种可以通过修改lang参数进行切换\n# 例如`ch`, `en`, `fr`, `german`, `korean`, `japan`\nocr = PaddleOCR(use_angle_cls=True, lang=\"ch\")  # need to run only once to download and load model into memory\nimg_path = './imgs/11.jpg'\nresult = ocr.ocr(img_path, cls=True)\nfor idx in range(len(result)):\n"
+          }
+        ],
+        "rank": 7,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.029850746268656716,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v2-9-1-doc-doc-ch-whl-md-f1bd9719",
+        "version": "v2.9.1",
+        "source_snapshot": "v2.9.1",
+        "document_key": "doc/doc_ch/whl",
+        "document_title": "Python 包安装与 OCR 结果用法",
+        "document_path": "doc/doc_ch/whl.md",
+        "path": "doc/doc_ch/whl.md",
+        "local_path": "sources/v2.9.1/doc/doc_ch/whl.md",
+        "source_type": "official_documentation",
+        "source_format": "markdown",
+        "source_content_language": "zh-CN",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/whl.md",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/whl.md",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+        "git_blob_sha": "2f9976f6d80d14145afab5fffeb85f9f790fc023",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/LICENSE",
+        "attribution": "PaddleOCR · v2.9.1 · doc/doc_ch/whl.md · Apache-2.0 · commit 07603421c20a96bb94bb87d0c4211032527ae706",
+        "document_family": "python_package",
+        "scope_note": "官方中文文档",
+        "chunk_id": "v2.9.1:zh:doc/doc_ch/whl:67",
+        "document_id": "v2.9.1:zh:doc/doc_ch/whl",
+        "source_sha256": "9bc1fb30acf1da3ef10613fc44b8748f70ac7fb17d5b449b281fa49d869e455a",
+        "heading": "4.1 网络图片",
+        "heading_path": [
+          "paddleocr package使用说明",
+          "4 使用网络图片或者numpy数组作为输入",
+          "4.1 网络图片"
+        ],
+        "line_start": 339,
+        "line_end": 363,
+        "block_type": "code_fence",
+        "content": "```python\nfrom paddleocr import PaddleOCR, draw_ocr, download_with_progressbar\n\n# Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换\n# 参数依次为`ch`, `en`, `french`, `german`, `korean`, `japan`。\nocr = PaddleOCR(use_angle_cls=True, lang=\"ch\")  # need to run only once to download and load model into memory\nimg_path = 'http://n.sinaimg.cn/ent/transform/w630h933/20171222/o111-fypvuqf1838418.jpg'\nresult = ocr.ocr(img_path, cls=True)\nfor idx in range(len(result)):\n    res = result[idx]\n    for line in res:\n        print(line)\n\n# 显示结果\nfrom PIL import Image\nresult = result[0]\ndownload_with_progressbar(img_path, 'tmp.jpg')\nimage = Image.open('tmp.jpg').convert('RGB')\nboxes = [line[0] for line in result]\ntxts = [line[1][0] for line in result]\nscores = [line[1][1] for line in result]\nim_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/simfang.ttf')\nim_show = Image.fromarray(im_show)\nim_show.save('result.jpg')\n```",
+        "module": "ocr",
+        "evidence_spans": [
+          {
+            "line_start": 339,
+            "line_end": 344,
+            "char_start": 0,
+            "char_end": 300,
+            "content": "```python\nfrom paddleocr import PaddleOCR, draw_ocr, download_with_progressbar\n\n# Paddleocr目前支持中英文、英文、法语、德语、韩语、日语，可以通过修改lang参数进行切换\n# 参数依次为`ch`, `en`, `french`, `german`, `korean`, `japan`。\nocr = PaddleOCR(use_angle_cls=True, lang=\"ch\")  # need to run only once to download and load model into memory\n"
+          }
+        ],
+        "rank": 8,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.029411764705882353,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      }
+    ],
+    "requirements": [
+      {
+        "id": "r1",
+        "query": "PaddleOCR 2.9.1 如何用 lang=\"ch\" 初始化中文 OCR",
+        "module": "ocr",
+        "symbols": [],
+        "version": "v2.9.1"
+      }
+    ],
+    "consistency_notes": [],
+    "generation": {
+      "request_id": "8abbb41fb8dd407f9cf7ad0a53dd9a03",
+      "provider": "deepseek",
+      "requested_model": "deepseek-v4-flash",
+      "returned_model": "deepseek-flash",
+      "finish_reason": "stop",
+      "usage": {
+        "input_tokens": 3816,
+        "output_tokens": 179,
+        "total_tokens": 3995
+      },
+      "latency_ms": 12728.822,
+      "failure_reason": null,
+      "candidate_count": 8,
+      "evidence_coverage": null,
+      "claimed_citation_count": 5,
+      "valid_citation_count": 5,
+      "generation_latency_ms": 6381
+    },
+    "retrieval_policy": "paddleocr_evidence",
+    "requested_policy": "paddleocr_evidence",
+    "actual_policy": "contextual_bm25",
+    "route": "CONCEPTUAL_LOOKUP",
+    "rerank_status": "NOT_REQUESTED",
+    "rerank_diagnostics": {
+      "requested_strategy": "contextual_bm25",
+      "actual_strategy": "contextual_bm25",
+      "candidate_budget": 120,
+      "eligible_windows": 540,
+      "rerank_calls": 0,
+      "external_model_calls": 0,
+      "fallback_reason": null,
+      "window_failures": [],
+      "model_identity": {
+        "embedding": "NOT_CONFIGURED",
+        "reranker": "NOT_CONFIGURED",
+        "attention": "eager"
+      },
+      "window_budget": 384,
+      "window_unit": "characters",
+      "source_intent": "knowledge",
+      "candidate_windows": 120,
+      "requirement_candidates": {
+        "r1": "v2.9.1:zh:paddleocr:4"
+      },
+      "final_evidence_count": 8,
+      "selected_windows": 16,
+      "status": "OK"
+    },
+    "candidate_count": 120,
+    "final_evidence_count": 8,
+    "retrieval_latency_ms": 15.754,
+    "rerank_latency_ms": null,
+    "evidence_gaps": [],
+    "answer_completeness": "NOT_ASSESSED",
+    "mechanical_verification": {
+      "assessment_type": "mechanical_scope_and_parsed_defaults_not_complete_answer_validation",
+      "requirements": {
+        "r1": {
+          "status": "APPLICABLE_EVIDENCE_FOUND",
+          "evidence_ids": [
+            "v2.9.1:zh:paddleocr:4",
+            "v2.9.1:zh:paddleocr:12",
+            "v2.9.1:zh:doc/doc_ch/whl:9",
+            "v2.9.1:zh:doc/doc_ch/whl:67"
+          ],
+          "assessment": "scope_and_symbol_only"
+        }
+      },
+      "claims": [
+        {
+          "claim_index": 0,
+          "status": "NOT_MECHANICALLY_CHECKABLE",
+          "symbols": []
+        },
+        {
+          "claim_index": 1,
+          "status": "NOT_MECHANICALLY_CHECKABLE",
+          "symbols": []
+        },
+        {
+          "claim_index": 2,
+          "status": "NOT_MECHANICALLY_CHECKABLE",
+          "symbols": []
+        }
+      ]
+    },
+    "claim_verification": {
+      "status": "SUPPORTED",
+      "rejected": [],
+      "diagnostics": {
+        "provider": "deepseek",
+        "requested_model": "deepseek-v4-flash",
+        "returned_model": "deepseek-flash",
+        "finish_reason": "stop",
+        "usage": {
+          "input_tokens": 1952,
+          "output_tokens": 205,
+          "total_tokens": 2157
+        }
+      },
+      "assessment_type": "model_assessment_not_human_validation",
+      "latency_ms": 6346.296
+    },
+    "claims": [
+      {
+        "text": "在 PaddleOCR v2.9.1 中，使用 lang=\"ch\" 初始化中文 OCR 引擎的写法为：ocr = PaddleOCR(use_angle_cls=True, lang=\"ch\")。",
+        "evidence_ids": [
+          "v2.9.1:zh:doc/doc_ch/whl:9",
+          "v2.9.1:zh:doc/doc_ch/quickstart:41",
+          "v2.9.1:zh:doc/doc_ch/whl:67"
+        ],
+        "source_indexes": [
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "text": "PaddleOCR 的 lang 参数支持传入 'ch' 来切换到中文模型。",
+        "evidence_ids": [
+          "v2.9.1:zh:doc/doc_ch/whl:9"
+        ],
+        "source_indexes": [
+          2
+        ]
+      },
+      {
+        "text": "parse_lang 内部对 lang == \"ch\" 时返回的 det_lang 也为 \"ch\"。",
+        "evidence_ids": [
+          "v2.9.1:zh:paddleocr:4"
+        ],
+        "source_indexes": [
+          1
+        ]
+      }
+    ],
+    "evidence_support": {
+      "level": "limited",
+      "label": "有限",
+      "matched_terms": 4,
+      "missing_terms": 5,
+      "total_terms": 9,
+      "summary": "引用内容覆盖问题关键词 4/9；这是规则估算的证据覆盖提示，不代表答案正确率。"
+    },
+    "status": "OK",
+    "workflow_usage": {
+      "total_tokens": 9771,
+      "reported_calls": 4,
+      "observed_stages": 4,
+      "complete": true
+    },
+    "correction": {
+      "attempts": 1,
+      "trigger": "PARTIAL_SUPPORTED",
+      "status": "RECOVERED",
+      "trace": [
+        {
+          "status": "OK",
+          "generation": {
+            "request_id": "8abbb41fb8dd407f9cf7ad0a53dd9a03",
+            "provider": "deepseek",
+            "requested_model": "deepseek-v4-flash",
+            "returned_model": "deepseek-flash",
+            "finish_reason": "stop",
+            "usage": {
+              "input_tokens": 2036,
+              "output_tokens": 183,
+              "total_tokens": 2219
+            },
+            "latency_ms": 12958.694,
+            "failure_reason": null,
+            "candidate_count": 5,
+            "evidence_coverage": null,
+            "claimed_citation_count": 2,
+            "valid_citation_count": 2,
+            "generation_latency_ms": 6709
+          },
+          "claim_verification": {
+            "status": "PARTIAL_SUPPORTED",
+            "rejected": [
+              {
+                "claim_index": 2,
+                "supported": false,
+                "reason": "证据中虽有 if lang == \"ch\": det_lang = \"ch\"，但该证据被截断且未显示函数名或 parse_lang 上下文，无法确定这是 parse_lang 逻辑，因此不能完全支持该具体主张。"
+              }
+            ],
+            "diagnostics": {
+              "provider": "deepseek",
+              "requested_model": "deepseek-v4-flash",
+              "returned_model": "deepseek-flash",
+              "finish_reason": "stop",
+              "usage": {
+                "input_tokens": 1224,
+                "output_tokens": 176,
+                "total_tokens": 1400
+              }
+            },
+            "assessment_type": "model_assessment_not_human_validation",
+            "latency_ms": 6249.146
+          },
+          "mechanical_verification": {
+            "assessment_type": "mechanical_scope_and_parsed_defaults_not_complete_answer_validation",
+            "requirements": {
+              "r1": {
+                "status": "APPLICABLE_EVIDENCE_FOUND",
+                "evidence_ids": [
+                  "v2.9.1:zh:paddleocr:4",
+                  "v2.9.1:zh:paddleocr:12",
+                  "v2.9.1:zh:doc/doc_ch/whl:9"
+                ],
+                "assessment": "scope_and_symbol_only"
+              }
+            },
+            "claims": [
+              {
+                "claim_index": 0,
+                "status": "NOT_MECHANICALLY_CHECKABLE",
+                "symbols": []
+              },
+              {
+                "claim_index": 1,
+                "status": "NOT_MECHANICALLY_CHECKABLE",
+                "symbols": []
+              },
+              {
+                "claim_index": 2,
+                "status": "NOT_MECHANICALLY_CHECKABLE",
+                "symbols": []
+              }
+            ]
+          },
+          "actual_policy": "contextual_bm25",
+          "retrieval_latency_ms": 16.038,
+          "rerank_diagnostics": {
+            "requested_strategy": "contextual_bm25",
+            "actual_strategy": "contextual_bm25",
+            "candidate_budget": 40,
+            "eligible_windows": 540,
+            "rerank_calls": 0,
+            "external_model_calls": 0,
+            "fallback_reason": null,
+            "window_failures": [],
+            "model_identity": {
+              "embedding": "NOT_CONFIGURED",
+              "reranker": "NOT_CONFIGURED",
+              "attention": "eager"
+            },
+            "window_budget": 384,
+            "window_unit": "characters",
+            "source_intent": "knowledge",
+            "candidate_windows": 40,
+            "requirement_candidates": {
+              "r1": "v2.9.1:zh:paddleocr:4"
+            },
+            "final_evidence_count": 5,
+            "selected_windows": 8,
+            "status": "OK"
+          }
+        },
+        {
+          "status": "OK",
+          "generation": {
+            "request_id": "8abbb41fb8dd407f9cf7ad0a53dd9a03",
+            "provider": "deepseek",
+            "requested_model": "deepseek-v4-flash",
+            "returned_model": "deepseek-flash",
+            "finish_reason": "stop",
+            "usage": {
+              "input_tokens": 3816,
+              "output_tokens": 179,
+              "total_tokens": 3995
+            },
+            "latency_ms": 12728.822,
+            "failure_reason": null,
+            "candidate_count": 8,
+            "evidence_coverage": null,
+            "claimed_citation_count": 5,
+            "valid_citation_count": 5,
+            "generation_latency_ms": 6381
+          },
+          "claim_verification": {
+            "status": "SUPPORTED",
+            "rejected": [],
+            "diagnostics": {
+              "provider": "deepseek",
+              "requested_model": "deepseek-v4-flash",
+              "returned_model": "deepseek-flash",
+              "finish_reason": "stop",
+              "usage": {
+                "input_tokens": 1952,
+                "output_tokens": 205,
+                "total_tokens": 2157
+              }
+            },
+            "assessment_type": "model_assessment_not_human_validation",
+            "latency_ms": 6346.296
+          },
+          "mechanical_verification": {
+            "assessment_type": "mechanical_scope_and_parsed_defaults_not_complete_answer_validation",
+            "requirements": {
+              "r1": {
+                "status": "APPLICABLE_EVIDENCE_FOUND",
+                "evidence_ids": [
+                  "v2.9.1:zh:paddleocr:4",
+                  "v2.9.1:zh:paddleocr:12",
+                  "v2.9.1:zh:doc/doc_ch/whl:9",
+                  "v2.9.1:zh:doc/doc_ch/whl:67"
+                ],
+                "assessment": "scope_and_symbol_only"
+              }
+            },
+            "claims": [
+              {
+                "claim_index": 0,
+                "status": "NOT_MECHANICALLY_CHECKABLE",
+                "symbols": []
+              },
+              {
+                "claim_index": 1,
+                "status": "NOT_MECHANICALLY_CHECKABLE",
+                "symbols": []
+              },
+              {
+                "claim_index": 2,
+                "status": "NOT_MECHANICALLY_CHECKABLE",
+                "symbols": []
+              }
+            ]
+          },
+          "actual_policy": "contextual_bm25",
+          "retrieval_latency_ms": 15.754,
+          "rerank_diagnostics": {
+            "requested_strategy": "contextual_bm25",
+            "actual_strategy": "contextual_bm25",
+            "candidate_budget": 120,
+            "eligible_windows": 540,
+            "rerank_calls": 0,
+            "external_model_calls": 0,
+            "fallback_reason": null,
+            "window_failures": [],
+            "model_identity": {
+              "embedding": "NOT_CONFIGURED",
+              "reranker": "NOT_CONFIGURED",
+              "attention": "eager"
+            },
+            "window_budget": 384,
+            "window_unit": "characters",
+            "source_intent": "knowledge",
+            "candidate_windows": 120,
+            "requirement_candidates": {
+              "r1": "v2.9.1:zh:paddleocr:4"
+            },
+            "final_evidence_count": 8,
+            "selected_windows": 16,
+            "status": "OK"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -73,7 +73,7 @@ def test_streamlit_exposes_current_edge_knowledge_and_review_controls(monkeypatc
     assert not app.exception
     selectors = {item.label for item in app.selectbox}
     assert {"版本范围", "资料语言", "示例问题（选择后可编辑）"} <= selectors
-    assert any(item.label == "只想核对原文？" for item in app.expander)
+    assert app.button(key='knowledge_search')
 
 
 

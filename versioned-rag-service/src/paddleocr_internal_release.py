@@ -24,7 +24,20 @@ def frozen_lock_matches(root, freeze, lock):
 
 def load_internal_release(corpus):
     root=Path(__file__).resolve().parents[2]
-    folder=root/'evaluation/internal_workflow_v1/final'
+    folder=root/'evaluation/interview_release_v1/final6'
+    if not (folder/'release.json').is_file():
+        folder=root/'evaluation/interview_release_v1/final5'
+    if not (folder/'release.json').is_file():
+        folder=root/'evaluation/interview_release_v1/final4'
+    if not (folder/'release.json').is_file():
+        folder=root/'evaluation/interview_release_v1/final3'
+    if not (folder/'release.json').is_file():
+        folder=root/'evaluation/interview_release_v1/final2'
+    if not (folder/'release.json').is_file():
+        folder=root/'evaluation/interview_release_v1/final'
+    if not (folder/'release.json').is_file():
+        folder=root/'evaluation/internal_workflow_v1/final'
+    relative_folder=folder.relative_to(root).as_posix()
     try:
         if Path(corpus).resolve()!=(root/'versioned-rag-service/public_corpus_paddleocr').resolve():return None
         release=json.loads((folder/'release.json').read_text(encoding='utf8'))
@@ -34,8 +47,8 @@ def load_internal_release(corpus):
         if release.get('schema_version')!=1 or release.get('selected') not in freeze['configs']:return None
         cfg=freeze['configs'][release['selected']]
         if cfg['strategy'] not in ('contextual_bm25','contextual_rerank') or cfg['top_k'] not in (5,8) or cfg['window_budget'] not in (256,384) or cfg['candidate_budget'] not in (40,80):return None
-        required=set(freeze['files'])|{'evaluation/internal_workflow_v1/final/'+name for name in ('release.json','freeze.json','selection.json','dataset.json')}
-        required|={f'evaluation/internal_workflow_v1/final/{name}-{split}.json' for name,splits in release['retrieval'].items() for split in splits}
+        required=set(freeze['files'])|{relative_folder+'/'+name for name in ('release.json','freeze.json','selection.json','dataset.json')}
+        required|={f'{relative_folder}/{name}-{split}.json' for name,splits in release['retrieval'].items() for split in splits}
         if not required.issubset(lock['files']):return None
         for relative,sha in lock['files'].items():
             path=(root/relative).resolve()

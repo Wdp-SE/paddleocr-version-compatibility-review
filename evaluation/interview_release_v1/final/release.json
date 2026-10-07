@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "dataset_id": "interview-release-v1-known-regression",
+  "selected": "scoped_384",
+  "selected_strategy": "contextual_bm25",
+  "top_k": 5,
+  "window_budget": 384,
+  "candidate_budget": 40,
+  "use_context": true,
+  "retrieval": {
+    "legacy": {
+      "dev": {
+        "metrics": {
+          "count": 24,
+          "complete_count": 8,
+          "fact_hit_count": 8,
+          "fact_count": 24,
+          "source_hit_count": 17,
+          "wrong_version_count": 0,
+          "wrong_module_count": 81,
+          "complete_rate": 0.3333333333333333,
+          "fact_recall": 0.3333333333333333
+        },
+        "execution": "词法检索"
+      },
+      "validation": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 8,
+          "fact_hit_count": 8,
+          "fact_count": 12,
+          "source_hit_count": 8,
+          "wrong_version_count": 0,
+          "wrong_module_count": 36,
+          "complete_rate": 0.6666666666666666,
+          "fact_recall": 0.6666666666666666
+        },
+        "execution": "词法检索"
+      },
+      "holdout": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 2,
+          "fact_hit_count": 2,
+          "fact_count": 12,
+          "source_hit_count": 8,
+          "wrong_version_count": 0,
+          "wrong_module_count": 42,
+          "complete_rate": 0.16666666666666666,
+          "fact_recall": 0.16666666666666666
+        },
+        "execution": "词法检索"
+      }
+    },
+    "scoped_384": {
+      "dev": {
+        "metrics": {
+          "count": 24,
+          "complete_count": 13,
+          "fact_hit_count": 13,
+          "fact_count": 24,
+          "source_hit_count": 21,
+          "wrong_version_count": 0,
+          "wrong_module_count": 46,
+          "complete_rate": 0.5416666666666666,
+          "fact_recall": 0.5416666666666666
+        },
+        "execution": "词法检索"
+      },
+      "validation": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 9,
+          "fact_hit_count": 9,
+          "fact_count": 12,
+          "source_hit_count": 9,
+          "wrong_version_count": 0,
+          "wrong_module_count": 28,
+          "complete_rate": 0.75,
+          "fact_recall": 0.75
+        },
+        "execution": "词法检索"
+      },
+      "holdout": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 8,
+          "fact_hit_count": 8,
+          "fact_count": 12,
+          "source_hit_count": 12,
+          "wrong_version_count": 0,
+          "wrong_module_count": 0,
+          "complete_rate": 0.6666666666666666,
+          "fact_recall": 0.6666666666666666
+        },
+        "execution": "词法检索"
+      }
+    }
+  },
+  "limitations": "48 条已知开发者标注题的重新回归，历史分组不是本轮盲测；完整证据覆盖不是回答准确率。本轮保留既有参数，无新神经选型或企业效果结论。"
+}

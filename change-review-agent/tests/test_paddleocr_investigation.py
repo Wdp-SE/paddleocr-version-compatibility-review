@@ -50,3 +50,16 @@ def test_cancel_preserves_unprocessed_checks_as_gaps():
     checks=[{'check_id':str(i),'query':'结果'+str(i),'versions':['v3.0.0']} for i in range(5)]
     result=investigate(checks,Gateway(),clock=lambda:0,cancelled=lambda:True)
     assert {r['check_id'] for r in result['unresolved']}=={str(i) for i in range(5)}
+
+
+def test_application_validation_gap_is_not_searched_in_official_sdk_docs():
+    from app.paddleocr_investigation import build_checks, investigate
+    class Gateway:
+        def search(self, question, **kwargs):
+            pytest.fail('official docs cannot prove the uploaded application control flow')
+    checks=build_checks({'findings':[], 'gaps':[{'code':'uncertain_control_flow',
+        'detail':'应用分支未做全路径证明，需在内部环境验证。'}]})
+    result=investigate(checks,Gateway(),clock=lambda:0)
+    assert result['search_calls']==0 and result['planner_calls']==0
+    assert result['unresolved']
+    assert all(r['reason']=='application_validation_required' for r in result['unresolved'])

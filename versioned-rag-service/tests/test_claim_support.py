@@ -1,6 +1,19 @@
 import pytest
 
 
+def test_answer_checker_receives_original_question_to_reject_off_target_truths():
+    from src.claim_support import check_claim_support
+    seen=[]
+    def judge(payload):
+        seen.extend(payload)
+        return {'verdicts':[{'claim_index':0,'supported':False,'reason':'部署事实未回答调用问题'}]},{}
+    question='Python OCR 调用如何关闭检测？'
+    out=check_claim_support([{'text':'部署识别服务','evidence_ids':['a']}],
+        [{'chunk_id':'a','content':'可以部署识别服务'}], judge, question=question)
+    assert seen[0]['question']==question
+    assert out['claims']==[]
+
+
 def test_claim_checker_drops_unsupported_even_when_citation_exists():
     from src.claim_support import check_claim_support
     claims=[{'text':'默认线程数是8','evidence_ids':['a']},{'text':'默认线程数是4','evidence_ids':['a']}]

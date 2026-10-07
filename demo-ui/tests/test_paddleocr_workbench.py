@@ -76,6 +76,66 @@ def visible(app):
     return "\n".join(str(item.value) for item in list(app.markdown) + list(app.caption) + list(app.info) + list(app.warning))
 
 
+def test_interview_examples_keep_cross_version_question_and_select_scope(client, monkeypatch):
+    workspace=copy.deepcopy(WORKSPACE)
+    workspace['domain_profile']['example_queries']=[
+        'PaddleOCR 2.9.1 的 OCR 调用如何只识别文字而不检测？',
+        'PaddleOCR 3.0.0 的 OCR 结果中 rec_texts 和 rec_scores 分别表示什么？',
+        'PaddleOCR 2.9.1 升级到 3.0.0，旧结果读取方式为什么需要调整？',
+        '仅凭官方资料，能否确认我们应用升级后下游 JSON 输出兼容？']
+    monkeypatch.setattr(PublicKnowledgeClient,'workspace',lambda self:copy.deepcopy(workspace))
+    app=AppTest.from_file(APP,default_timeout=30).run()
+    app.button(key='nav_版本检索与问答').click().run()
+    assert len(app.selectbox(key='official_example').options)==4
+    app.selectbox(key='official_example').select(workspace['domain_profile']['example_queries'][2]).run()
+    assert app.selectbox(key='official_version').value=='all'
+    assert not app.exception
+
+
+def test_navigation_cache_and_query_submission_refresh(client, monkeypatch):
+    workspace_calls, query_calls = [], []
+    def workspace(self):
+        workspace_calls.append(self)
+        return copy.deepcopy(WORKSPACE)
+    monkeypatch.setattr(PublicKnowledgeClient, 'workspace', workspace)
+    monkeypatch.setattr(PublicKnowledgeClient, 'query_official',
+                        lambda self, question, **kwargs: query_calls.append(kwargs) or {'status': 'NO_EVIDENCE'})
+    app = AppTest.from_file(APP, default_timeout=30).run()
+    app.button(key='nav_版本检索与问答').click().run()
+    app.slider(key='official_top_k').set_value(8).run()
+    assert len(workspace_calls) == 1
+    app.button(key='knowledge_generate').click().run()
+    assert not app.exception
+    assert len(workspace_calls) == 2 and len(query_calls) == 1
+    assert query_calls[0]['top_k'] == 8
+    assert workspace_calls[0] is workspace_calls[1]
+
+
+def test_submission_blocks_when_cached_ready_backend_becomes_unavailable(client, monkeypatch):
+    current, submitted = {'ready': True}, []
+    monkeypatch.setattr(PublicKnowledgeClient, 'workspace',
+                        lambda self: {**copy.deepcopy(WORKSPACE), 'rag_ready': current['ready']})
+    monkeypatch.setattr(PublicKnowledgeClient, 'query_official',
+                        lambda *args, **kwargs: submitted.append(True))
+    app = AppTest.from_file(APP, default_timeout=30).run()
+    app.button(key='nav_版本检索与问答').click().run()
+    current['ready'] = False
+    app.button(key='knowledge_generate').click().run()
+    assert not app.exception and not submitted
+    assert '本次请求未提交' in visible(app)
+
+
+def test_internal_fact_refusal_is_not_mislabeled_as_an_empty_search(client, monkeypatch):
+    monkeypatch.setattr(PublicKnowledgeClient, 'query_official',
+                        lambda *args, **kwargs: {'status': 'OUT_OF_SCOPE', 'evidence': []})
+    app = AppTest.from_file(APP, default_timeout=30).run()
+    app.button(key='nav_版本检索与问答').click().run()
+    app.button(key='knowledge_generate').click().run()
+    assert not app.exception
+    assert '输出契约和目标环境的回归记录' in visible(app)
+    assert '未找到可直接支持答案' not in visible(app)
+
+
 def open_review():
     app = AppTest.from_file(APP, default_timeout=30).run()
     app.button(key="nav_新建变更审查").click().run()
@@ -118,7 +178,7 @@ def test_home_shows_latest_but_query_follows_application_dependency(client):
     assert not app.exception
     assert any(item.value == "PaddleOCR 文档处理应用研发工作台" for item in app.title)
     assert "PP-Human" not in visible(app)
-    assert "v3.0.0" in visible(app) and "最新已收录" in visible(app)
+    assert "v3.0.0" in visible(app) and "当前应用依赖" in visible(app)
     app.button(key="nav_版本检索与问答").click().run()
     assert not app.exception
     assert app.selectbox(key="official_version").value == "v2.9.1"

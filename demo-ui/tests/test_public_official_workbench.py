@@ -646,7 +646,7 @@ def test_version_selector_tracks_new_latest_release_after_manual_old_selection(m
         available_versions=["wiki-next-snapshot", "wiki-1eadc6584f96"],
         latest_source_retrieval_timestamp="2026-09-28T09:15:00+00:00",
     )
-    app.run()
+    app.button(key='refresh_workspace').click().run()
 
     assert not app.exception
     assert app.selectbox(key="official_version").value == "wiki-next-snapshot"
@@ -887,7 +887,7 @@ def test_generated_answer_shows_cited_evidence_first_and_collapses_other_hits(mo
     assert not app.exception
     assert "引用依据" in {item.value for item in app.subheader}
     assert any(item.label == "查看其余检索结果（1）" for item in app.expander)
-    assert "只想核对原文？" in {item.label for item in app.expander}
+    assert app.button(key='knowledge_search')
 
 
 def test_generated_answer_renders_claim_level_references_without_confidence_grade(monkeypatch):
@@ -1074,7 +1074,7 @@ def test_public_rag_without_generation_shows_compact_evidence_fallback(monkeypat
     assert "start_prototype.ps1" not in visible
     assert "[1] Jetson 刷写与软件基线" in visible
     assert "检索候选" not in visible
-    assert "只想核对原文？" in {item.label for item in app.expander}
+    assert app.button(key='knowledge_search')
     assert "仅查看检索原文" in {button.label for button in app.button}
 
 
@@ -1159,7 +1159,7 @@ def test_public_rag_has_no_fixed_generation_count_limit(monkeypatch):
     assert app.button(key="knowledge_generate").disabled is False
     captions = [item.value for item in app.caption]
     assert not any("剩余生成次数" in caption or "生成额度已用完" in caption for caption in captions)
-    assert any("应用不设固定生成次数上限" in caption for caption in captions)
+    assert any("费用与限流以服务商规则为准" in caption for caption in captions)
 
 
 def test_provider_connection_failure_explains_proxy_or_network(monkeypatch):

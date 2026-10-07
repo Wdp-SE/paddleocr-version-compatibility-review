@@ -15,6 +15,10 @@ def module_for(chunk: dict) -> str:
         text = chunk.get('content','')
         if re.search(r'\bdef\s+(?:test_ocr\w*|ocr_engine)\b',text):return 'ocr'
         if re.search(r'\bdef\s+(?:test_structure\w*|structure_engine)\b',text):return 'structure'
+    # A pipeline's test body does not necessarily repeat its constructor. Its
+    # path still owns the scope, including assertion-only source blocks.
+    if path == 'tests/pipelines/test_ocr.py':
+        return 'ocr'
     if 'module_usage/' in path:
         return path.rsplit('/', 1)[-1].split('.')[0]
     if 'pipeline_usage/' in path:

@@ -1,0 +1,96 @@
+- log
+- log
+- button "keyboard_double_arrow_left":
+  - generic: keyboard_double_arrow_left
+- generic: 工作台导航
+- generic: 版本化知识服务
+- button "总览":
+  - paragraph: 总览
+- button "版本化知识检索":
+  - paragraph: 版本化知识检索
+- button "版本与历史":
+  - paragraph: 版本与历史
+- button "资料来源":
+  - paragraph: 资料来源
+- generic: 变更影响审查
+- button "发起兼容性审查":
+  - paragraph: 发起兼容性审查
+- button "影响与证据":
+  - paragraph: 影响与证据
+- button "升级审查报告":
+  - paragraph: 升级审查报告
+- button "人工审核":
+  - paragraph: 人工审核
+- generic: 系统说明
+- button "检索评测":
+  - paragraph: 检索评测
+- button "已知限制":
+  - paragraph: 已知限制
+- button "系统说明":
+  - paragraph: 系统说明
+- button "刷新知识库状态":
+  - paragraph: 刷新知识库状态
+- banner:
+  - button "keyboard_double_arrow_right":
+    - generic: keyboard_double_arrow_right
+- button "←":
+  - paragraph: ←
+- button "首页":
+  - paragraph: 首页
+- generic: ›
+- button "版本化知识服务":
+  - generic "版本化知识服务":
+    - paragraph: 版本化知识服务
+- generic: ›
+- generic: 版本化知识检索与问答
+- heading "版本化知识检索与问答" [level=1]:
+  - text: 版本化知识检索与问答
+  - link "Link to heading":
+    - /url: "#b1ba0547"
+- paragraph: 查询任务
+- radiogroup "查询任务":
+  - radio "当前应用依赖 · v2.9.1"
+  - paragraph: 当前应用依赖 · v2.9.1
+  - radio "升级目标依赖 · v3.0.0" [checked]
+  - paragraph: 升级目标依赖 · v3.0.0
+  - radio "手动选择依赖资料范围"
+  - paragraph: 手动选择依赖资料范围
+- paragraph: v3.0.0 · 最新已收录版本 · 中文资料 · 选择示例后可编辑问题
+- generic "keyboard_arrow_right 资料范围与来源":
+  - generic: keyboard_arrow_right
+  - paragraph: 资料范围与来源
+- paragraph: 示例问题（选择后可编辑）
+- combobox "示例问题（选择后可编辑）": 我们应用的 OCR 调用已改成 PaddleOCR 3.0.0 接口，是否就能确认下游 JSON 兼容？还需要核查哪些资料和测试？
+- button "Open":
+- generic: 提出问题
+- paragraph: 你的问题
+- textbox "你的问题":
+  - /placeholder: PaddleOCR 2.9.1 的 OCR 调用如何只识别文字而不检测？
+  - text: 我们应用的 OCR 调用已改成 PaddleOCR 3.0.0 接口，是否就能确认下游 JSON 兼容？还需要核查哪些资料和测试？
+- button "生成带引用回答" [active]:
+  - generic "生成带引用回答":
+    - paragraph: 生成带引用回答
+- button "仅查看检索原文":
+  - generic "仅查看检索原文":
+    - paragraph: 仅查看检索原文
+- button "检索设置":
+  - generic "检索设置":
+    - paragraph: 检索设置
+  - generic: expand_more
+- generic: 结果与核验
+- heading "回答" [level=3]:
+  - text: 回答
+  - link "Link to heading":
+    - /url: "#3a622f65"
+- alert:
+  - paragraph: 当前知识库不能证明未提交的内部应用事实，已停止生成。
+- paragraph: 若要确认应用升级兼容，需要应用调用与消费代码、输出契约和目标环境的回归记录。官方资料只能提供 SDK 行为依据。
+- heading "检索到的资料" [level=3]:
+  - text: 检索到的资料
+  - link "Link to heading":
+    - /url: "#c83349f2"
+- status:
+  - paragraph: 当前范围内未找到可直接支持答案的资料。请调整问题或检索范围。
+- generic "keyboard_arrow_right 本次检索技术详情":
+  - generic: keyboard_arrow_right
+  - paragraph: 本次检索技术详情

@@ -26,13 +26,21 @@ def render_disposition(result, repository, session_id):
             reason = st.text_area('处置理由 / 修改位置', max_chars=2000, key=prefix + fid + '_reason')
             risks[fid] = {'decision': decision, 'reason': reason}
     gaps = {}
-    for gap in [*report.get('gaps', []), *(result.get('investigation') or {}).get('unresolved', [])]:
-        gid = gap_id(gap)
-        with st.expander('残余风险 · ' + gid):
-            st.write(gap.get('detail') or gap.get('reason') or gap)
-            accepted = st.checkbox('已人工评估并记录接受该残余风险的理由', key=prefix + gid + '_accepted')
-            reason = st.text_area('理由与后续核查责任', max_chars=2000, key=prefix + gid + '_reason')
-            gaps[gid] = {'decision': 'accepted_residual' if accepted else 'pending', 'reason': reason}
+    residual = [*report.get('gaps', []), *(result.get('investigation') or {}).get('unresolved', [])]
+    if residual:
+        with st.expander(f'逐项填写残余风险（{len(residual)} 项）'):
+            st.caption('仅在人工处置阶段填写；折叠不会删除缺口或自动接受风险。')
+            for gap in residual:
+                gid = gap_id(gap)
+                location = gap.get('application') or {}
+                label = (f"{location['path']}:{location.get('line', '')}" if location.get('path')
+                         else gap.get('check_id') or '任务范围')
+                with st.container(border=True):
+                    st.markdown('**' + label + '**')
+                    st.write(gap.get('detail') or gap.get('reason') or gap)
+                    accepted = st.checkbox('已人工评估并记录接受该残余风险的理由', key=prefix + gid + '_accepted')
+                    reason = st.text_area('理由与后续核查责任', max_chars=2000, key=prefix + gid + '_reason')
+                    gaps[gid] = {'decision': 'accepted_residual' if accepted else 'pending', 'reason': reason}
     st.download_button('下载外部回归记录模板（JSON）',
         json.dumps(regression_template(result), ensure_ascii=False, indent=2),
         file_name='ocr-regression-template.json', mime='application/json', key=prefix + '_template')

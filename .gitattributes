@@ -35,3 +35,9 @@ versioned-rag-service/public_corpus_paddleocr/** -text whitespace=cr-at-eol,-bla
 versioned-rag-service/src/paddleocr_compatibility.py -text whitespace=cr-at-eol
 versioned-rag-service/src/paddleocr_application_roles.py -text whitespace=cr-at-eol
 versioned-rag-service/src/paddleocr_internal_release.py -text whitespace=cr-at-eol
+
+# Interview release binds exact source and experiment bytes.
+evaluation/interview_release_v1/** -text whitespace=cr-at-eol
+versioned-rag-service/src/paddleocr_function_results.py -text whitespace=cr-at-eol
+versioned-rag-service/src/public_scope.py -text whitespace=cr-at-eol
+change-review-agent/app/paddleocr_investigation.py -text whitespace=cr-at-eol

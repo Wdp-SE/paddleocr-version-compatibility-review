@@ -1,0 +1,690 @@
+{
+  "strategy": "legacy",
+  "split": "holdout",
+  "freeze_sha256": "5ade65c0d1ab37a1f990d8fe6699df7399c255f8dfbb93fa7efc21775593c57e",
+  "metrics": {
+    "count": 12,
+    "complete_count": 2,
+    "fact_hit_count": 2,
+    "fact_count": 12,
+    "source_hit_count": 8,
+    "wrong_version_count": 0,
+    "wrong_module_count": 42,
+    "complete_rate": 0.16666666666666666,
+    "fact_recall": 0.16666666666666666
+  },
+  "rows": [
+    {
+      "id": "internal-21",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 0,
+        "wrong_version_count": 0,
+        "wrong_module_count": 5,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 4.62,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:72",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 参照文档做实际项目时，是重新训练还是在官方训练的基础上进行训练？具体如何操作？\n\n**A**： 基于官方提供的模型，进行finetune的话，收敛会更快一些。 具体操作上，以识别模型训练为例：如果修改了字符文件，可以设置pretraind_model为官方提供的预训练模型",
+          "generation_text": "#### Q: 参照文档做实际项目时，是重新训练还是在官方训练的基础上进行训练？具体如何操作？\n\n**A**： 基于官方提供的模型，进行finetune的话，收敛会更快一些。 具体操作上，以识别模型训练为例：如果修改了字符文件，可以设置pretraind_model为官方提供的预训练模型"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:ppstructure/layout/README_ch:19",
+          "version": "v2.9.1",
+          "document_path": "ppstructure/layout/README_ch.md",
+          "text": "| File or Folder | Description    | num     |\n| :------------- | :------------- | ------- |\n| `train/`       | 训练集图片     | 335,703 |\n| `val/`         | 验证集图片     | 11,245  |\n| `test/`        | 测试集图片     | 11,405  |\n| `train.json`   | 训练集标注文件 | -       |\n| `val.json`     | 验证集标注文件 | -       |",
+          "generation_text": "| File or Folder | Description    | num     |\n| :------------- | :------------- | ------- |\n| `train/`       | 训练集图片     | 335,703 |\n| `val/`         | 验证集图片     | 11,245  |\n| `test/`        | 测试集图片     | 11,405  |\n| `train.json`   | 训练集标注文件 | -       |\n| `val.json`     | 验证集标注文件 | -       |"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/angle_class:17",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/angle_class.md",
+          "text": "如果验证集很大，测试将会比较耗时，建议减少评估次数，或训练完再进行评估。\n\n**注意，预测/评估时的配置文件请务必与训练一致。**\n\n<a name=\"评估\"></a>",
+          "generation_text": "如果验证集很大，测试将会比较耗时，建议减少评估次数，或训练完再进行评估。\n\n**注意，预测/评估时的配置文件请务必与训练一致。**\n\n<a name=\"评估\"></a>"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:ppstructure/layout/README_ch:30",
+          "version": "v2.9.1",
+          "document_path": "ppstructure/layout/README_ch.md",
+          "text": "```yaml\nmetric: COCO\n# 类别数\nnum_classes: 5\n\nTrainDataset:\n  !COCODataSet\n    # 修改为你自己的训练数据目录\n    image_dir: train\n    # 修改为你自己的训练数据标签文件\n    anno_path: train.json\n    # 修改为你自己的训练数据根目录\n    dataset_dir: /root/publaynet/\n    data_fields: ['image', 'gt_bbox', 'gt_class', 'is_crowd']\n\nEvalDataset:\n  !COCODataSet\n    # 修改为你自己的验证数据目录\n    image_dir: val\n    # 修改为你自己的验证数据标签文件\n    anno_path: val.json\n    # 修改为你自己的验证数据根目录\n    dataset_dir: /root/publaynet/\n\nTestDataset:\n  !ImageFolder\n    # 修改为你自己的测试数据标签文件\n    anno_path: /root/publaynet/val.json\n```",
+          "generation_text": "```yaml\nmetric: COCO\n# 类别数\nnum_classes: 5\n\nTrainDataset:\n  !COCODataSet\n    # 修改为你自己的训练数据目录\n    image_dir: train\n    # 修改为你自己的训练数据标签文件\n    anno_path: train.json\n    # 修改为你自己的训练数据根目录\n    dataset_dir: /root/publaynet/\n    data_fields: ['image', 'gt_bbox', 'gt_class', 'is_crowd']\n\nEvalDataset:\n  !COCODataSet\n    # 修改为你自己的验证数据目录\n    image_dir: val\n    # 修改为你自己的验证数据标签文件\n    anno_path: val.json\n    # 修改为你自己的验证数据根目录\n    dataset_dir: /root/publaynet/\n\nTestDataset:\n  !ImageFolder\n    # 修改为你自己的测试数据标签文件\n    anno_path: /root/publaynet/val.json\n```"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:47",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 识别训练时，训练集精度已经到达90了，但验证集精度一直在70，涨不上去怎么办？\n\nA：训练集精度90，测试集70多的话，应该是过拟合了，有两个可尝试的方法：（1）加入更多的增广方式或者调大增广prob的概率，默认为0.4。（2）调大系统的l2 decay值\n\n<a name=\"17\"></a>",
+          "generation_text": "#### Q: 识别训练时，训练集精度已经到达90了，但验证集精度一直在70，涨不上去怎么办？\n\nA：训练集精度90，测试集70多的话，应该是过拟合了，有两个可尝试的方法：（1）加入更多的增广方式或者调大增广prob的概率，默认为0.4。（2）调大系统的l2 decay值\n\n<a name=\"17\"></a>"
+        }
+      ]
+    },
+    {
+      "id": "internal-22",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 0,
+        "wrong_version_count": 0,
+        "wrong_module_count": 5,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 4.63,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:72",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 参照文档做实际项目时，是重新训练还是在官方训练的基础上进行训练？具体如何操作？\n\n**A**： 基于官方提供的模型，进行finetune的话，收敛会更快一些。 具体操作上，以识别模型训练为例：如果修改了字符文件，可以设置pretraind_model为官方提供的预训练模型",
+          "generation_text": "#### Q: 参照文档做实际项目时，是重新训练还是在官方训练的基础上进行训练？具体如何操作？\n\n**A**： 基于官方提供的模型，进行finetune的话，收敛会更快一些。 具体操作上，以识别模型训练为例：如果修改了字符文件，可以设置pretraind_model为官方提供的预训练模型"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:12",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 目前OCR普遍是二阶段，端到端的方案在业界落地情况如何？\n\n**A**：端到端在文字分布密集的业务场景，效率会比较有保证，精度的话看自己业务数据积累情况，如果行级别的识别数据积累比较多的话two-stage会比较好。百度的落地场景，比如工业仪表识别、车牌识别都用到端到端解决方案。",
+          "generation_text": "#### Q: 目前OCR普遍是二阶段，端到端的方案在业界落地情况如何？\n\n**A**：端到端在文字分布密集的业务场景，效率会比较有保证，精度的话看自己业务数据积累情况，如果行级别的识别数据积累比较多的话two-stage会比较好。百度的落地场景，比如工业仪表识别、车牌识别都用到端到端解决方案。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:ppstructure/layout/README_ch:19",
+          "version": "v2.9.1",
+          "document_path": "ppstructure/layout/README_ch.md",
+          "text": "| File or Folder | Description    | num     |\n| :------------- | :------------- | ------- |\n| `train/`       | 训练集图片     | 335,703 |\n| `val/`         | 验证集图片     | 11,245  |\n| `test/`        | 测试集图片     | 11,405  |\n| `train.json`   | 训练集标注文件 | -       |\n| `val.json`     | 验证集标注文件 | -       |",
+          "generation_text": "| File or Folder | Description    | num     |\n| :------------- | :------------- | ------- |\n| `train/`       | 训练集图片     | 335,703 |\n| `val/`         | 验证集图片     | 11,245  |\n| `test/`        | 测试集图片     | 11,405  |\n| `train.json`   | 训练集标注文件 | -       |\n| `val.json`     | 验证集标注文件 | -       |"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:47",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 识别训练时，训练集精度已经到达90了，但验证集精度一直在70，涨不上去怎么办？\n\nA：训练集精度90，测试集70多的话，应该是过拟合了，有两个可尝试的方法：（1）加入更多的增广方式或者调大增广prob的概率，默认为0.4。（2）调大系统的l2 decay值\n\n<a name=\"17\"></a>",
+          "generation_text": "#### Q: 识别训练时，训练集精度已经到达90了，但验证集精度一直在70，涨不上去怎么办？\n\nA：训练集精度90，测试集70多的话，应该是过拟合了，有两个可尝试的方法：（1）加入更多的增广方式或者调大增广prob的概率，默认为0.4。（2）调大系统的l2 decay值\n\n<a name=\"17\"></a>"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:18",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q：背景干扰的文字（如印章盖到落款上，需要识别落款或者印章中的文字），如何识别？\n\n**A**：（1）在人眼确认可识别的条件下，对于背景有干扰的文字，首先要保证检测框足够准确，如果检测框不准确，需要考虑是否可以通过过滤颜色等方式对图像预处理并且增加更多相关的训练数据；在识别的部分，注意在训练数据中加入背景干扰类的扩增图像。\n\n（2）如果MobileNet模型不能满足需求，可以尝试ResNet系列大模型来获得更好的效果。",
+          "generation_text": "#### Q：背景干扰的文字（如印章盖到落款上，需要识别落款或者印章中的文字），如何识别？\n\n**A**：（1）在人眼确认可识别的条件下，对于背景有干扰的文字，首先要保证检测框足够准确，如果检测框不准确，需要考虑是否可以通过过滤颜色等方式对图像预处理并且增加更多相关的训练数据；在识别的部分，注意在训练数据中加入背景干扰类的扩增图像。\n\n（2）如果MobileNet模型不能满足需求，可以尝试ResNet系列大模型来获得更好的效果。"
+        }
+      ]
+    },
+    {
+      "id": "internal-23",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 0,
+        "wrong_version_count": 0,
+        "wrong_module_count": 2,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 4.62,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "## 1. OCR产线介绍\n\nOCR（光学字符识别，Optical Character Recognition）是一种将图像中的文字转换为可编辑文本的技术。它广泛应用于文档数字化、信息提取和数据处理等领域。OCR 可以识别印刷文本、手写文本，甚至某些类型的字体和符号。\n\n通用 OCR 产线用于解决文字识别任务，提取图片中的文字信息以文本形式输出，本产线支持PP-OCRv3、PP-OCRv4、PP-OCRv5模型的使用，其中默认模型为 PaddleOCR3.0 发布的 PP-OCRv5_mobile 模型，其在多个场景中较 PP-OCRv4_mobile 提升 13 个百分点。\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/01.png\"/>\n\n<b>通用OCR产线中包含以下5个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md) （可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md) （可选）\n- [文本行方向分类模块](../module_usage/text_line_orientation_classification.md) （可选）\n- [文本检测模块](../module_usage/text_detection.md)\n- [文本识别模块](../module_usage/text_recognition.md)\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary><b>文档图像方向分类模块（可选）：</b></summary>",
+          "generation_text": "## 1. OCR产线介绍\n\nOCR（光学字符识别，Optical Character Recognition）是一种将图像中的文字转换为可编辑文本的技术。它广泛应用于文档数字化、信息提取和数据处理等领域。OCR 可以识别印刷文本、手写文本，甚至某些类型的字体和符号。\n\n通用 OCR 产线用于解决文字识别任务，提取图片中的文字信息以文本形式输出，本产线支持PP-OCRv3、PP-OCRv4、PP-OCRv5模型的使用，其中默认模型为 PaddleOCR3.0 发布的 PP-OCRv5_mobile 模型，其在多个场景中较 PP-OCRv4_mobile 提升 13 个百分点。\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/01.png\"/>\n\n<b>通用OCR产线中包含以下5个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md) （可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md) （可选）\n- [文本行方向分类模块](../module_usage/text_line_orientation_classification.md) （可选）\n- [文本检测模块](../module_usage/text_detection.md)\n- [文本识别模块](../module_usage/text_recognition.md)\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary><b>文档图像方向分类模块（可选）：</b></summary>"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:paddleocr/_pipelines/ocr:7",
+          "version": "v3.0.0",
+          "document_path": "paddleocr/_pipelines/ocr.py",
+          "text": "    @deprecated(\"Please use `predict` instead.\")\n    def ocr(self, img, **kwargs):\n        return self.predict(img, **kwargs)",
+          "generation_text": "    @deprecated(\"Please use `predict` instead.\")\n    def ocr(self, img, **kwargs):\n        return self.predict(img, **kwargs)"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:21",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "</details>\n</details>\n\n<details>\n<summary><strong>测试环境说明:</strong></summary>\n\n  <ul>\n      <li><b>性能测试环境</b>\n          <ul>\n            <li><strong>测试数据集：\n             </strong>\n                <ul>\n                  <li>文档图像方向分类模型：PaddleOCR 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                  <li>文本图像矫正模型：<a href=\"https://www3.cs.stonybrook.edu/~cvl/docunet.html\">DocUNet</a>。</li>\n                  <li>文本检测模型：PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中检测包含 500 张图片。</li>\n                  <li>中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。</li>\n                  <li>ch_SVTRv2_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>A榜评估集。</li>\n                  <li>ch_RepSVTR_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>B榜评估集。</li>\n                  <li>英文识别模型：PaddleOCR 自建的英文数据集。</li>\n                  <li>多语言识别模型：PaddleOCR 自建的多语种数据集。</li>\n                  <li>文本行方向分类模型：PaddleOCR 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                </ul>\n             </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>\n                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>\n                  </ul>\n              </li>\n          </ul>\n      </li>\n      <li><b>推理模式说明</b></li>\n  </ul>",
+          "generation_text": "</details>\n</details>\n\n<details>\n<summary><strong>测试环境说明:</strong></summary>\n\n  <ul>\n      <li><b>性能测试环境</b>\n          <ul>\n            <li><strong>测试数据集：\n             </strong>\n                <ul>\n                  <li>文档图像方向分类模型：PaddleOCR 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                  <li>文本图像矫正模型：<a href=\"https://www3.cs.stonybrook.edu/~cvl/docunet.html\">DocUNet</a>。</li>\n                  <li>文本检测模型：PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中检测包含 500 张图片。</li>\n                  <li>中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。</li>\n                  <li>ch_SVTRv2_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>A榜评估集。</li>\n                  <li>ch_RepSVTR_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>B榜评估集。</li>\n                  <li>英文识别模型：PaddleOCR 自建的英文数据集。</li>\n                  <li>多语言识别模型：PaddleOCR 自建的多语种数据集。</li>\n                  <li>文本行方向分类模型：PaddleOCR 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                </ul>\n             </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>\n                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>\n                  </ul>\n              </li>\n          </ul>\n      </li>\n      <li><b>推理模式说明</b></li>\n  </ul>"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:49",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+          "text": "</details>\n\n<details>\n<summary><b>测试环境说明：</b></summary>\n\n  <ul>\n      <li><b>性能测试环境</b>\n          <ul>\n            <li><strong>测试数据集：\n             </strong>\n                <ul>\n                  <li>文档图像方向分类模型：自建的内部数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                  <li> 文本图像矫正模型：<a href=\"https://www3.cs.stonybrook.edu/~cvl/docunet.html\">DocUNet</a>。</li>\n                  <li>版面区域检测模型：PaddleOCR 自建的版面区域分析数据集，包含中英文论文、杂志和研报等常见的 1w 张文档类型图片。</li>\n                  <li>表格结构识别模型：PaddleX 内部自建英文表格识别数据集。 </li>\n                  <li>文本检测模型：PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中检测包含 500 张图片。</li>\n                  <li> 中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。</li>\n                  <li>ch_SVTRv2_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>A榜评估集。</li>\n                  <li> ch_RepSVTR_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>B榜评估集。</li>\n                  <li>英文识别模型：自建的内部英文数据集。</li>\n                  <li> 多语言识别模型：自建的内部多语种数据集。</li>\n                  <li>文本行方向分类模型：自建的内部数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                  <li> 印章文本检测模型：自建的内部数据集，包含500张圆形印章图像。</li>\n                </ul>\n             </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>\n                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>\n                  </ul>\n              </li>\n          </ul>\n      </li>\n      <li><b>推理模式说明</b></li>\n  </ul>",
+          "generation_text": "</details>\n\n<details>\n<summary><b>测试环境说明：</b></summary>\n\n  <ul>\n      <li><b>性能测试环境</b>\n          <ul>\n            <li><strong>测试数据集：\n             </strong>\n                <ul>\n                  <li>文档图像方向分类模型：自建的内部数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                  <li> 文本图像矫正模型：<a href=\"https://www3.cs.stonybrook.edu/~cvl/docunet.html\">DocUNet</a>。</li>\n                  <li>版面区域检测模型：PaddleOCR 自建的版面区域分析数据集，包含中英文论文、杂志和研报等常见的 1w 张文档类型图片。</li>\n                  <li>表格结构识别模型：PaddleX 内部自建英文表格识别数据集。 </li>\n                  <li>文本检测模型：PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中检测包含 500 张图片。</li>\n                  <li> 中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。</li>\n                  <li>ch_SVTRv2_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>A榜评估集。</li>\n                  <li> ch_RepSVTR_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>B榜评估集。</li>\n                  <li>英文识别模型：自建的内部英文数据集。</li>\n                  <li> 多语言识别模型：自建的内部多语种数据集。</li>\n                  <li>文本行方向分类模型：自建的内部数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                  <li> 印章文本检测模型：自建的内部数据集，包含500张圆形印章图像。</li>\n                </ul>\n             </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>\n                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>\n                  </ul>\n              </li>\n          </ul>\n      </li>\n      <li><b>推理模式说明</b></li>\n  </ul>"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:16",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "<strong>测试环境说明:</strong>\n\n  <ul>\n      <li><b>性能测试环境</b>\n          <ul>\n              <li><strong>测试数据集：</strong>\n                 <ul>\n                    <li>\n                    中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。\n                    </li>\n                    <li>\n                      ch_SVTRv2_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>A榜评估集。\n                    </li>\n                    <li>\n                      ch_RepSVTR_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>B榜评估集。\n                    </li>\n                    <li>\n                      英文识别模型：PaddleOCR 自建的英文数据集。\n                    </li>\n                    <li>\n                      多语言识别模型：PaddleOCR 自建的多语种数据集。\n                    </li>\n                 </ul>\n              </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>\n                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>\n                  </ul>\n              </li>\n          </ul>\n      </li>\n      <li><b>推理模式说明</b></li>\n  </ul>",
+          "generation_text": "<strong>测试环境说明:</strong>\n\n  <ul>\n      <li><b>性能测试环境</b>\n          <ul>\n              <li><strong>测试数据集：</strong>\n                 <ul>\n                    <li>\n                    中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。\n                    </li>\n                    <li>\n                      ch_SVTRv2_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>A榜评估集。\n                    </li>\n                    <li>\n                      ch_RepSVTR_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>B榜评估集。\n                    </li>\n                    <li>\n                      英文识别模型：PaddleOCR 自建的英文数据集。\n                    </li>\n                    <li>\n                      多语言识别模型：PaddleOCR 自建的多语种数据集。\n                    </li>\n                 </ul>\n              </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>\n                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>\n                  </ul>\n              </li>\n          </ul>\n      </li>\n      <li><b>推理模式说明</b></li>\n  </ul>"
+        }
+      ]
+    },
+    {
+      "id": "internal-24",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 0,
+        "wrong_version_count": 0,
+        "wrong_module_count": 4,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 4.83,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:16",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "<strong>测试环境说明:</strong>\n\n  <ul>\n      <li><b>性能测试环境</b>\n          <ul>\n              <li><strong>测试数据集：</strong>\n                 <ul>\n                    <li>\n                    中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。\n                    </li>\n                    <li>\n                      ch_SVTRv2_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>A榜评估集。\n                    </li>\n                    <li>\n                      ch_RepSVTR_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>B榜评估集。\n                    </li>\n                    <li>\n                      英文识别模型：PaddleOCR 自建的英文数据集。\n                    </li>\n                    <li>\n                      多语言识别模型：PaddleOCR 自建的多语种数据集。\n                    </li>\n                 </ul>\n              </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>\n                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>\n                  </ul>\n              </li>\n          </ul>\n      </li>\n      <li><b>推理模式说明</b></li>\n  </ul>",
+          "generation_text": "<strong>测试环境说明:</strong>\n\n  <ul>\n      <li><b>性能测试环境</b>\n          <ul>\n              <li><strong>测试数据集：</strong>\n                 <ul>\n                    <li>\n                    中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。\n                    </li>\n                    <li>\n                      ch_SVTRv2_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>A榜评估集。\n                    </li>\n                    <li>\n                      ch_RepSVTR_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>B榜评估集。\n                    </li>\n                    <li>\n                      英文识别模型：PaddleOCR 自建的英文数据集。\n                    </li>\n                    <li>\n                      多语言识别模型：PaddleOCR 自建的多语种数据集。\n                    </li>\n                 </ul>\n              </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>\n                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>\n                  </ul>\n              </li>\n          </ul>\n      </li>\n      <li><b>推理模式说明</b></li>\n  </ul>"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:21",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "</details>\n</details>\n\n<details>\n<summary><strong>测试环境说明:</strong></summary>\n\n  <ul>\n      <li><b>性能测试环境</b>\n          <ul>\n            <li><strong>测试数据集：\n             </strong>\n                <ul>\n                  <li>文档图像方向分类模型：PaddleOCR 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                  <li>文本图像矫正模型：<a href=\"https://www3.cs.stonybrook.edu/~cvl/docunet.html\">DocUNet</a>。</li>\n                  <li>文本检测模型：PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中检测包含 500 张图片。</li>\n                  <li>中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。</li>\n                  <li>ch_SVTRv2_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>A榜评估集。</li>\n                  <li>ch_RepSVTR_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>B榜评估集。</li>\n                  <li>英文识别模型：PaddleOCR 自建的英文数据集。</li>\n                  <li>多语言识别模型：PaddleOCR 自建的多语种数据集。</li>\n                  <li>文本行方向分类模型：PaddleOCR 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                </ul>\n             </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>\n                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>\n                  </ul>\n              </li>\n          </ul>\n      </li>\n      <li><b>推理模式说明</b></li>\n  </ul>",
+          "generation_text": "</details>\n</details>\n\n<details>\n<summary><strong>测试环境说明:</strong></summary>\n\n  <ul>\n      <li><b>性能测试环境</b>\n          <ul>\n            <li><strong>测试数据集：\n             </strong>\n                <ul>\n                  <li>文档图像方向分类模型：PaddleOCR 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                  <li>文本图像矫正模型：<a href=\"https://www3.cs.stonybrook.edu/~cvl/docunet.html\">DocUNet</a>。</li>\n                  <li>文本检测模型：PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中检测包含 500 张图片。</li>\n                  <li>中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。</li>\n                  <li>ch_SVTRv2_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>A榜评估集。</li>\n                  <li>ch_RepSVTR_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>B榜评估集。</li>\n                  <li>英文识别模型：PaddleOCR 自建的英文数据集。</li>\n                  <li>多语言识别模型：PaddleOCR 自建的多语种数据集。</li>\n                  <li>文本行方向分类模型：PaddleOCR 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                </ul>\n             </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>\n                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>\n                  </ul>\n              </li>\n          </ul>\n      </li>\n      <li><b>推理模式说明</b></li>\n  </ul>"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:49",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+          "text": "</details>\n\n<details>\n<summary><b>测试环境说明：</b></summary>\n\n  <ul>\n      <li><b>性能测试环境</b>\n          <ul>\n            <li><strong>测试数据集：\n             </strong>\n                <ul>\n                  <li>文档图像方向分类模型：自建的内部数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                  <li> 文本图像矫正模型：<a href=\"https://www3.cs.stonybrook.edu/~cvl/docunet.html\">DocUNet</a>。</li>\n                  <li>版面区域检测模型：PaddleOCR 自建的版面区域分析数据集，包含中英文论文、杂志和研报等常见的 1w 张文档类型图片。</li>\n                  <li>表格结构识别模型：PaddleX 内部自建英文表格识别数据集。 </li>\n                  <li>文本检测模型：PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中检测包含 500 张图片。</li>\n                  <li> 中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。</li>\n                  <li>ch_SVTRv2_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>A榜评估集。</li>\n                  <li> ch_RepSVTR_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>B榜评估集。</li>\n                  <li>英文识别模型：自建的内部英文数据集。</li>\n                  <li> 多语言识别模型：自建的内部多语种数据集。</li>\n                  <li>文本行方向分类模型：自建的内部数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                  <li> 印章文本检测模型：自建的内部数据集，包含500张圆形印章图像。</li>\n                </ul>\n             </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>\n                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>\n                  </ul>\n              </li>\n          </ul>\n      </li>\n      <li><b>推理模式说明</b></li>\n  </ul>",
+          "generation_text": "</details>\n\n<details>\n<summary><b>测试环境说明：</b></summary>\n\n  <ul>\n      <li><b>性能测试环境</b>\n          <ul>\n            <li><strong>测试数据集：\n             </strong>\n                <ul>\n                  <li>文档图像方向分类模型：自建的内部数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                  <li> 文本图像矫正模型：<a href=\"https://www3.cs.stonybrook.edu/~cvl/docunet.html\">DocUNet</a>。</li>\n                  <li>版面区域检测模型：PaddleOCR 自建的版面区域分析数据集，包含中英文论文、杂志和研报等常见的 1w 张文档类型图片。</li>\n                  <li>表格结构识别模型：PaddleX 内部自建英文表格识别数据集。 </li>\n                  <li>文本检测模型：PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中检测包含 500 张图片。</li>\n                  <li> 中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。</li>\n                  <li>ch_SVTRv2_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>A榜评估集。</li>\n                  <li> ch_RepSVTR_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>B榜评估集。</li>\n                  <li>英文识别模型：自建的内部英文数据集。</li>\n                  <li> 多语言识别模型：自建的内部多语种数据集。</li>\n                  <li>文本行方向分类模型：自建的内部数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                  <li> 印章文本检测模型：自建的内部数据集，包含500张圆形印章图像。</li>\n                </ul>\n             </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n                      <li>CPU：Intel Xeon Gold 6271C @ 2.60GHz</li>\n                      <li>其他环境：Ubuntu 20.04 / cuDNN 8.6 / TensorRT 8.5.2.2</li>\n                  </ul>\n              </li>\n          </ul>\n      </li>\n      <li><b>推理模式说明</b></li>\n  </ul>"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:8",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "* <b>中文识别模型</b>",
+          "generation_text": "* <b>中文识别模型</b>"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:15",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "* <b>中文识别模型</b>",
+          "generation_text": "* <b>中文识别模型</b>"
+        }
+      ]
+    },
+    {
+      "id": "internal-25",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 3,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 4.52,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:72",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+          "text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n    - `input_path`: `(str)` 待预测图像或者PDF的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_seal_recognition`: `(bool)` 控制是否启用印章识别子产线\n        - `use_table_recognition`: `(bool)` 控制是否启用表格识别子产线\n        - `use_formula_recognition`: `(bool)` 控制是否启用公式识别子产线\n\n    - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` 文档预处理结果字典，仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(str)` 文档预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`，此处为`None`\n        - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`\n        - `model_settings`: `(Dict[str, bool])` 文档预处理子产线的模型配置参数\n          - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档图像方向分类子模块\n          - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像扭曲矫正子模块\n        - `angle`: `(int)` 文档图像方向分类子模块的预测结果，启用时返回实际角度值\n\n    - `parsing_res_list`: `(List[Dict])` 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。\n        - `block_bbox`: `(np.ndarray)` 版面区域的边界框。\n        - `block_label`: `(str)` 版面区域的标签，例如`text`, `table`等。\n        - `block_content`: `(str)` 内容为版面区域内的内容。\n        - `seg_start_flag`: `(bool)` 标识该版面区域是否是段落的开始。\n        - `seg_end_flag`: `(bool)` 标识该版面区域是否是段落的结束。\n        - `sub_label`: `(str)` 版面区域的子标签，例如`text`的子标签可能为`title_text`。\n        - `sub_index`: `(int)` 版面区域的子索引，用于恢复Markdown。\n        - `index`: `(int)` 版面区域的索引，用于显示版面排序结果。",
+          "generation_text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n    - `input_path`: `(str)` 待预测图像或者PDF的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_seal_recognition`: `(bool)` 控制是否启用印章识别子产线\n        - `use_table_recognition`: `(bool)` 控制是否启用表格识别子产线\n        - `use_formula_recognition`: `(bool)` 控制是否启用公式识别子产线\n\n    - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` 文档预处理结果字典，仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(str)` 文档预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`，此处为`None`\n        - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`\n        - `model_settings`: `(Dict[str, bool])` 文档预处理子产线的模型配置参数\n          - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档图像方向分类子模块\n          - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像扭曲矫正子模块\n        - `angle`: `(int)` 文档图像方向分类子模块的预测结果，启用时返回实际角度值\n\n    - `parsing_res_list`: `(List[Dict])` 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。\n        - `block_bbox`: `(np.ndarray)` 版面区域的边界框。\n        - `block_label`: `(str)` 版面区域的标签，例如`text`, `table`等。\n        - `block_content`: `(str)` 内容为版面区域内的内容。\n        - `seg_start_flag`: `(bool)` 标识该版面区域是否是段落的开始。\n        - `seg_end_flag`: `(bool)` 标识该版面区域是否是段落的结束。\n        - `sub_label`: `(str)` 版面区域的子标签，例如`text`的子标签可能为`title_text`。\n        - `sub_index`: `(int)` 版面区域的子索引，用于恢复Markdown。\n        - `index`: `(int)` 版面区域的索引，用于显示版面排序结果。"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_textline_orientation`: `(bool)` 控制是否启用文本行方向分类功能\n\n    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(Union[str, None])` 图像预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数\n            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类\n            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n    - `dt_scores`: `(List[float])` 文本检测框的置信度列表\n\n    - `text_det_params`: `(Dict[str, Dict[str, int, float]])` 文本检测模块的配置参数\n        - `limit_side_len`: `(int)` 图像预处理时的边长限制值\n        - `limit_type`: `(str)` 边长限制的处理方式\n        - `thresh`: `(float)` 文本像素分类的置信度阈值\n        - `box_thresh`: `(float)` 文本检测框的置信度阈值\n        - `unclip_ratio`: `(float)` 文本检测框的膨胀系数\n        - `text_type`: `(str)` 文本检测的类型，当前固定为\"general\"\n\n    - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`",
+          "generation_text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_textline_orientation`: `(bool)` 控制是否启用文本行方向分类功能\n\n    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(Union[str, None])` 图像预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数\n            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类\n            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n    - `dt_scores`: `(List[float])` 文本检测框的置信度列表\n\n    - `text_det_params`: `(Dict[str, Dict[str, int, float]])` 文本检测模块的配置参数\n        - `limit_side_len`: `(int)` 图像预处理时的边长限制值\n        - `limit_type`: `(str)` 边长限制的处理方式\n        - `thresh`: `(float)` 文本像素分类的置信度阈值\n        - `box_thresh`: `(float)` 文本检测框的置信度阈值\n        - `unclip_ratio`: `(float)` 文本检测框的膨胀系数\n        - `text_type`: `(str)` 文本检测的类型，当前固定为\"general\"\n\n    - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:57",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_layout_detection`: `(bool)` 控制是否启用版面区域检测子产线\n        - `use_ocr_model`: `(bool)` 控制是否启用OCR子产线\n    - `layout_det_res`: `(Dict[str, Union[List[numpy.ndarray], List[float]]])` 版面检测子模块的输出结果。仅当`use_layout_detection=True`时存在\n        - `input_path`: `(Union[str, None])` 版面检测区域模块接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n        - `boxes`: `(List[Dict])` 版面印章区域的检测框列表，每个列表中的元素，包含以下字段\n            - `cls_id`: `(int)` 检测框的印章类别id\n            - `score`: `(float)` 检测框的置信度\n            - `coordinate`: `(List[float])` 检测框的四个顶点坐标，顺序为x1,y1,x2,y2表示左上角的x坐标，左上角的y坐标，右下角x坐标，右下角的y坐标\n    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(Union[str, None])` 图像预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数\n            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类\n            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n    - `dt_scores`: `(List[float])` 文本检测框的置信度列表",
+          "generation_text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_layout_detection`: `(bool)` 控制是否启用版面区域检测子产线\n        - `use_ocr_model`: `(bool)` 控制是否启用OCR子产线\n    - `layout_det_res`: `(Dict[str, Union[List[numpy.ndarray], List[float]]])` 版面检测子模块的输出结果。仅当`use_layout_detection=True`时存在\n        - `input_path`: `(Union[str, None])` 版面检测区域模块接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n        - `boxes`: `(List[Dict])` 版面印章区域的检测框列表，每个列表中的元素，包含以下字段\n            - `cls_id`: `(int)` 检测框的印章类别id\n            - `score`: `(float)` 检测框的置信度\n            - `coordinate`: `(List[float])` 检测框的四个顶点坐标，顺序为x1,y1,x2,y2表示左上角的x坐标，左上角的y坐标，右下角x坐标，右下角的y坐标\n    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(Union[str, None])` 图像预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数\n            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类\n            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n    - `dt_scores`: `(List[float])` 文本检测框的置信度列表"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:2",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "# 文档图像预处理产线使用教程",
+          "generation_text": "# 文档图像预处理产线使用教程"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>",
+          "generation_text": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>"
+        }
+      ]
+    },
+    {
+      "id": "internal-26",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 4,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 3.48,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:72",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+          "text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n    - `input_path`: `(str)` 待预测图像或者PDF的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_seal_recognition`: `(bool)` 控制是否启用印章识别子产线\n        - `use_table_recognition`: `(bool)` 控制是否启用表格识别子产线\n        - `use_formula_recognition`: `(bool)` 控制是否启用公式识别子产线\n\n    - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` 文档预处理结果字典，仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(str)` 文档预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`，此处为`None`\n        - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`\n        - `model_settings`: `(Dict[str, bool])` 文档预处理子产线的模型配置参数\n          - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档图像方向分类子模块\n          - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像扭曲矫正子模块\n        - `angle`: `(int)` 文档图像方向分类子模块的预测结果，启用时返回实际角度值\n\n    - `parsing_res_list`: `(List[Dict])` 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。\n        - `block_bbox`: `(np.ndarray)` 版面区域的边界框。\n        - `block_label`: `(str)` 版面区域的标签，例如`text`, `table`等。\n        - `block_content`: `(str)` 内容为版面区域内的内容。\n        - `seg_start_flag`: `(bool)` 标识该版面区域是否是段落的开始。\n        - `seg_end_flag`: `(bool)` 标识该版面区域是否是段落的结束。\n        - `sub_label`: `(str)` 版面区域的子标签，例如`text`的子标签可能为`title_text`。\n        - `sub_index`: `(int)` 版面区域的子索引，用于恢复Markdown。\n        - `index`: `(int)` 版面区域的索引，用于显示版面排序结果。",
+          "generation_text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n    - `input_path`: `(str)` 待预测图像或者PDF的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_seal_recognition`: `(bool)` 控制是否启用印章识别子产线\n        - `use_table_recognition`: `(bool)` 控制是否启用表格识别子产线\n        - `use_formula_recognition`: `(bool)` 控制是否启用公式识别子产线\n\n    - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` 文档预处理结果字典，仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(str)` 文档预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`，此处为`None`\n        - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`\n        - `model_settings`: `(Dict[str, bool])` 文档预处理子产线的模型配置参数\n          - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档图像方向分类子模块\n          - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像扭曲矫正子模块\n        - `angle`: `(int)` 文档图像方向分类子模块的预测结果，启用时返回实际角度值\n\n    - `parsing_res_list`: `(List[Dict])` 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。\n        - `block_bbox`: `(np.ndarray)` 版面区域的边界框。\n        - `block_label`: `(str)` 版面区域的标签，例如`text`, `table`等。\n        - `block_content`: `(str)` 内容为版面区域内的内容。\n        - `seg_start_flag`: `(bool)` 标识该版面区域是否是段落的开始。\n        - `seg_end_flag`: `(bool)` 标识该版面区域是否是段落的结束。\n        - `sub_label`: `(str)` 版面区域的子标签，例如`text`的子标签可能为`title_text`。\n        - `sub_index`: `(int)` 版面区域的子索引，用于恢复Markdown。\n        - `index`: `(int)` 版面区域的索引，用于显示版面排序结果。"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:57",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_layout_detection`: `(bool)` 控制是否启用版面区域检测子产线\n        - `use_ocr_model`: `(bool)` 控制是否启用OCR子产线\n    - `layout_det_res`: `(Dict[str, Union[List[numpy.ndarray], List[float]]])` 版面检测子模块的输出结果。仅当`use_layout_detection=True`时存在\n        - `input_path`: `(Union[str, None])` 版面检测区域模块接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n        - `boxes`: `(List[Dict])` 版面印章区域的检测框列表，每个列表中的元素，包含以下字段\n            - `cls_id`: `(int)` 检测框的印章类别id\n            - `score`: `(float)` 检测框的置信度\n            - `coordinate`: `(List[float])` 检测框的四个顶点坐标，顺序为x1,y1,x2,y2表示左上角的x坐标，左上角的y坐标，右下角x坐标，右下角的y坐标\n    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(Union[str, None])` 图像预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数\n            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类\n            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n    - `dt_scores`: `(List[float])` 文本检测框的置信度列表",
+          "generation_text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_layout_detection`: `(bool)` 控制是否启用版面区域检测子产线\n        - `use_ocr_model`: `(bool)` 控制是否启用OCR子产线\n    - `layout_det_res`: `(Dict[str, Union[List[numpy.ndarray], List[float]]])` 版面检测子模块的输出结果。仅当`use_layout_detection=True`时存在\n        - `input_path`: `(Union[str, None])` 版面检测区域模块接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n        - `boxes`: `(List[Dict])` 版面印章区域的检测框列表，每个列表中的元素，包含以下字段\n            - `cls_id`: `(int)` 检测框的印章类别id\n            - `score`: `(float)` 检测框的置信度\n            - `coordinate`: `(List[float])` 检测框的四个顶点坐标，顺序为x1,y1,x2,y2表示左上角的x坐标，左上角的y坐标，右下角x坐标，右下角的y坐标\n    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(Union[str, None])` 图像预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数\n            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类\n            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n    - `dt_scores`: `(List[float])` 文本检测框的置信度列表"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_textline_orientation`: `(bool)` 控制是否启用文本行方向分类功能\n\n    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(Union[str, None])` 图像预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数\n            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类\n            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n    - `dt_scores`: `(List[float])` 文本检测框的置信度列表\n\n    - `text_det_params`: `(Dict[str, Dict[str, int, float]])` 文本检测模块的配置参数\n        - `limit_side_len`: `(int)` 图像预处理时的边长限制值\n        - `limit_type`: `(str)` 边长限制的处理方式\n        - `thresh`: `(float)` 文本像素分类的置信度阈值\n        - `box_thresh`: `(float)` 文本检测框的置信度阈值\n        - `unclip_ratio`: `(float)` 文本检测框的膨胀系数\n        - `text_type`: `(str)` 文本检测的类型，当前固定为\"general\"\n\n    - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`",
+          "generation_text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_textline_orientation`: `(bool)` 控制是否启用文本行方向分类功能\n\n    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(Union[str, None])` 图像预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数\n            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类\n            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n    - `dt_scores`: `(List[float])` 文本检测框的置信度列表\n\n    - `text_det_params`: `(Dict[str, Dict[str, int, float]])` 文本检测模块的配置参数\n        - `limit_side_len`: `(int)` 图像预处理时的边长限制值\n        - `limit_type`: `(str)` 边长限制的处理方式\n        - `thresh`: `(float)` 文本像素分类的置信度阈值\n        - `box_thresh`: `(float)` 文本检测框的置信度阈值\n        - `unclip_ratio`: `(float)` 文本检测框的膨胀系数\n        - `text_type`: `(str)` 文本检测的类型，当前固定为\"general\"\n\n    - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:2",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "# 文档图像预处理产线使用教程",
+          "generation_text": "# 文档图像预处理产线使用教程"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:43",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "- `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。\n- `img` 属性返回的预测结果是一个字典类型的数据。其中，键分别为 `ocr_res_img` 和 `preprocessed_img`，对应的值是两个 `Image.Image` 对象：一个用于显示 OCR 结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则字典中只包含 `ocr_res_img`。\n\n</details>",
+          "generation_text": "- `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。\n- `img` 属性返回的预测结果是一个字典类型的数据。其中，键分别为 `ocr_res_img` 和 `preprocessed_img`，对应的值是两个 `Image.Image` 对象：一个用于显示 OCR 结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则字典中只包含 `ocr_res_img`。\n\n</details>"
+        }
+      ]
+    },
+    {
+      "id": "internal-27",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 4,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 6.34,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+          "text": "- 调用`save_to_json()` 方法会将上述内容保存到指定的 `save_path` 中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`，如果指定为文件，则直接保存到该文件中。由于 json 文件不支持保存numpy数组，因此会将其中的 `numpy.array` 类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的 `save_path` 中，如果指定为目录，则会将版面区域检测可视化图像、全局OCR可视化图像、版面阅读顺序可视化图像等内容保存，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n- 调用`save_to_markdown()` 方法会将转化后的 Markdown 文件保存到指定的 `save_path` 中，保存的文件路径为`save_path/{your_img_basename}.md`，如果输入是 PDF 文件，建议直接指定目录，否责多个 markdown 文件会被覆盖。\n- 调用 `concatenate_markdown_pages()` 方法将 `PP-StructureV3 pipeline` 输出的多页Markdown内容`markdown_list`合并为单个完整文档，并返回合并后的Markdown内容。\n\n此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：",
+          "generation_text": "- 调用`save_to_json()` 方法会将上述内容保存到指定的 `save_path` 中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`，如果指定为文件，则直接保存到该文件中。由于 json 文件不支持保存numpy数组，因此会将其中的 `numpy.array` 类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的 `save_path` 中，如果指定为目录，则会将版面区域检测可视化图像、全局OCR可视化图像、版面阅读顺序可视化图像等内容保存，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n- 调用`save_to_markdown()` 方法会将转化后的 Markdown 文件保存到指定的 `save_path` 中，保存的文件路径为`save_path/{your_img_basename}.md`，如果输入是 PDF 文件，建议直接指定目录，否责多个 markdown 文件会被覆盖。\n- 调用 `concatenate_markdown_pages()` 方法将 `PP-StructureV3 pipeline` 输出的多页Markdown内容`markdown_list`合并为单个完整文档，并返回合并后的Markdown内容。\n\n此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下："
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:41",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "    - `rec_boxes`: `(numpy.ndarray)` 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形框的[x_min, y_min, x_max, y_max]坐标\n    ，其中(x_min, y_min)为左上角坐标，(x_max, y_max)为右下角坐标\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：",
+          "generation_text": "    - `rec_boxes`: `(numpy.ndarray)` 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形框的[x_min, y_min, x_max, y_max]坐标\n    ，其中(x_min, y_min)为左上角坐标，(x_max, y_max)为右下角坐标\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下："
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:72",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+          "text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n    - `input_path`: `(str)` 待预测图像或者PDF的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_seal_recognition`: `(bool)` 控制是否启用印章识别子产线\n        - `use_table_recognition`: `(bool)` 控制是否启用表格识别子产线\n        - `use_formula_recognition`: `(bool)` 控制是否启用公式识别子产线\n\n    - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` 文档预处理结果字典，仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(str)` 文档预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`，此处为`None`\n        - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`\n        - `model_settings`: `(Dict[str, bool])` 文档预处理子产线的模型配置参数\n          - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档图像方向分类子模块\n          - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像扭曲矫正子模块\n        - `angle`: `(int)` 文档图像方向分类子模块的预测结果，启用时返回实际角度值\n\n    - `parsing_res_list`: `(List[Dict])` 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。\n        - `block_bbox`: `(np.ndarray)` 版面区域的边界框。\n        - `block_label`: `(str)` 版面区域的标签，例如`text`, `table`等。\n        - `block_content`: `(str)` 内容为版面区域内的内容。\n        - `seg_start_flag`: `(bool)` 标识该版面区域是否是段落的开始。\n        - `seg_end_flag`: `(bool)` 标识该版面区域是否是段落的结束。\n        - `sub_label`: `(str)` 版面区域的子标签，例如`text`的子标签可能为`title_text`。\n        - `sub_index`: `(int)` 版面区域的子索引，用于恢复Markdown。\n        - `index`: `(int)` 版面区域的索引，用于显示版面排序结果。",
+          "generation_text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n    - `input_path`: `(str)` 待预测图像或者PDF的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_seal_recognition`: `(bool)` 控制是否启用印章识别子产线\n        - `use_table_recognition`: `(bool)` 控制是否启用表格识别子产线\n        - `use_formula_recognition`: `(bool)` 控制是否启用公式识别子产线\n\n    - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` 文档预处理结果字典，仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(str)` 文档预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`，此处为`None`\n        - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`\n        - `model_settings`: `(Dict[str, bool])` 文档预处理子产线的模型配置参数\n          - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档图像方向分类子模块\n          - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像扭曲矫正子模块\n        - `angle`: `(int)` 文档图像方向分类子模块的预测结果，启用时返回实际角度值\n\n    - `parsing_res_list`: `(List[Dict])` 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。\n        - `block_bbox`: `(np.ndarray)` 版面区域的边界框。\n        - `block_label`: `(str)` 版面区域的标签，例如`text`, `table`等。\n        - `block_content`: `(str)` 内容为版面区域内的内容。\n        - `seg_start_flag`: `(bool)` 标识该版面区域是否是段落的开始。\n        - `seg_end_flag`: `(bool)` 标识该版面区域是否是段落的结束。\n        - `sub_label`: `(str)` 版面区域的子标签，例如`text`的子标签可能为`title_text`。\n        - `sub_index`: `(int)` 版面区域的子索引，用于恢复Markdown。\n        - `index`: `(int)` 版面区域的索引，用于显示版面排序结果。"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:58",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "    - `text_det_params`: `(Dict[str, Dict[str, int, float]])` 文本检测模块的配置参数\n        - `limit_side_len`: `(int)` 图像预处理时的边长限制值\n        - `limit_type`: `(str)` 边长限制的处理方式\n        - `thresh`: `(float)` 文本像素分类的置信度阈值\n        - `box_thresh`: `(float)` 文本检测框的置信度阈值\n        - `unclip_ratio`: `(float)` 文本检测框的膨胀系数\n        - `text_type`: `(str)` 文本检测的类型，当前固定为\"general\"\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`\n\n    - `rec_boxes`: `(numpy.ndarray)` 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形框的[x_min, y_min, x_max, y_max]坐标\n    ，其中(x_min, y_min)为左上角坐标，(x_max, y_max)为右下角坐标\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n- 调用`save_to_html()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_table_1.html`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的HTML形式写入到指定的html文件中。\n- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：",
+          "generation_text": "    - `text_det_params`: `(Dict[str, Dict[str, int, float]])` 文本检测模块的配置参数\n        - `limit_side_len`: `(int)` 图像预处理时的边长限制值\n        - `limit_type`: `(str)` 边长限制的处理方式\n        - `thresh`: `(float)` 文本像素分类的置信度阈值\n        - `box_thresh`: `(float)` 文本检测框的置信度阈值\n        - `unclip_ratio`: `(float)` 文本检测框的膨胀系数\n        - `text_type`: `(str)` 文本检测的类型，当前固定为\"general\"\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`\n\n    - `rec_boxes`: `(numpy.ndarray)` 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形框的[x_min, y_min, x_max, y_max]坐标\n    ，其中(x_min, y_min)为左上角坐标，(x_max, y_max)为右下角坐标\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n- 调用`save_to_html()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_table_1.html`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的HTML形式写入到指定的html文件中。\n- 调用`save_to_xlsx()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.xlsx`，如果指定为文件，则直接保存到该文件中。在通用表格识别v2产线中，将会把图像中表格的Excel表格形式写入到指定的xlsx文件中。\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下："
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:26",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类模块\n        - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正模块\n\n    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：",
+          "generation_text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类模块\n        - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正模块\n\n    - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,90,180,270]；未启用时为-1\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_doc_preprocessor_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下："
+        }
+      ]
+    },
+    {
+      "id": "internal-28",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 3,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 3.54,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:72",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+          "text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n    - `input_path`: `(str)` 待预测图像或者PDF的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_seal_recognition`: `(bool)` 控制是否启用印章识别子产线\n        - `use_table_recognition`: `(bool)` 控制是否启用表格识别子产线\n        - `use_formula_recognition`: `(bool)` 控制是否启用公式识别子产线\n\n    - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` 文档预处理结果字典，仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(str)` 文档预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`，此处为`None`\n        - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`\n        - `model_settings`: `(Dict[str, bool])` 文档预处理子产线的模型配置参数\n          - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档图像方向分类子模块\n          - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像扭曲矫正子模块\n        - `angle`: `(int)` 文档图像方向分类子模块的预测结果，启用时返回实际角度值\n\n    - `parsing_res_list`: `(List[Dict])` 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。\n        - `block_bbox`: `(np.ndarray)` 版面区域的边界框。\n        - `block_label`: `(str)` 版面区域的标签，例如`text`, `table`等。\n        - `block_content`: `(str)` 内容为版面区域内的内容。\n        - `seg_start_flag`: `(bool)` 标识该版面区域是否是段落的开始。\n        - `seg_end_flag`: `(bool)` 标识该版面区域是否是段落的结束。\n        - `sub_label`: `(str)` 版面区域的子标签，例如`text`的子标签可能为`title_text`。\n        - `sub_index`: `(int)` 版面区域的子索引，用于恢复Markdown。\n        - `index`: `(int)` 版面区域的索引，用于显示版面排序结果。",
+          "generation_text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n    - `input_path`: `(str)` 待预测图像或者PDF的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_seal_recognition`: `(bool)` 控制是否启用印章识别子产线\n        - `use_table_recognition`: `(bool)` 控制是否启用表格识别子产线\n        - `use_formula_recognition`: `(bool)` 控制是否启用公式识别子产线\n\n    - `doc_preprocessor_res`: `(Dict[str, Union[List[float], str]])` 文档预处理结果字典，仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(str)` 文档预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`，此处为`None`\n        - `page_index`: `None`，此处的输入为`numpy.ndarray`，所以值为`None`\n        - `model_settings`: `(Dict[str, bool])` 文档预处理子产线的模型配置参数\n          - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档图像方向分类子模块\n          - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像扭曲矫正子模块\n        - `angle`: `(int)` 文档图像方向分类子模块的预测结果，启用时返回实际角度值\n\n    - `parsing_res_list`: `(List[Dict])` 解析结果的列表，每个元素为一个字典，列表顺序为解析后的阅读顺序。\n        - `block_bbox`: `(np.ndarray)` 版面区域的边界框。\n        - `block_label`: `(str)` 版面区域的标签，例如`text`, `table`等。\n        - `block_content`: `(str)` 内容为版面区域内的内容。\n        - `seg_start_flag`: `(bool)` 标识该版面区域是否是段落的开始。\n        - `seg_end_flag`: `(bool)` 标识该版面区域是否是段落的结束。\n        - `sub_label`: `(str)` 版面区域的子标签，例如`text`的子标签可能为`title_text`。\n        - `sub_index`: `(int)` 版面区域的子索引，用于恢复Markdown。\n        - `index`: `(int)` 版面区域的索引，用于显示版面排序结果。"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_textline_orientation`: `(bool)` 控制是否启用文本行方向分类功能\n\n    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(Union[str, None])` 图像预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数\n            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类\n            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n    - `dt_scores`: `(List[float])` 文本检测框的置信度列表\n\n    - `text_det_params`: `(Dict[str, Dict[str, int, float]])` 文本检测模块的配置参数\n        - `limit_side_len`: `(int)` 图像预处理时的边长限制值\n        - `limit_type`: `(str)` 边长限制的处理方式\n        - `thresh`: `(float)` 文本像素分类的置信度阈值\n        - `box_thresh`: `(float)` 文本检测框的置信度阈值\n        - `unclip_ratio`: `(float)` 文本检测框的膨胀系数\n        - `text_type`: `(str)` 文本检测的类型，当前固定为\"general\"\n\n    - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`",
+          "generation_text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_textline_orientation`: `(bool)` 控制是否启用文本行方向分类功能\n\n    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(Union[str, None])` 图像预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数\n            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类\n            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n    - `dt_scores`: `(List[float])` 文本检测框的置信度列表\n\n    - `text_det_params`: `(Dict[str, Dict[str, int, float]])` 文本检测模块的配置参数\n        - `limit_side_len`: `(int)` 图像预处理时的边长限制值\n        - `limit_type`: `(str)` 边长限制的处理方式\n        - `thresh`: `(float)` 文本像素分类的置信度阈值\n        - `box_thresh`: `(float)` 文本检测框的置信度阈值\n        - `unclip_ratio`: `(float)` 文本检测框的膨胀系数\n        - `text_type`: `(str)` 文本检测的类型，当前固定为\"general\"\n\n    - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:57",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_layout_detection`: `(bool)` 控制是否启用版面区域检测子产线\n        - `use_ocr_model`: `(bool)` 控制是否启用OCR子产线\n    - `layout_det_res`: `(Dict[str, Union[List[numpy.ndarray], List[float]]])` 版面检测子模块的输出结果。仅当`use_layout_detection=True`时存在\n        - `input_path`: `(Union[str, None])` 版面检测区域模块接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n        - `boxes`: `(List[Dict])` 版面印章区域的检测框列表，每个列表中的元素，包含以下字段\n            - `cls_id`: `(int)` 检测框的印章类别id\n            - `score`: `(float)` 检测框的置信度\n            - `coordinate`: `(List[float])` 检测框的四个顶点坐标，顺序为x1,y1,x2,y2表示左上角的x坐标，左上角的y坐标，右下角x坐标，右下角的y坐标\n    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(Union[str, None])` 图像预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数\n            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类\n            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n    - `dt_scores`: `(List[float])` 文本检测框的置信度列表",
+          "generation_text": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_layout_detection`: `(bool)` 控制是否启用版面区域检测子产线\n        - `use_ocr_model`: `(bool)` 控制是否启用OCR子产线\n    - `layout_det_res`: `(Dict[str, Union[List[numpy.ndarray], List[float]]])` 版面检测子模块的输出结果。仅当`use_layout_detection=True`时存在\n        - `input_path`: `(Union[str, None])` 版面检测区域模块接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n        - `boxes`: `(List[Dict])` 版面印章区域的检测框列表，每个列表中的元素，包含以下字段\n            - `cls_id`: `(int)` 检测框的印章类别id\n            - `score`: `(float)` 检测框的置信度\n            - `coordinate`: `(List[float])` 检测框的四个顶点坐标，顺序为x1,y1,x2,y2表示左上角的x坐标，左上角的y坐标，右下角x坐标，右下角的y坐标\n    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(Union[str, None])` 图像预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数\n            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类\n            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n    - `dt_scores`: `(List[float])` 文本检测框的置信度列表"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>",
+          "generation_text": "## 1. 文档图像预处理产线介绍\n\n文档图像预处理产线集成了文档方向分类和形变矫正两大功能。文档方向分类可自动识别文档的四个方向（0°、90°、180°、270°），确保文档以正确的方向进行后续处理。文本图像矫正模型则用于修正文档拍摄或扫描过程中的几何扭曲，恢复文档的原始形状和比例。适用于数字化文档管理、OCR类任务前处理、以及任何需要提高文档图像质量的场景。通过自动化的方向校正与形变矫正，该模块显著提升了文档处理的准确性和效率，为用户提供更为可靠的图像分析基础。本产线同时提供了灵活的服务化部署方式，支持在多种硬件上使用多种编程语言调用。不仅如此，本产线也提供了二次开发的能力，您可以基于本产线在您自己的数据集上训练调优，训练后的模型也可以无缝集成。\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/doc_preprocessor/02.jpg\">\n\n<b>通用文档图像预处理产线中包含以下2个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md)（可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md)（可选）\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary> <b>文档图像方向分类模块（可选）：</b></summary>"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:2",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "# 文档图像预处理产线使用教程",
+          "generation_text": "# 文档图像预处理产线使用教程"
+        }
+      ]
+    },
+    {
+      "id": "internal-45",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 3,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 6.78,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:2",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "# 文本识别模块使用教程",
+          "generation_text": "# 文本识别模块使用教程"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "## 一、概述\n\n文本识别模块是OCR（光学字符识别）系统中的核心部分，负责从图像中的文本区域提取出文本信息。该模块的性能直接影响到整个OCR系统的准确性和效率。文本识别模块通常接收文本检测模块输出的文本区域的边界框（Bounding Boxes）作为输入，然后通过复杂的图像处理和深度学习算法，将图像中的文本转化为可编辑和可搜索的电子文本。文本识别结果的准确性，对于后续的信息提取和数据挖掘等应用至关重要。",
+          "generation_text": "## 一、概述\n\n文本识别模块是OCR（光学字符识别）系统中的核心部分，负责从图像中的文本区域提取出文本信息。该模块的性能直接影响到整个OCR系统的准确性和效率。文本识别模块通常接收文本检测模块输出的文本区域的边界框（Bounding Boxes）作为输入，然后通过复杂的图像处理和深度学习算法，将图像中的文本转化为可编辑和可搜索的电子文本。文本识别结果的准确性，对于后续的信息提取和数据挖掘等应用至关重要。"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:9",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "</details>\n\n<details>\n<summary><b>文本识别模块：</b></summary>",
+          "generation_text": "</details>\n\n<details>\n<summary><b>文本识别模块：</b></summary>"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:29",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+          "text": "</details>\n\n<details>\n<summary><b>文本识别模块：</b></summary>",
+          "generation_text": "</details>\n\n<details>\n<summary><b>文本识别模块：</b></summary>"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:11",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "</details>\n\n<details>\n<summary><b>文本识别模块：</b></summary>",
+          "generation_text": "</details>\n\n<details>\n<summary><b>文本识别模块：</b></summary>"
+        }
+      ]
+    },
+    {
+      "id": "internal-46",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 2,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 5.71,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "## 一、概述\n\n文本识别模块是OCR（光学字符识别）系统中的核心部分，负责从图像中的文本区域提取出文本信息。该模块的性能直接影响到整个OCR系统的准确性和效率。文本识别模块通常接收文本检测模块输出的文本区域的边界框（Bounding Boxes）作为输入，然后通过复杂的图像处理和深度学习算法，将图像中的文本转化为可编辑和可搜索的电子文本。文本识别结果的准确性，对于后续的信息提取和数据挖掘等应用至关重要。",
+          "generation_text": "## 一、概述\n\n文本识别模块是OCR（光学字符识别）系统中的核心部分，负责从图像中的文本区域提取出文本信息。该模块的性能直接影响到整个OCR系统的准确性和效率。文本识别模块通常接收文本检测模块输出的文本区域的边界框（Bounding Boxes）作为输入，然后通过复杂的图像处理和深度学习算法，将图像中的文本转化为可编辑和可搜索的电子文本。文本识别结果的准确性，对于后续的信息提取和数据挖掘等应用至关重要。"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_detection:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_detection.md",
+          "text": "## 一、概述\n文本检测模块是OCR（光学字符识别）系统中的关键组成部分，负责在图像中定位和标记出包含文本的区域。该模块的性能直接影响到整个OCR系统的准确性和效率。文本检测模块通常会输出文本区域的边界框（Bounding Boxes），这些边界框将作为输入传递给文本识别模块进行后续处理。",
+          "generation_text": "## 一、概述\n文本检测模块是OCR（光学字符识别）系统中的关键组成部分，负责在图像中定位和标记出包含文本的区域。该模块的性能直接影响到整个OCR系统的准确性和效率。文本检测模块通常会输出文本区域的边界框（Bounding Boxes），这些边界框将作为输入传递给文本识别模块进行后续处理。"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:6",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "> ❗ 以上列出的是文本识别模块重点支持的<b>6个核心模型</b>，该模块总共支持<b>20个全量模型</b>，包含多个多语言文本识别模型，完整的模型列表如下：\n\n<details><summary> 👉模型列表详情</summary>\n\n* <b>PP-OCRv5 多场景模型</b>",
+          "generation_text": "> ❗ 以上列出的是文本识别模块重点支持的<b>6个核心模型</b>，该模块总共支持<b>20个全量模型</b>，包含多个多语言文本识别模型，完整的模型列表如下：\n\n<details><summary> 👉模型列表详情</summary>\n\n* <b>PP-OCRv5 多场景模型</b>"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:2",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "# 文本识别模块使用教程",
+          "generation_text": "# 文本识别模块使用教程"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:13",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "> ❗ 以上列出的是文本识别模块重点支持的<b>6个核心模型</b>，该模块总共支持<b>20个全量模型</b>，包含多个多语言文本识别模型，完整的模型列表如下：\n\n<details><summary> 👉模型列表详情</summary>\n\n* <b>PP-OCRv5 多场景模型</b>",
+          "generation_text": "> ❗ 以上列出的是文本识别模块重点支持的<b>6个核心模型</b>，该模块总共支持<b>20个全量模型</b>，包含多个多语言文本识别模型，完整的模型列表如下：\n\n<details><summary> 👉模型列表详情</summary>\n\n* <b>PP-OCRv5 多场景模型</b>"
+        }
+      ]
+    },
+    {
+      "id": "internal-47",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 4,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 5.99,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:27",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "* 其中，`model_name` 必须指定，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。\n\n* 调用文本识别模型的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。`predict()` 方法参数有 `input` 和 `batch_size`，具体说明如下：",
+          "generation_text": "* 其中，`model_name` 必须指定，在此基础上，指定 `model_dir` 时，使用用户自定义的模型。\n\n* 调用文本识别模型的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。另外，本模块还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。`predict()` 方法参数有 `input` 和 `batch_size`，具体说明如下："
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:53",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "（2）调用通用表格识别v2产线对象的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。\n\n另外，产线还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。\n\n以下是 `predict()` 方法的参数及其说明：",
+          "generation_text": "（2）调用通用表格识别v2产线对象的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。\n\n另外，产线还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。\n\n以下是 `predict()` 方法的参数及其说明："
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/doc_preprocessor:22",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/doc_preprocessor.md",
+          "text": "（2）调用 doc_preprocessor 产线对象的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。\n\n另外，产线还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。\n\n以下是 `predict()` 方法的参数及其说明：",
+          "generation_text": "（2）调用 doc_preprocessor 产线对象的 `predict()` 方法进行推理预测，该方法会返回一个结果列表。\n\n另外，产线还提供了 `predict_iter()` 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 `predict_iter()` 返回的是一个 `generator`，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。\n\n以下是 `predict()` 方法的参数及其说明："
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:36",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "</details>\n\n<details><summary>（2）调用 OCR 产线对象的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，产线还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。以下是 <code>predict()</code> 方法的参数及其说明：</summary>",
+          "generation_text": "</details>\n\n<details><summary>（2）调用 OCR 产线对象的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，产线还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。以下是 <code>predict()</code> 方法的参数及其说明：</summary>"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:68",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+          "text": "</details>\n\n<details><summary>（2）调用 PP-StructureV3 产线对象的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，产线还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。以下是 <code>predict()</code> 方法的参数及其说明：</summary>",
+          "generation_text": "</details>\n\n<details><summary>（2）调用 PP-StructureV3 产线对象的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，产线还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。以下是 <code>predict()</code> 方法的参数及其说明：</summary>"
+        }
+      ]
+    },
+    {
+      "id": "internal-48",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 3,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 7.61,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:2",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "# 文本识别模块使用教程",
+          "generation_text": "# 文本识别模块使用教程"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "## 一、概述\n\n文本识别模块是OCR（光学字符识别）系统中的核心部分，负责从图像中的文本区域提取出文本信息。该模块的性能直接影响到整个OCR系统的准确性和效率。文本识别模块通常接收文本检测模块输出的文本区域的边界框（Bounding Boxes）作为输入，然后通过复杂的图像处理和深度学习算法，将图像中的文本转化为可编辑和可搜索的电子文本。文本识别结果的准确性，对于后续的信息提取和数据挖掘等应用至关重要。",
+          "generation_text": "## 一、概述\n\n文本识别模块是OCR（光学字符识别）系统中的核心部分，负责从图像中的文本区域提取出文本信息。该模块的性能直接影响到整个OCR系统的准确性和效率。文本识别模块通常接收文本检测模块输出的文本区域的边界框（Bounding Boxes）作为输入，然后通过复杂的图像处理和深度学习算法，将图像中的文本转化为可编辑和可搜索的电子文本。文本识别结果的准确性，对于后续的信息提取和数据挖掘等应用至关重要。"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:9",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "</details>\n\n<details>\n<summary><b>文本识别模块：</b></summary>",
+          "generation_text": "</details>\n\n<details>\n<summary><b>文本识别模块：</b></summary>"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:29",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+          "text": "</details>\n\n<details>\n<summary><b>文本识别模块：</b></summary>",
+          "generation_text": "</details>\n\n<details>\n<summary><b>文本识别模块：</b></summary>"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/table_recognition_v2:11",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/table_recognition_v2.md",
+          "text": "</details>\n\n<details>\n<summary><b>文本识别模块：</b></summary>",
+          "generation_text": "</details>\n\n<details>\n<summary><b>文本识别模块：</b></summary>"
+        }
+      ]
+    }
+  ]
+}

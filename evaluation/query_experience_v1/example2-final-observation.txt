@@ -1,0 +1,199 @@
+- log
+- log
+- button "keyboard_double_arrow_left":
+  - generic: keyboard_double_arrow_left
+- generic: 工作台导航
+- generic: 版本化知识服务
+- button "总览":
+  - paragraph: 总览
+- button "版本化知识检索":
+  - paragraph: 版本化知识检索
+- button "版本与历史":
+  - paragraph: 版本与历史
+- button "资料来源":
+  - paragraph: 资料来源
+- generic: 变更影响审查
+- button "发起兼容性审查":
+  - paragraph: 发起兼容性审查
+- button "影响与证据":
+  - paragraph: 影响与证据
+- button "升级审查报告":
+  - paragraph: 升级审查报告
+- button "人工审核":
+  - paragraph: 人工审核
+- generic: 系统说明
+- button "检索评测":
+  - paragraph: 检索评测
+- button "已知限制":
+  - paragraph: 已知限制
+- button "系统说明":
+  - paragraph: 系统说明
+- button "刷新知识库状态":
+  - paragraph: 刷新知识库状态
+- banner:
+  - button "keyboard_double_arrow_right":
+    - generic: keyboard_double_arrow_right
+- button "←":
+  - paragraph: ←
+- button "首页":
+  - paragraph: 首页
+- generic: ›
+- button "版本化知识服务":
+  - generic "版本化知识服务":
+    - paragraph: 版本化知识服务
+- generic: ›
+- generic: 版本化知识检索与问答
+- heading "版本化知识检索与问答" [level=1]:
+  - text: 版本化知识检索与问答
+  - link "Link to heading":
+    - /url: "#b1ba0547"
+- paragraph: 查询任务
+- radiogroup "查询任务":
+  - radio "当前应用依赖 · v2.9.1"
+  - paragraph: 当前应用依赖 · v2.9.1
+  - radio "升级目标依赖 · v3.0.0" [checked]
+  - paragraph: 升级目标依赖 · v3.0.0
+  - radio "手动选择依赖资料范围"
+  - paragraph: 手动选择依赖资料范围
+- paragraph: v3.0.0 · 最新已收录版本 · 中文资料 · 选择示例后可编辑问题
+- generic "keyboard_arrow_right 资料范围与来源":
+  - generic: keyboard_arrow_right
+  - paragraph: 资料范围与来源
+- paragraph: 示例问题（选择后可编辑）
+- combobox "示例问题（选择后可编辑）": PaddleOCR 3.0.0 通用 OCR 的结果归一化读取中，rec_texts 与 rec_scores 有什么对应关系？text_rec_score_thresh 为什么会让部分识别结果未保留？
+- button "Open":
+- generic: 提出问题
+- paragraph: 你的问题
+- textbox "你的问题":
+  - /placeholder: PaddleOCR 2.9.1 的 OCR 调用如何只识别文字而不检测？
+  - text: PaddleOCR 3.0.0 通用 OCR 的结果归一化读取中，rec_texts 与 rec_scores 有什么对应关系？text_rec_score_thresh 为什么会让部分识别结果未保留？
+- button "生成带引用回答" [active]:
+  - generic "生成带引用回答":
+    - paragraph: 生成带引用回答
+- button "仅查看检索原文":
+  - generic "仅查看检索原文":
+    - paragraph: 仅查看检索原文
+- button "检索设置":
+  - generic "检索设置":
+    - paragraph: 检索设置
+  - generic: expand_more
+- generic: 结果与核验
+- heading "回答" [level=3]:
+  - text: 回答
+  - link "Link to heading":
+    - /url: "#3a622f65"
+- paragraph:
+  - strong: 直接回答
+- paragraph: 在 PaddleOCR 3.0.0 通用 OCR 结果中，rec_texts 是文本识别结果列表，仅包含置信度超过 text_rec_score_thresh 的文本。
+- paragraph: 依据：[1]
+- paragraph:
+  - strong: 必要说明
+- paragraph: rec_scores 是文本识别的置信度列表，已按 text_rec_score_thresh 过滤，因此与 rec_texts 一样只保留超过该阈值的识别结果，两者在过滤后保持逐项对应关系。
+- paragraph: 依据：[1]
+- paragraph: text_rec_score_thresh 是文本识别结果的过滤阈值；文本识别阈值得分大于该阈值的文本结果会被保留，因此低于或不过阈值的识别结果不会出现在 rec_texts/rec_scores 中。
+- paragraph: 依据：[1]、[2]
+- generic "keyboard_arrow_right 回答核验说明":
+  - generic: keyboard_arrow_right
+  - paragraph: 回答核验说明
+- paragraph: 已补查一次并重新核验。下方保留通过核验的内容。
+- generic "keyboard_arrow_right 查看补查与核验过程":
+  - generic: keyboard_arrow_right
+  - paragraph: 查看补查与核验过程
+- generic "keyboard_arrow_right 查看原文支持度复核":
+  - generic: keyboard_arrow_right
+  - paragraph: 查看原文支持度复核
+- heading "引用依据" [level=3]:
+  - text: 引用依据
+  - link "Link to heading":
+    - /url: "#9405135c"
+- paragraph:
+  - strong: "[1] 通用 OCR 产线使用与结果格式"
+- paragraph: 章节：2.2 Python脚本方式集成 ｜ 最新资料范围 ｜ v3.0.0 · 最新已收录版本 ｜ zh-CN ｜ 官方文档
+- paragraph: 原文第 1383–1389 行
+- list:
+  - paragraph:
+    - code: use_doc_unwarping
+    - text: ":"
+    - code: (bool)
+    - text: 控制是否启用文本图像矫正
+  - list:
+    - code: angle
+    - text: ":"
+    - code: (int)
+    - text: 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1
+  - paragraph:
+    - code: dt_polys
+    - text: ":"
+    - code: (List[numpy.ndarray])
+    - text: 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16
+  - paragraph:
+    - code: dt_scores
+    - text: ":"
+    - code: (List[float])
+    - text: 文本检测框的置信度列表
+- paragraph: 原文第 1396–1403 行
+- list:
+  - paragraph:
+    - code: text_type
+    - text: ":"
+    - code: (str)
+    - text: 文本检测的类型，当前固定为"general"
+  - paragraph:
+    - code: textline_orientation_angles
+    - text: ":"
+    - code: (List[int])
+    - text: 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]
+  - paragraph:
+    - code: text_rec_score_thresh
+    - text: ":"
+    - code: (float)
+    - text: 文本识别结果的过滤阈值
+  - paragraph:
+    - code: rec_texts
+    - text: ":"
+    - code: (List[str])
+    - text: 文本识别结果列表，仅包含置信度超过
+    - code: text_rec_score_thresh
+    - text: 的文本
+- paragraph: 原文第 1404–1406 行
+- list:
+  - paragraph:
+    - code: rec_scores
+    - text: ":"
+    - code: (List[float])
+    - text: 文本识别的置信度列表，已按
+    - code: text_rec_score_thresh
+    - text: 过滤
+  - paragraph:
+    - code: rec_polys
+    - text: ":"
+    - code: (List[numpy.ndarray])
+    - text: 经过置信度过滤的文本检测框列表，格式同
+    - code: dt_polys
+- paragraph:
+  - link "阅读原始页面":
+    - /url: https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md
+- generic "keyboard_arrow_right 技术详情":
+  - generic: keyboard_arrow_right
+  - paragraph: 技术详情
+- paragraph:
+  - strong: "[2] 通用 OCR 产线使用与结果格式"
+- paragraph: 章节：2.2 Python脚本方式集成 ｜ 最新资料范围 ｜ v3.0.0 · 最新已收录版本 ｜ zh-CN ｜ 官方文档
+- paragraph: 原文第 1082–1092 行
+- generic: <td><code>text_det_thresh</code></td> <td>文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。 <ul> <li><b>float</b>：大于 <code>0</code> 的任意浮点数 <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.3</code></li></li></ul> </td> <td><code>float</code></td> <td><code>None</code></td> </tr> <tr> <td><code>text_det_box_thresh</code></td>
+- paragraph: 原文第 1118–1128 行
+- generic: <td><code>text_rec_score_thresh</code></td> <td>文本识别阈值，得分大于该阈值的文本结果会被保留。 <ul> <li><b>float</b>：大于 <code>0</code> 的任意浮点数 <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值</li></li></ul> </td> <td><code>float</code></td> <td><code>None</code></td> </tr> <tr> <td><code>text_rec_input_shape</code></td>
+- paragraph: 原文第 1170–1174 行
+- generic: <li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li> <li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li> <li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li> <li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li> <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备；</li>
+- paragraph:
+  - link "阅读原始页面":
+    - /url: https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md
+- generic "keyboard_arrow_right 技术详情":
+  - generic: keyboard_arrow_right
+  - paragraph: 技术详情
+- generic "keyboard_arrow_right 查看其余检索结果（6）":
+  - generic: keyboard_arrow_right
+  - paragraph: 查看其余检索结果（6）
+- generic "keyboard_arrow_right 本次检索技术详情":
+  - generic: keyboard_arrow_right
+  - paragraph: 本次检索技术详情

@@ -41,4 +41,7 @@ def is_out_of_scope_public_request(text: str) -> bool:
     return bool(
         (_PRIVATE_ORG_CONTEXT.search(normalized) and _PRIVATE_DATA_SUBJECT.search(normalized))
         or _PRIVATE_ORG_ENGLISH.search(normalized)
+        or (re.search(r'我们(?:的)?应用|本应用|内部应用', normalized)
+            and re.search(r'确认|保证|证明|通过|兼容', normalized)
+            and re.search(r'输出|下游|升级|回归', normalized))
     )

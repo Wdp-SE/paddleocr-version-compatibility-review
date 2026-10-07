@@ -20,7 +20,11 @@ def impact_panel(result):
                 st.caption(f"{loc['path']}:{loc['line_start']}–{loc['line_end']}")
                 st.code(loc['excerpt'],language='python')
     st.markdown('**回归要求（尚未执行）**')
+    seen=set()
     for req in report.get('regression_requirements',[]):
+        key=(req['expected_contract'],tuple(req['input_conditions']))
+        if key in seen:continue
+        seen.add(key)
         st.write(req['expected_contract'])
         st.caption('输入条件：'+' / '.join(req['input_conditions']))
     investigation=result.get('investigation')

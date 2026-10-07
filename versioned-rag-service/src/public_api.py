@@ -1394,27 +1394,9 @@ async def query(payload: SearchRequest, request: Request) -> dict:
     chosen['correction'] = {'attempts': 1, 'trigger': reason or 'PARTIAL_SUPPORTED',
                             'status': 'RECOVERED' if second.get('status') == 'OK' else 'UNRESOLVED',
                             'trace': attempts}
-    # Already verified first-pass claims survive a failed/partial correction.
-    if (first.get('status') == 'OK' and second.get('status') == 'OK'
-            and second.get('answer_completeness') == 'PARTIAL_SUPPORTED'):
-        claims = list(first['claims'])
-        known = {c['text'] for c in claims}
-        claims += [c for c in second['claims'] if c['text'] not in known]
-        all_sources = {h['chunk_id']: h for h in _merge_evidence(first['sources'],second['sources'])}
-        ids = list(dict.fromkeys(cid for c in claims for cid in c['evidence_ids']))
-        chosen['sources'] = [all_sources[cid] for cid in ids]
-        slots = {cid: i+1 for i, cid in enumerate(ids)}
-        chosen['claims'] = [{**c, 'source_indexes': [slots[cid] for cid in c['evidence_ids']]} for c in claims]
-        chosen['answer'] = '\n'.join(c['text'] for c in claims)
-        chosen['evidence'] = _merge_evidence(first['evidence'],second['evidence'])
-        chosen['final_evidence_count'] = len(chosen['evidence'])
-        chosen['answer_completeness'] = 'PARTIAL_SUPPORTED'
-        chosen['claim_verification']={'status':'PARTIAL_SUPPORTED',
-            'assessment_type':'separately_verified_passes_not_reverified_union',
-            'passes':[first.get('claim_verification'),second.get('claim_verification')]}
-        chosen['mechanical_verification']={'assessment_scope':'per_pass_claim_indexes',
-            'passes':[first.get('mechanical_verification'),second.get('mechanical_verification')]}
-        chosen['evidence_support']=_answer_evidence_support(payload.query,chosen['sources'],chosen.get('consistency_notes',[]))
+    # A successful repair is one coherent, independently checked answer.
+    # Concatenating separately worded passes repeats facts and can exceed the
+    # five-claim budget. A failed repair still preserves the valid first pass.
     return chosen
 
 
@@ -1612,7 +1594,7 @@ async def _query_once(payload: SearchRequest, request: Request, *, correction: b
             from src.claim_support import check_claim_support
             judge=getattr(generator,'verify_claims_with_diagnostics',None)
             verification_started=time.perf_counter()
-            verification=(await asyncio.to_thread(check_claim_support,claims,hits,judge)
+            verification=(await asyncio.to_thread(check_claim_support,claims,hits,judge,question=payload.query)
                           if callable(judge) else {'status':'CHECK_FAILED','claims':[],'rejected':[],
                                                     'failure_type':'CheckerNotConfigured'})
             base['claim_verification']={key:value for key,value in verification.items() if key!='claims'}

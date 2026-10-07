@@ -60,13 +60,13 @@
     ],
     "example_queries": [
       "PaddleOCR 2.9.1 的 OCR 调用如何只识别文字而不检测？",
-      "PaddleOCR 2.9.1 如何用 lang=\"ch\" 初始化中文 OCR？",
       "PaddleOCR 3.0.0 的 OCR 结果中 rec_texts 和 rec_scores 分别表示什么？",
-      "PaddleOCR 3.0.0 的官方 OCR 测试检查了哪些返回字段？"
+      "PaddleOCR 2.9.1 升级到 3.0.0，OCR 旧结果读取方式为什么需要调整？",
+      "仅凭官方资料，能否确认我们应用升级后下游 JSON 输出兼容？"
     ],
     "current_dependency_version": "v2.9.1",
     "target_dependency_version": "v3.0.0",
     "default_version_label": "最新已收录版本"
   },
-  "data_origin": "PaddleOCR 官方中文资料与代码/配置辅助证据，固定至 v2.9.1 和 v3.0.0 两个提交；默认查询最新已收录版本 v3.0.0。"
+  "data_origin": "PaddleOCR 官方中文资料与代码/配置辅助证据，固定至 v2.9.1 和 v3.0.0 两个提交。日常查询使用当前应用依赖 v2.9.1；升级审查对照目标依赖 v3.0.0。"
 }

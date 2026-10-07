@@ -5,7 +5,7 @@ from src.paddleocr_retrieval_views import generation_evidence_text as evidence_t
 from src.paddleocr_retrieval_views import module_for
 
 
-def check_claim_support(claims, evidence, judge):
+def check_claim_support(claims, evidence, judge, *, question=None):
     failure={'status':'CHECK_FAILED','claims':[],'rejected':[],'diagnostics':{},
              'failure_type':'InvalidCheckerResponse',
              'assessment_type':'model_assessment_not_human_validation'}
@@ -22,6 +22,9 @@ def check_claim_support(claims, evidence, judge):
                                          'module':by_id[cid].get('module',module_for(by_id[cid])),
                                          'document_path':by_id[cid].get('document_path'),
                                          'content':evidence_text(by_id[cid])} for cid in ids]})
+            if question is not None:
+                if not isinstance(question,str) or not 0<len(question)<=4000:return failure
+                payload[-1]['question']=question
         if len(json.dumps(payload,ensure_ascii=False))>60000:
             return {**failure,'failure_type':'EvidenceBudgetExceeded'}
         result,diagnostics=judge(payload)

@@ -1,0 +1,41 @@
+{
+  "question": "仅凭官方资料，能否确认我们应用升级后下游 JSON 输出兼容？",
+  "version": "v2.9.1",
+  "http_status": 200,
+  "elapsed_seconds": 0.0,
+  "result": {
+    "answer": "N/A",
+    "sources": [],
+    "evidence": [],
+    "consistency_notes": [],
+    "generation": {
+      "request_id": "e52803fcfa4146e0bbbf93529c93dbdd",
+      "provider": null,
+      "requested_model": null,
+      "returned_model": null,
+      "finish_reason": null,
+      "usage": null,
+      "latency_ms": null,
+      "failure_reason": "OUT_OF_SCOPE_PUBLIC_CORPUS",
+      "candidate_count": 0,
+      "evidence_coverage": null,
+      "claimed_citation_count": null,
+      "valid_citation_count": null
+    },
+    "retrieval_policy": "not_run_scope_guard",
+    "route": "NOT_RUN_SCOPE_GUARD",
+    "rerank_status": "NOT_RUN_SCOPE_GUARD",
+    "status": "OUT_OF_SCOPE",
+    "scope_status": "OUT_OF_SCOPE_PUBLIC_CORPUS",
+    "correction": {
+      "attempts": 0,
+      "status": "NOT_NEEDED"
+    },
+    "workflow_usage": {
+      "total_tokens": null,
+      "reported_calls": 0,
+      "observed_stages": 1,
+      "complete": false
+    }
+  }
+}

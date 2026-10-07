@@ -10,6 +10,22 @@ _MODULES={'文本检测':'text_detection','文本识别':'text_recognition',
           '表格结构':'table_structure_recognition','版面检测':'layout_detection',
           'PPStructureV3':'structure','PPStructure':'structure','文档预处理':'doc_preprocessor'}
 
+
+def retrieval_intent(text: str) -> dict:
+    """Task aliases for source selection, never an answer or a version override."""
+    if re.search(r'结果|返回', text) and re.search(r'读取|消费|结构|格式', text) and re.search(r'升级|迁移|差异|变化', text):
+        return {'kind': 'result_migration', 'aliases': ['ocr_res append zip dt_boxes rec_res', 'line box txt score', 'rec_texts rec_scores', 'def ocr self predict'],
+                'preferred_role': 'result_contract'}
+    if re.search(r'测试|断言|\btest\b|\bassert', text, re.I):
+        return {'kind': 'test_contract', 'aliases': ['assert result isinstance'],
+                'preferred_role': 'test_assertion'}
+    if re.search(r'调用|接口|Python|参数|裁剪', text, re.I) and not re.search(r'服务|部署|命令行', text):
+        aliases = []
+        if re.search(r'只.{0,8}识别|关闭.{0,8}检测|不.{0,8}检测|已有.{0,6}裁剪|裁剪.{0,10}(?:输入|识别)', text):
+            aliases.append('ocr det rec False')
+        return {'kind': 'api_usage', 'aliases': aliases, 'preferred_role': 'api_example'}
+    return {'kind': 'knowledge', 'aliases': [], 'preferred_role': None}
+
 def explicit_versions(text: str) -> set[str]:
     return {'v'+m.group(0).lower().lstrip('v') for m in _VERSION.finditer(text)}
 
@@ -61,7 +77,16 @@ def plan_query(query: str, *, versions: tuple[str,...], planner=None) -> dict:
         if len(requirements)==4:break
     result={'status':'NEEDS_CLARIFICATION' if explicit-set(versions) else 'READY',
             'original_query':query,'versions':list(versions),'language':'zh',
-            'namespace':'project_primary','requirements':requirements,'planner_status':'NOT_REQUESTED'}
+            'namespace':'project_primary','requirements':requirements,'planner_status':'NOT_REQUESTED',
+            'retrieval_intent':retrieval_intent(query)}
+    if len(explicit)>1 and not explicit-set(versions):
+        # Each version is a separate evidence obligation. One high-ranking old
+        # guide must not stand in for both sides of an upgrade comparison.
+        expanded=[]
+        for requirement in requirements:
+            for version in sorted(explicit) if requirement['version'] is None else [requirement['version']]:
+                expanded.append({**requirement,'id':f'r{len(expanded)+1}','version':version})
+        result['requirements']=expanded[:4]
     if planner and result['status']=='READY':
         try:
             proposal=planner(query=query,versions=list(versions),requirements=requirements)

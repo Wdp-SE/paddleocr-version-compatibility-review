@@ -93,12 +93,37 @@ class EvidenceSearch:
         diag['window_unit']=getattr(self,'window_unit','caller_supplied')
         if plan.get('status')!='READY':
             return {'results':[],'requirements':plan.get('requirements',[]),'diagnostics':{**diag,'status':'NEEDS_CLARIFICATION'}}
-        queries=list(dict.fromkeys([plan['original_query']]+[r['query'] for r in plan['requirements']]+plan.get('proposed_queries',[])))[:9]
+        intent=plan.get('retrieval_intent',{})
+        queries=list(dict.fromkeys([plan['original_query']]+[r['query'] for r in plan['requirements']]+plan.get('proposed_queries',[])+intent.get('aliases',[])))[:9]
         pools=[self._lexical(q,eligible)[:candidate_budget] for q in queries]
         weights=defaultdict(float)
         for pool in pools:
             for rank,(i,_) in enumerate(pool,1):weights[i]+=1/(60+rank)
         lexical_order=sorted(weights,key=lambda i:(-weights[i],i))
+        # Prefer the artifact requested by the user, without excluding other
+        # source roles or inventing facts. Only already relevant windows qualify.
+        def role_priority(i):
+            parent=self.parents[self.views[i]['parent_chunk_id']]
+            path=parent.get('document_path','').lower()
+            text=self.views[i]['retrieval_text']
+            if intent.get('kind')=='result_migration':
+                # An interface comparison needs callable behavior as well as
+                # printed fields; serialized examples alone do not define types.
+                if 'ocr_res.append' in text or ('def ocr(' in text and 'self.predict' in text):return 3
+                return 2 if 'rec_texts' in text or 'rec_scores' in text or 'line[1]' in text else 0
+            if intent.get('kind')=='test_contract':
+                return 2 if path.startswith('tests/') and 'assert ' in text else 1 if path.startswith('tests/') else 0
+            if intent.get('kind')=='api_usage':
+                is_api=(path.endswith('.py') or path.endswith('/whl.md'))
+                if not is_api:return 0
+                if intent.get('aliases'):
+                    return 2 if 'det=False' in text or 'det = False' in text else 0
+                # A generic parameter question does not justify promoting an
+                # unrelated constructor example over its exact parameter row.
+                return 0
+            return 0
+        lexical_order.sort(key=lambda i:(-role_priority(i),-weights[i],i))
+        diag['source_intent']=intent.get('kind','knowledge')
         order=lexical_order
         if strategy in ('contextual_semantic','contextual_rrf','contextual_rrf_rerank'):
             try:
@@ -187,6 +212,14 @@ class EvidenceSearch:
             if best is None and matching: best=matching[0]
             coverage[req['id']]=best['parent_chunk_id'] if best else None
             if best and best not in reserved and len(reserved)<top_k: reserved.append(best)
+        if intent.get('kind')=='result_migration':
+            # Keep both the callable behavior and a field contract in an upgrade
+            # evidence pack; repeated old usage examples must not crowd it out.
+            for version in plan['versions']:
+                field=next((v for v in selected_views if v['version']==version
+                            and any(t in v['retrieval_text'] for t in ('rec_texts','rec_scores'))
+                            and all(t in self.parents[v['parent_chunk_id']]['content'] for t in ('rec_texts','rec_scores'))),None)
+                if field and field not in reserved and len(reserved)<top_k:reserved.append(field)
         selected_views=reserved+[v for v in selected_views if v not in reserved]
         diag['requirement_candidates']=coverage
         parents=[]; chosen=[]

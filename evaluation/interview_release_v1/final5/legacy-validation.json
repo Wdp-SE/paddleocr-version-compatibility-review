@@ -1,0 +1,690 @@
+{
+  "strategy": "legacy",
+  "split": "validation",
+  "freeze_sha256": "b324aab9b4fdf99cd43562681e8d9a8a0c917316270beb211a80f151c77e3b70",
+  "metrics": {
+    "count": 12,
+    "complete_count": 8,
+    "fact_hit_count": 8,
+    "fact_count": 12,
+    "source_hit_count": 8,
+    "wrong_version_count": 0,
+    "wrong_module_count": 36,
+    "complete_rate": 0.6666666666666666,
+    "fact_recall": 0.6666666666666666
+  },
+  "rows": [
+    {
+      "id": "internal-13",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 0,
+        "wrong_version_count": 0,
+        "wrong_module_count": 5,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 3.95,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:116",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: config yml文件中的ratio_list参数的作用是什么？\n\n**A**: 在动态图中，ratio_list在有多个数据源的情况下使用，ratio_list中的每个值是每个epoch从对应数据源采样数据的比例。如ratio_list=[0.3,0.2]，label_file_list=['data1','data2'],代表每个epoch的训练数据包含data1 30%的数据，和data2里 20%的数据，ratio_list中数值的和不需要等于1。ratio_list和label_file_list的长度必须一致。\n\n静态图检测数据采样的逻辑与动态图不同，但基本不影响训练精度。\n\n在静态图中，使用 检测 dataloader读取数据时，会先设置每个epoch的数据量，比如这里设置为1000，ratio_list中的值表示在1000中的占比，比如ratio_list是[0.3, 0.7]，则表示使用两个数据源，每个epoch从第一个数据源采样1000*0.3=300张图，从第二个数据源采样700张图。ratio_list的值的和也不需要等于1。",
+          "generation_text": "#### Q: config yml文件中的ratio_list参数的作用是什么？\n\n**A**: 在动态图中，ratio_list在有多个数据源的情况下使用，ratio_list中的每个值是每个epoch从对应数据源采样数据的比例。如ratio_list=[0.3,0.2]，label_file_list=['data1','data2'],代表每个epoch的训练数据包含data1 30%的数据，和data2里 20%的数据，ratio_list中数值的和不需要等于1。ratio_list和label_file_list的长度必须一致。\n\n静态图检测数据采样的逻辑与动态图不同，但基本不影响训练精度。\n\n在静态图中，使用 检测 dataloader读取数据时，会先设置每个epoch的数据量，比如这里设置为1000，ratio_list中的值表示在1000中的占比，比如ratio_list是[0.3, 0.7]，则表示使用两个数据源，每个epoch从第一个数据源采样1000*0.3=300张图，从第二个数据源采样700张图。ratio_list的值的和也不需要等于1。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:113",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q：文本检测换成自己的数据没法训练，有一些”###”是什么意思？\n\n**A**：数据格式有问题，”###” 表示要被忽略的文本区域，所以你的数据都被跳过了，可以换成其他任意字符或者就写个空的。",
+          "generation_text": "#### Q：文本检测换成自己的数据没法训练，有一些”###”是什么意思？\n\n**A**：数据格式有问题，”###” 表示要被忽略的文本区域，所以你的数据都被跳过了，可以换成其他任意字符或者就写个空的。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:161",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 使用hub_serving部署，延时较高，可能的原因是什么呀？\n\n**A**: 首先，测试的时候第一张图延时较高，可以多测试几张然后观察后几张图的速度；其次，如果是在cpu端部署serving端模型（如backbone为ResNet34），耗时较慢，建议在cpu端部署mobile（如backbone为MobileNetV3）模型。",
+          "generation_text": "#### Q: 使用hub_serving部署，延时较高，可能的原因是什么呀？\n\n**A**: 首先，测试的时候第一张图延时较高，可以多测试几张然后观察后几张图的速度；其次，如果是在cpu端部署serving端模型（如backbone为ResNet34），耗时较慢，建议在cpu端部署mobile（如backbone为MobileNetV3）模型。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:127",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 训练识别和检测时学习率要加上warmup，目的是什么？\n\n**A**: Warmup机制先使学习率从一个较小的值逐步升到一个较大的值，而不是直接就使用较大的学习率，这样有助于模型的稳定收敛。在OCR检测和OCR识别中，一般会带来精度~0.5%的提升。",
+          "generation_text": "#### Q: 训练识别和检测时学习率要加上warmup，目的是什么？\n\n**A**: Warmup机制先使学习率从一个较小的值逐步升到一个较大的值，而不是直接就使用较大的学习率，这样有助于模型的稳定收敛。在OCR检测和OCR识别中，一般会带来精度~0.5%的提升。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:11",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 请问端到端的pgnet相比于DB+CRNN在准确率上有优势吗？或者是pgnet最擅长的场景是什么场景呢？\n\nA: pgnet是端到端算法，检测识别一步到位，不用分开训练2个模型，也支持弯曲文本的识别，但是在中文上的效果还没有充分验证；db+crnn的验证更充分，应用相对成熟，常规非弯曲的文本都能解的不错。",
+          "generation_text": "#### Q: 请问端到端的pgnet相比于DB+CRNN在准确率上有优势吗？或者是pgnet最擅长的场景是什么场景呢？\n\nA: pgnet是端到端算法，检测识别一步到位，不用分开训练2个模型，也支持弯曲文本的识别，但是在中文上的效果还没有充分验证；db+crnn的验证更充分，应用相对成熟，常规非弯曲的文本都能解的不错。"
+        }
+      ]
+    },
+    {
+      "id": "internal-14",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 4,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 2.88,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/algorithm_inference:94",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/algorithm_inference.md",
+          "text": "| 参数名称 | 类型 | 默认值 | 含义 |\n| :--: | :--: | :--: | :--: |\n|  use_gpu | bool | True | 是否使用GPU进行预测 |\n|  ir_optim | bool | True | 是否对计算图进行分析与优化，开启后可以加速预测过程 |\n|  use_tensorrt | bool | False | 是否开启tensorrt |\n|  min_subgraph_size | int | 15 | tensorrt中最小子图size，当子图的size大于该值时，才会尝试对该子图使用trt engine计算 |\n|  precision | str | fp32 | 预测的精度，支持`fp32`, `fp16`, `int8` 3种输入 |\n|  enable_mkldnn | bool | True | 是否开启mkldnn |\n|  cpu_threads | int | 10 | 开启mkldnn时，cpu预测的线程数 |",
+          "generation_text": "| 参数名称 | 类型 | 默认值 | 含义 |\n| :--: | :--: | :--: | :--: |\n|  use_gpu | bool | True | 是否使用GPU进行预测 |\n|  ir_optim | bool | True | 是否对计算图进行分析与优化，开启后可以加速预测过程 |\n|  use_tensorrt | bool | False | 是否开启tensorrt |\n|  min_subgraph_size | int | 15 | tensorrt中最小子图size，当子图的size大于该值时，才会尝试对该子图使用trt engine计算 |\n|  precision | str | fp32 | 预测的精度，支持`fp32`, `fp16`, `int8` 3种输入 |\n|  enable_mkldnn | bool | True | 是否开启mkldnn |\n|  cpu_threads | int | 10 | 开启mkldnn时，cpu预测的线程数 |"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/inference_args:4",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/inference_args.md",
+          "text": "| 参数名称 | 类型 | 默认值 | 含义 |\n| :--: | :--: | :--: | :--: |\n|  use_gpu | bool | True | 是否使用GPU进行预测 |\n|  ir_optim | bool | True | 是否对计算图进行分析与优化，开启后可以加速预测过程 |\n|  use_tensorrt | bool | False | 是否开启tensorrt |\n|  min_subgraph_size | int | 15 | tensorrt中最小子图size，当子图的size大于该值时，才会尝试对该子图使用trt engine计算 |\n|  precision | str | fp32 | 预测的精度，支持`fp32`, `fp16`, `int8` 3种输入 |\n|  enable_mkldnn | bool | True | 是否开启mkldnn |\n|  cpu_threads | int | 10 | 开启mkldnn时，cpu预测的线程数 |",
+          "generation_text": "| 参数名称 | 类型 | 默认值 | 含义 |\n| :--: | :--: | :--: | :--: |\n|  use_gpu | bool | True | 是否使用GPU进行预测 |\n|  ir_optim | bool | True | 是否对计算图进行分析与优化，开启后可以加速预测过程 |\n|  use_tensorrt | bool | False | 是否开启tensorrt |\n|  min_subgraph_size | int | 15 | tensorrt中最小子图size，当子图的size大于该值时，才会尝试对该子图使用trt engine计算 |\n|  precision | str | fp32 | 预测的精度，支持`fp32`, `fp16`, `int8` 3种输入 |\n|  enable_mkldnn | bool | True | 是否开启mkldnn |\n|  cpu_threads | int | 10 | 开启mkldnn时，cpu预测的线程数 |"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:59",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q：简单的对于精度要求不高的OCR任务，数据集需要准备多少张呢？\n\n**A**：（1）训练数据的数量和需要解决问题的复杂度有关系。难度越大，精度要求越高，则数据集需求越大，而且一般情况实际中的训练数据越多效果越好。\n\n（2）对于精度要求不高的场景，检测任务和识别任务需要的数据量是不一样的。对于检测任务，500张图像可以保证基本的检测效果。对于识别任务，需要保证识别字典中每个字符出现在不同场景的行文本图像数目需要大于200张（举例，如果有字典中有5个字，每个字都需要出现在200张图片以上，那么最少要求的图像数量应该在200-1000张之间），这样可以保证基本的识别效果。",
+          "generation_text": "#### Q：简单的对于精度要求不高的OCR任务，数据集需要准备多少张呢？\n\n**A**：（1）训练数据的数量和需要解决问题的复杂度有关系。难度越大，精度要求越高，则数据集需求越大，而且一般情况实际中的训练数据越多效果越好。\n\n（2）对于精度要求不高的场景，检测任务和识别任务需要的数据量是不一样的。对于检测任务，500张图像可以保证基本的检测效果。对于识别任务，需要保证识别字典中每个字符出现在不同场景的行文本图像数目需要大于200张（举例，如果有字典中有5个字，每个字都需要出现在200张图片以上，那么最少要求的图像数量应该在200-1000张之间），这样可以保证基本的识别效果。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/inference:86",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/inference.md",
+          "text": "### 5.1 轻量级中文模型\n\n在进行预测时，需要通过参数 `image_dir` 指定单张图像或图像文件夹的路径，参数 `det_model_dir` 指定检测推理模型的路径，参数 `cls_model_dir` 指定角度分类推理模型的路径，参数 `rec_model_dir` 指定识别推理模型的路径。参数 `use_angle_cls` 用于控制是否启用角度分类模型。参数 `use_mp` 指定是否使用多进程推理，`total_process_num` 指定使用多进程时的进程数量（Paddle Inference 不是线程安全的，建议使用多进程）。可视化的识别结果默认保存在 `./inference_results` 文件夹中。",
+          "generation_text": "### 5.1 轻量级中文模型\n\n在进行预测时，需要通过参数 `image_dir` 指定单张图像或图像文件夹的路径，参数 `det_model_dir` 指定检测推理模型的路径，参数 `cls_model_dir` 指定角度分类推理模型的路径，参数 `rec_model_dir` 指定识别推理模型的路径。参数 `use_angle_cls` 用于控制是否启用角度分类模型。参数 `use_mp` 指定是否使用多进程推理，`total_process_num` 指定使用多进程时的进程数量（Paddle Inference 不是线程安全的，建议使用多进程）。可视化的识别结果默认保存在 `./inference_results` 文件夹中。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:136",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 为什么识别模型做预测的时候，预测图片的数量数量还会影响预测的精度\n**A**： 推理时识别模型默认的batch_size=6, 如预测图片长度变化大，可能影响预测效果。如果出现上述问题可在推理的时候设置识别bs=1，命令如下：",
+          "generation_text": "#### Q: 为什么识别模型做预测的时候，预测图片的数量数量还会影响预测的精度\n**A**： 推理时识别模型默认的batch_size=6, 如预测图片长度变化大，可能影响预测效果。如果出现上述问题可在推理的时候设置识别bs=1，命令如下："
+        }
+      ]
+    },
+    {
+      "id": "internal-15",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 4,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 2.12,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:129",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 训练过程中，训练程序意外退出/挂起，应该如何解决？\n\n**A**: 考虑内存，显存（使用GPU训练的话）是否不足，可在配置文件中，将训练和评估的batch size调小一些。需要注意，训练batch size调小时，学习率learning rate也要调小，一般可按等比例调整。",
+          "generation_text": "#### Q: 训练过程中，训练程序意外退出/挂起，应该如何解决？\n\n**A**: 考虑内存，显存（使用GPU训练的话）是否不足，可在配置文件中，将训练和评估的batch size调小一些。需要注意，训练batch size调小时，学习率learning rate也要调小，一般可按等比例调整。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:147",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: lite预测库和nb模型版本不匹配，该如何解决？\n\n**A**： 如果可以正常预测就不用管，如果这个问题导致无法正常预测，可以尝试使用同一个commit的Paddle Lite代码编译预测库和opt文件，可以参考[移动端部署教程](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.1/deploy/lite/readme.md)。",
+          "generation_text": "#### Q: lite预测库和nb模型版本不匹配，该如何解决？\n\n**A**： 如果可以正常预测就不用管，如果这个问题导致无法正常预测，可以尝试使用同一个commit的Paddle Lite代码编译预测库和opt文件，可以参考[移动端部署教程](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.1/deploy/lite/readme.md)。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/algorithm_inference:96",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/algorithm_inference.md",
+          "text": "| 参数名称 | 类型 | 默认值 | 含义 |\n| :--: | :--: | :--: | :--: |\n|  det_algorithm | str | \"DB\" | 文本检测算法名称，目前支持`DB`, `EAST`, `SAST`, `PSE`  |\n|  det_model_dir | str | xx | 检测inference模型路径 |\n|  det_limit_side_len | int | 960 | 检测的图像边长限制 |\n|  det_limit_type | str | \"max\" | 检测的变成限制类型，目前支持`min`, `max`，`min`表示保证图像最短边不小于`det_limit_side_len`，`max`表示保证图像最长边不大于`det_limit_side_len` |",
+          "generation_text": "| 参数名称 | 类型 | 默认值 | 含义 |\n| :--: | :--: | :--: | :--: |\n|  det_algorithm | str | \"DB\" | 文本检测算法名称，目前支持`DB`, `EAST`, `SAST`, `PSE`  |\n|  det_model_dir | str | xx | 检测inference模型路径 |\n|  det_limit_side_len | int | 960 | 检测的图像边长限制 |\n|  det_limit_type | str | \"max\" | 检测的变成限制类型，目前支持`min`, `max`，`min`表示保证图像最短边不小于`det_limit_side_len`，`max`表示保证图像最长边不大于`det_limit_side_len` |"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/inference_args:6",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/inference_args.md",
+          "text": "| 参数名称 | 类型 | 默认值 | 含义 |\n| :--: | :--: | :--: | :--: |\n|  det_algorithm | str | \"DB\" | 文本检测算法名称，目前支持`DB`, `EAST`, `SAST`, `PSE`, `DB++`, `FCE`  |\n|  det_model_dir | str | xx | 检测inference模型路径 |\n|  det_limit_side_len | int | 960 | 检测的图像边长限制 |\n|  det_limit_type | str | \"max\" | 检测的边长限制类型，目前支持`min`和`max`，`min`表示保证图像最短边不小于`det_limit_side_len`，`max`表示保证图像最长边不大于`det_limit_side_len` |",
+          "generation_text": "| 参数名称 | 类型 | 默认值 | 含义 |\n| :--: | :--: | :--: | :--: |\n|  det_algorithm | str | \"DB\" | 文本检测算法名称，目前支持`DB`, `EAST`, `SAST`, `PSE`, `DB++`, `FCE`  |\n|  det_model_dir | str | xx | 检测inference模型路径 |\n|  det_limit_side_len | int | 960 | 检测的图像边长限制 |\n|  det_limit_type | str | \"max\" | 检测的边长限制类型，目前支持`min`和`max`，`min`表示保证图像最短边不小于`det_limit_side_len`，`max`表示保证图像最长边不大于`det_limit_side_len` |"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/algorithm_inference:100",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/algorithm_inference.md",
+          "text": "| 参数名称 | 类型 | 默认值 | 含义 |\n| :--: | :--: | :--: | :--: |\n|  det_east_score_thresh | float | 0.8 | EAST后处理中score map的阈值 |\n|  det_east_cover_thresh | float | 0.1 | EAST后处理中文本框的平均得分阈值 |\n|  det_east_nms_thresh | float | 0.2 | EAST后处理中nms的阈值 |",
+          "generation_text": "| 参数名称 | 类型 | 默认值 | 含义 |\n| :--: | :--: | :--: | :--: |\n|  det_east_score_thresh | float | 0.8 | EAST后处理中score map的阈值 |\n|  det_east_cover_thresh | float | 0.1 | EAST后处理中文本框的平均得分阈值 |\n|  det_east_nms_thresh | float | 0.2 | EAST后处理中nms的阈值 |"
+        }
+      ]
+    },
+    {
+      "id": "internal-16",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 0,
+        "wrong_version_count": 0,
+        "wrong_module_count": 3,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 1.99,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/multi_languages:28",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/multi_languages.md",
+          "text": "```\nfrom paddleocr import PaddleOCR, draw_ocr\n\n# 同样也是通过修改 lang 参数切换语种\nocr = PaddleOCR(lang=\"korean\") # 首次执行会自动下载模型文件\nimg_path = 'doc/imgs/korean_1.jpg '\nresult = ocr.ocr(img_path)\n# 可通过参数控制单独执行识别、检测\n# result = ocr.ocr(img_path, det=False) 只执行识别\n# result = ocr.ocr(img_path, rec=False) 只执行检测\n# 打印检测框和识别结果\nfor line in result:\n    print(line)\n\n# 可视化\nfrom PIL import Image\nimage = Image.open(img_path).convert('RGB')\nboxes = [line[0] for line in result]\ntxts = [line[1][0] for line in result]\nscores = [line[1][1] for line in result]\nim_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/korean.ttf')\nim_show = Image.fromarray(im_show)\nim_show.save('result.jpg')\n```",
+          "generation_text": "```\nfrom paddleocr import PaddleOCR, draw_ocr\n\n# 同样也是通过修改 lang 参数切换语种\nocr = PaddleOCR(lang=\"korean\") # 首次执行会自动下载模型文件\nimg_path = 'doc/imgs/korean_1.jpg '\nresult = ocr.ocr(img_path)\n# 可通过参数控制单独执行识别、检测\n# result = ocr.ocr(img_path, det=False) 只执行识别\n# result = ocr.ocr(img_path, rec=False) 只执行检测\n# 打印检测框和识别结果\nfor line in result:\n    print(line)\n\n# 可视化\nfrom PIL import Image\nimage = Image.open(img_path).convert('RGB')\nboxes = [line[0] for line in result]\ntxts = [line[1][0] for line in result]\nscores = [line[1][1] for line in result]\nim_show = draw_ocr(image, boxes, txts, scores, font_path='/path/to/PaddleOCR/doc/fonts/korean.ttf')\nim_show = Image.fromarray(im_show)\nim_show.save('result.jpg')\n```"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/quickstart:19",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/quickstart.md",
+          "text": "  此外，paddleocr也支持输入pdf文件，并且可以通过指定参数`page_num`来控制推理前面几页，默认为0，表示推理所有页。",
+          "generation_text": "  此外，paddleocr也支持输入pdf文件，并且可以通过指定参数`page_num`来控制推理前面几页，默认为0，表示推理所有页。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/whl:38",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/whl.md",
+          "text": "此外，paddleocr也支持输入pdf文件，并且可以通过指定参数`page_num`来控制推理前面几页，默认为0，表示推理所有页。",
+          "generation_text": "此外，paddleocr也支持输入pdf文件，并且可以通过指定参数`page_num`来控制推理前面几页，默认为0，表示推理所有页。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/whl:72",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/whl.md",
+          "text": "## 5 PDF文件作为输入\n- 命令行模式\n\n可以通过指定参数`page_num`来控制推理前面几页，默认为0，表示推理所有页。",
+          "generation_text": "## 5 PDF文件作为输入\n- 命令行模式\n\n可以通过指定参数`page_num`来控制推理前面几页，默认为0，表示推理所有页。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:104",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: DB有些框太贴文本了反而去掉了一些文本的边角影响识别，这个问题有什么办法可以缓解吗？\n\n**A**：可以把后处理的参数unclip_ratio适当调大一点。",
+          "generation_text": "#### Q: DB有些框太贴文本了反而去掉了一些文本的边角影响识别，这个问题有什么办法可以缓解吗？\n\n**A**：可以把后处理的参数unclip_ratio适当调大一点。"
+        }
+      ]
+    },
+    {
+      "id": "internal-17",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 2.98,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/installation:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/installation.md",
+          "text": "# 1. 安装飞桨框架\n\n请参考 [飞桨官网](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html) 安装 `3.0` 及以上版本的飞桨框架。**推荐使用飞桨官方 Docker 镜像。**",
+          "generation_text": "# 1. 安装飞桨框架\n\n请参考 [飞桨官网](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html) 安装 `3.0` 及以上版本的飞桨框架。**推荐使用飞桨官方 Docker 镜像。**"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:6",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/deployment/high_performance_inference.md",
+          "text": "## 1.2 GPU 环境详细说明\n\n首先，需要确保环境中安装有符合要求的 CUDA 与 cuDNN。目前 PaddleOCR 仅支持与 CUDA 11.8 + cuDNN 8.9 兼容的 CUDA 和 cuDNN版本。以下分别是 CUDA 11.8 和 cuDNN 8.9 的安装说明文档：\n\n- [安装 CUDA 11.8](https://developer.nvidia.com/cuda-11-8-0-download-archive)\n- [安装 cuDNN 8.9](https://docs.nvidia.com/deeplearning/cudnn/archives/cudnn-890/install-guide/index.html)\n\n如果使用飞桨官方镜像，则镜像中的 CUDA 和 cuDNN 版本已经是满足要求的，无需额外安装。\n\n如果通过 pip 安装飞桨，通常 CUDA、cuDNN 的相关 Python 包将被自动安装。在这种情况下，**仍需要通过安装非 Python 专用的 CUDA 与 cuDNN**。同时，建议安装的 CUDA 和 cuDNN 版本与环境中存在的 Python 包版本保持一致，以避免不同版本的库共存导致的潜在问题。可以通过如下方式可以查看 CUDA 和 cuDNN 相关 Python 包的版本：",
+          "generation_text": "## 1.2 GPU 环境详细说明\n\n首先，需要确保环境中安装有符合要求的 CUDA 与 cuDNN。目前 PaddleOCR 仅支持与 CUDA 11.8 + cuDNN 8.9 兼容的 CUDA 和 cuDNN版本。以下分别是 CUDA 11.8 和 cuDNN 8.9 的安装说明文档：\n\n- [安装 CUDA 11.8](https://developer.nvidia.com/cuda-11-8-0-download-archive)\n- [安装 cuDNN 8.9](https://docs.nvidia.com/deeplearning/cudnn/archives/cudnn-890/install-guide/index.html)\n\n如果使用飞桨官方镜像，则镜像中的 CUDA 和 cuDNN 版本已经是满足要求的，无需额外安装。\n\n如果通过 pip 安装飞桨，通常 CUDA、cuDNN 的相关 Python 包将被自动安装。在这种情况下，**仍需要通过安装非 Python 专用的 CUDA 与 cuDNN**。同时，建议安装的 CUDA 和 cuDNN 版本与环境中存在的 Python 包版本保持一致，以避免不同版本的库共存导致的潜在问题。可以通过如下方式可以查看 CUDA 和 cuDNN 相关 Python 包的版本："
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:8",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/deployment/high_performance_inference.md",
+          "text": "其次，需确保环境中安装有符合要求的 TensorRT。目前 PaddleOCR 仅支持 TensorRT 8.6.1.6。如果使用飞桨官方镜像，可执行如下命令安装 TensorRT wheel 包：",
+          "generation_text": "其次，需确保环境中安装有符合要求的 TensorRT。目前 PaddleOCR 仅支持 TensorRT 8.6.1.6。如果使用飞桨官方镜像，可执行如下命令安装 TensorRT wheel 包："
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/quick_start:5",
+          "version": "v3.0.0",
+          "document_path": "docs/quick_start.md",
+          "text": "GPU端安装，由于GPU端需要根据具体CUDA版本来对应安装使用，以下仅以Linux平台，pip安装英伟达GPU， CUDA11.8为例，其他平台，请参考[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。",
+          "generation_text": "GPU端安装，由于GPU端需要根据具体CUDA版本来对应安装使用，以下仅以Linux平台，pip安装英伟达GPU， CUDA11.8为例，其他平台，请参考[飞桨官网安装文档](https://www.paddlepaddle.org.cn/install/quick)中的说明进行操作。"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/update/upgrade_notes:2",
+          "version": "v3.0.0",
+          "document_path": "docs/update/upgrade_notes.md",
+          "text": "## 1. PaddleOCR 为什么要从 2.x 升级到 3.x？\n\n自 2021 年 2 月发布 2.0 版本以来，PaddleOCR 社区已走过四年多的快速发展期，GitHub star 数量、社区用户和贡献者、issue 与 PR 数量等均有指数级的增长。在多语种识别、版面分析等新需求的推动下，PaddleOCR 在 2.x 系列中不断增添功能，但最初以轻量化为核心的架构已难以应对功能繁荣带来的复杂性与维护成本。\n\n随着代码中模块分支与“桥接”层频繁增加，重复实现、接口不统一的问题愈发突出，测试难度也不断增加，开发效率严重受限；而旧版依赖与最新 PaddlePaddle 更新的不兼容，限制了对飞桨新特性的使用，进一步拖慢了训练与推理速度。这种状况下，继续在现有架构基础上打补丁，只会带来更多技术债与系统脆弱性。\n\n另一方面，基于 Transformer 的视觉语言大模型正在为文档理解、图文摘要、智能校对等高级应用场景注入新动能。社区迫切期待，这类模型能够突破传统 OCR 识别的局限，直接发挥其更强的上下文理解与推理能力。同时，传统的 OCR 小模型亦可与大模型协同工作，既能满足大模型在文档解析等方面的输入需求，又能通过大小模型协同，实现优势互补，进一步提升系统整体性能。\n\n此外，飞桨框架于 2025 年 4 月发布的 3.0 正式版，在训推一体化、国产硬件适配等方面实现了颠覆性升级，这也对 PaddleOCR 在训练和推理层面提出了新的改造需求。\n\n综合以上背景，我们决定对 PaddleOCR 进行一次重大、非兼容性升级——从 2.x 跳至 3.x。新版本将在架构层面实现模块化、插件化设计，在尽可能不改变用户使用习惯的同时，结合大模型，提供更加丰富的功能，并充分利用飞桨 3.0 的新特性，既清理冗余、降低维护成本，又为性能与功能扩展提供更坚实的基础。",
+          "generation_text": "## 1. PaddleOCR 为什么要从 2.x 升级到 3.x？\n\n自 2021 年 2 月发布 2.0 版本以来，PaddleOCR 社区已走过四年多的快速发展期，GitHub star 数量、社区用户和贡献者、issue 与 PR 数量等均有指数级的增长。在多语种识别、版面分析等新需求的推动下，PaddleOCR 在 2.x 系列中不断增添功能，但最初以轻量化为核心的架构已难以应对功能繁荣带来的复杂性与维护成本。\n\n随着代码中模块分支与“桥接”层频繁增加，重复实现、接口不统一的问题愈发突出，测试难度也不断增加，开发效率严重受限；而旧版依赖与最新 PaddlePaddle 更新的不兼容，限制了对飞桨新特性的使用，进一步拖慢了训练与推理速度。这种状况下，继续在现有架构基础上打补丁，只会带来更多技术债与系统脆弱性。\n\n另一方面，基于 Transformer 的视觉语言大模型正在为文档理解、图文摘要、智能校对等高级应用场景注入新动能。社区迫切期待，这类模型能够突破传统 OCR 识别的局限，直接发挥其更强的上下文理解与推理能力。同时，传统的 OCR 小模型亦可与大模型协同工作，既能满足大模型在文档解析等方面的输入需求，又能通过大小模型协同，实现优势互补，进一步提升系统整体性能。\n\n此外，飞桨框架于 2025 年 4 月发布的 3.0 正式版，在训推一体化、国产硬件适配等方面实现了颠覆性升级，这也对 PaddleOCR 在训练和推理层面提出了新的改造需求。\n\n综合以上背景，我们决定对 PaddleOCR 进行一次重大、非兼容性升级——从 2.x 跳至 3.x。新版本将在架构层面实现模块化、插件化设计，在尽可能不改变用户使用习惯的同时，结合大模型，提供更加丰富的功能，并充分利用飞桨 3.0 的新特性，既清理冗余、降低维护成本，又为性能与功能扩展提供更坚实的基础。"
+        }
+      ]
+    },
+    {
+      "id": "internal-18",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 3.2,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:11",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/deployment/high_performance_inference.md",
+          "text": "```bash\n# 下载 TensorRT tar 文件\nwget https://developer.nvidia.com/downloads/compute/machine-learning/tensorrt/secure/8.6.1/tars/TensorRT-8.6.1.6.Linux.x86_64-gnu.cuda-11.8.tar.gz\n# 解压 TensorRT tar 文件\ntar xvf TensorRT-8.6.1.6.Linux.x86_64-gnu.cuda-11.8.tar.gz\n# 安装 TensorRT wheel 包\npython -m pip install TensorRT-8.6.1.6/python/tensorrt-8.6.1-cp310-none-linux_x86_64.whl\n# 添加 TensorRT 的 `lib` 目录的绝对路径到 LD_LIBRARY_PATH 中\nexport LD_LIBRARY_PATH=\"$LD_LIBRARY_PATH:TensorRT-8.6.1.6/lib\"\n```",
+          "generation_text": "```bash\n# 下载 TensorRT tar 文件\nwget https://developer.nvidia.com/downloads/compute/machine-learning/tensorrt/secure/8.6.1/tars/TensorRT-8.6.1.6.Linux.x86_64-gnu.cuda-11.8.tar.gz\n# 解压 TensorRT tar 文件\ntar xvf TensorRT-8.6.1.6.Linux.x86_64-gnu.cuda-11.8.tar.gz\n# 安装 TensorRT wheel 包\npython -m pip install TensorRT-8.6.1.6/python/tensorrt-8.6.1-cp310-none-linux_x86_64.whl\n# 添加 TensorRT 的 `lib` 目录的绝对路径到 LD_LIBRARY_PATH 中\nexport LD_LIBRARY_PATH=\"$LD_LIBRARY_PATH:TensorRT-8.6.1.6/lib\"\n```"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/installation:6",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/installation.md",
+          "text": "```bash\npython -m pip install paddleocr\n```",
+          "generation_text": "```bash\npython -m pip install paddleocr\n```"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/installation:8",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/installation.md",
+          "text": "```bash\npython -m pip install \"git+https://github.com/PaddlePaddle/PaddleOCR.git\"\n```",
+          "generation_text": "```bash\npython -m pip install \"git+https://github.com/PaddlePaddle/PaddleOCR.git\"\n```"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:README:7",
+          "version": "v3.0.0",
+          "document_path": "README.md",
+          "text": "```bash\n# 安装 paddleocr\npip install paddleocr\n```",
+          "generation_text": "```bash\n# 安装 paddleocr\npip install paddleocr\n```"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:README:6",
+          "version": "v3.0.0",
+          "document_path": "README.md",
+          "text": "### 2. 本地安装\n\n请参考[安装指南](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html)完成**PaddlePaddle 3.0**的安装，然后安装paddleocr。",
+          "generation_text": "### 2. 本地安装\n\n请参考[安装指南](https://www.paddlepaddle.org.cn/install/quick?docurl=/documentation/docs/zh/develop/install/pip/linux-pip.html)完成**PaddlePaddle 3.0**的安装，然后安装paddleocr。"
+        }
+      ]
+    },
+    {
+      "id": "internal-19",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 3.52,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/installation:4",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/installation.md",
+          "text": "# 2. 安装 PaddleOCR\n\n如果只希望使用 PaddleOCR 的推理功能，请参考 [安装推理包](#21-安装推理包)；如果希望进行模型训练、导出等，请参考 [安装训练依赖](#22-安装训练依赖)。在同一环境中安装推理包和训练依赖是允许的，无需进行环境隔离。",
+          "generation_text": "# 2. 安装 PaddleOCR\n\n如果只希望使用 PaddleOCR 的推理功能，请参考 [安装推理包](#21-安装推理包)；如果希望进行模型训练、导出等，请参考 [安装训练依赖](#22-安装训练依赖)。在同一环境中安装推理包和训练依赖是允许的，无需进行环境隔离。"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/installation:9",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/installation.md",
+          "text": "## 2.2 安装训练依赖\n\n要进行模型训练、导出等，需要首先将仓库克隆到本地：",
+          "generation_text": "## 2.2 安装训练依赖\n\n要进行模型训练、导出等，需要首先将仓库克隆到本地："
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/installation:11",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/installation.md",
+          "text": "执行如下命令安装依赖：",
+          "generation_text": "执行如下命令安装依赖："
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/installation:12",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/installation.md",
+          "text": "```bash\npython -m pip install -r requirements.txt\n```",
+          "generation_text": "```bash\npython -m pip install -r requirements.txt\n```"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/installation:10",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/installation.md",
+          "text": "```bash\n# 推荐方式\ngit clone https://github.com/PaddlePaddle/PaddleOCR\n\n# （可选）切换到指定分支\ngit checkout release/3.0\n\n# 如果因为网络问题无法克隆成功，也可选择使用码云上的仓库：\ngit clone https://gitee.com/paddlepaddle/PaddleOCR\n\n# 注：码云托管代码可能无法实时同步本 GitHub 项目更新，存在3~5天延时，请优先使用推荐方式。\n```",
+          "generation_text": "```bash\n# 推荐方式\ngit clone https://github.com/PaddlePaddle/PaddleOCR\n\n# （可选）切换到指定分支\ngit checkout release/3.0\n\n# 如果因为网络问题无法克隆成功，也可选择使用码云上的仓库：\ngit clone https://gitee.com/paddlepaddle/PaddleOCR\n\n# 注：码云托管代码可能无法实时同步本 GitHub 项目更新，存在3~5天延时，请优先使用推荐方式。\n```"
+        }
+      ]
+    },
+    {
+      "id": "internal-20",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 4,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 3.47,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:16",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/deployment/high_performance_inference.md",
+          "text": "## 3. 说明\n\n1. 对于部分模型，在首次执行高性能推理时，可能需要花费较长时间完成推理引擎的构建。推理引擎相关信息将在第一次构建完成后被缓存在模型目录，后续可复用缓存中的内容以提升初始化速度。\n2. 目前，由于使用的不是静态图格式模型、存在不支持算子等原因，部分模型可能无法获得推理加速。\n3. 在进行高性能推理时，PaddleOCR 会自动处理模型格式的转换，并尽可能选择最优的推理后端。同时，PaddleOCR 也支持用户指定 ONNX 模型。有关如何飞桨静态图模型转换为 ONNX 格式，可参考 [获取 ONNX 模型](./obtaining_onnx_models.md)。\n4. PaddleOCR 的高性能推理能力依托于 PaddleX 及其高性能推理插件。通过传入自定义 PaddleX 产线配置文件，可以对推理后端等进行配置。请参考 [使用 PaddleX 产线配置文件](../paddleocr_and_paddlex.md#3-使用-paddlex-产线配置文件) 和 [PaddleX 高性能推理指南](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_deploy/high_performance_inference.html#22) 了解如何调整高性能推理配置。",
+          "generation_text": "## 3. 说明\n\n1. 对于部分模型，在首次执行高性能推理时，可能需要花费较长时间完成推理引擎的构建。推理引擎相关信息将在第一次构建完成后被缓存在模型目录，后续可复用缓存中的内容以提升初始化速度。\n2. 目前，由于使用的不是静态图格式模型、存在不支持算子等原因，部分模型可能无法获得推理加速。\n3. 在进行高性能推理时，PaddleOCR 会自动处理模型格式的转换，并尽可能选择最优的推理后端。同时，PaddleOCR 也支持用户指定 ONNX 模型。有关如何飞桨静态图模型转换为 ONNX 格式，可参考 [获取 ONNX 模型](./obtaining_onnx_models.md)。\n4. PaddleOCR 的高性能推理能力依托于 PaddleX 及其高性能推理插件。通过传入自定义 PaddleX 产线配置文件，可以对推理后端等进行配置。请参考 [使用 PaddleX 产线配置文件](../paddleocr_and_paddlex.md#3-使用-paddlex-产线配置文件) 和 [PaddleX 高性能推理指南](https://paddlepaddle.github.io/PaddleX/3.0/pipeline_deploy/high_performance_inference.html#22) 了解如何调整高性能推理配置。"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/deployment/high_performance_inference:5",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/deployment/high_performance_inference.md",
+          "text": "支持的设备类型包括：\n\n- `cpu`：仅使用 CPU 推理。目前支持 Linux 系统、x86-64 架构处理器、Python 3.8-3.12。\n- `gpu`：使用 CPU 或 NVIDIA GPU 推理。目前支持 Linux 系统、x86-64 架构处理器、Python 3.8-3.12。请查看下一小节的详细说明。\n\n同一环境中只应该存在一种设备类型的依赖。对于 Windows 系统，目前建议在 Docker 容器或者 [WSL](https://learn.microsoft.com/zh-cn/windows/wsl/install) 环境中安装。\n\n**推荐使用飞桨官方 Docker 镜像安装高性能推理依赖。** 各设备类型对应的镜像如下：\n\n- `cpu`：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0`\n- `gpu`：\n    - CUDA 11.8：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0-gpu-cuda11.8-cudnn8.9-trt8.6`",
+          "generation_text": "支持的设备类型包括：\n\n- `cpu`：仅使用 CPU 推理。目前支持 Linux 系统、x86-64 架构处理器、Python 3.8-3.12。\n- `gpu`：使用 CPU 或 NVIDIA GPU 推理。目前支持 Linux 系统、x86-64 架构处理器、Python 3.8-3.12。请查看下一小节的详细说明。\n\n同一环境中只应该存在一种设备类型的依赖。对于 Windows 系统，目前建议在 Docker 容器或者 [WSL](https://learn.microsoft.com/zh-cn/windows/wsl/install) 环境中安装。\n\n**推荐使用飞桨官方 Docker 镜像安装高性能推理依赖。** 各设备类型对应的镜像如下：\n\n- `cpu`：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0`\n- `gpu`：\n    - CUDA 11.8：`ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddle:3.0.0-gpu-cuda11.8-cudnn8.9-trt8.6`"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:paddleocr/_common_args:2",
+          "version": "v3.0.0",
+          "document_path": "paddleocr/_common_args.py",
+          "text": "def parse_common_args(kwargs, *, default_enable_hpi):\n    default_vals = {\n        \"device\": DEFAULT_DEVICE,\n        \"enable_hpi\": default_enable_hpi,\n        \"use_tensorrt\": DEFAULT_USE_TENSORRT,\n        \"min_subgraph_size\": DEFAULT_MIN_SUBGRAPH_SIZE,\n        \"precision\": DEFAULT_PRECISION,\n        \"enable_mkldnn\": DEFAULT_ENABLE_MKLDNN,\n        \"cpu_threads\": DEFAULT_CPU_THREADS,\n    }\n\n    unknown_names = kwargs.keys() - default_vals.keys()\n    for name in unknown_names:\n        raise ValueError(f\"Unknown argument: {name}\")\n\n    kwargs = {**default_vals, **kwargs}\n\n    if kwargs[\"precision\"] not in SUPPORTED_PRECISION_LIST:\n        raise ValueError(\n            f\"Invalid precision: {kwargs['precision']}. Supported values are: {SUPPORTED_PRECISION_LIST}.\"\n        )\n\n    kwargs[\"use_pptrt\"] = kwargs.pop(\"use_tensorrt\")\n    kwargs[\"pptrt_min_subgraph_size\"] = kwargs.pop(\"min_subgraph_size\")\n    kwargs[\"pptrt_precision\"] = kwargs.pop(\"precision\")\n\n    return kwargs",
+          "generation_text": "def parse_common_args(kwargs, *, default_enable_hpi):\n    default_vals = {\n        \"device\": DEFAULT_DEVICE,\n        \"enable_hpi\": default_enable_hpi,\n        \"use_tensorrt\": DEFAULT_USE_TENSORRT,\n        \"min_subgraph_size\": DEFAULT_MIN_SUBGRAPH_SIZE,\n        \"precision\": DEFAULT_PRECISION,\n        \"enable_mkldnn\": DEFAULT_ENABLE_MKLDNN,\n        \"cpu_threads\": DEFAULT_CPU_THREADS,\n    }\n\n    unknown_names = kwargs.keys() - default_vals.keys()\n    for name in unknown_names:\n        raise ValueError(f\"Unknown argument: {name}\")\n\n    kwargs = {**default_vals, **kwargs}\n\n    if kwargs[\"precision\"] not in SUPPORTED_PRECISION_LIST:\n        raise ValueError(\n            f\"Invalid precision: {kwargs['precision']}. Supported values are: {SUPPORTED_PRECISION_LIST}.\"\n        )\n\n    kwargs[\"use_pptrt\"] = kwargs.pop(\"use_tensorrt\")\n    kwargs[\"pptrt_min_subgraph_size\"] = kwargs.pop(\"min_subgraph_size\")\n    kwargs[\"pptrt_precision\"] = kwargs.pop(\"precision\")\n\n    return kwargs"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_image_unwarping:22",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_image_unwarping.md",
+          "text": "## 四、二次开发\n\n当前模块暂时不支持微调训练，仅支持推理集成。关于该模块的微调训练，计划在未来支持。",
+          "generation_text": "## 四、二次开发\n\n当前模块暂时不支持微调训练，仅支持推理集成。关于该模块的微调训练，计划在未来支持。"
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/module_usage/text_recognition:6",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/module_usage/text_recognition.md",
+          "text": "> ❗ 以上列出的是文本识别模块重点支持的<b>6个核心模型</b>，该模块总共支持<b>20个全量模型</b>，包含多个多语言文本识别模型，完整的模型列表如下：\n\n<details><summary> 👉模型列表详情</summary>\n\n* <b>PP-OCRv5 多场景模型</b>",
+          "generation_text": "> ❗ 以上列出的是文本识别模块重点支持的<b>6个核心模型</b>，该模块总共支持<b>20个全量模型</b>，包含多个多语言文本识别模型，完整的模型列表如下：\n\n<details><summary> 👉模型列表详情</summary>\n\n* <b>PP-OCRv5 多场景模型</b>"
+        }
+      ]
+    },
+    {
+      "id": "internal-41",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 4,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 4.05,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/algorithm_inference:92",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/algorithm_inference.md",
+          "text": "| 参数名称 | 类型 | 默认值 | 含义 |\n| :--: | :--: | :--: | :--: |\n|  image_dir | str | 无，必须显式指定 | 图像或者文件夹路径 |\n|  vis_font_path | str | \"./doc/fonts/simfang.ttf\" | 用于可视化的字体路径 |\n|  drop_score | float | 0.5 | 识别得分小于该值的结果会被丢弃，不会作为返回结果 |\n|  use_pdserving | bool | False | 是否使用Paddle Serving进行预测 |\n|  warmup | bool | False | 是否开启warmup，在统计预测耗时的时候，可以使用这种方法 |\n|  draw_img_save_dir | str | \"./inference_results\" | 系统串联预测OCR结果的保存文件夹 |\n|  save_crop_res | bool | False  | 是否保存OCR的识别文本图像 |\n|  crop_res_save_dir | str | \"./output\" | 保存OCR识别出来的文本图像路径 |\n|  use_mp | bool | False | 是否开启多进程预测  |\n|  total_process_num | int | 6 | 开启的进城数，`use_mp`为`True`时生效  |\n|  process_id | int | 0 | 当前进程的id号，无需自己修改  |\n|  benchmark | bool | False | 是否开启benchmark，对预测速度、显存占用等进行统计  |\n|  save_log_path | str | \"./log_output/\" | 开启`benchmark`时，日志结果的保存文件夹 |\n|  show_log | bool | True | 是否显示预测中的日志信息  |\n|  use_onnx | bool | False | 是否开启onnx预测 |",
+          "generation_text": "| 参数名称 | 类型 | 默认值 | 含义 |\n| :--: | :--: | :--: | :--: |\n|  image_dir | str | 无，必须显式指定 | 图像或者文件夹路径 |\n|  vis_font_path | str | \"./doc/fonts/simfang.ttf\" | 用于可视化的字体路径 |\n|  drop_score | float | 0.5 | 识别得分小于该值的结果会被丢弃，不会作为返回结果 |\n|  use_pdserving | bool | False | 是否使用Paddle Serving进行预测 |\n|  warmup | bool | False | 是否开启warmup，在统计预测耗时的时候，可以使用这种方法 |\n|  draw_img_save_dir | str | \"./inference_results\" | 系统串联预测OCR结果的保存文件夹 |\n|  save_crop_res | bool | False  | 是否保存OCR的识别文本图像 |\n|  crop_res_save_dir | str | \"./output\" | 保存OCR识别出来的文本图像路径 |\n|  use_mp | bool | False | 是否开启多进程预测  |\n|  total_process_num | int | 6 | 开启的进城数，`use_mp`为`True`时生效  |\n|  process_id | int | 0 | 当前进程的id号，无需自己修改  |\n|  benchmark | bool | False | 是否开启benchmark，对预测速度、显存占用等进行统计  |\n|  save_log_path | str | \"./log_output/\" | 开启`benchmark`时，日志结果的保存文件夹 |\n|  show_log | bool | True | 是否显示预测中的日志信息  |\n|  use_onnx | bool | False | 是否开启onnx预测 |"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/inference_args:2",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/inference_args.md",
+          "text": "| 参数名称 | 类型 | 默认值 | 含义 |\n| :--: | :--: | :--: | :--: |\n|  image_dir | str | 无，必须显式指定 | 图像或者文件夹路径 |\n|  page_num | int | 0 | 当输入类型为pdf文件时有效，指定预测前面page_num页，默认预测所有页 |\n|  vis_font_path | str | \"./doc/fonts/simfang.ttf\" | 用于可视化的字体路径 |\n|  drop_score | float | 0.5 | 识别得分小于该值的结果会被丢弃，不会作为返回结果 |\n|  use_pdserving | bool | False | 是否使用Paddle Serving进行预测 |\n|  warmup | bool | False | 是否开启warmup，在统计预测耗时的时候，可以使用这种方法 |\n|  draw_img_save_dir | str | \"./inference_results\" | 系统串联预测OCR结果的保存文件夹 |\n|  save_crop_res | bool | False  | 是否保存OCR的识别文本图像 |\n|  crop_res_save_dir | str | \"./output\" | 保存OCR识别出来的文本图像路径 |\n|  use_mp | bool | False | 是否开启多进程预测  |\n|  total_process_num | int | 6 | 开启的进程数，`use_mp`为`True`时生效  |\n|  process_id | int | 0 | 当前进程的id号，无需自己修改  |\n|  benchmark | bool | False | 是否开启benchmark，对预测速度、显存占用等进行统计  |\n|  save_log_path | str | \"./log_output/\" | 开启`benchmark`时，日志结果的保存文件夹 |\n|  show_log | bool | True | 是否显示预测中的日志信息  |\n|  use_onnx | bool | False | 是否开启onnx预测 |",
+          "generation_text": "| 参数名称 | 类型 | 默认值 | 含义 |\n| :--: | :--: | :--: | :--: |\n|  image_dir | str | 无，必须显式指定 | 图像或者文件夹路径 |\n|  page_num | int | 0 | 当输入类型为pdf文件时有效，指定预测前面page_num页，默认预测所有页 |\n|  vis_font_path | str | \"./doc/fonts/simfang.ttf\" | 用于可视化的字体路径 |\n|  drop_score | float | 0.5 | 识别得分小于该值的结果会被丢弃，不会作为返回结果 |\n|  use_pdserving | bool | False | 是否使用Paddle Serving进行预测 |\n|  warmup | bool | False | 是否开启warmup，在统计预测耗时的时候，可以使用这种方法 |\n|  draw_img_save_dir | str | \"./inference_results\" | 系统串联预测OCR结果的保存文件夹 |\n|  save_crop_res | bool | False  | 是否保存OCR的识别文本图像 |\n|  crop_res_save_dir | str | \"./output\" | 保存OCR识别出来的文本图像路径 |\n|  use_mp | bool | False | 是否开启多进程预测  |\n|  total_process_num | int | 6 | 开启的进程数，`use_mp`为`True`时生效  |\n|  process_id | int | 0 | 当前进程的id号，无需自己修改  |\n|  benchmark | bool | False | 是否开启benchmark，对预测速度、显存占用等进行统计  |\n|  save_log_path | str | \"./log_output/\" | 开启`benchmark`时，日志结果的保存文件夹 |\n|  show_log | bool | True | 是否显示预测中的日志信息  |\n|  use_onnx | bool | False | 是否开启onnx预测 |"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/algorithm_inference:85",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/algorithm_inference.md",
+          "text": "### 1. 超轻量中文OCR模型推理\n\n在执行预测时，需要通过参数`image_dir`指定单张图像或者图像集合的路径、参数`det_model_dir`,`cls_model_dir`和`rec_model_dir`分别指定检测，方向分类和识别的inference模型路径。参数`use_angle_cls`用于控制是否启用方向分类模型。`use_mp`表示是否使用多进程。`total_process_num`表示在使用多进程时的进程数。可视化识别结果默认保存到 ./inference_results 文件夹里面。",
+          "generation_text": "### 1. 超轻量中文OCR模型推理\n\n在执行预测时，需要通过参数`image_dir`指定单张图像或者图像集合的路径、参数`det_model_dir`,`cls_model_dir`和`rec_model_dir`分别指定检测，方向分类和识别的inference模型路径。参数`use_angle_cls`用于控制是否启用方向分类模型。`use_mp`表示是否使用多进程。`total_process_num`表示在使用多进程时的进程数。可视化识别结果默认保存到 ./inference_results 文件夹里面。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:81",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q：识别模型框出来的位置太紧凑，会丢失边缘的文字信息，导致识别错误\n\nA：可以在命令中加入 --det_db_unclip_ratio ，参数定义位置，这个参数是检测后处理时控制文本框大小的，默认1.6，可以尝试改成2.5或者更大，反之，如果觉得文本框不够紧凑，也可以把该参数调小。\n\n<a name=\"27\"></a>",
+          "generation_text": "#### Q：识别模型框出来的位置太紧凑，会丢失边缘的文字信息，导致识别错误\n\nA：可以在命令中加入 --det_db_unclip_ratio ，参数定义位置，这个参数是检测后处理时控制文本框大小的，默认1.6，可以尝试改成2.5或者更大，反之，如果觉得文本框不够紧凑，也可以把该参数调小。\n\n<a name=\"27\"></a>"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/inference:86",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/inference.md",
+          "text": "### 5.1 轻量级中文模型\n\n在进行预测时，需要通过参数 `image_dir` 指定单张图像或图像文件夹的路径，参数 `det_model_dir` 指定检测推理模型的路径，参数 `cls_model_dir` 指定角度分类推理模型的路径，参数 `rec_model_dir` 指定识别推理模型的路径。参数 `use_angle_cls` 用于控制是否启用角度分类模型。参数 `use_mp` 指定是否使用多进程推理，`total_process_num` 指定使用多进程时的进程数量（Paddle Inference 不是线程安全的，建议使用多进程）。可视化的识别结果默认保存在 `./inference_results` 文件夹中。",
+          "generation_text": "### 5.1 轻量级中文模型\n\n在进行预测时，需要通过参数 `image_dir` 指定单张图像或图像文件夹的路径，参数 `det_model_dir` 指定检测推理模型的路径，参数 `cls_model_dir` 指定角度分类推理模型的路径，参数 `rec_model_dir` 指定识别推理模型的路径。参数 `use_angle_cls` 用于控制是否启用角度分类模型。参数 `use_mp` 指定是否使用多进程推理，`total_process_num` 指定使用多进程时的进程数量（Paddle Inference 不是线程安全的，建议使用多进程）。可视化的识别结果默认保存在 `./inference_results` 文件夹中。"
+        }
+      ]
+    },
+    {
+      "id": "internal-42",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 0,
+        "wrong_version_count": 0,
+        "wrong_module_count": 5,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 3.52,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/inference:47",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/inference.md",
+          "text": "可视化的文本检测结果默认保存在 `./inference_results` 文件夹中，结果文件的名称以 `det_res` 为前缀。结果示例如下：\n\n![](../imgs_results/det_res_img_10_sast.jpg)",
+          "generation_text": "可视化的文本检测结果默认保存在 `./inference_results` 文件夹中，结果文件的名称以 `det_res` 为前缀。结果示例如下：\n\n![](../imgs_results/det_res_img_10_sast.jpg)"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/table_recognition:44",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/table_recognition.md",
+          "text": "## 3.1. 指标评估\n\n训练中模型参数默认保存在`Global.save_model_dir`目录下。在评估指标时，需要设置`Global.checkpoints`指向保存的参数文件。评估数据集可以通过 `configs/table/SLANet.yml`  修改Eval中的 `label_file_list` 设置。",
+          "generation_text": "## 3.1. 指标评估\n\n训练中模型参数默认保存在`Global.save_model_dir`目录下。在评估指标时，需要设置`Global.checkpoints`指向保存的参数文件。评估数据集可以通过 `configs/table/SLANet.yml`  修改Eval中的 `label_file_list` 设置。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:ppstructure/layout/README_ch:40",
+          "version": "v2.9.1",
+          "document_path": "ppstructure/layout/README_ch.md",
+          "text": "### 6.1. 指标评估\n\n训练中模型参数默认保存在`output/picodet_lcnet_x1_0_layout`目录下。在评估指标时，需要设置`weights`指向保存的参数文件。评估数据集可以通过 `configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml`  修改`EvalDataset`中的 `image_dir`、`anno_path`和`dataset_dir` 设置。",
+          "generation_text": "### 6.1. 指标评估\n\n训练中模型参数默认保存在`output/picodet_lcnet_x1_0_layout`目录下。在评估指标时，需要设置`weights`指向保存的参数文件。评估数据集可以通过 `configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml`  修改`EvalDataset`中的 `image_dir`、`anno_path`和`dataset_dir` 设置。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/inference:36",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/inference.md",
+          "text": "可视化的文本检测结果默认保存在 `./inference_results` 文件夹中，结果文件的名称以 `det_res` 为前缀。结果示例如下：\n\n![](../imgs_results/det_res_img_10_db.jpg)\n\n**注意**：由于ICDAR2015数据集只有1000张训练图像，主要针对英文场景，上述模型在中文文本图像上的检测结果非常差。\n\n<a name=\"EAST_DETECTION\"></a>",
+          "generation_text": "可视化的文本检测结果默认保存在 `./inference_results` 文件夹中，结果文件的名称以 `det_res` 为前缀。结果示例如下：\n\n![](../imgs_results/det_res_img_10_db.jpg)\n\n**注意**：由于ICDAR2015数据集只有1000张训练图像，主要针对英文场景，上述模型在中文文本图像上的检测结果非常差。\n\n<a name=\"EAST_DETECTION\"></a>"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:122",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q：PaddleOCR默认不是200个step保存一次模型吗？为啥文件夹下面都没有生成\n\n**A**：因为默认保存的起始点不是0，而是4000，将eval_batch_step [4000, 5000]改为[0, 2000] 就是从第0次迭代开始，每2000迭代保存一次模型",
+          "generation_text": "#### Q：PaddleOCR默认不是200个step保存一次模型吗？为啥文件夹下面都没有生成\n\n**A**：因为默认保存的起始点不是0，而是4000，将eval_batch_step [4000, 5000]改为[0, 2000] 就是从第0次迭代开始，每2000迭代保存一次模型"
+        }
+      ]
+    },
+    {
+      "id": "internal-43",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 2,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 4.22,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/inference_args:4",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/inference_args.md",
+          "text": "| 参数名称 | 类型 | 默认值 | 含义 |\n| :--: | :--: | :--: | :--: |\n|  use_gpu | bool | True | 是否使用GPU进行预测 |\n|  ir_optim | bool | True | 是否对计算图进行分析与优化，开启后可以加速预测过程 |\n|  use_tensorrt | bool | False | 是否开启tensorrt |\n|  min_subgraph_size | int | 15 | tensorrt中最小子图size，当子图的size大于该值时，才会尝试对该子图使用trt engine计算 |\n|  precision | str | fp32 | 预测的精度，支持`fp32`, `fp16`, `int8` 3种输入 |\n|  enable_mkldnn | bool | True | 是否开启mkldnn |\n|  cpu_threads | int | 10 | 开启mkldnn时，cpu预测的线程数 |",
+          "generation_text": "| 参数名称 | 类型 | 默认值 | 含义 |\n| :--: | :--: | :--: | :--: |\n|  use_gpu | bool | True | 是否使用GPU进行预测 |\n|  ir_optim | bool | True | 是否对计算图进行分析与优化，开启后可以加速预测过程 |\n|  use_tensorrt | bool | False | 是否开启tensorrt |\n|  min_subgraph_size | int | 15 | tensorrt中最小子图size，当子图的size大于该值时，才会尝试对该子图使用trt engine计算 |\n|  precision | str | fp32 | 预测的精度，支持`fp32`, `fp16`, `int8` 3种输入 |\n|  enable_mkldnn | bool | True | 是否开启mkldnn |\n|  cpu_threads | int | 10 | 开启mkldnn时，cpu预测的线程数 |"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/inference_ppocr:33",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/inference_ppocr.md",
+          "text": "## 5. TensorRT推理\n\nPaddle Inference 采用子图的形式集成 TensorRT，针对 GPU 推理场景，TensorRT 可对一些子图进行优化，包括 OP 的横向和纵向融合，过滤冗余的 OP，并为 OP 自动选择最优的 kernel，加快推理速度。\n\n如果希望使用Paddle Inference进行TRT推理，一般需要2个步骤。\n\n* （1）收集该模型关于特定数据集的动态shape信息，并存储到文件中。\n* （2）加载动态shape信息文件，进行TRT推理。\n\n以文本检测模型为例，首先使用下面的命令，生成动态shape文件，最终会在`ch_PP-OCRv3_det_infer`目录下面生成`det_trt_dynamic_shape.txt`的文件，该文件即存储了动态shape信息的文件。",
+          "generation_text": "## 5. TensorRT推理\n\nPaddle Inference 采用子图的形式集成 TensorRT，针对 GPU 推理场景，TensorRT 可对一些子图进行优化，包括 OP 的横向和纵向融合，过滤冗余的 OP，并为 OP 自动选择最优的 kernel，加快推理速度。\n\n如果希望使用Paddle Inference进行TRT推理，一般需要2个步骤。\n\n* （1）收集该模型关于特定数据集的动态shape信息，并存储到文件中。\n* （2）加载动态shape信息文件，进行TRT推理。\n\n以文本检测模型为例，首先使用下面的命令，生成动态shape文件，最终会在`ch_PP-OCRv3_det_infer`目录下面生成`det_trt_dynamic_shape.txt`的文件，该文件即存储了动态shape信息的文件。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/algorithm_inference:85",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/algorithm_inference.md",
+          "text": "### 1. 超轻量中文OCR模型推理\n\n在执行预测时，需要通过参数`image_dir`指定单张图像或者图像集合的路径、参数`det_model_dir`,`cls_model_dir`和`rec_model_dir`分别指定检测，方向分类和识别的inference模型路径。参数`use_angle_cls`用于控制是否启用方向分类模型。`use_mp`表示是否使用多进程。`total_process_num`表示在使用多进程时的进程数。可视化识别结果默认保存到 ./inference_results 文件夹里面。",
+          "generation_text": "### 1. 超轻量中文OCR模型推理\n\n在执行预测时，需要通过参数`image_dir`指定单张图像或者图像集合的路径、参数`det_model_dir`,`cls_model_dir`和`rec_model_dir`分别指定检测，方向分类和识别的inference模型路径。参数`use_angle_cls`用于控制是否启用方向分类模型。`use_mp`表示是否使用多进程。`total_process_num`表示在使用多进程时的进程数。可视化识别结果默认保存到 ./inference_results 文件夹里面。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/inference:86",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/inference.md",
+          "text": "### 5.1 轻量级中文模型\n\n在进行预测时，需要通过参数 `image_dir` 指定单张图像或图像文件夹的路径，参数 `det_model_dir` 指定检测推理模型的路径，参数 `cls_model_dir` 指定角度分类推理模型的路径，参数 `rec_model_dir` 指定识别推理模型的路径。参数 `use_angle_cls` 用于控制是否启用角度分类模型。参数 `use_mp` 指定是否使用多进程推理，`total_process_num` 指定使用多进程时的进程数量（Paddle Inference 不是线程安全的，建议使用多进程）。可视化的识别结果默认保存在 `./inference_results` 文件夹中。",
+          "generation_text": "### 5.1 轻量级中文模型\n\n在进行预测时，需要通过参数 `image_dir` 指定单张图像或图像文件夹的路径，参数 `det_model_dir` 指定检测推理模型的路径，参数 `cls_model_dir` 指定角度分类推理模型的路径，参数 `rec_model_dir` 指定识别推理模型的路径。参数 `use_angle_cls` 用于控制是否启用角度分类模型。参数 `use_mp` 指定是否使用多进程推理，`total_process_num` 指定使用多进程时的进程数量（Paddle Inference 不是线程安全的，建议使用多进程）。可视化的识别结果默认保存在 `./inference_results` 文件夹中。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/inference_ppocr:35",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/inference_ppocr.md",
+          "text": "上面的推理过程仅用于收集动态shape信息，没有用TRT进行推理。\n\n运行完成以后，再使用下面的命令，进行TRT推理。",
+          "generation_text": "上面的推理过程仅用于收集动态shape信息，没有用TRT进行推理。\n\n运行完成以后，再使用下面的命令，进行TRT推理。"
+        }
+      ]
+    },
+    {
+      "id": "internal-44",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 0,
+        "wrong_version_count": 0,
+        "wrong_module_count": 5,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 3.2,
+      "diagnostics": {
+        "actual_strategy": "legacy"
+      },
+      "hits": [
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:140",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q：PaddleOCR模型推理方式有几种？各自的优缺点是什么\n\n**A**：目前推理方式支持基于训练引擎推理和基于预测引擎推理。\n\n（1）基于训练引擎推理不需要转换模型，但是需要先组网再load参数，语言只支持python，不适合系统集成。\n\n（2）基于预测引擎的推理需要先转换模型为inference格式，然后可以进行不需要组网的推理，语言支持c++和python，适合系统集成。",
+          "generation_text": "#### Q：PaddleOCR模型推理方式有几种？各自的优缺点是什么\n\n**A**：目前推理方式支持基于训练引擎推理和基于预测引擎推理。\n\n（1）基于训练引擎推理不需要转换模型，但是需要先组网再load参数，语言只支持python，不适合系统集成。\n\n（2）基于预测引擎的推理需要先转换模型为inference格式，然后可以进行不需要组网的推理，语言支持c++和python，适合系统集成。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:116",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: config yml文件中的ratio_list参数的作用是什么？\n\n**A**: 在动态图中，ratio_list在有多个数据源的情况下使用，ratio_list中的每个值是每个epoch从对应数据源采样数据的比例。如ratio_list=[0.3,0.2]，label_file_list=['data1','data2'],代表每个epoch的训练数据包含data1 30%的数据，和data2里 20%的数据，ratio_list中数值的和不需要等于1。ratio_list和label_file_list的长度必须一致。\n\n静态图检测数据采样的逻辑与动态图不同，但基本不影响训练精度。\n\n在静态图中，使用 检测 dataloader读取数据时，会先设置每个epoch的数据量，比如这里设置为1000，ratio_list中的值表示在1000中的占比，比如ratio_list是[0.3, 0.7]，则表示使用两个数据源，每个epoch从第一个数据源采样1000*0.3=300张图，从第二个数据源采样700张图。ratio_list的值的和也不需要等于1。",
+          "generation_text": "#### Q: config yml文件中的ratio_list参数的作用是什么？\n\n**A**: 在动态图中，ratio_list在有多个数据源的情况下使用，ratio_list中的每个值是每个epoch从对应数据源采样数据的比例。如ratio_list=[0.3,0.2]，label_file_list=['data1','data2'],代表每个epoch的训练数据包含data1 30%的数据，和data2里 20%的数据，ratio_list中数值的和不需要等于1。ratio_list和label_file_list的长度必须一致。\n\n静态图检测数据采样的逻辑与动态图不同，但基本不影响训练精度。\n\n在静态图中，使用 检测 dataloader读取数据时，会先设置每个epoch的数据量，比如这里设置为1000，ratio_list中的值表示在1000中的占比，比如ratio_list是[0.3, 0.7]，则表示使用两个数据源，每个epoch从第一个数据源采样1000*0.3=300张图，从第二个数据源采样700张图。ratio_list的值的和也不需要等于1。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:113",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q：文本检测换成自己的数据没法训练，有一些”###”是什么意思？\n\n**A**：数据格式有问题，”###” 表示要被忽略的文本区域，所以你的数据都被跳过了，可以换成其他任意字符或者就写个空的。",
+          "generation_text": "#### Q：文本检测换成自己的数据没法训练，有一些”###”是什么意思？\n\n**A**：数据格式有问题，”###” 表示要被忽略的文本区域，所以你的数据都被跳过了，可以换成其他任意字符或者就写个空的。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:161",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 使用hub_serving部署，延时较高，可能的原因是什么呀？\n\n**A**: 首先，测试的时候第一张图延时较高，可以多测试几张然后观察后几张图的速度；其次，如果是在cpu端部署serving端模型（如backbone为ResNet34），耗时较慢，建议在cpu端部署mobile（如backbone为MobileNetV3）模型。",
+          "generation_text": "#### Q: 使用hub_serving部署，延时较高，可能的原因是什么呀？\n\n**A**: 首先，测试的时候第一张图延时较高，可以多测试几张然后观察后几张图的速度；其次，如果是在cpu端部署serving端模型（如backbone为ResNet34），耗时较慢，建议在cpu端部署mobile（如backbone为MobileNetV3）模型。"
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:127",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 训练识别和检测时学习率要加上warmup，目的是什么？\n\n**A**: Warmup机制先使学习率从一个较小的值逐步升到一个较大的值，而不是直接就使用较大的学习率，这样有助于模型的稳定收敛。在OCR检测和OCR识别中，一般会带来精度~0.5%的提升。",
+          "generation_text": "#### Q: 训练识别和检测时学习率要加上warmup，目的是什么？\n\n**A**: Warmup机制先使学习率从一个较小的值逐步升到一个较大的值，而不是直接就使用较大的学习率，这样有助于模型的稳定收敛。在OCR检测和OCR识别中，一般会带来精度~0.5%的提升。"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,925 @@
+{
+  "question": "PaddleOCR 3.0.0 的 OCR 结果中 rec_texts 和 rec_scores 分别表示什么？",
+  "version": "v3.0.0",
+  "http_status": 200,
+  "elapsed_seconds": 18.69,
+  "result": {
+    "answer": "rec_texts 是文本识别结果列表，仅包含置信度超过 text_rec_score_thresh 的文本。\nrec_scores 是文本识别的置信度列表，已按 text_rec_score_thresh 过滤。",
+    "sources": [
+      {
+        "source_id": "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+        "version": "v3.0.0",
+        "source_snapshot": "v3.0.0",
+        "document_key": "docs/version3.x/pipeline_usage/OCR",
+        "document_title": "通用 OCR 产线使用与结果格式",
+        "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+        "path": "docs/version3.x/pipeline_usage/OCR.md",
+        "local_path": "sources/v3.0.0/docs/version3.x/pipeline_usage/OCR.md",
+        "source_type": "official_documentation",
+        "source_format": "markdown",
+        "source_content_language": "zh-CN",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "git_blob_sha": "9a7d0746c557607450510bbfa96ce95fac9acc75",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/LICENSE",
+        "attribution": "PaddleOCR · v3.0.0 · docs/version3.x/pipeline_usage/OCR.md · Apache-2.0 · commit a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "document_family": "ocr_pipeline",
+        "scope_note": "官方中文文档",
+        "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40",
+        "document_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR",
+        "source_sha256": "6ce2310fc0b471e634a57fb54718fa56d79a00867515b3bf5be397163ab8927a",
+        "heading": "2.2 Python脚本方式集成",
+        "heading_path": [
+          "通用OCR产线使用教程",
+          "2. 快速开始",
+          "2.2 Python脚本方式集成"
+        ],
+        "line_start": 1368,
+        "line_end": 1406,
+        "block_type": "section",
+        "content": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_textline_orientation`: `(bool)` 控制是否启用文本行方向分类功能\n\n    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(Union[str, None])` 图像预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数\n            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类\n            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n    - `dt_scores`: `(List[float])` 文本检测框的置信度列表\n\n    - `text_det_params`: `(Dict[str, Dict[str, int, float]])` 文本检测模块的配置参数\n        - `limit_side_len`: `(int)` 图像预处理时的边长限制值\n        - `limit_type`: `(str)` 边长限制的处理方式\n        - `thresh`: `(float)` 文本像素分类的置信度阈值\n        - `box_thresh`: `(float)` 文本检测框的置信度阈值\n        - `unclip_ratio`: `(float)` 文本检测框的膨胀系数\n        - `text_type`: `(str)` 文本检测的类型，当前固定为\"general\"\n\n    - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`",
+        "module": "ocr",
+        "evidence_spans": [
+          {
+            "line_start": 1383,
+            "line_end": 1389,
+            "char_start": 674,
+            "char_end": 972,
+            "content": "            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n    - `dt_scores`: `(List[float])` 文本检测框的置信度列表\n\n"
+          },
+          {
+            "line_start": 1396,
+            "line_end": 1403,
+            "char_start": 1273,
+            "char_end": 1563,
+            "content": "        - `text_type`: `(str)` 文本检测的类型，当前固定为\"general\"\n\n    - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n"
+          },
+          {
+            "line_start": 1404,
+            "line_end": 1406,
+            "char_start": 1563,
+            "char_end": 1711,
+            "content": "    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`"
+          }
+        ],
+        "rank": 6,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.030303030303030304,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      }
+    ],
+    "evidence": [
+      {
+        "source_id": "v3-0-0-tests-pipelines-test-ocr-py-e61d8a41",
+        "version": "v3.0.0",
+        "source_snapshot": "v3.0.0",
+        "document_key": "tests/pipelines/test_ocr",
+        "document_title": "OCR 官方 API 测试（仅参考，未执行）",
+        "document_path": "tests/pipelines/test_ocr.py",
+        "path": "tests/pipelines/test_ocr.py",
+        "local_path": "sources/v3.0.0/tests/pipelines/test_ocr.py",
+        "source_type": "official_api_contract",
+        "source_format": "python",
+        "source_content_language": "python",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "git_blob_sha": "88e6f7826d1eda698fe6eb7e5c6b4545225dabb1",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/LICENSE",
+        "attribution": "PaddleOCR · v3.0.0 · tests/pipelines/test_ocr.py · Apache-2.0 · commit a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "document_family": "api_test",
+        "scope_note": "代码/配置辅助证据；不计为中文教程",
+        "chunk_id": "v3.0.0:zh:tests/pipelines/test_ocr:3",
+        "document_id": "v3.0.0:zh:tests/pipelines/test_ocr",
+        "source_sha256": "55b9d4c5c92123d114e701230bf5e1a282097acdd8e383fc5166d84b07e31a51",
+        "heading": "test_predict",
+        "heading_path": [
+          "test_predict"
+        ],
+        "line_start": 17,
+        "line_end": 42,
+        "block_type": "python_definition",
+        "content": "@pytest.mark.parametrize(\n    \"image_path\",\n    [\n        TEST_DATA_DIR / \"table.jpg\",\n    ],\n)\ndef test_predict(ocr_engine: PaddleOCR, image_path: str) -> None:\n    \"\"\"\n    Test PaddleOCR's OCR functionality.\n\n    Args:\n        ocr_engine: An instance of `PaddleOCR`.\n        image_path: Path to the image to be processed.\n    \"\"\"\n    result = ocr_engine.predict(str(image_path))\n\n    check_simple_inference_result(result)\n    res = result[0]\n    assert len(res[\"dt_polys\"]) > 0\n    assert isinstance(res[\"rec_texts\"], list)\n    assert len(res[\"rec_texts\"]) > 0\n    for text in res[\"rec_texts\"]:\n        assert isinstance(text, str)\n\n\n# TODO: Also check passing `None`",
+        "module": "ocr",
+        "evidence_spans": [
+          {
+            "line_start": 31,
+            "line_end": 42,
+            "char_start": 332,
+            "char_end": 669,
+            "content": "    result = ocr_engine.predict(str(image_path))\n\n    check_simple_inference_result(result)\n    res = result[0]\n    assert len(res[\"dt_polys\"]) > 0\n    assert isinstance(res[\"rec_texts\"], list)\n    assert len(res[\"rec_texts\"]) > 0\n    for text in res[\"rec_texts\"]:\n        assert isinstance(text, str)\n\n\n# TODO: Also check passing `None`"
+          }
+        ],
+        "rank": 1,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.03278688524590164,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+        "version": "v3.0.0",
+        "source_snapshot": "v3.0.0",
+        "document_key": "docs/version3.x/pipeline_usage/OCR",
+        "document_title": "通用 OCR 产线使用与结果格式",
+        "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+        "path": "docs/version3.x/pipeline_usage/OCR.md",
+        "local_path": "sources/v3.0.0/docs/version3.x/pipeline_usage/OCR.md",
+        "source_type": "official_documentation",
+        "source_format": "markdown",
+        "source_content_language": "zh-CN",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "git_blob_sha": "9a7d0746c557607450510bbfa96ce95fac9acc75",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/LICENSE",
+        "attribution": "PaddleOCR · v3.0.0 · docs/version3.x/pipeline_usage/OCR.md · Apache-2.0 · commit a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "document_family": "ocr_pipeline",
+        "scope_note": "官方中文文档",
+        "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:30",
+        "document_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR",
+        "source_sha256": "6ce2310fc0b471e634a57fb54718fa56d79a00867515b3bf5be397163ab8927a",
+        "heading": "2.1 命令行方式",
+        "heading_path": [
+          "通用OCR产线使用教程",
+          "2. 快速开始",
+          "2.1 命令行方式"
+        ],
+        "line_start": 907,
+        "line_end": 927,
+        "block_type": "code_fence",
+        "content": "```bash\n{'res': {'input_path': './general_ocr_002.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_textline_orientation': False}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': False, 'use_doc_unwarping': False}, 'angle': -1}, 'dt_polys': array([[[  3,  10],\n        ...,\n        [  4,  30]],\n\n       ...,\n\n       [[ 99, 456],\n        ...,\n        [ 99, 479]]], dtype=int16), 'text_det_params': {'limit_side_len': 736, 'limit_type': 'min', 'thresh': 0.3, 'max_side_limit': 4000, 'box_thresh': 0.6, 'unclip_ratio': 1.5}, 'text_type': 'general', 'textline_orientation_angles': array([-1, ..., -1]), 'text_rec_score_thresh': 0.0, 'rec_texts': ['www.997700', '', 'Cm', '登机牌', 'BOARDING', 'PASS', 'CLASS', '序号SERIAL NO.', '座位号', 'SEAT NO.', '航班FLIGHT', '日期DATE', '舱位', '', 'W', '035', '12F', 'MU2379', '03DEc', '始发地', 'FROM', '登机口', 'GATE', '登机时间BDT', '目的地TO', '福州', 'TAIYUAN', 'G11', 'FUZHOU', '身份识别IDNO.', '姓名NAME', 'ZHANGQIWEI', '票号TKT NO.', '张祺伟', '票价FARE', 'ETKT7813699238489/1', '登机口于起飞前10分钟关闭 GATESCL0SE10MINUTESBEFOREDEPARTURETIME'], 'rec_scores': array([0.67634439, ..., 0.97416091]), 'rec_polys': array([[[  3,  10],\n        ...,\n        [  4,  30]],\n\n       ...,\n\n       [[ 99, 456],\n        ...,\n        [ 99, 479]]], dtype=int16), 'rec_boxes': array([[  3, ...,  30],\n       ...,\n       [ 99, ..., 479]], dtype=int16)}}\n```",
+        "module": "ocr",
+        "evidence_spans": [
+          {
+            "line_start": 916,
+            "line_end": 916,
+            "char_start": 440,
+            "char_end": 797,
+            "content": "        [ 99, 479]]], dtype=int16), 'text_det_params': {'limit_side_len': 736, 'limit_type': 'min', 'thresh': 0.3, 'max_side_limit': 4000, 'box_thresh': 0.6, 'unclip_ratio': 1.5}, 'text_type': 'general', 'textline_orientation_angles': array([-1, ..., -1]), 'text_rec_score_thresh': 0.0, 'rec_texts': ['www.997700', '', 'Cm', '登机牌', 'BOARDING', 'PASS', 'CLAS"
+          },
+          {
+            "line_start": 916,
+            "line_end": 927,
+            "char_start": 1154,
+            "char_end": 1431,
+            "content": "ay([0.67634439, ..., 0.97416091]), 'rec_polys': array([[[  3,  10],\n        ...,\n        [  4,  30]],\n\n       ...,\n\n       [[ 99, 456],\n        ...,\n        [ 99, 479]]], dtype=int16), 'rec_boxes': array([[  3, ...,  30],\n       ...,\n       [ 99, ..., 479]], dtype=int16)}}\n```"
+          },
+          {
+            "line_start": 916,
+            "line_end": 916,
+            "char_start": 797,
+            "char_end": 1154,
+            "content": "S', '序号SERIAL NO.', '座位号', 'SEAT NO.', '航班FLIGHT', '日期DATE', '舱位', '', 'W', '035', '12F', 'MU2379', '03DEc', '始发地', 'FROM', '登机口', 'GATE', '登机时间BDT', '目的地TO', '福州', 'TAIYUAN', 'G11', 'FUZHOU', '身份识别IDNO.', '姓名NAME', 'ZHANGQIWEI', '票号TKT NO.', '张祺伟', '票价FARE', 'ETKT7813699238489/1', '登机口于起飞前10分钟关闭 GATESCL0SE10MINUTESBEFOREDEPARTURETIME'], 'rec_scores': arr"
+          }
+        ],
+        "rank": 2,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.03225806451612903,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v3-0-0-docs-quick-start-md-ea104dc0",
+        "version": "v3.0.0",
+        "source_snapshot": "v3.0.0",
+        "document_key": "docs/quick_start",
+        "document_title": "PaddleOCR 快速开始",
+        "document_path": "docs/quick_start.md",
+        "path": "docs/quick_start.md",
+        "local_path": "sources/v3.0.0/docs/quick_start.md",
+        "source_type": "official_documentation",
+        "source_format": "markdown",
+        "source_content_language": "zh-CN",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/quick_start.md",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/quick_start.md",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "git_blob_sha": "6031c6805f5843badb40ccb3a751a5fe8039a9b4",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/LICENSE",
+        "attribution": "PaddleOCR · v3.0.0 · docs/quick_start.md · Apache-2.0 · commit a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "document_family": "quick_start",
+        "scope_note": "官方中文文档",
+        "chunk_id": "v3.0.0:zh:docs/quick_start:10",
+        "document_id": "v3.0.0:zh:docs/quick_start",
+        "source_sha256": "54344c131077a19b8d81912d968e0098705e4ed6b83633024c07082e1996bc5b",
+        "heading": "Python脚本使用",
+        "heading_path": [
+          "安装",
+          "1. 安装PaddlePaddle",
+          "Python脚本使用"
+        ],
+        "line_start": 55,
+        "line_end": 85,
+        "block_type": "section",
+        "content": "### Python脚本使用\n\n=== \"OCR产线\"\n\n    ```python linenums=\"1\"\n    from paddleocr import PaddleOCR\n\n    ocr = PaddleOCR() # 文本图像预处理+文本检测+方向分类+文本识别\n    # ocr = PaddleOCR(use_doc_orientation_classify=False, use_doc_unwarping=False) # 文本检测+方向分类+文本识别\n    # ocr = PaddleOCR(use_doc_orientation_classify=False, use_doc_unwarping=False, use_textline_orientation=False) # 文本检测+文本识别\n    result = ocr.predict(\"./general_ocr_002.png\")\n    for res in result:\n        res.print()\n        res.save_to_img(\"output\")\n        res.save_to_json(\"output\")\n    ```\n\n    输出示例：\n\n    ```bash\n    {'res': {'input_path': './general_ocr_002.png', 'page_index': None, 'model_settings': {'use_doc_preprocessor': True, 'use_textline_orientation': False}, 'doc_preprocessor_res': {'input_path': None, 'page_index': None, 'model_settings': {'use_doc_orientation_classify': False, 'use_doc_unwarping': False}, 'angle': -1}, 'dt_polys': array([[[  1,   4],\n        ...,\n        [  1,  33]],\n\n       ...,\n\n       [[ 99, 455],\n        ...,\n        [ 99, 480]]], dtype=int16), 'text_det_params': {'limit_side_len': 960, 'limit_type': 'max', 'thresh': 0.3, 'max_side_limit': 4000, 'box_thresh': 0.6, 'unclip_ratio': 1.5}, 'text_type': 'general', 'textline_orientation_angles': array([-1, ..., -1]), 'text_rec_score_thresh': 0.0, 'rec_texts': ['www.997788.com', '登机牌', 'BOARDING PASS', '舱位CLASS', '序号 SERIAL NO.', '座位号', 'SEAT NO', '航班FLIGHT', '日期', 'DATE', 'MU 2379', '03DEC', 'W', '035', '', '始发地', 'FROM', '登机口', 'GATE', '登机时间BDT', '目的地TO', '福州', 'TAIYUAN', 'G11', 'FUZHOU', '身份识别IDNO.', '姓名NAME', 'ZHANGQIWEI', '票号TKTNO.', '张祺伟', '票价FARE', 'ETKT7813699238489/1', '登机口于起飞前10分钟关闭 GATESCL0SE10MINUTESBEFOREDEPARTURETIME'], 'rec_scores': array([0.99684608, ..., 0.97179604]), 'rec_polys': array([[[  1,   4],\n        ...,\n        [  1,  33]],",
+        "module": "general",
+        "evidence_spans": [
+          {
+            "line_start": 83,
+            "line_end": 83,
+            "char_start": 997,
+            "char_end": 1355,
+            "content": "        [ 99, 480]]], dtype=int16), 'text_det_params': {'limit_side_len': 960, 'limit_type': 'max', 'thresh': 0.3, 'max_side_limit': 4000, 'box_thresh': 0.6, 'unclip_ratio': 1.5}, 'text_type': 'general', 'textline_orientation_angles': array([-1, ..., -1]), 'text_rec_score_thresh': 0.0, 'rec_texts': ['www.997788.com', '登机牌', 'BOARDING PASS', '舱位CLASS', '序号 "
+          },
+          {
+            "line_start": 83,
+            "line_end": 83,
+            "char_start": 1355,
+            "char_end": 1713,
+            "content": "SERIAL NO.', '座位号', 'SEAT NO', '航班FLIGHT', '日期', 'DATE', 'MU 2379', '03DEC', 'W', '035', '', '始发地', 'FROM', '登机口', 'GATE', '登机时间BDT', '目的地TO', '福州', 'TAIYUAN', 'G11', 'FUZHOU', '身份识别IDNO.', '姓名NAME', 'ZHANGQIWEI', '票号TKTNO.', '张祺伟', '票价FARE', 'ETKT7813699238489/1', '登机口于起飞前10分钟关闭 GATESCL0SE10MINUTESBEFOREDEPARTURETIME'], 'rec_scores': array([0.99684608, .."
+          },
+          {
+            "line_start": 83,
+            "line_end": 85,
+            "char_start": 1713,
+            "char_end": 1796,
+            "content": "., 0.97179604]), 'rec_polys': array([[[  1,   4],\n        ...,\n        [  1,  33]],"
+          }
+        ],
+        "rank": 3,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.031746031746031744,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v3-0-0-docs-quick-start-md-ea104dc0",
+        "version": "v3.0.0",
+        "source_snapshot": "v3.0.0",
+        "document_key": "docs/quick_start",
+        "document_title": "PaddleOCR 快速开始",
+        "document_path": "docs/quick_start.md",
+        "path": "docs/quick_start.md",
+        "local_path": "sources/v3.0.0/docs/quick_start.md",
+        "source_type": "official_documentation",
+        "source_format": "markdown",
+        "source_content_language": "zh-CN",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/quick_start.md",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/quick_start.md",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "git_blob_sha": "6031c6805f5843badb40ccb3a751a5fe8039a9b4",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/LICENSE",
+        "attribution": "PaddleOCR · v3.0.0 · docs/quick_start.md · Apache-2.0 · commit a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "document_family": "quick_start",
+        "scope_note": "官方中文文档",
+        "chunk_id": "v3.0.0:zh:docs/quick_start:15",
+        "document_id": "v3.0.0:zh:docs/quick_start",
+        "source_sha256": "54344c131077a19b8d81912d968e0098705e4ed6b83633024c07082e1996bc5b",
+        "heading": "Python脚本使用",
+        "heading_path": [
+          "安装",
+          "1. 安装PaddlePaddle",
+          "Python脚本使用"
+        ],
+        "line_start": 167,
+        "line_end": 171,
+        "block_type": "paragraph",
+        "content": "        [[1156, 1330],\n            ...,\n            [1156, 1351]]], dtype=int16), 'text_det_params': {'limit_side_len': 736, 'limit_type': 'min', 'thresh': 0.3, 'max_side_limit': 4000, 'box_thresh': 0.6, 'unclip_ratio': 1.5}, 'text_type': 'general', 'textline_orientation_angles': array([-1, ..., -1]), 'text_rec_score_thresh': 0.0, 'rec_texts': ['助力双方交往', '搭建友谊桥梁', '本报记者沈小晓', '任', '彦', '黄培昭', '身着中国传统民族服装的厄立特里亚青', '厄立特里亚高等教育与研究院合作建立，开', '年依次登台表演中国民族舞、现代舞、扇子舞', '设了中国语言课程和中国文化课程，注册学', '等，曼妙的舞姿赢得现场观众阵阵掌声。这', '生2万余人次。10余年来，厄特孔院已成为', '是日前危立特里亚高等教育与研究院孔子学', '当地民众了解中国的一扇窗口。', '院(以下简称“厄特孔院\")举办“喜迎新年\"中国', '黄鸣飞表示，随着来学习中文的人日益', '歌舞比赛的场景。', '增多，阿斯马拉大学教学点已难以满足教学', '中国和厄立特里亚传统友谊深厚。近年', '需要。2024年4月，由中企蜀道集团所属四', '来，在高质量共建“一带一路”框架下，中厄两', '川路桥承建的孔院教学楼项目在阿斯马拉开', '国人文交流不断深化，互利合作的民意基础', '工建设，预计今年上半年竣工，建成后将为危', '日益深厚。', '特孔院提供全新的办学场地。', '“学好中文，我们的', '“在中国学习的经历', '未来不是梦”', '让我看到更广阔的世界”', '“鲜花曾告诉我你怎样走过，大地知道你', '多年来，厄立特里亚广大赴华留学生和', '心中的每一个角落……\"厄立特里亚阿斯马拉', '培训人员积极投身国家建设，成为助力该国', '大学综合楼二层，一阵优美的歌声在走廊里回', '发展的人才和厄中友好的见证者和推动者。', '响。循着熟悉的旋律轻轻推开一间教室的门，', '在厄立特里亚全国妇女联盟工作的约翰', '学生们正跟着老师学唱中文歌曲《同一首歌》。', '娜·特韦尔德·凯莱塔就是其中一位。她曾在', '这是厄特孔院阿斯马拉大学教学点的一', '中华女子学院攻读硕士学位，研究方向是女', '节中文歌曲课。为了让学生们更好地理解歌', '性领导力与社会发展。其间，她实地走访中国', '词大意，老师尤斯拉·穆罕默德萨尔·侯赛因逐', '多个地区，获得了观察中国社会发展的第一', '在厄立特里亚不久前举办的第六届中国风筝文化节上，当地小学生体验风筝制作。', '字翻译和解释歌词。随着伴奏声响起，学生们', '手资料。', '中国驻厄立特里亚大使馆供图', '边唱边随着节拍摇动身体，现场气氛热烈。', '谈起在中国求学的经历，约翰娜记忆犹', '“这是中文歌曲初级班，共有32人。学', '新：“中国的发展在当今世界是独一无二的。', '“不管远近都是客人，请不用客气；相约', '瓦的北红海省博物馆。', '生大部分来自首都阿斯马拉的中小学，年龄', '沿着中国特色社会主义道路坚定前行，中国', '好了在一起，我们欢迎你……”在一场中厄青', '博物馆二层陈列着一个发掘自阿杜利', '最小的仅有6岁。”尤斯拉告诉记者。', '创造了发展奇迹，这一切都离不开中国共产党', '年联谊活动上，四川路桥中方员工同当地大', '斯古城的中国古代陶制酒器，罐身上写着', '尤斯拉今年23岁，是厄立特里亚一所公立', '的领导。中国的发展经验值得许多国家学习', '学生合唱《北京欢迎你》。厄立特里亚技术学', '“万”“和”“禅”“山”等汉字。“这件文物证', '学校的艺术老师。她12岁开始在厄特孔院学', '借鉴。”', '院计算机科学与工程专业学生鲁夫塔·谢拉', '明，很早以前我们就通过海上丝绸之路进行', '习中文，在2017年第十届“汉语桥\"世界中学生', '正在西南大学学习的厄立特里亚博士生', '是其中一名演唱者，她很早便在孔院学习中', '贸易往来与文化交流。这也是厄立特里亚', '中文比赛中获得厄立特里亚赛区第一名，并和', '穆卢盖塔·泽穆伊对中国怀有深厚感情。8', '文，一直在为去中国留学作准备。“这句歌词', '与中国友好交往历史的有力证明。”北红海', '同伴代表厄立特里亚前往中国参加决赛，获得', '年前，在北京师范大学获得硕士学位后，穆卢', '是我们两国人民友谊的生动写照。无论是投', '省博物馆研究与文献部负责人伊萨亚斯·特', '团体优胜奖。2022年起，尤斯拉开始在厄特孔', '盖塔在社交媒体上写下这样一段话：“这是我', '身于厄立特里亚基础设施建设的中企员工，', '斯法兹吉说。', '院兼职教授中文歌曲，每周末两个课时。“中国', '人生的重要一步，自此我拥有了一双坚固的', '还是在中国留学的厄立特里亚学子，两国人', '厄立特里亚国家博物馆考古学和人类学', '文化博大精深，我希望我的学生们能够通过中', '鞋子，赋予我穿越荆棘的力量。”', '民携手努力，必将推动两国关系不断向前发', '研究员菲尔蒙·特韦尔德十分喜爱中国文', '文歌曲更好地理解中国文化。”她说。', '穆卢盖塔密切关注中国在经济、科技、教', '展。”鲁夫塔说。', '化。他表示：“学习彼此的语言和文化，将帮', '“姐姐，你想去中国吗?”“非常想！我想', '育等领域的发展，“中国在科研等方面的实力', '厄立特里亚高等教育委员会主任助理萨', '助厄中两国人民更好地理解彼此，助力双方', '去看故宫、爬长城。”尤斯拉的学生中有一对', '与日俱增。在中国学习的经历让我看到更广', '马瑞表示：“每年我们都会组织学生到中国访', '交往，搭建友谊桥梁。”', '能歌善舞的姐妹，姐姐露娅今年15岁，妹妹', '阔的世界，从中受益匪浅。”', '问学习，自前有超过5000名厄立特里亚学生', '厄立特里亚国家博物馆馆长塔吉丁·努', '莉娅14岁，两人都已在厄特孔院学习多年，', '23岁的莉迪亚·埃斯蒂法诺斯已在厄特', '在中国留学。学习中国的教育经验，有助于', '重达姆·优素福曾多次访问中国，对中华文明', '中文说得格外流利。', '孔院学习3年，在中国书法、中国画等方面表', '提升厄立特里亚的教育水平。”', '的传承与创新、现代化博物馆的建设与发展', '露娅对记者说：“这些年来，怀着对中文', '现干分优秀，在2024年厄立特里亚赛区的', '印象深刻。“中国博物馆不仅有许多保存完好', '“共同向世界展示非', '和中国文化的热爱，我们姐妹俩始终相互鼓', '“汉语桥”比赛中获得一等奖。莉迪亚说：“学', '的文物，还充分运用先进科技手段进行展示，', '励，一起学习。我们的中文一天比一天好，还', '习中国书法让我的内心变得安宁和纯粹。我', '洲和亚洲的灿烂文明”', '帮助人们更好理解中华文明。”塔吉丁说，“危', '学会了中文歌和中国舞。我们一定要到中国', '也喜欢中国的服饰，希望未来能去中国学习，', '立特里亚与中国都拥有悠久的文明，始终相', '去。学好中文，我们的未来不是梦！”', '把中国不同民族元素融入服装设计中，创作', '从阿斯马拉出发，沿着蜿蜒曲折的盘山', '互理解、相互尊重。我希望未来与中国同行', '据厄特孔院中方院长黄鸣飞介绍，这所', '出更多精美作品，也把厄特文化分享给更多', '公路一路向东寻找丝路印迹。驱车两个小', '加强合作，共同向世界展示非洲和亚洲的灿', '孔院成立于2013年3月，由贵州财经大学和', '的中国朋友。”', '时，记者来到位于厄立特里亚港口城市马萨', '烂文明。”'], 'rec_scores': array([0.99113536, ..., 0.95110035]), 'rec_polys': array([[[ 129,   42],\n            ...,\n            [ 129,  140]],",
+        "module": "general",
+        "evidence_spans": [
+          {
+            "line_start": 169,
+            "line_end": 169,
+            "char_start": 40,
+            "char_end": 398,
+            "content": "            [1156, 1351]]], dtype=int16), 'text_det_params': {'limit_side_len': 736, 'limit_type': 'min', 'thresh': 0.3, 'max_side_limit': 4000, 'box_thresh': 0.6, 'unclip_ratio': 1.5}, 'text_type': 'general', 'textline_orientation_angles': array([-1, ..., -1]), 'text_rec_score_thresh': 0.0, 'rec_texts': ['助力双方交往', '搭建友谊桥梁', '本报记者沈小晓', '任', '彦', '黄培昭', '身着"
+          },
+          {
+            "line_start": 169,
+            "line_end": 171,
+            "char_start": 3262,
+            "char_end": 3559,
+            "content": "来与中国同行', '据厄特孔院中方院长黄鸣飞介绍，这所', '出更多精美作品，也把厄特文化分享给更多', '公路一路向东寻找丝路印迹。驱车两个小', '加强合作，共同向世界展示非洲和亚洲的灿', '孔院成立于2013年3月，由贵州财经大学和', '的中国朋友。”', '时，记者来到位于厄立特里亚港口城市马萨', '烂文明。”'], 'rec_scores': array([0.99113536, ..., 0.95110035]), 'rec_polys': array([[[ 129,   42],\n            ...,\n            [ 129,  140]],"
+          }
+        ],
+        "rank": 4,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.03125,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+        "version": "v3.0.0",
+        "source_snapshot": "v3.0.0",
+        "document_key": "docs/version3.x/pipeline_usage/OCR",
+        "document_title": "通用 OCR 产线使用与结果格式",
+        "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+        "path": "docs/version3.x/pipeline_usage/OCR.md",
+        "local_path": "sources/v3.0.0/docs/version3.x/pipeline_usage/OCR.md",
+        "source_type": "official_documentation",
+        "source_format": "markdown",
+        "source_content_language": "zh-CN",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "git_blob_sha": "9a7d0746c557607450510bbfa96ce95fac9acc75",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/LICENSE",
+        "attribution": "PaddleOCR · v3.0.0 · docs/version3.x/pipeline_usage/OCR.md · Apache-2.0 · commit a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "document_family": "ocr_pipeline",
+        "scope_note": "官方中文文档",
+        "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:28",
+        "document_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR",
+        "source_sha256": "6ce2310fc0b471e634a57fb54718fa56d79a00867515b3bf5be397163ab8927a",
+        "heading": "2.1 命令行方式",
+        "heading_path": [
+          "通用OCR产线使用教程",
+          "2. 快速开始",
+          "2.1 命令行方式"
+        ],
+        "line_start": 535,
+        "line_end": 901,
+        "block_type": "table",
+        "content": "<table>\n<thead>\n<tr>\n<th>参数</th>\n<th>参数说明</th>\n<th>参数类型</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><code>input</code></td>\n<td>待预测数据，支持多种输入类型，必填。\n<ul>\n<li><b>Python Var</b>：如 <code>numpy.ndarray</code> 表示的图像数据</li>\n<li><b>str</b>：如图像文件或者PDF文件的本地路径：<code>/root/data/img.jpg</code>；<b>如URL链接</b>，如图像文件或PDF文件的网络URL：<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_doc_preprocessor_002.png\">示例</a>；<b>如本地目录</b>，该目录下需包含待预测图像，如本地路径：<code>/root/data/</code>(当前不支持目录中包含PDF文件的预测，PDF文件需要指定到具体文件路径)</li>\n<li><b>List</b>：列表元素需为上述类型数据，如<code>[numpy.ndarray, numpy.ndarray]</code>，<code>[\"/root/data/img1.jpg\", \"/root/data/img2.jpg\"]</code>，<code>[\"/root/data1\", \"/root/data2\"]</code></li>\n</ul>\n</td>\n<td><code>Python Var|str|list</code></td>\n<td></td>\n</tr>\n<tr>\n<td><code>save_path</code></td>\n<td>指定推理结果文件保存的路径。如果设置为<code>None</code>, 推理结果将不会保存到本地。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_name</code></td>\n<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_orientation_classify_model_dir</code></td>\n<td>文档方向分类模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_unwarping_model_name</code></td>\n<td>文本图像矫正模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_unwarping_model_dir</code></td>\n<td>文本图像矫正模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_detection_model_name</code></td>\n<td>文本检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_detection_model_dir</code></td>\n<td>文本检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_line_orientation_model_name</code></td>\n<td>文本行方向模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_line_orientation_model_dir</code></td>\n<td>文本行方向模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_line_orientation_batch_size</code></td>\n<td>文本行方向模型的批处理大小。如果设置为<code>None</code>, 将默认设置批处理大小为<code>1</code>。</td>\n<td><code>int</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_recognition_model_name</code></td>\n<td>文本识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_recognition_model_dir</code></td>\n<td>文本识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_recognition_batch_size</code></td>\n<td>文本识别模型的批处理大小。如果设置为<code>None</code>, 将默认设置批处理大小为<code>1</code>。</td>\n<td><code>int</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_doc_orientation_classify</code></td>\n<td>是否使用文档方向分类功能。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_doc_unwarping</code></td>\n<td>是否使用文本图像矫正功能。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_textline_orientation</code></td>\n<td>是否使用文本行方向功能。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_limit_side_len</code></td>\n<td>文本检测的最大边长度限制。\n<ul>\n<li><b>int</b>：大于 <code>0</code> 的任意整数；</li>\n<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>960</code>；</li>\n</ul>\n</td>\n<td><code>int</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_limit_type</code></td>\n<td>文本检测的边长度限制类型。\n<ul>\n<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code></li>\n<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>max</code>；</li>\n</ul>\n</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_thresh</code></td>\n<td>文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.3</code></li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_box_thresh</code></td>\n<td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.6</code></li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_unclip_ratio</code></td>\n<td>文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>2.0</code></li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_input_shape</code></td>\n<td>文本检测的输入形状。</td>\n<td><code>tuple</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_rec_score_thresh</code></td>\n<td>文本识别阈值，得分大于该阈值的文本结果会被保留。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值</li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_rec_input_shape</code></td>\n<td>文本识别的输入形状。</td>\n<td><code>tuple</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>lang</code></td>\n<td>使用指定语言的 OCR 模型。\n<ul>\n<li><b>ch</b>：中文；\n<li><b>en</b>：英文；\n<li><b>korean</b>：韩文；\n<li><b>japan</b>：日文；\n<li><b>chinese_cht</b>：繁体中文；\n<li><b>te</b>：泰卢固文；\n<li><b>ka</b>：卡纳达文；\n<li><b>ta</b>：泰米尔文；\n<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用<code>ch</code>；</li>\n</ul>\n</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>ocr_version</code></td>\n<td>OCR 版本。\n<ul>\n<li><b>PP-OCRv5</b>：使用<code>PP-OCRv5</code>系列模型；\n<li><b>PP-OCRv4</b>：使用<code>PP-OCRv4</code>系列模型；\n<li><b>PP-OCRv3</b>：使用<code>PP-OCRv3</code>系列模型；\n<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用<code>PP-OCRv5</code>系列模型；</li>\n</ul>\n</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>det_model_dir</code></td>\n<td>已废弃，请使用<code>text_detection_model_dir</code>代替。文本检测模型的目录路径。如果设置为None, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>det_limit_side_len</code></td>\n<td>已废弃，请使用<code>text_det_limit_side_len</code>代替。文本检测的最大边长度限制。</td>\n<td><code>int</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>det_limit_type</code></td>\n<td>已废弃，请使用<code>text_det_limit_type</code>代替。文本检测的边长度限制类型。\n<ul>\n<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code></li>\n<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>max</code>；</li>\n</ul>\n</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>det_db_thresh</code></td>\n<td>已废弃，请使用<code>text_det_thresh</code>代替。文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.3</code></li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>det_db_box_thresh</code></td>\n<td>已废弃，请使用<code>text_det_box_thresh</code>代替。文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.6</code></li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>det_db_unclip_ratio</code></td>\n<td>已废弃，请使用<code>text_det_unclip_ratio</code>代替。文本检测扩张系数，使用该方法对文字区域进行扩张，该值越大，扩张的面积越大。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>2.0</code></li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>rec_model_dir</code></td>\n<td>已废弃，请使用<code>text_recognition_model_dir</code>代替。文本识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>rec_batch_num</code></td>\n<td>已废弃，请使用<code>text_recognition_batch_size</code>代替。文本识别模型的批处理大小。如果设置为<code>None</code>, 将默认设置批处理大小为<code>1</code>。</td>\n<td><code>int</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>use_angle_cls</code></td>\n<td>已废弃，请使用<code>use_textline_orientation</code>代替。是否使用文本行方向功能。如果设置为<code>None</code>, 将默认使用产线初始化的该参数值，初始化为<code>True</code>。</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>cls_model_dir</code></td>\n<td>已废弃，请使用<code>text_line_orientation_model_dir</code>代替。文本行方向模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>cls_batch_num</code></td>\n<td>已废弃，请使用<code>text_line_orientation_batch_size</code>代替。文本行方向模型的批处理大小。如果设置为<code>None</code>, 将默认设置批处理大小为<code>1</code>。</td>\n<td><code>int</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>device</code></td>\n<td>用于推理的设备。支持指定具体卡号。\n<ul>\n<li><b>CPU</b>：如 <code>cpu</code> 表示使用 CPU 进行推理；</li>\n<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>\n<li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li>\n<li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>\n<li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>\n<li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>\n<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化时，会优先使用本地的 GPU 0号设备，如果没有，则使用 CPU 设备；</li>\n</ul>\n</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>enable_hpi</code></td>\n<td>是否启用高性能推理。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>use_tensorrt</code></td>\n<td>是否使用 TensorRT 进行推理加速。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>\n<tr>\n<td><code>min_subgraph_size</code></td>\n<td>最小子图大小，用于优化模型子图的计算。</td>\n<td><code>int</code></td>\n<td><code>3</code></td>\n</tr>\n<tr>\n<td><code>precision</code></td>\n<td>计算精度，如 fp32、fp16。</td>\n<td><code>str</code></td>\n<td><code>fp32</code></td>\n</tr>\n<tr>\n<td><code>enable_mkldnn</code></td>\n<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。\n</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>cpu_threads</code></td>\n<td>在 CPU 上进行推理时使用的线程数。</td>\n<td><code>int</code></td>\n<td><code>8</code></td>\n</tr>\n<tr>\n<td><code>paddlex_config</code></td>\n<td>PaddleX产线配置文件路径。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n</tbody>\n</table>",
+        "module": "ocr",
+        "evidence_spans": [
+          {
+            "line_start": 846,
+            "line_end": 850,
+            "char_start": 9492,
+            "char_end": 9797,
+            "content": "<li><b>GPU</b>：如 <code>gpu:0</code> 表示使用第 1 块 GPU 进行推理；</li>\n<li><b>NPU</b>：如 <code>npu:0</code> 表示使用第 1 块 NPU 进行推理；</li>\n<li><b>XPU</b>：如 <code>xpu:0</code> 表示使用第 1 块 XPU 进行推理；</li>\n<li><b>MLU</b>：如 <code>mlu:0</code> 表示使用第 1 块 MLU 进行推理；</li>\n<li><b>DCU</b>：如 <code>dcu:0</code> 表示使用第 1 块 DCU 进行推理；</li>\n"
+          },
+          {
+            "line_start": 774,
+            "line_end": 781,
+            "char_start": 6932,
+            "char_end": 7272,
+            "content": "<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code></li>\n<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>max</code>；</li>\n</ul>\n</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n"
+          },
+          {
+            "line_start": 666,
+            "line_end": 673,
+            "char_start": 3945,
+            "char_end": 4297,
+            "content": "<td>文本检测的边长度限制类型。\n<ul>\n<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code></li>\n<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>max</code>；</li>\n</ul>\n</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n"
+          },
+          {
+            "line_start": 712,
+            "line_end": 723,
+            "char_start": 5331,
+            "char_end": 5685,
+            "content": "<td><code>text_rec_score_thresh</code></td>\n<td>文本识别阈值，得分大于该阈值的文本结果会被保留。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值</li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_rec_input_shape</code></td>\n<td>文本识别的输入形状。</td>\n"
+          }
+        ],
+        "rank": 5,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.03076923076923077,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+        "version": "v3.0.0",
+        "source_snapshot": "v3.0.0",
+        "document_key": "docs/version3.x/pipeline_usage/OCR",
+        "document_title": "通用 OCR 产线使用与结果格式",
+        "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+        "path": "docs/version3.x/pipeline_usage/OCR.md",
+        "local_path": "sources/v3.0.0/docs/version3.x/pipeline_usage/OCR.md",
+        "source_type": "official_documentation",
+        "source_format": "markdown",
+        "source_content_language": "zh-CN",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "git_blob_sha": "9a7d0746c557607450510bbfa96ce95fac9acc75",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/LICENSE",
+        "attribution": "PaddleOCR · v3.0.0 · docs/version3.x/pipeline_usage/OCR.md · Apache-2.0 · commit a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "document_family": "ocr_pipeline",
+        "scope_note": "官方中文文档",
+        "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40",
+        "document_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR",
+        "source_sha256": "6ce2310fc0b471e634a57fb54718fa56d79a00867515b3bf5be397163ab8927a",
+        "heading": "2.2 Python脚本方式集成",
+        "heading_path": [
+          "通用OCR产线使用教程",
+          "2. 快速开始",
+          "2.2 Python脚本方式集成"
+        ],
+        "line_start": 1368,
+        "line_end": 1406,
+        "block_type": "section",
+        "content": "- 调用`print()` 方法会将结果打印到终端，打印到终端的内容解释如下：\n\n    - `input_path`: `(str)` 待预测图像的输入路径\n\n    - `page_index`: `(Union[int, None])` 如果输入是PDF文件，则表示当前是PDF的第几页，否则为 `None`\n\n    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_textline_orientation`: `(bool)` 控制是否启用文本行方向分类功能\n\n    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(Union[str, None])` 图像预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数\n            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类\n            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n    - `dt_scores`: `(List[float])` 文本检测框的置信度列表\n\n    - `text_det_params`: `(Dict[str, Dict[str, int, float]])` 文本检测模块的配置参数\n        - `limit_side_len`: `(int)` 图像预处理时的边长限制值\n        - `limit_type`: `(str)` 边长限制的处理方式\n        - `thresh`: `(float)` 文本像素分类的置信度阈值\n        - `box_thresh`: `(float)` 文本检测框的置信度阈值\n        - `unclip_ratio`: `(float)` 文本检测框的膨胀系数\n        - `text_type`: `(str)` 文本检测的类型，当前固定为\"general\"\n\n    - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`",
+        "module": "ocr",
+        "evidence_spans": [
+          {
+            "line_start": 1383,
+            "line_end": 1389,
+            "char_start": 674,
+            "char_end": 972,
+            "content": "            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n    - `dt_scores`: `(List[float])` 文本检测框的置信度列表\n\n"
+          },
+          {
+            "line_start": 1396,
+            "line_end": 1403,
+            "char_start": 1273,
+            "char_end": 1563,
+            "content": "        - `text_type`: `(str)` 文本检测的类型，当前固定为\"general\"\n\n    - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n"
+          },
+          {
+            "line_start": 1404,
+            "line_end": 1406,
+            "char_start": 1563,
+            "char_end": 1711,
+            "content": "    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`"
+          }
+        ],
+        "rank": 6,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.030303030303030304,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v3-0-0-docs-update-upgrade-notes-md-eddd1bbb",
+        "version": "v3.0.0",
+        "source_snapshot": "v3.0.0",
+        "document_key": "docs/update/upgrade_notes",
+        "document_title": "PaddleOCR 3.0 升级说明",
+        "document_path": "docs/update/upgrade_notes.md",
+        "path": "docs/update/upgrade_notes.md",
+        "local_path": "sources/v3.0.0/docs/update/upgrade_notes.md",
+        "source_type": "official_documentation",
+        "source_format": "markdown",
+        "source_content_language": "zh-CN",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/update/upgrade_notes.md",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/update/upgrade_notes.md",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "git_blob_sha": "840134d67d24de00b492481355ce9f5a62971766",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/LICENSE",
+        "attribution": "PaddleOCR · v3.0.0 · docs/update/upgrade_notes.md · Apache-2.0 · commit a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "document_family": "upgrade_notes",
+        "scope_note": "官方中文文档",
+        "chunk_id": "v3.0.0:zh:docs/update/upgrade_notes:2",
+        "document_id": "v3.0.0:zh:docs/update/upgrade_notes",
+        "source_sha256": "7b49f5758e45b217b8c3ed04aea3913e26fbf1d1d1a26277d09e55ed365fd994",
+        "heading": "1. PaddleOCR 为什么要从 2.x 升级到 3.x？",
+        "heading_path": [
+          "PaddleOCR 3.x 升级说明",
+          "1. PaddleOCR 为什么要从 2.x 升级到 3.x？"
+        ],
+        "line_start": 3,
+        "line_end": 13,
+        "block_type": "section",
+        "content": "## 1. PaddleOCR 为什么要从 2.x 升级到 3.x？\n\n自 2021 年 2 月发布 2.0 版本以来，PaddleOCR 社区已走过四年多的快速发展期，GitHub star 数量、社区用户和贡献者、issue 与 PR 数量等均有指数级的增长。在多语种识别、版面分析等新需求的推动下，PaddleOCR 在 2.x 系列中不断增添功能，但最初以轻量化为核心的架构已难以应对功能繁荣带来的复杂性与维护成本。\n\n随着代码中模块分支与“桥接”层频繁增加，重复实现、接口不统一的问题愈发突出，测试难度也不断增加，开发效率严重受限；而旧版依赖与最新 PaddlePaddle 更新的不兼容，限制了对飞桨新特性的使用，进一步拖慢了训练与推理速度。这种状况下，继续在现有架构基础上打补丁，只会带来更多技术债与系统脆弱性。\n\n另一方面，基于 Transformer 的视觉语言大模型正在为文档理解、图文摘要、智能校对等高级应用场景注入新动能。社区迫切期待，这类模型能够突破传统 OCR 识别的局限，直接发挥其更强的上下文理解与推理能力。同时，传统的 OCR 小模型亦可与大模型协同工作，既能满足大模型在文档解析等方面的输入需求，又能通过大小模型协同，实现优势互补，进一步提升系统整体性能。\n\n此外，飞桨框架于 2025 年 4 月发布的 3.0 正式版，在训推一体化、国产硬件适配等方面实现了颠覆性升级，这也对 PaddleOCR 在训练和推理层面提出了新的改造需求。\n\n综合以上背景，我们决定对 PaddleOCR 进行一次重大、非兼容性升级——从 2.x 跳至 3.x。新版本将在架构层面实现模块化、插件化设计，在尽可能不改变用户使用习惯的同时，结合大模型，提供更加丰富的功能，并充分利用飞桨 3.0 的新特性，既清理冗余、降低维护成本，又为性能与功能扩展提供更坚实的基础。",
+        "module": "general",
+        "evidence_spans": [
+          {
+            "line_start": 3,
+            "line_end": 6,
+            "char_start": 0,
+            "char_end": 214,
+            "content": "## 1. PaddleOCR 为什么要从 2.x 升级到 3.x？\n\n自 2021 年 2 月发布 2.0 版本以来，PaddleOCR 社区已走过四年多的快速发展期，GitHub star 数量、社区用户和贡献者、issue 与 PR 数量等均有指数级的增长。在多语种识别、版面分析等新需求的推动下，PaddleOCR 在 2.x 系列中不断增添功能，但最初以轻量化为核心的架构已难以应对功能繁荣带来的复杂性与维护成本。\n\n"
+          },
+          {
+            "line_start": 10,
+            "line_end": 13,
+            "char_start": 547,
+            "char_end": 791,
+            "content": "\n此外，飞桨框架于 2025 年 4 月发布的 3.0 正式版，在训推一体化、国产硬件适配等方面实现了颠覆性升级，这也对 PaddleOCR 在训练和推理层面提出了新的改造需求。\n\n综合以上背景，我们决定对 PaddleOCR 进行一次重大、非兼容性升级——从 2.x 跳至 3.x。新版本将在架构层面实现模块化、插件化设计，在尽可能不改变用户使用习惯的同时，结合大模型，提供更加丰富的功能，并充分利用飞桨 3.0 的新特性，既清理冗余、降低维护成本，又为性能与功能扩展提供更坚实的基础。"
+          },
+          {
+            "line_start": 7,
+            "line_end": 9,
+            "char_start": 214,
+            "char_end": 547,
+            "content": "随着代码中模块分支与“桥接”层频繁增加，重复实现、接口不统一的问题愈发突出，测试难度也不断增加，开发效率严重受限；而旧版依赖与最新 PaddlePaddle 更新的不兼容，限制了对飞桨新特性的使用，进一步拖慢了训练与推理速度。这种状况下，继续在现有架构基础上打补丁，只会带来更多技术债与系统脆弱性。\n\n另一方面，基于 Transformer 的视觉语言大模型正在为文档理解、图文摘要、智能校对等高级应用场景注入新动能。社区迫切期待，这类模型能够突破传统 OCR 识别的局限，直接发挥其更强的上下文理解与推理能力。同时，传统的 OCR 小模型亦可与大模型协同工作，既能满足大模型在文档解析等方面的输入需求，又能通过大小模型协同，实现优势互补，进一步提升系统整体性能。\n"
+          }
+        ],
+        "rank": 7,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.029850746268656716,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      },
+      {
+        "source_id": "v3-0-0-docs-update-upgrade-notes-md-eddd1bbb",
+        "version": "v3.0.0",
+        "source_snapshot": "v3.0.0",
+        "document_key": "docs/update/upgrade_notes",
+        "document_title": "PaddleOCR 3.0 升级说明",
+        "document_path": "docs/update/upgrade_notes.md",
+        "path": "docs/update/upgrade_notes.md",
+        "local_path": "sources/v3.0.0/docs/update/upgrade_notes.md",
+        "source_type": "official_documentation",
+        "source_format": "markdown",
+        "source_content_language": "zh-CN",
+        "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/update/upgrade_notes.md",
+        "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/update/upgrade_notes.md",
+        "repository": "PaddlePaddle/PaddleOCR",
+        "publisher": "PaddlePaddle",
+        "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "git_blob_sha": "840134d67d24de00b492481355ce9f5a62971766",
+        "language": "zh",
+        "locale": "zh-CN",
+        "license": "Apache-2.0",
+        "license_status": "redistributable",
+        "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/LICENSE",
+        "attribution": "PaddleOCR · v3.0.0 · docs/update/upgrade_notes.md · Apache-2.0 · commit a8474288ad53c0f439c272b786c5fa6240f0cf27",
+        "document_family": "upgrade_notes",
+        "scope_note": "官方中文文档",
+        "chunk_id": "v3.0.0:zh:docs/update/upgrade_notes:5",
+        "document_id": "v3.0.0:zh:docs/update/upgrade_notes",
+        "source_sha256": "7b49f5758e45b217b8c3ed04aea3913e26fbf1d1d1a26277d09e55ed365fd994",
+        "heading": "3. 将 PaddleOCR 2.x 的推理代码移到 PaddleOCR 3.x",
+        "heading_path": [
+          "PaddleOCR 3.x 升级说明",
+          "3. 将 PaddleOCR 2.x 的推理代码移到 PaddleOCR 3.x"
+        ],
+        "line_start": 29,
+        "line_end": 49,
+        "block_type": "code_fence",
+        "content": "```python\nfrom paddleocr import PaddleOCR\n\nocr = PaddleOCR(lang=\"en\")\nresult = ocr.ocr(\"img.png\")\nfor res in result:\n    for line in res:\n        print(line)\n        \n# 可视化\nfrom PIL import Image\nfrom paddleocr import draw_ocr\nresult = result[0]\nimage = Image.open(img_path).convert(\"RGB\")\nboxes = [line[0] for line in result]\ntxts = [line[1][0] for line in result]\nscores = [line[1][1] for line in result]\nim_show = draw_ocr(image, boxes, txts, scores, font_path=\"simfang.ttf\")\nim_show = Image.fromarray(im_show)\nim_show.save(\"result.jpg\")\n```",
+        "module": "general",
+        "evidence_spans": [
+          {
+            "line_start": 29,
+            "line_end": 42,
+            "char_start": 0,
+            "char_end": 289,
+            "content": "```python\nfrom paddleocr import PaddleOCR\n\nocr = PaddleOCR(lang=\"en\")\nresult = ocr.ocr(\"img.png\")\nfor res in result:\n    for line in res:\n        print(line)\n        \n# 可视化\nfrom PIL import Image\nfrom paddleocr import draw_ocr\nresult = result[0]\nimage = Image.open(img_path).convert(\"RGB\")\n"
+          },
+          {
+            "line_start": 43,
+            "line_end": 49,
+            "char_start": 289,
+            "char_end": 543,
+            "content": "boxes = [line[0] for line in result]\ntxts = [line[1][0] for line in result]\nscores = [line[1][1] for line in result]\nim_show = draw_ocr(image, boxes, txts, scores, font_path=\"simfang.ttf\")\nim_show = Image.fromarray(im_show)\nim_show.save(\"result.jpg\")\n```"
+          }
+        ],
+        "rank": 8,
+        "retrieval_policy": "contextual_bm25",
+        "retrieval_score": 0.029411764705882353,
+        "score_type": "window_rrf_rank_score",
+        "document_relationships": []
+      }
+    ],
+    "requirements": [
+      {
+        "id": "r1",
+        "query": "PaddleOCR 3.0.0 的 OCR 结果中 rec_texts 和 rec_scores 分别表示什么",
+        "module": "ocr",
+        "symbols": [
+          "rec_texts",
+          "rec_scores"
+        ],
+        "version": "v3.0.0"
+      }
+    ],
+    "consistency_notes": [],
+    "generation": {
+      "request_id": "d7218cf65d7e497cbb38945225481e87",
+      "provider": "deepseek",
+      "requested_model": "deepseek-v4-flash",
+      "returned_model": "deepseek-flash",
+      "finish_reason": "stop",
+      "usage": {
+        "input_tokens": 7095,
+        "output_tokens": 96,
+        "total_tokens": 7191
+      },
+      "latency_ms": 12169.647,
+      "failure_reason": null,
+      "candidate_count": 8,
+      "evidence_coverage": null,
+      "claimed_citation_count": 2,
+      "valid_citation_count": 2,
+      "generation_latency_ms": 6338
+    },
+    "retrieval_policy": "paddleocr_evidence",
+    "requested_policy": "paddleocr_evidence",
+    "actual_policy": "contextual_bm25",
+    "route": "DIRECT_LOOKUP",
+    "rerank_status": "NOT_REQUESTED",
+    "rerank_diagnostics": {
+      "requested_strategy": "contextual_bm25",
+      "actual_strategy": "contextual_bm25",
+      "candidate_budget": 120,
+      "eligible_windows": 566,
+      "rerank_calls": 0,
+      "external_model_calls": 0,
+      "fallback_reason": null,
+      "window_failures": [],
+      "model_identity": {
+        "embedding": "NOT_CONFIGURED",
+        "reranker": "NOT_CONFIGURED",
+        "attention": "eager"
+      },
+      "window_budget": 384,
+      "window_unit": "characters",
+      "source_intent": "knowledge",
+      "candidate_windows": 120,
+      "requirement_candidates": {
+        "r1": null
+      },
+      "final_evidence_count": 8,
+      "selected_windows": 21,
+      "status": "OK"
+    },
+    "candidate_count": 120,
+    "final_evidence_count": 8,
+    "retrieval_latency_ms": 12.9,
+    "rerank_latency_ms": null,
+    "evidence_gaps": [],
+    "answer_completeness": "NOT_ASSESSED",
+    "mechanical_verification": {
+      "assessment_type": "mechanical_scope_and_parsed_defaults_not_complete_answer_validation",
+      "requirements": {
+        "r1": {
+          "status": "APPLICABLE_EVIDENCE_FOUND",
+          "evidence_ids": [
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:30",
+            "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40"
+          ],
+          "assessment": "scope_and_symbol_only"
+        }
+      },
+      "claims": [
+        {
+          "claim_index": 0,
+          "status": "NOT_MECHANICALLY_CHECKABLE",
+          "symbols": []
+        },
+        {
+          "claim_index": 1,
+          "status": "NOT_MECHANICALLY_CHECKABLE",
+          "symbols": []
+        }
+      ]
+    },
+    "claim_verification": {
+      "status": "SUPPORTED",
+      "rejected": [],
+      "diagnostics": {
+        "provider": "deepseek",
+        "requested_model": "deepseek-v4-flash",
+        "returned_model": "deepseek-flash",
+        "finish_reason": "stop",
+        "usage": {
+          "input_tokens": 1485,
+          "output_tokens": 113,
+          "total_tokens": 1598
+        }
+      },
+      "assessment_type": "model_assessment_not_human_validation",
+      "latency_ms": 5830.342
+    },
+    "claims": [
+      {
+        "text": "rec_texts 是文本识别结果列表，仅包含置信度超过 text_rec_score_thresh 的文本。",
+        "evidence_ids": [
+          "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40"
+        ],
+        "source_indexes": [
+          1
+        ]
+      },
+      {
+        "text": "rec_scores 是文本识别的置信度列表，已按 text_rec_score_thresh 过滤。",
+        "evidence_ids": [
+          "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40"
+        ],
+        "source_indexes": [
+          1
+        ]
+      }
+    ],
+    "evidence_support": {
+      "level": "partial",
+      "label": "一般",
+      "matched_terms": 6,
+      "missing_terms": 4,
+      "total_terms": 10,
+      "summary": "引用内容覆盖问题关键词 6/10；这是规则估算的证据覆盖提示，不代表答案正确率。"
+    },
+    "status": "OK",
+    "workflow_usage": {
+      "total_tokens": 13681,
+      "reported_calls": 3,
+      "observed_stages": 3,
+      "complete": true
+    },
+    "correction": {
+      "attempts": 1,
+      "trigger": "CLAIM_SCOPE_MISMATCH",
+      "status": "RECOVERED",
+      "trace": [
+        {
+          "status": "ABSTAINED",
+          "generation": {
+            "request_id": "d7218cf65d7e497cbb38945225481e87",
+            "provider": "deepseek",
+            "requested_model": "deepseek-v4-flash",
+            "returned_model": "deepseek-flash",
+            "finish_reason": "stop",
+            "usage": {
+              "input_tokens": 4703,
+              "output_tokens": 189,
+              "total_tokens": 4892
+            },
+            "latency_ms": 6496,
+            "failure_reason": "CLAIM_SCOPE_MISMATCH",
+            "candidate_count": 5,
+            "evidence_coverage": null,
+            "claimed_citation_count": null,
+            "valid_citation_count": null
+          },
+          "claim_verification": null,
+          "mechanical_verification": {
+            "assessment_type": "mechanical_scope_and_parsed_defaults_not_complete_answer_validation",
+            "requirements": {
+              "r1": {
+                "status": "APPLICABLE_EVIDENCE_FOUND",
+                "evidence_ids": [
+                  "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:30"
+                ],
+                "assessment": "scope_and_symbol_only"
+              }
+            },
+            "claims": [
+              {
+                "claim_index": 0,
+                "status": "SCOPE_MISMATCH",
+                "symbols": []
+              },
+              {
+                "claim_index": 1,
+                "status": "SCOPE_MISMATCH",
+                "symbols": []
+              }
+            ]
+          },
+          "actual_policy": "contextual_bm25",
+          "retrieval_latency_ms": 12.827,
+          "rerank_diagnostics": {
+            "requested_strategy": "contextual_bm25",
+            "actual_strategy": "contextual_bm25",
+            "candidate_budget": 40,
+            "eligible_windows": 566,
+            "rerank_calls": 0,
+            "external_model_calls": 0,
+            "fallback_reason": null,
+            "window_failures": [],
+            "model_identity": {
+              "embedding": "NOT_CONFIGURED",
+              "reranker": "NOT_CONFIGURED",
+              "attention": "eager"
+            },
+            "window_budget": 384,
+            "window_unit": "characters",
+            "source_intent": "knowledge",
+            "candidate_windows": 40,
+            "requirement_candidates": {
+              "r1": null
+            },
+            "final_evidence_count": 5,
+            "selected_windows": 8,
+            "status": "OK"
+          }
+        },
+        {
+          "status": "OK",
+          "generation": {
+            "request_id": "d7218cf65d7e497cbb38945225481e87",
+            "provider": "deepseek",
+            "requested_model": "deepseek-v4-flash",
+            "returned_model": "deepseek-flash",
+            "finish_reason": "stop",
+            "usage": {
+              "input_tokens": 7095,
+              "output_tokens": 96,
+              "total_tokens": 7191
+            },
+            "latency_ms": 12169.647,
+            "failure_reason": null,
+            "candidate_count": 8,
+            "evidence_coverage": null,
+            "claimed_citation_count": 2,
+            "valid_citation_count": 2,
+            "generation_latency_ms": 6338
+          },
+          "claim_verification": {
+            "status": "SUPPORTED",
+            "rejected": [],
+            "diagnostics": {
+              "provider": "deepseek",
+              "requested_model": "deepseek-v4-flash",
+              "returned_model": "deepseek-flash",
+              "finish_reason": "stop",
+              "usage": {
+                "input_tokens": 1485,
+                "output_tokens": 113,
+                "total_tokens": 1598
+              }
+            },
+            "assessment_type": "model_assessment_not_human_validation",
+            "latency_ms": 5830.342
+          },
+          "mechanical_verification": {
+            "assessment_type": "mechanical_scope_and_parsed_defaults_not_complete_answer_validation",
+            "requirements": {
+              "r1": {
+                "status": "APPLICABLE_EVIDENCE_FOUND",
+                "evidence_ids": [
+                  "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:30",
+                  "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40"
+                ],
+                "assessment": "scope_and_symbol_only"
+              }
+            },
+            "claims": [
+              {
+                "claim_index": 0,
+                "status": "NOT_MECHANICALLY_CHECKABLE",
+                "symbols": []
+              },
+              {
+                "claim_index": 1,
+                "status": "NOT_MECHANICALLY_CHECKABLE",
+                "symbols": []
+              }
+            ]
+          },
+          "actual_policy": "contextual_bm25",
+          "retrieval_latency_ms": 12.9,
+          "rerank_diagnostics": {
+            "requested_strategy": "contextual_bm25",
+            "actual_strategy": "contextual_bm25",
+            "candidate_budget": 120,
+            "eligible_windows": 566,
+            "rerank_calls": 0,
+            "external_model_calls": 0,
+            "fallback_reason": null,
+            "window_failures": [],
+            "model_identity": {
+              "embedding": "NOT_CONFIGURED",
+              "reranker": "NOT_CONFIGURED",
+              "attention": "eager"
+            },
+            "window_budget": 384,
+            "window_unit": "characters",
+            "source_intent": "knowledge",
+            "candidate_windows": 120,
+            "requirement_candidates": {
+              "r1": null
+            },
+            "final_evidence_count": 8,
+            "selected_windows": 21,
+            "status": "OK"
+          }
+        }
+      ]
+    }
+  }
+}
