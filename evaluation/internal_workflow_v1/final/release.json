@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "dataset_id": "internal-workflow-v1-grouped-regression",
+  "selected": "scoped_384",
+  "selected_strategy": "contextual_bm25",
+  "top_k": 5,
+  "window_budget": 384,
+  "candidate_budget": 40,
+  "use_context": true,
+  "retrieval": {
+    "legacy": {
+      "dev": {
+        "metrics": {
+          "count": 24,
+          "complete_count": 8,
+          "fact_hit_count": 8,
+          "fact_count": 24,
+          "source_hit_count": 17,
+          "wrong_version_count": 0,
+          "wrong_module_count": 81,
+          "complete_rate": 0.3333333333333333,
+          "fact_recall": 0.3333333333333333
+        },
+        "execution": "词法检索"
+      },
+      "validation": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 8,
+          "fact_hit_count": 8,
+          "fact_count": 12,
+          "source_hit_count": 8,
+          "wrong_version_count": 0,
+          "wrong_module_count": 36,
+          "complete_rate": 0.6666666666666666,
+          "fact_recall": 0.6666666666666666
+        },
+        "execution": "词法检索"
+      },
+      "holdout": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 2,
+          "fact_hit_count": 2,
+          "fact_count": 12,
+          "source_hit_count": 8,
+          "wrong_version_count": 0,
+          "wrong_module_count": 46,
+          "complete_rate": 0.16666666666666666,
+          "fact_recall": 0.16666666666666666
+        },
+        "execution": "词法检索"
+      }
+    },
+    "scoped_256": {
+      "dev": {
+        "metrics": {
+          "count": 24,
+          "complete_count": 11,
+          "fact_hit_count": 11,
+          "fact_count": 24,
+          "source_hit_count": 19,
+          "wrong_version_count": 0,
+          "wrong_module_count": 50,
+          "complete_rate": 0.4583333333333333,
+          "fact_recall": 0.4583333333333333
+        },
+        "execution": "词法检索"
+      },
+      "validation": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 9,
+          "fact_hit_count": 9,
+          "fact_count": 12,
+          "source_hit_count": 9,
+          "wrong_version_count": 0,
+          "wrong_module_count": 35,
+          "complete_rate": 0.75,
+          "fact_recall": 0.75
+        },
+        "execution": "词法检索"
+      }
+    },
+    "scoped_384": {
+      "dev": {
+        "metrics": {
+          "count": 24,
+          "complete_count": 12,
+          "fact_hit_count": 12,
+          "fact_count": 24,
+          "source_hit_count": 20,
+          "wrong_version_count": 0,
+          "wrong_module_count": 50,
+          "complete_rate": 0.5,
+          "fact_recall": 0.5
+        },
+        "execution": "词法检索"
+      },
+      "validation": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 10,
+          "fact_hit_count": 10,
+          "fact_count": 12,
+          "source_hit_count": 10,
+          "wrong_version_count": 0,
+          "wrong_module_count": 34,
+          "complete_rate": 0.8333333333333334,
+          "fact_recall": 0.8333333333333334
+        },
+        "execution": "词法检索"
+      },
+      "holdout": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 7,
+          "fact_hit_count": 7,
+          "fact_count": 12,
+          "source_hit_count": 12,
+          "wrong_version_count": 0,
+          "wrong_module_count": 4,
+          "complete_rate": 0.5833333333333334,
+          "fact_recall": 0.5833333333333334
+        },
+        "execution": "词法检索"
+      }
+    },
+    "scoped_384_k8": {
+      "dev": {
+        "metrics": {
+          "count": 24,
+          "complete_count": 14,
+          "fact_hit_count": 14,
+          "fact_count": 24,
+          "source_hit_count": 20,
+          "wrong_version_count": 0,
+          "wrong_module_count": 88,
+          "complete_rate": 0.5833333333333334,
+          "fact_recall": 0.5833333333333334
+        },
+        "execution": "词法检索"
+      },
+      "validation": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 11,
+          "fact_hit_count": 11,
+          "fact_count": 12,
+          "source_hit_count": 11,
+          "wrong_version_count": 0,
+          "wrong_module_count": 52,
+          "complete_rate": 0.9166666666666666,
+          "fact_recall": 0.9166666666666666
+        },
+        "execution": "词法检索"
+      }
+    },
+    "plain_384": {
+      "dev": {
+        "metrics": {
+          "count": 24,
+          "complete_count": 12,
+          "fact_hit_count": 12,
+          "fact_count": 24,
+          "source_hit_count": 20,
+          "wrong_version_count": 0,
+          "wrong_module_count": 52,
+          "complete_rate": 0.5,
+          "fact_recall": 0.5
+        },
+        "execution": "词法检索"
+      },
+      "validation": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 7,
+          "fact_hit_count": 7,
+          "fact_count": 12,
+          "source_hit_count": 8,
+          "wrong_version_count": 0,
+          "wrong_module_count": 36,
+          "complete_rate": 0.5833333333333334,
+          "fact_recall": 0.5833333333333334
+        },
+        "execution": "词法检索"
+      }
+    },
+    "bge_rerank": {
+      "dev": {
+        "metrics": {
+          "count": 24,
+          "complete_count": 15,
+          "fact_hit_count": 15,
+          "fact_count": 24,
+          "source_hit_count": 17,
+          "wrong_version_count": 0,
+          "wrong_module_count": 52,
+          "complete_rate": 0.625,
+          "fact_recall": 0.625
+        },
+        "execution": "重排 22/24；回退 2"
+      }
+    }
+  },
+  "limitations": "48 条开发者原文标注查询：24 开发 / 12 验证 / 12 分组回归留出；其中先前 28 条已打开，不是独立盲测。证据覆盖不等于回答准确率。BGE 开发只有 22/24 条成功重排，2 条无效输出后回退，混合成绩不作为稳定神经成绩；已排除默认选型，后续神经验证未完成。没有生产准确率或专家评审结论。"
+}

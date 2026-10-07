@@ -7,6 +7,14 @@ from collections import OrderedDict
 
 def module_for(chunk: dict) -> str:
     path = chunk.get('document_path', '').lower()
+    # Historical guides predate the pipeline_usage/ directory. Their explicit
+    # source role must survive windows that don't repeat the imported class.
+    if path in ('doc/doc_ch/whl.md','doc/doc_ch/inference_ppocr.md','doc/doc_ch/inference_args.md'):
+        return 'ocr'
+    if path == 'tests/test_paddleocr_api.py':
+        text = chunk.get('content','')
+        if re.search(r'\bdef\s+(?:test_ocr\w*|ocr_engine)\b',text):return 'ocr'
+        if re.search(r'\bdef\s+(?:test_structure\w*|structure_engine)\b',text):return 'structure'
     if 'module_usage/' in path:
         return path.rsplit('/', 1)[-1].split('.')[0]
     if 'pipeline_usage/' in path:

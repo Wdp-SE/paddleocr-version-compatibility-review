@@ -742,10 +742,26 @@ def _knowledge(client: PublicKnowledgeClient, ready: bool, workspace: dict | Non
     _page_header("知识服务", "版本化知识检索与问答", page_key="knowledge")
     versions = _published_versions(workspace)
     current = _confirmed_current_version(workspace)
+    internal_ocr = bool(workspace and workspace.get('workspace_id') == 'paddleocr')
+    if internal_ocr:
+        from services.internal_application_scope import dependency_scope
+        labels = {'current': '当前应用依赖 · v2.9.1', 'target': '升级目标依赖 · v3.0.0', 'manual': '手动选择依赖资料范围'}
+        mode = st.radio('查询任务', list(labels), format_func=labels.get, horizontal=True, key='internal_query_mode')
+        try:
+            scoped_version = dependency_scope(versions, mode, st.session_state.get('official_version'))
+        except ValueError as exc:
+            st.warning(str(exc))
+            if mode != 'manual':
+                return
+            scoped_version = versions[0] if versions else 'all'
+        if mode != 'manual':
+            st.session_state['official_version'] = scoped_version
+        current = scoped_version
+        st.caption('文档处理应用的内部版本尚未登记；这里选择的是其 PaddleOCR 依赖版本。官方中文资料作为内部研发知识的 POC 代理，保留真实来源。')
     name = _workspace_name(workspace)
     rag_release=(workspace or {}).get('rag_quality_evaluation')
     default_policy = ('产线范围检索 + 模型重排' if isinstance(rag_release,dict) and
-                      rag_release.get('selected_strategy')=='contextual_llm_rerank' else
+                      rag_release.get('selected_strategy') in ('contextual_llm_rerank','contextual_rerank') else
                       '产线范围检索 + 上下文补齐' if isinstance(rag_release,dict) else
                       str(workspace.get("retrieval_policy", "由服务配置") if workspace else "由服务配置").upper())
     default_version_label = _version_option_label(current, workspace) if current else "无法确认最新已收录版本"
@@ -771,6 +787,7 @@ def _knowledge(client: PublicKnowledgeClient, ready: bool, workspace: dict | Non
                 "版本范围", [*versions, "all"],
                 format_func=lambda x: _version_option_label(x, workspace),
                 key="official_version",
+                disabled=internal_ocr and st.session_state.get('internal_query_mode') != 'manual',
             )
         with b:
             language_options = _published_language_options(workspace)
@@ -792,6 +809,8 @@ def _knowledge(client: PublicKnowledgeClient, ready: bool, workspace: dict | Non
     profile = (workspace or {}).get("domain_profile") or {}
     examples = list(profile.get("example_queries") or [])
     examples = [str(item) for item in examples if isinstance(item, str) and item.strip()]
+    if internal_ocr and current != 'all':
+        examples = [q for q in examples if not re.search(r'v?\d+\.\d+\.\d+',q) or current.lstrip('v') in q]
     if not examples:
         examples = [f"{name} 中某个功能或参数是如何设计的？"]
     example_key = "official_example"
@@ -814,7 +833,7 @@ def _knowledge(client: PublicKnowledgeClient, ready: bool, workspace: dict | Non
             workspace, key="official_retrieval_policy", label="检索策略",
         )
         top_k = st.slider(
-            "证据条数（Top-K）", min_value=1, max_value=20, value=5,
+            "证据条数（Top-K）", min_value=1, max_value=20, value=int((rag_release or {}).get('top_k',5)),
             key="official_top_k",
             help="控制本次检索以及回答生成可使用的证据条数。版本和语言范围仍由服务端严格过滤。",
         )
@@ -1378,6 +1397,7 @@ def _review_report(result: dict, decision: str, decided_at: str) -> dict:
             "evidence_sources": [citation for finding in (result.get("compatibility_report") or {}).get("findings", [])
                                  for citation in finding.get("evidence", [])],
             "human_review_scope": "已审阅静态报告；不代表实际推理兼容性已验证",
+            "application_context": result.get('application_context'),
         })
     return report
 
@@ -1411,6 +1431,9 @@ def _review_panel(result: dict) -> None:
         st.caption("确认仅记录已审阅报告。实际 OCR 推理、安装依赖和下游输出回归仍由开发者验证。")
     target_id = _review_target_id(result)
     session_id = st.session_state.setdefault("official_session_id", uuid.uuid4().hex)
+    if compatibility:
+        from components.paddleocr_disposition import render_disposition
+        render_disposition(result, _audit_repository(), session_id)
     approve, reject = st.columns(2)
     approve.button(f"确认已审阅{review_target}", use_container_width=True,
                    on_click=_set_review_decision, args=("reviewed", target_id, result, session_id))
@@ -1452,7 +1475,9 @@ def _review_panel(result: dict) -> None:
                 st.table([
                     {
                         "时间（UTC）": event.get("decided_at_utc", ""),
-                        "决定": "已审阅" if event.get("human_decision") == "reviewed" else "已退回",
+                        "决定": ("继续人工升级流程" if event.get('upgrade_decision') == 'continue_manual_process' else
+                                 "暂缓升级" if event.get('upgrade_decision') == 'hold' else
+                                 "已审阅" if event.get("human_decision") == "reviewed" else "已退回"),
                         "审查内容": (event.get("request_summary") or "").replace("\n", " ")[:100],
                         "证据数": len(event.get("evidence_sources") or []),
                     }
@@ -1936,6 +1961,7 @@ def _clear_ocr_review() -> None:
     if job:job['cancel'].set()
     st.session_state.pop("ocr_compatibility_review", None)
     st.session_state.pop("ocr_review_input_fingerprint", None)
+    st.session_state.pop('ocr_disposition_state', None)
     for key in ("official_review_decision", "official_review_decision_target", "official_review_decision_at",
                 "official_review_audit_event_id", "official_review_audit_persisted_at", "official_review_audit_error"):
         st.session_state.pop(key, None)
@@ -2110,6 +2136,14 @@ def _ocr_report(result: dict) -> None:
 def _ocr_agent(client: PublicKnowledgeClient, ready: bool, workspace: dict | None) -> None:
     _page_header("变更审查", "应用依赖升级兼容性审查", page_key="ocr_agent")
     st.write("审查文档处理应用从 PaddleOCR v2.9.1 升级到 v3.0.0 后的接口、配置和结果消费方式。")
+    app_name = st.text_input('内部应用名称（演示标签）', value='文档处理应用', max_chars=80,
+                             key='ocr_internal_app_name', on_change=_clear_ocr_review)
+    change_reason = st.text_input('升级目的与验收说明', value='保留中文 OCR 归一化与下游 JSON 契约',
+                                  max_chars=1000, key='ocr_change_reason', on_change=_clear_ocr_review)
+    application_context = {'application_name': app_name, 'application_version': None,
+                           'change_reason': change_reason, 'source_identity': 'student_poc_application',
+                           'business_scope': 'internal_document_processing'}
+    st.caption('内部应用版本未登记。依赖版本独立管理；默认原创应用使用 OCR 主链，PPStructure 仅是相关接口检查分支。')
     before, after = st.columns(2, gap="medium")
     with before:
         source_version = st.selectbox("应用当前依赖", ["v2.9.1"], key="ocr_source_version")
@@ -2157,7 +2191,8 @@ def _ocr_agent(client: PublicKnowledgeClient, ready: bool, workspace: dict | Non
                            help="可选模型建议仅使用已核验的目标版官方证据，不改变静态报告。")
     try:
         files=parse_application_inputs(files)
-        input_fingerprint=application_fingerprint(files,(source_version,target_version),{'generate_advice':generate},(workspace or {}).get('corpus_fingerprint'))
+        input_fingerprint=application_fingerprint(files,(source_version,target_version),
+            {'generate_advice':generate, 'application_context':application_context},(workspace or {}).get('corpus_fingerprint'))
     except ValueError as exc:
         st.error(str(exc));_clear_ocr_review();return
     previous=st.session_state.get('ocr_compatibility_review')
@@ -2181,8 +2216,10 @@ def _ocr_agent(client: PublicKnowledgeClient, ready: bool, workspace: dict | Non
         st.session_state.pop('ocr_job_error',None)
         submitted=copy.deepcopy(files)
         def work(cancelled,update):
-            return _analyze_ocr_application(client,submitted,source_version=source_version,target_version=target_version,
+            result = _analyze_ocr_application(client,submitted,source_version=source_version,target_version=target_version,
                 generate_advice=generate,on_progress=update,investigation_progress=update,cancelled=cancelled,resume=restored)
+            result['application_context'] = application_context
+            return result
         job=start_job(work,input_fingerprint);st.session_state['ocr_job']=job
         # Fast local checks finish in-place; longer requests are polled by the fragment.
         try:result=job['future'].result(timeout=1)
@@ -2425,9 +2462,10 @@ def _benchmark(workspace: dict | None) -> None:
             for name,splits in rag_quality['retrieval'].items():
                 for split,value in splits.items():
                     m=value['metrics']
-                    rows.append({'策略':name,'题集':'开发' if split=='dev' else '新分组留出',
+                    rows.append({'策略':name,'题集':{'dev':'开发','validation':'验证','holdout':'分组回归留出'}.get(split,split),
                                  '完整证据题':f"{m['complete_count']} / {m['count']}",
-                                 '非目标模块片段':m['wrong_module_count'],'错版片段':m['wrong_version_count']})
+                                 '非目标模块片段':m['wrong_module_count'],'错版片段':m['wrong_version_count'],
+                                 '执行情况':value.get('execution','—')})
             st.dataframe(rows,hide_index=True,width='stretch')
             st.caption(rag_quality['limitations'])
         if isinstance(current,dict):

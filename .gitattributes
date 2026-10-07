@@ -28,3 +28,10 @@ versioned-rag-service/src/paddleocr_rag_release.py -text whitespace=cr-at-eol
 versioned-rag-service/src/paddleocr_retrieval_views.py -text whitespace=cr-at-eol
 versioned-rag-service/src/public_api.py -text whitespace=cr-at-eol
 versioned-rag-service/src/public_knowledge.py -text whitespace=cr-at-eol
+
+# Internal workflow release: preserve frozen evaluation and source bytes.
+evaluation/internal_workflow_v1/** -text whitespace=cr-at-eol
+versioned-rag-service/public_corpus_paddleocr/** -text whitespace=cr-at-eol,-blank-at-eof
+versioned-rag-service/src/paddleocr_compatibility.py -text whitespace=cr-at-eol
+versioned-rag-service/src/paddleocr_application_roles.py -text whitespace=cr-at-eol
+versioned-rag-service/src/paddleocr_internal_release.py -text whitespace=cr-at-eol

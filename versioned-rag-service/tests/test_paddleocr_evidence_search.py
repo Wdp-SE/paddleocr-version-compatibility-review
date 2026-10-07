@@ -22,6 +22,34 @@ def test_search_filters_version_and_namespace_before_scoring():
     assert out['diagnostics']['eligible_windows']==1
 
 
+def test_configured_window_budget_is_bounded_and_cache_distinguishes_it():
+    from src.paddleocr_evidence_search import configured_evidence_search
+    idx = Index(); idx.manifest = {'workspace_id': 'paddleocr'}
+    narrow = configured_evidence_search(idx, window_budget=256)
+    wide = configured_evidence_search(idx, window_budget=384)
+    assert narrow is not wide
+    with pytest.raises(ValueError):
+        configured_evidence_search(idx, window_budget=99999)
+
+
+def test_legacy_ocr_guide_keeps_pipeline_scope_without_repeating_class_name():
+    from src.paddleocr_evidence_search import EvidenceSearch
+    from src.paddleocr_query_plan import plan_query
+    idx=Index();idx.chunks=[{**idx.chunks[0], 'version':'v2.9.1',
+        'document_path':'doc/doc_ch/whl.md','content':'result = ocr.ocr(image, det=False)'}]
+    search=EvidenceSearch(idx,build_views(idx.chunks,token_count=len))
+    result=search.search(plan_query('OCR 如何 det=False 只识别？',versions=('v2.9.1',)))
+    assert len(result['results'])==1
+
+
+def test_old_mixed_api_tests_classify_by_definition_not_whole_file():
+    from src.paddleocr_retrieval_views import module_for
+    path='tests/test_paddleocr_api.py'
+    assert module_for({'document_path':path,'content':'def test_ocr_function(ocr_engine):\n    result = ocr_engine.ocr(image)'})=='ocr'
+    assert module_for({'document_path':path,'content':'def test_structure_function(structure_engine):\n    result = structure_engine(image)'})=='structure'
+    assert module_for({'document_path':'docs/unknown.md','content':'result = ocr.ocr(image)'})=='general'
+
+
 def test_missing_reranker_does_not_claim_success():
     from src.paddleocr_evidence_search import EvidenceSearch
     from src.paddleocr_query_plan import plan_query

@@ -1,0 +1,1777 @@
+{
+  "strategy": "scoped_256",
+  "split": "dev",
+  "freeze_sha256": "625f78ea7cc19d87f3f5e4b8c9734db93dbe0ac90bac542fdc2650a9e5d0cff5",
+  "metrics": {
+    "count": 12,
+    "complete_count": 7,
+    "fact_hit_count": 7,
+    "fact_count": 12,
+    "source_hit_count": 8,
+    "wrong_version_count": 0,
+    "wrong_module_count": 12,
+    "complete_rate": 0.5833333333333334,
+    "fact_recall": 0.5833333333333334
+  },
+  "rows": [
+    {
+      "id": "internal-01",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 0,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 5.74,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 538,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "81651ea46f23519d88f5c4ce5bb72589a37c93552e44aaca1e941f5f9d81ffe3",
+          "attention": "eager"
+        },
+        "window_budget": 256,
+        "window_unit": "characters",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": null
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 8,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/quickstart:48",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/quickstart.md",
+          "text": "此示例初始化了启用角度分类的PaddleOCR实例，并将语言设置为英语。然后调用`ocr`方法，并使用多个参数来自定义检测和识别过程，包括处理图像切片的`slice`参数。\n\n要更全面地了解切片操作，请参考[切片操作文档](./slice.md)。",
+          "generation_text": "此示例初始化了启用角度分类的PaddleOCR实例，并将语言设置为英语。然后调用`ocr`方法，并使用多个参数来自定义检测和识别过程，包括处理图像切片的`slice`参数。\n\n要更全面地了解切片操作，请参考[切片操作文档](./slice.md)。",
+          "evidence_spans": [
+            {
+              "line_start": 289,
+              "line_end": 291,
+              "char_start": 0,
+              "char_end": 124,
+              "content": "此示例初始化了启用角度分类的PaddleOCR实例，并将语言设置为英语。然后调用`ocr`方法，并使用多个参数来自定义检测和识别过程，包括处理图像切片的`slice`参数。\n\n要更全面地了解切片操作，请参考[切片操作文档](./slice.md)。"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/angle_class:2",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/angle_class.md",
+          "text": "## 1. 方法介绍\n文本方向分类器主要用于图片非0度的场景下，在这种场景下需要对图片里检测到的文本行进行一个转正的操作。在PaddleOCR系统内，\n文字检测之后得到的文本行图片经过仿射变换之后送入识别模型，此时只需要对文字进行一个0和180度的角度分类，因此PaddleOCR内置的\n文本方向分类器**只支持了0和180度的分类**。如果想支持更多角度，可以自己修改算法进行支持。\n\n0和180度数据样本例子：\n\n",
+          "generation_text": "## 1. 方法介绍\n文本方向分类器主要用于图片非0度的场景下，在这种场景下需要对图片里检测到的文本行进行一个转正的操作。在PaddleOCR系统内，\n文字检测之后得到的文本行图片经过仿射变换之后送入识别模型，此时只需要对文字进行一个0和180度的角度分类，因此PaddleOCR内置的\n文本方向分类器**只支持了0和180度的分类**。如果想支持更多角度，可以自己修改算法进行支持。\n\n0和180度数据样本例子：\n\n![](../imgs_results/angle_class_example.jpg)\n\n",
+          "evidence_spans": [
+            {
+              "line_start": 11,
+              "line_end": 17,
+              "char_start": 0,
+              "char_end": 209,
+              "content": "## 1. 方法介绍\n文本方向分类器主要用于图片非0度的场景下，在这种场景下需要对图片里检测到的文本行进行一个转正的操作。在PaddleOCR系统内，\n文字检测之后得到的文本行图片经过仿射变换之后送入识别模型，此时只需要对文字进行一个0和180度的角度分类，因此PaddleOCR内置的\n文本方向分类器**只支持了0和180度的分类**。如果想支持更多角度，可以自己修改算法进行支持。\n\n0和180度数据样本例子：\n\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/quickstart:47",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/quickstart.md",
+          "text": "```Python\nfrom paddleocr import PaddleOCR\nfrom PIL import Image, ImageDraw, ImageFont\n\n# 初始化OCR引擎\nocr = PaddleOCR(use_angle_cls=True, lang=\"en\")\n\nimg_path = \"./very_large_image.jpg\"\n",
+          "generation_text": "```Python\nfrom paddleocr import PaddleOCR\nfrom PIL import Image, ImageDraw, ImageFont\n\n# 初始化OCR引擎\nocr = PaddleOCR(use_angle_cls=True, lang=\"en\")\n\nimg_path = \"./very_large_image.jpg\"\nslice = {'horizontal_stride': 300, 'vertical_stride': 500, 'merge_x_thres': 50, 'merge_y_thres': 35}\nresults = ocr.ocr(img_path, cls=True, slice=slice)\n",
+          "evidence_spans": [
+            {
+              "line_start": 257,
+              "line_end": 264,
+              "char_start": 0,
+              "char_end": 182,
+              "content": "```Python\nfrom paddleocr import PaddleOCR\nfrom PIL import Image, ImageDraw, ImageFont\n\n# 初始化OCR引擎\nocr = PaddleOCR(use_angle_cls=True, lang=\"en\")\n\nimg_path = \"./very_large_image.jpg\"\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:135",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 如何使用TensorRT加速PaddleOCR预测？\n\n\n\nC++TensorRT预测需要使用支持TRT的预测库并在编译时打开[-DWITH_TENSORRT=ON](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/deploy/cpp_infer/tools/build.sh#L15)。\n\n如果想修改其他分支代码支持TensorRT预测，可以参考[PR](https://github.com/PaddlePaddle/PaddleOCR/pull/2921)。\n\n注：建议使用TensorRT大于等于6.1.0.5以上的版本。\n**A**： 目前paddle的dygraph分支已经支持了python和C++ TensorRT预测的代码，python端inference预测时把参数[--use_tensorrt=True](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L37)即可，",
+          "generation_text": "#### Q: 如何使用TensorRT加速PaddleOCR预测？\n\n**A**： 目前paddle的dygraph分支已经支持了python和C++ TensorRT预测的代码，python端inference预测时把参数[--use_tensorrt=True](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L37)即可，\nC++TensorRT预测需要使用支持TRT的预测库并在编译时打开[-DWITH_TENSORRT=ON](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/deploy/cpp_infer/tools/build.sh#L15)。\n如果想修改其他分支代码支持TensorRT预测，可以参考[PR](https://github.com/PaddlePaddle/PaddleOCR/pull/2921)。\n\n注：建议使用TensorRT大于等于6.1.0.5以上的版本。",
+          "evidence_spans": [
+            {
+              "line_start": 714,
+              "line_end": 715,
+              "char_start": 0,
+              "char_end": 36,
+              "content": "#### Q: 如何使用TensorRT加速PaddleOCR预测？\n\n"
+            },
+            {
+              "line_start": 716,
+              "line_end": 717,
+              "char_start": 253,
+              "char_end": 434,
+              "content": "\nC++TensorRT预测需要使用支持TRT的预测库并在编译时打开[-DWITH_TENSORRT=ON](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/deploy/cpp_infer/tools/build.sh#L15)。\n"
+            },
+            {
+              "line_start": 718,
+              "line_end": 720,
+              "char_start": 434,
+              "char_end": 553,
+              "content": "如果想修改其他分支代码支持TensorRT预测，可以参考[PR](https://github.com/PaddlePaddle/PaddleOCR/pull/2921)。\n\n注：建议使用TensorRT大于等于6.1.0.5以上的版本。"
+            },
+            {
+              "line_start": 716,
+              "line_end": 716,
+              "char_start": 36,
+              "char_end": 253,
+              "content": "**A**： 目前paddle的dygraph分支已经支持了python和C++ TensorRT预测的代码，python端inference预测时把参数[--use_tensorrt=True](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L37)即可，"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:49",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 对于小白如何快速入门中文OCR项目实践？\n\nA：建议可以先了解OCR方向的基础知识，大概了解基础的检测和识别模型算法。然后在Github上可以查看OCR方向相关的repo。目前来看，从内容的完备性来看，PaddleOCR的中英文双语教程文档是有明显优势的，在数据集、模型训练、预测部署文档详实，可以快速入手。而且还有微信用户群答疑，非常适合学习实践。项目地址：PaddleOCR\n\n",
+          "generation_text": "#### Q: 对于小白如何快速入门中文OCR项目实践？\n\nA：建议可以先了解OCR方向的基础知识，大概了解基础的检测和识别模型算法。然后在Github上可以查看OCR方向相关的repo。目前来看，从内容的完备性来看，PaddleOCR的中英文双语教程文档是有明显优势的，在数据集、模型训练、预测部署文档详实，可以快速入手。而且还有微信用户群答疑，非常适合学习实践。项目地址：PaddleOCR\n\nAI 快车道课程：https://aistudio.baidu.com/aistudio/course/introduce/1519\n\n",
+          "evidence_spans": [
+            {
+              "line_start": 273,
+              "line_end": 276,
+              "char_start": 0,
+              "char_end": 199,
+              "content": "#### Q: 对于小白如何快速入门中文OCR项目实践？\n\nA：建议可以先了解OCR方向的基础知识，大概了解基础的检测和识别模型算法。然后在Github上可以查看OCR方向相关的repo。目前来看，从内容的完备性来看，PaddleOCR的中英文双语教程文档是有明显优势的，在数据集、模型训练、预测部署文档详实，可以快速入手。而且还有微信用户群答疑，非常适合学习实践。项目地址：PaddleOCR\n\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-02",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 0,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 5.18,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 538,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "81651ea46f23519d88f5c4ce5bb72589a37c93552e44aaca1e941f5f9d81ffe3",
+          "attention": "eager"
+        },
+        "window_budget": 256,
+        "window_unit": "characters",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": null
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 8,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:36",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 如何用PaddleOCR识别视频中的文字？\n\n**A**: 目前PaddleOCR主要针对图像做处理，如果需要视频识别，可以先对视频抽帧，然后用PPOCR识别。",
+          "generation_text": "#### Q: 如何用PaddleOCR识别视频中的文字？\n\n**A**: 目前PaddleOCR主要针对图像做处理，如果需要视频识别，可以先对视频抽帧，然后用PPOCR识别。",
+          "evidence_spans": [
+            {
+              "line_start": 202,
+              "line_end": 204,
+              "char_start": 0,
+              "char_end": 88,
+              "content": "#### Q: 如何用PaddleOCR识别视频中的文字？\n\n**A**: 目前PaddleOCR主要针对图像做处理，如果需要视频识别，可以先对视频抽帧，然后用PPOCR识别。"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:135",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 如何使用TensorRT加速PaddleOCR预测？\n\n\n\nC++TensorRT预测需要使用支持TRT的预测库并在编译时打开[-DWITH_TENSORRT=ON](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/deploy/cpp_infer/tools/build.sh#L15)。\n\n如果想修改其他分支代码支持TensorRT预测，可以参考[PR](https://github.com/PaddlePaddle/PaddleOCR/pull/2921)。\n\n注：建议使用TensorRT大于等于6.1.0.5以上的版本。\n**A**： 目前paddle的dygraph分支已经支持了python和C++ TensorRT预测的代码，python端inference预测时把参数[--use_tensorrt=True](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L37)即可，",
+          "generation_text": "#### Q: 如何使用TensorRT加速PaddleOCR预测？\n\n**A**： 目前paddle的dygraph分支已经支持了python和C++ TensorRT预测的代码，python端inference预测时把参数[--use_tensorrt=True](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L37)即可，\nC++TensorRT预测需要使用支持TRT的预测库并在编译时打开[-DWITH_TENSORRT=ON](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/deploy/cpp_infer/tools/build.sh#L15)。\n如果想修改其他分支代码支持TensorRT预测，可以参考[PR](https://github.com/PaddlePaddle/PaddleOCR/pull/2921)。\n\n注：建议使用TensorRT大于等于6.1.0.5以上的版本。",
+          "evidence_spans": [
+            {
+              "line_start": 714,
+              "line_end": 715,
+              "char_start": 0,
+              "char_end": 36,
+              "content": "#### Q: 如何使用TensorRT加速PaddleOCR预测？\n\n"
+            },
+            {
+              "line_start": 716,
+              "line_end": 717,
+              "char_start": 253,
+              "char_end": 434,
+              "content": "\nC++TensorRT预测需要使用支持TRT的预测库并在编译时打开[-DWITH_TENSORRT=ON](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/deploy/cpp_infer/tools/build.sh#L15)。\n"
+            },
+            {
+              "line_start": 718,
+              "line_end": 720,
+              "char_start": 434,
+              "char_end": 553,
+              "content": "如果想修改其他分支代码支持TensorRT预测，可以参考[PR](https://github.com/PaddlePaddle/PaddleOCR/pull/2921)。\n\n注：建议使用TensorRT大于等于6.1.0.5以上的版本。"
+            },
+            {
+              "line_start": 716,
+              "line_end": 716,
+              "char_start": 36,
+              "char_end": 253,
+              "content": "**A**： 目前paddle的dygraph分支已经支持了python和C++ TensorRT预测的代码，python端inference预测时把参数[--use_tensorrt=True](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L37)即可，"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:148",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q：如何将PaddleOCR预测模型封装成SDK\n\n**A**：如果是Python的话，可以使用tools/infer/predict_system.py中的TextSystem进行sdk封装，如果是c++的话，可以使用deploy/cpp_infer/src下面的DBDetector和CRNNRecognizer完成封装",
+          "generation_text": "#### Q：如何将PaddleOCR预测模型封装成SDK\n\n**A**：如果是Python的话，可以使用tools/infer/predict_system.py中的TextSystem进行sdk封装，如果是c++的话，可以使用deploy/cpp_infer/src下面的DBDetector和CRNNRecognizer完成封装",
+          "evidence_spans": [
+            {
+              "line_start": 776,
+              "line_end": 778,
+              "char_start": 0,
+              "char_end": 167,
+              "content": "#### Q：如何将PaddleOCR预测模型封装成SDK\n\n**A**：如果是Python的话，可以使用tools/infer/predict_system.py中的TextSystem进行sdk封装，如果是c++的话，可以使用deploy/cpp_infer/src下面的DBDetector和CRNNRecognizer完成封装"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/table_recognition:7",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/table_recognition.md",
+          "text": "训练数据的默认存储路径是 `PaddleOCR/train_data`,如果您的磁盘上已有数据集，只需创建软链接至数据集目录：",
+          "generation_text": "训练数据的默认存储路径是 `PaddleOCR/train_data`,如果您的磁盘上已有数据集，只需创建软链接至数据集目录：",
+          "evidence_spans": [
+            {
+              "line_start": 58,
+              "line_end": 58,
+              "char_start": 0,
+              "char_end": 63,
+              "content": "训练数据的默认存储路径是 `PaddleOCR/train_data`,如果您的磁盘上已有数据集，只需创建软链接至数据集目录："
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:128",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "github.com/PaddlePaddle/PaddleOCR/issues/1744)。",
+          "generation_text": "#### Q: 关于dygraph分支中，文本识别模型训练，要使用数据增强应该如何设置？\n\n**A**：可以参考[配置文件](../../configs/rec/ch_ppocr_v2.0/rec_chinese_lite_train_v2.0.yml)在Train['dataset']['transforms']添加RecAug字段，使数据增强生效。可以通过添加对aug_prob设置，表示每种数据增强采用的概率。aug_prob默认是0.4。详细设置可以参考[ISSUE 1744](https://github.com/PaddlePaddle/PaddleOCR/issues/1744)。",
+          "evidence_spans": [
+            {
+              "line_start": 684,
+              "line_end": 684,
+              "char_start": 253,
+              "char_end": 300,
+              "content": "github.com/PaddlePaddle/PaddleOCR/issues/1744)。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-03",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 0,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 6.65,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 538,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "81651ea46f23519d88f5c4ce5bb72589a37c93552e44aaca1e941f5f9d81ffe3",
+          "attention": "eager"
+        },
+        "window_budget": 256,
+        "window_unit": "characters",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": null
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 5,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:35",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 只想要识别票据中的部分片段，重新训练它的话，只需要训练文本检测模型就可以了吗？问文本识别，方向分类还是用原来的模型这样可以吗？\n\n**A**：可以的。PaddleOCR的检测、识别、方向分类器三个模型是独立的，在实际使用中可以优化和替换其中任何一个模型。",
+          "generation_text": "#### Q: 只想要识别票据中的部分片段，重新训练它的话，只需要训练文本检测模型就可以了吗？问文本识别，方向分类还是用原来的模型这样可以吗？\n\n**A**：可以的。PaddleOCR的检测、识别、方向分类器三个模型是独立的，在实际使用中可以优化和替换其中任何一个模型。",
+          "evidence_spans": [
+            {
+              "line_start": 198,
+              "line_end": 200,
+              "char_start": 0,
+              "char_end": 135,
+              "content": "#### Q: 只想要识别票据中的部分片段，重新训练它的话，只需要训练文本检测模型就可以了吗？问文本识别，方向分类还是用原来的模型这样可以吗？\n\n**A**：可以的。PaddleOCR的检测、识别、方向分类器三个模型是独立的，在实际使用中可以优化和替换其中任何一个模型。"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:36",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 如何用PaddleOCR识别视频中的文字？\n\n**A**: 目前PaddleOCR主要针对图像做处理，如果需要视频识别，可以先对视频抽帧，然后用PPOCR识别。",
+          "generation_text": "#### Q: 如何用PaddleOCR识别视频中的文字？\n\n**A**: 目前PaddleOCR主要针对图像做处理，如果需要视频识别，可以先对视频抽帧，然后用PPOCR识别。",
+          "evidence_spans": [
+            {
+              "line_start": 202,
+              "line_end": 204,
+              "char_start": 0,
+              "char_end": 88,
+              "content": "#### Q: 如何用PaddleOCR识别视频中的文字？\n\n**A**: 目前PaddleOCR主要针对图像做处理，如果需要视频识别，可以先对视频抽帧，然后用PPOCR识别。"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/angle_class:2",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/angle_class.md",
+          "text": "## 1. 方法介绍\n文本方向分类器主要用于图片非0度的场景下，在这种场景下需要对图片里检测到的文本行进行一个转正的操作。在PaddleOCR系统内，\n文字检测之后得到的文本行图片经过仿射变换之后送入识别模型，此时只需要对文字进行一个0和180度的角度分类，因此PaddleOCR内置的\n文本方向分类器**只支持了0和180度的分类**。如果想支持更多角度，可以自己修改算法进行支持。\n\n0和180度数据样本例子：\n\n",
+          "generation_text": "## 1. 方法介绍\n文本方向分类器主要用于图片非0度的场景下，在这种场景下需要对图片里检测到的文本行进行一个转正的操作。在PaddleOCR系统内，\n文字检测之后得到的文本行图片经过仿射变换之后送入识别模型，此时只需要对文字进行一个0和180度的角度分类，因此PaddleOCR内置的\n文本方向分类器**只支持了0和180度的分类**。如果想支持更多角度，可以自己修改算法进行支持。\n\n0和180度数据样本例子：\n\n![](../imgs_results/angle_class_example.jpg)\n\n",
+          "evidence_spans": [
+            {
+              "line_start": 11,
+              "line_end": 17,
+              "char_start": 0,
+              "char_end": 209,
+              "content": "## 1. 方法介绍\n文本方向分类器主要用于图片非0度的场景下，在这种场景下需要对图片里检测到的文本行进行一个转正的操作。在PaddleOCR系统内，\n文字检测之后得到的文本行图片经过仿射变换之后送入识别模型，此时只需要对文字进行一个0和180度的角度分类，因此PaddleOCR内置的\n文本方向分类器**只支持了0和180度的分类**。如果想支持更多角度，可以自己修改算法进行支持。\n\n0和180度数据样本例子：\n\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:115",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q：中文文本检测、文本识别构建训练集的话，大概需要多少数据量\n\nA：检测需要的数据相对较少，在PaddleOCR模型的基础上进行Fine-tune，一般需要500张可达到不错的效果。 识别分英文和中文，一般英文场景需要几十万数据可达到不错的效果，中文则需要几百万甚至更多。",
+          "generation_text": "#### Q：中文文本检测、文本识别构建训练集的话，大概需要多少数据量\n\nA：检测需要的数据相对较少，在PaddleOCR模型的基础上进行Fine-tune，一般需要500张可达到不错的效果。 识别分英文和中文，一般英文场景需要几十万数据可达到不错的效果，中文则需要几百万甚至更多。",
+          "evidence_spans": [
+            {
+              "line_start": 617,
+              "line_end": 619,
+              "char_start": 0,
+              "char_end": 141,
+              "content": "#### Q：中文文本检测、文本识别构建训练集的话，大概需要多少数据量\n\nA：检测需要的数据相对较少，在PaddleOCR模型的基础上进行Fine-tune，一般需要500张可达到不错的效果。 识别分英文和中文，一般英文场景需要几十万数据可达到不错的效果，中文则需要几百万甚至更多。"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:71",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "（1）文字检测骨干网络的替换，主要是确定类似于ResNet的4个stages，以方便集成后续的类似FPN的检测头。此外，对于文字检测问题，使用ImageNet训练的分类预训练模型，可以加速收敛和效果提升。\n\n（2）文字识别的骨干网络的替换，需要注意网络宽高stride的下降位置。由于文本识别一般宽高比例很大，因此高度下降频率少一些，宽度下降频率多一些。可以参考PaddleOCR中MobileNetV3骨干网络的改动。",
+          "generation_text": "A：无论是文字检测，还是文字识别，骨干网络的选择是预测效果和预测效率的权衡。一般，选择更大规模的骨干网络，例如ResNet101_vd，则检测或识别更准确，但预测耗时相应也会增加。而选择更小规模的骨干网络，例如MobileNetV3_small_x0_35，则预测更快，但检测或识别的准确率会大打折扣。幸运的是不同骨干网络的检测或识别效果与在ImageNet数据集图像1000分类任务效果正相关。飞桨图像分类套件PaddleClas汇总了ResNet_vd、Res2Net、HRNet、MobileNetV3、GhostNet等23种系列的分类网络结构，在上述图像分类任务的top1识别准确率，GPU(V100和T4)和CPU(骁龙855)的预测耗时以及相应的117个预训练模型下载地址。\n\n（1）文字检测骨干网络的替换，主要是确定类似于ResNet的4个stages，以方便集成后续的类似FPN的检测头。此外，对于文字检测问题，使用ImageNet训练的分类预训练模型，可以加速收敛和效果提升。\n\n（2）文字识别的骨干网络的替换，需要注意网络宽高stride的下降位置。由于文本识别一般宽高比例很大，因此高度下降频率少一些，宽度下降频率多一些。可以参考PaddleOCR中MobileNetV3骨干网络的改动。",
+          "evidence_spans": [
+            {
+              "line_start": 402,
+              "line_end": 404,
+              "char_start": 376,
+              "char_end": 586,
+              "content": "（1）文字检测骨干网络的替换，主要是确定类似于ResNet的4个stages，以方便集成后续的类似FPN的检测头。此外，对于文字检测问题，使用ImageNet训练的分类预训练模型，可以加速收敛和效果提升。\n\n（2）文字识别的骨干网络的替换，需要注意网络宽高stride的下降位置。由于文本识别一般宽高比例很大，因此高度下降频率少一些，宽度下降频率多一些。可以参考PaddleOCR中MobileNetV3骨干网络的改动。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-04",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 3,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 8.5,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 2054,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "81651ea46f23519d88f5c4ce5bb72589a37c93552e44aaca1e941f5f9d81ffe3",
+          "attention": "eager"
+        },
+        "window_budget": 256,
+        "window_unit": "characters",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v2.9.1:zh:doc/doc_ch/whl:72"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 7,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/whl:72",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/whl.md",
+          "text": "## 5 PDF文件作为输入\n- 命令行模式\n\n可以通过指定参数`page_num`来控制推理前面几页，默认为0，表示推理所有页。",
+          "generation_text": "## 5 PDF文件作为输入\n- 命令行模式\n\n可以通过指定参数`page_num`来控制推理前面几页，默认为0，表示推理所有页。",
+          "evidence_spans": [
+            {
+              "line_start": 402,
+              "line_end": 405,
+              "char_start": 0,
+              "char_end": 65,
+              "content": "## 5 PDF文件作为输入\n- 命令行模式\n\n可以通过指定参数`page_num`来控制推理前面几页，默认为0，表示推理所有页。"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/whl:38",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/whl.md",
+          "text": "此外，paddleocr也支持输入pdf文件，并且可以通过指定参数`page_num`来控制推理前面几页，默认为0，表示推理所有页。",
+          "generation_text": "此外，paddleocr也支持输入pdf文件，并且可以通过指定参数`page_num`来控制推理前面几页，默认为0，表示推理所有页。",
+          "evidence_spans": [
+            {
+              "line_start": 227,
+              "line_end": 227,
+              "char_start": 0,
+              "char_end": 66,
+              "content": "此外，paddleocr也支持输入pdf文件，并且可以通过指定参数`page_num`来控制推理前面几页，默认为0，表示推理所有页。"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:ppstructure/recovery/README_ch:12",
+          "version": "v2.9.1",
+          "document_path": "ppstructure/recovery/README_ch.md",
+          "text": "- **（2）安装recovery的`requirements`**\n\n版面恢复导出为docx文件，所以需要安装Python处理word文档的python-docx API，同时处理pdf格式的输入文件，需要安装PyMuPDF API([要求Python >= 3.7](https://pypi.org/project/PyMuPDF/))。\n\n通过如下命令安装全部库：",
+          "generation_text": "- **（2）安装recovery的`requirements`**\n\n版面恢复导出为docx文件，所以需要安装Python处理word文档的python-docx API，同时处理pdf格式的输入文件，需要安装PyMuPDF API([要求Python >= 3.7](https://pypi.org/project/PyMuPDF/))。\n\n通过如下命令安装全部库：",
+          "evidence_spans": [
+            {
+              "line_start": 83,
+              "line_end": 87,
+              "char_start": 0,
+              "char_end": 186,
+              "content": "- **（2）安装recovery的`requirements`**\n\n版面恢复导出为docx文件，所以需要安装Python处理word文档的python-docx API，同时处理pdf格式的输入文件，需要安装PyMuPDF API([要求Python >= 3.7](https://pypi.org/project/PyMuPDF/))。\n\n通过如下命令安装全部库："
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:ppstructure/recovery/README_ch:19",
+          "version": "v2.9.1",
+          "document_path": "ppstructure/recovery/README_ch.md",
+          "text": "通过命令行的方式：",
+          "generation_text": "通过命令行的方式：",
+          "evidence_spans": [
+            {
+              "line_start": 112,
+              "line_end": 112,
+              "char_start": 0,
+              "char_end": 9,
+              "content": "通过命令行的方式："
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:ppstructure/recovery/README_ch:3",
+          "version": "v2.9.1",
+          "document_path": "ppstructure/recovery/README_ch.md",
+          "text": "- **图片格式PDF解析(输入可为标准PDF或图片格式PDF)**：结合[版面分析](../layout/README_ch.md)、[表格识别](../table/README_ch.md)技术，从而更好地恢复图片、表格、标题等内容，支持中、英文pdf文档、文档图片格式的输入文件。\n\n2种方法输入格式、适用场景如下：\n## 1. 简介\n\n版面恢复就是将输入的图片、pdf内容仍然像原文档那样排列着，段落不变、顺序不变的输出到word文档中等。\n\n提供了2种版面恢复方法，可根据输入PDF的格式进行选择：\n\n\n- **标准PDF解析(输入须为标准PDF)**：基于Python的pdf转word库[pdf2docx](https://github.com/dothinking/pdf2docx)进行优化，该方法通过PyMuPDF获取页面元素，然后利用规则解析章节、段落、表格等布局及样式，最后通过python-docx将解析的内容元素重建到word文档中。\n",
+          "generation_text": "## 1. 简介\n\n版面恢复就是将输入的图片、pdf内容仍然像原文档那样排列着，段落不变、顺序不变的输出到word文档中等。\n\n提供了2种版面恢复方法，可根据输入PDF的格式进行选择：\n\n- **标准PDF解析(输入须为标准PDF)**：基于Python的pdf转word库[pdf2docx](https://github.com/dothinking/pdf2docx)进行优化，该方法通过PyMuPDF获取页面元素，然后利用规则解析章节、段落、表格等布局及样式，最后通过python-docx将解析的内容元素重建到word文档中。\n- **图片格式PDF解析(输入可为标准PDF或图片格式PDF)**：结合[版面分析](../layout/README_ch.md)、[表格识别](../table/README_ch.md)技术，从而更好地恢复图片、表格、标题等内容，支持中、英文pdf文档、文档图片格式的输入文件。\n\n2种方法输入格式、适用场景如下：",
+          "evidence_spans": [
+            {
+              "line_start": 24,
+              "line_end": 26,
+              "char_start": 269,
+              "char_end": 430,
+              "content": "- **图片格式PDF解析(输入可为标准PDF或图片格式PDF)**：结合[版面分析](../layout/README_ch.md)、[表格识别](../table/README_ch.md)技术，从而更好地恢复图片、表格、标题等内容，支持中、英文pdf文档、文档图片格式的输入文件。\n\n2种方法输入格式、适用场景如下："
+            },
+            {
+              "line_start": 17,
+              "line_end": 22,
+              "char_start": 0,
+              "char_end": 94,
+              "content": "## 1. 简介\n\n版面恢复就是将输入的图片、pdf内容仍然像原文档那样排列着，段落不变、顺序不变的输出到word文档中等。\n\n提供了2种版面恢复方法，可根据输入PDF的格式进行选择：\n\n"
+            },
+            {
+              "line_start": 23,
+              "line_end": 23,
+              "char_start": 94,
+              "char_end": 269,
+              "content": "- **标准PDF解析(输入须为标准PDF)**：基于Python的pdf转word库[pdf2docx](https://github.com/dothinking/pdf2docx)进行优化，该方法通过PyMuPDF获取页面元素，然后利用规则解析章节、段落、表格等布局及样式，最后通过python-docx将解析的内容元素重建到word文档中。\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-05",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 0,
+        "wrong_version_count": 0,
+        "wrong_module_count": 5,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 5.92,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 538,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "81651ea46f23519d88f5c4ce5bb72589a37c93552e44aaca1e941f5f9d81ffe3",
+          "attention": "eager"
+        },
+        "window_budget": 256,
+        "window_unit": "characters",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": null
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 8,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:36",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: 如何用PaddleOCR识别视频中的文字？\n\n**A**: 目前PaddleOCR主要针对图像做处理，如果需要视频识别，可以先对视频抽帧，然后用PPOCR识别。",
+          "generation_text": "#### Q: 如何用PaddleOCR识别视频中的文字？\n\n**A**: 目前PaddleOCR主要针对图像做处理，如果需要视频识别，可以先对视频抽帧，然后用PPOCR识别。",
+          "evidence_spans": [
+            {
+              "line_start": 202,
+              "line_end": 204,
+              "char_start": 0,
+              "char_end": 88,
+              "content": "#### Q: 如何用PaddleOCR识别视频中的文字？\n\n**A**: 目前PaddleOCR主要针对图像做处理，如果需要视频识别，可以先对视频抽帧，然后用PPOCR识别。"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:147",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "#### Q: lite预测库和nb模型版本不匹配，该如何解决？\n\n**A**： 如果可以正常预测就不用管，如果这个问题导致无法正常预测，可以尝试使用同一个commit的Paddle Lite代码编译预测库和opt文件，可以参考[移动端部署教程](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.1/deploy/lite/readme.md)。",
+          "generation_text": "#### Q: lite预测库和nb模型版本不匹配，该如何解决？\n\n**A**： 如果可以正常预测就不用管，如果这个问题导致无法正常预测，可以尝试使用同一个commit的Paddle Lite代码编译预测库和opt文件，可以参考[移动端部署教程](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.1/deploy/lite/readme.md)。",
+          "evidence_spans": [
+            {
+              "line_start": 772,
+              "line_end": 774,
+              "char_start": 0,
+              "char_end": 208,
+              "content": "#### Q: lite预测库和nb模型版本不匹配，该如何解决？\n\n**A**： 如果可以正常预测就不用管，如果这个问题导致无法正常预测，可以尝试使用同一个commit的Paddle Lite代码编译预测库和opt文件，可以参考[移动端部署教程](https://github.com/PaddlePaddle/PaddleOCR/blob/release%2F2.1/deploy/lite/readme.md)。"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:135",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "如果想修改其他分支代码支持TensorRT预测，可以参考[PR](https://github.com/PaddlePaddle/PaddleOCR/pull/2921)。\n\n注：建议使用TensorRT大于等于6.1.0.5以上的版本。\n#### Q: 如何使用TensorRT加速PaddleOCR预测？\n\n\n\nC++TensorRT预测需要使用支持TRT的预测库并在编译时打开[-DWITH_TENSORRT=ON](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/deploy/cpp_infer/tools/build.sh#L15)。\n\n**A**： 目前paddle的dygraph分支已经支持了python和C++ TensorRT预测的代码，python端inference预测时把参数[--use_tensorrt=True](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L37)即可，",
+          "generation_text": "#### Q: 如何使用TensorRT加速PaddleOCR预测？\n\n**A**： 目前paddle的dygraph分支已经支持了python和C++ TensorRT预测的代码，python端inference预测时把参数[--use_tensorrt=True](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L37)即可，\nC++TensorRT预测需要使用支持TRT的预测库并在编译时打开[-DWITH_TENSORRT=ON](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/deploy/cpp_infer/tools/build.sh#L15)。\n如果想修改其他分支代码支持TensorRT预测，可以参考[PR](https://github.com/PaddlePaddle/PaddleOCR/pull/2921)。\n\n注：建议使用TensorRT大于等于6.1.0.5以上的版本。",
+          "evidence_spans": [
+            {
+              "line_start": 718,
+              "line_end": 720,
+              "char_start": 434,
+              "char_end": 553,
+              "content": "如果想修改其他分支代码支持TensorRT预测，可以参考[PR](https://github.com/PaddlePaddle/PaddleOCR/pull/2921)。\n\n注：建议使用TensorRT大于等于6.1.0.5以上的版本。"
+            },
+            {
+              "line_start": 714,
+              "line_end": 715,
+              "char_start": 0,
+              "char_end": 36,
+              "content": "#### Q: 如何使用TensorRT加速PaddleOCR预测？\n\n"
+            },
+            {
+              "line_start": 716,
+              "line_end": 717,
+              "char_start": 253,
+              "char_end": 434,
+              "content": "\nC++TensorRT预测需要使用支持TRT的预测库并在编译时打开[-DWITH_TENSORRT=ON](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/deploy/cpp_infer/tools/build.sh#L15)。\n"
+            },
+            {
+              "line_start": 716,
+              "line_end": 716,
+              "char_start": 36,
+              "char_end": 253,
+              "content": "**A**： 目前paddle的dygraph分支已经支持了python和C++ TensorRT预测的代码，python端inference预测时把参数[--use_tensorrt=True](https://github.com/PaddlePaddle/PaddleOCR/blob/3ec57e8df9263de6fa897e33d2d91bc5d0849ef3/tools/infer/utility.py#L37)即可，"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/inference_args:16",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/inference_args.md",
+          "text": "|  rec_model_dir | str | 无，如果使用识别模型，该项是必填项 | 识别inference模型路径 |\n|  rec_image_shape | str | \"3,48,320\" | 识别时的图像尺寸 |\n|  rec_batch_num | int | 6 | 识别的batch size |\n|  max_text_length | int | 25 | 识别结果最大长度，在`SRN`中有效 |\n",
+          "generation_text": "| :--: | :--: | :--: | :--: |\n|  rec_algorithm | str | \"CRNN\" | 文本识别算法名称，目前支持`CRNN`, `SRN`, `RARE`, `NETR`, `SAR`, `ViTSTR`, `ABINet`, `VisionLAN`, `SPIN`, `RobustScanner`, `SVTR`, `SVTR_LCNet` |\n|  rec_model_dir | str | 无，如果使用识别模型，该项是必填项 | 识别inference模型路径 |\n|  rec_image_shape | str | \"3,48,320\" | 识别时的图像尺寸 |\n|  rec_batch_num | int | 6 | 识别的batch size |\n|  max_text_length | int | 25 | 识别结果最大长度，在`SRN`中有效 |\n|  rec_char_dict_path | str | \"./ppocr/utils/ppocr_keys_v1.txt\" | 识别的字符字典文件 |\n|  use_space_char | bool | True | 是否包含空格，如果为`True`，则会在最后字符字典中补充`空格`字符 |",
+          "evidence_spans": [
+            {
+              "line_start": 90,
+              "line_end": 93,
+              "char_start": 221,
+              "char_end": 433,
+              "content": "|  rec_model_dir | str | 无，如果使用识别模型，该项是必填项 | 识别inference模型路径 |\n|  rec_image_shape | str | \"3,48,320\" | 识别时的图像尺寸 |\n|  rec_batch_num | int | 6 | 识别的batch size |\n|  max_text_length | int | 25 | 识别结果最大长度，在`SRN`中有效 |\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v2.9.1:zh:doc/doc_ch/FAQ:64",
+          "version": "v2.9.1",
+          "document_path": "doc/doc_ch/FAQ.md",
+          "text": "https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b511a3c1d/StyleText/engine/synthesisers.py#L68",
+          "generation_text": "\n**A**：使用image_synth模式会输出fake_bg.jpg，即为背景图。如果想要批量提取背景，可以稍微修改一下代码，将fake_bg保存下来即可。要修改的位置：\nhttps://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b511a3c1d/StyleText/engine/synthesisers.py#L68",
+          "evidence_spans": [
+            {
+              "line_start": 364,
+              "line_end": 364,
+              "char_start": 146,
+              "char_end": 270,
+              "content": "https://github.com/PaddlePaddle/PaddleOCR/blob/de3e2e7cd3b8b65ee02d7a41e570fa5b511a3c1d/StyleText/engine/synthesisers.py#L68"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-06",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 1,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 6.05,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 802,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "81651ea46f23519d88f5c4ce5bb72589a37c93552e44aaca1e941f5f9d81ffe3",
+          "attention": "eager"
+        },
+        "window_budget": 256,
+        "window_unit": "characters",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:paddleocr/_pipelines/ocr:6"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 9,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:paddleocr/_pipelines/ocr:6",
+          "version": "v3.0.0",
+          "document_path": "paddleocr/_pipelines/ocr.py",
+          "text": "    def predict(\n        self,\n        input,\n        *,\n        use_doc_orientation_classify=None,\n        use_doc_unwarping=None,\n        use_textline_orientation=None,\n        text_det_limit_side_len=None,\n\n                text_rec_score_thresh=text_rec_score_thresh,\n            )\n        )\n            self.predict_iter(\n                input,\n                use_doc_orientation_classify=use_doc_orientation_classify,\n                use_doc_unwarping=use_doc_unwarping,\n\n                use_textline_orientation=use_textline_orientation,\n                text_det_limit_side_len=text_det_limit_side_len,\n                text_det_limit_type=text_det_limit_type,\n",
+          "generation_text": "    def predict(\n        self,\n        input,\n        *,\n        use_doc_orientation_classify=None,\n        use_doc_unwarping=None,\n        use_textline_orientation=None,\n        text_det_limit_side_len=None,\n        text_det_limit_type=None,\n        text_det_thresh=None,\n\n    ):\n        return list(\n            self.predict_iter(\n                input,\n                use_doc_orientation_classify=use_doc_orientation_classify,\n                use_doc_unwarping=use_doc_unwarping,\n                use_textline_orientation=use_textline_orientation,\n                text_det_limit_side_len=text_det_limit_side_len,\n                text_det_limit_type=text_det_limit_type,\n                text_det_thresh=text_det_thresh,\n                text_det_box_thresh=text_det_box_thresh,\n                text_det_unclip_ratio=text_det_unclip_ratio,\n                text_rec_score_thresh=text_rec_score_thresh,\n            )\n        )",
+          "evidence_spans": [
+            {
+              "line_start": 177,
+              "line_end": 184,
+              "char_start": 0,
+              "char_end": 209,
+              "content": "    def predict(\n        self,\n        input,\n        *,\n        use_doc_orientation_classify=None,\n        use_doc_unwarping=None,\n        use_textline_orientation=None,\n        text_det_limit_side_len=None,\n"
+            },
+            {
+              "line_start": 202,
+              "line_end": 204,
+              "char_start": 945,
+              "char_end": 1029,
+              "content": "                text_rec_score_thresh=text_rec_score_thresh,\n            )\n        )"
+            },
+            {
+              "line_start": 192,
+              "line_end": 195,
+              "char_start": 407,
+              "char_end": 589,
+              "content": "            self.predict_iter(\n                input,\n                use_doc_orientation_classify=use_doc_orientation_classify,\n                use_doc_unwarping=use_doc_unwarping,\n"
+            },
+            {
+              "line_start": 196,
+              "line_end": 198,
+              "char_start": 589,
+              "char_end": 778,
+              "content": "                use_textline_orientation=use_textline_orientation,\n                text_det_limit_side_len=text_det_limit_side_len,\n                text_det_limit_type=text_det_limit_type,\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:paddleocr/_pipelines/ocr:7",
+          "version": "v3.0.0",
+          "document_path": "paddleocr/_pipelines/ocr.py",
+          "text": "    @deprecated(\"Please use `predict` instead.\")\n    def ocr(self, img, **kwargs):\n        return self.predict(img, **kwargs)",
+          "generation_text": "    @deprecated(\"Please use `predict` instead.\")\n    def ocr(self, img, **kwargs):\n        return self.predict(img, **kwargs)",
+          "evidence_spans": [
+            {
+              "line_start": 206,
+              "line_end": 208,
+              "char_start": 0,
+              "char_end": 125,
+              "content": "    @deprecated(\"Please use `predict` instead.\")\n    def ocr(self, img, **kwargs):\n        return self.predict(img, **kwargs)"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:54",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "</details>\n\n<details><summary>多语言调用服务示例</summary>\n\n<details>\n<summary>Python</summary>\n\n<pre><code class=\"language-python\">\nimport base64\nimport requests\n\nAPI_URL = \"http://localhost:8080/ocr\"\nfile_path = \"./demo.jpg\"\n\n",
+          "generation_text": "</details>\n\n<details><summary>多语言调用服务示例</summary>\n\n<details>\n<summary>Python</summary>\n\n<pre><code class=\"language-python\">\nimport base64\nimport requests\n\nAPI_URL = \"http://localhost:8080/ocr\"\nfile_path = \"./demo.jpg\"\n\nwith open(file_path, \"rb\") as file:\n    file_bytes = file.read()\n",
+          "evidence_spans": [
+            {
+              "line_start": 1668,
+              "line_end": 1681,
+              "char_start": 0,
+              "char_end": 219,
+              "content": "</details>\n\n<details><summary>多语言调用服务示例</summary>\n\n<details>\n<summary>Python</summary>\n\n<pre><code class=\"language-python\">\nimport base64\nimport requests\n\nAPI_URL = \"http://localhost:8080/ocr\"\nfile_path = \"./demo.jpg\"\n\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:36",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "<details><summary>（2）调用 OCR 产线对象的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，产线还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理\n大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。以下是 <code>predict()</code> 方法的参数及其说明：</summary>",
+          "generation_text": "</details>\n\n<details><summary>（2）调用 OCR 产线对象的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，产线还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。以下是 <code>predict()</code> 方法的参数及其说明：</summary>",
+          "evidence_spans": [
+            {
+              "line_start": 1227,
+              "line_end": 1227,
+              "char_start": 12,
+              "char_end": 234,
+              "content": "<details><summary>（2）调用 OCR 产线对象的 <code>predict()</code> 方法进行推理预测，该方法会返回一个结果列表。另外，产线还提供了 <code>predict_iter()</code> 方法。两者在参数接受和结果返回方面是完全一致的，区别在于 <code>predict_iter()</code> 返回的是一个 <code>generator</code>，能够逐步处理和获取预测结果，适合处理"
+            },
+            {
+              "line_start": 1227,
+              "line_end": 1227,
+              "char_start": 234,
+              "char_end": 321,
+              "content": "大型数据集或希望节省内存的场景。可以根据实际需求选择使用这两种方法中的任意一种。以下是 <code>predict()</code> 方法的参数及其说明：</summary>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/deployment/serving:14",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/deployment/serving.md",
+          "text": "### 1.3 调用服务\n\nPaddleOCR 产线使用教程中的 <b>“开发集成/部署”</b> 部分提供了服务的 API 参考与多语言调用示例。",
+          "generation_text": "### 1.3 调用服务\n\nPaddleOCR 产线使用教程中的 <b>“开发集成/部署”</b> 部分提供了服务的 API 参考与多语言调用示例。",
+          "evidence_spans": [
+            {
+              "line_start": 85,
+              "line_end": 87,
+              "char_start": 0,
+              "char_end": 74,
+              "content": "### 1.3 调用服务\n\nPaddleOCR 产线使用教程中的 <b>“开发集成/部署”</b> 部分提供了服务的 API 参考与多语言调用示例。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-07",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 8.02,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 802,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "81651ea46f23519d88f5c4ce5bb72589a37c93552e44aaca1e941f5f9d81ffe3",
+          "attention": "eager"
+        },
+        "window_budget": 256,
+        "window_unit": "characters",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:53"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 15,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:53",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "<td>产线对象的 <code>predict</code> 方法生成结果的 JSON 表示中 <code>res</code> 字段的简化版本，其中去除了 <code>input_path</code> 和 <code>page_index</code> 字段。</td>\n</tr>\n<tr>\n<td><code>ocrImage</code></td>\n\n<td><code>string</code> | <code>null</code></td>\n<td>OCR结果图，其中标注检测到的文本位置。图像为JPEG格式，使用Base64编码。</td>\n</tr>\n<tr>\n<td><code>docPreprocessingImage</code></td>\n<td><code>string</code> | <code>null</code></td>\n\n<table>\n<thead>\n<tr>\n<th>名称</th>\n<th>类型</th>\n<th>含义</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><code>prunedResult</code></td>\n<td><code>object</code></td>\n",
+          "generation_text": "<table>\n<thead>\n<tr>\n<th>名称</th>\n<th>类型</th>\n<th>含义</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><code>prunedResult</code></td>\n<td><code>object</code></td>\n<td>产线对象的 <code>predict</code> 方法生成结果的 JSON 表示中 <code>res</code> 字段的简化版本，其中去除了 <code>input_path</code> 和 <code>page_index</code> 字段。</td>\n</tr>\n<tr>\n<td><code>ocrImage</code></td>\n<td><code>string</code> | <code>null</code></td>\n<td>OCR结果图，其中标注检测到的文本位置。图像为JPEG格式，使用Base64编码。</td>\n</tr>\n<tr>\n<td><code>docPreprocessingImage</code></td>\n<td><code>string</code> | <code>null</code></td>\n<td>可视化结果图像。图像为JPEG格式，使用Base64编码。</td>\n</tr>\n",
+          "evidence_spans": [
+            {
+              "line_start": 1649,
+              "line_end": 1652,
+              "char_start": 149,
+              "char_end": 329,
+              "content": "<td>产线对象的 <code>predict</code> 方法生成结果的 JSON 表示中 <code>res</code> 字段的简化版本，其中去除了 <code>input_path</code> 和 <code>page_index</code> 字段。</td>\n</tr>\n<tr>\n<td><code>ocrImage</code></td>\n"
+            },
+            {
+              "line_start": 1653,
+              "line_end": 1658,
+              "char_start": 329,
+              "char_end": 533,
+              "content": "<td><code>string</code> | <code>null</code></td>\n<td>OCR结果图，其中标注检测到的文本位置。图像为JPEG格式，使用Base64编码。</td>\n</tr>\n<tr>\n<td><code>docPreprocessingImage</code></td>\n<td><code>string</code> | <code>null</code></td>\n"
+            },
+            {
+              "line_start": 1637,
+              "line_end": 1648,
+              "char_start": 0,
+              "char_end": 149,
+              "content": "<table>\n<thead>\n<tr>\n<th>名称</th>\n<th>类型</th>\n<th>含义</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><code>prunedResult</code></td>\n<td><code>object</code></td>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n\n    - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`",
+          "generation_text": "        - `text_type`: `(str)` 文本检测的类型，当前固定为\"general\"\n\n    - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`",
+          "evidence_spans": [
+            {
+              "line_start": 1402,
+              "line_end": 1405,
+              "char_start": 1485,
+              "char_end": 1639,
+              "content": "    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n    - `rec_scores`: `(List[float])` 文本识别的置信度列表，已按`text_rec_score_thresh`过滤\n\n"
+            },
+            {
+              "line_start": 1398,
+              "line_end": 1401,
+              "char_start": 1328,
+              "char_end": 1485,
+              "content": "    - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n"
+            },
+            {
+              "line_start": 1406,
+              "line_end": 1406,
+              "char_start": 1639,
+              "char_end": 1711,
+              "content": "    - `rec_polys`: `(List[numpy.ndarray])` 经过置信度过滤的文本检测框列表，格式同`dt_polys`"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:28",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "<td>文本识别阈值，得分大于该阈值的文本结果会被保留。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值</li></li></ul>\n</td>\n<td><code>float</code></td>\n\n<td>文本识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_recognition_model_dir</code></td>\n<td>文本识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_box_thresh</code></td>\n<td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>det_db_box_thresh</code></td>\n<td>已废弃，请使用<code>text_det_box_thresh</code>代替。文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n",
+          "generation_text": "<thead>\n<tr>\n<th>参数</th>\n<th>参数说明</th>\n<th>参数类型</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td><code>text_recognition_model_name</code></td>\n<td>文本识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_recognition_model_dir</code></td>\n<td>文本识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_thresh</code></td>\n<td>文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.3</code></li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_box_thresh</code></td>\n<td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.6</code></li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_rec_score_thresh</code></td>\n<td>文本识别阈值，得分大于该阈值的文本结果会被保留。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值</li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n\n<tr>\n<td><code>det_db_thresh</code></td>\n<td>已废弃，请使用<code>text_det_thresh</code>代替。文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.3</code></li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>det_db_box_thresh</code></td>\n<td>已废弃，请使用<code>text_det_box_thresh</code>代替。文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.6</code></li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>",
+          "evidence_spans": [
+            {
+              "line_start": 713,
+              "line_end": 718,
+              "char_start": 5375,
+              "char_end": 5584,
+              "content": "<td>文本识别阈值，得分大于该阈值的文本结果会被保留。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值</li></li></ul>\n</td>\n<td><code>float</code></td>\n"
+            },
+            {
+              "line_start": 619,
+              "line_end": 625,
+              "char_start": 2567,
+              "char_end": 2790,
+              "content": "<td>文本识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_recognition_model_dir</code></td>\n<td>文本识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n"
+            },
+            {
+              "line_start": 683,
+              "line_end": 689,
+              "char_start": 4565,
+              "char_end": 4743,
+              "content": "<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_box_thresh</code></td>\n<td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n"
+            },
+            {
+              "line_start": 788,
+              "line_end": 794,
+              "char_start": 7537,
+              "char_end": 7741,
+              "content": "<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>det_db_box_thresh</code></td>\n<td>已废弃，请使用<code>text_det_box_thresh</code>代替。文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:35",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "<td>文本识别阈值，得分大于该阈值的文本结果会被保留。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值</li></li></ul>\n</td>\n<td><code>float</code></td>\n\n<td><code>text_recognition_model_name</code></td>\n<td>文本识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_recognition_model_dir</code></td>\n\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_box_thresh</code></td>\n<td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n\n<td>文本图像矫正模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_unwarping_model_dir</code></td>\n",
+          "generation_text": "<thead>\n    <tr>\n      <th>参数</th>\n      <th>参数说明</th>\n      <th>参数类型</th>\n      <th>默认值</th>\n    </tr>\n  </thead>\n<tr>\n<td><code>doc_unwarping_model_name</code></td>\n<td>文本图像矫正模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_unwarping_model_dir</code></td>\n<td>文本图像矫正模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n</tr>\n<tr>\n<td><code>text_recognition_model_name</code></td>\n<td>文本识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_recognition_model_dir</code></td>\n<td>文本识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_thresh</code></td>\n<td>文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.3</code></li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_box_thresh</code></td>\n<td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.6</code></li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_rec_score_thresh</code></td>\n<td>文本识别阈值，得分大于该阈值的文本结果会被保留。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值</li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n",
+          "evidence_spans": [
+            {
+              "line_start": 1119,
+              "line_end": 1124,
+              "char_start": 4565,
+              "char_end": 4774,
+              "content": "<td>文本识别阈值，得分大于该阈值的文本结果会被保留。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值</li></li></ul>\n</td>\n<td><code>float</code></td>\n"
+            },
+            {
+              "line_start": 1024,
+              "line_end": 1030,
+              "char_start": 1707,
+              "char_end": 1925,
+              "content": "<td><code>text_recognition_model_name</code></td>\n<td>文本识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_recognition_model_dir</code></td>\n"
+            },
+            {
+              "line_start": 1089,
+              "line_end": 1095,
+              "char_start": 3755,
+              "char_end": 3933,
+              "content": "<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_box_thresh</code></td>\n<td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n"
+            },
+            {
+              "line_start": 983,
+              "line_end": 988,
+              "char_start": 544,
+              "char_end": 711,
+              "content": "<td>文本图像矫正模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>doc_unwarping_model_dir</code></td>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:12",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "<td rowspan=\"2\">PP-OCRv5_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>\n</tr>\n<tr>\n",
+          "generation_text": "<tr>\n<td>PP-OCRv5_server_rec</td><td><a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\\\nPP-OCRv5_server_rec_infer.tar\">推理模型</a>/<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_server_rec_pretrained.pdparams\">训练模型</a></td>\n<td>86.38</td>\n<td>64.70</td>\n<td>93.29</td>\n<td>60.35</td>\n<td> 1.46/5.43 </td>\n<td> 5.32/91.79 </td>\n<td>81 M</td>\n<td rowspan=\"2\">PP-OCRv5_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>\n</tr>\n<tr>\n<td>PP-OCRv5_mobile_rec</td><td><a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_inference_model/paddle3.0.0/\\\nPP-OCRv5_mobile_rec_infer.tar\">推理模型</a>/<a href=\"https://paddle-model-ecology.bj.bcebos.com/paddlex/official_pretrained_model/PP-OCRv5_mobile_rec_pretrained.pdparams\">训练模型</a></td>\n<td>81.29</td>\n<td>66.00</td>\n<td>83.55</td>\n<td>54.65</td>\n<td> 1.46/5.43 </td>\n<td> 5.32/91.79 </td>\n<td>16 M</td>\n</tr>",
+          "evidence_spans": [
+            {
+              "line_start": 215,
+              "line_end": 217,
+              "char_start": 713,
+              "char_end": 884,
+              "content": "<td rowspan=\"2\">PP-OCRv5_rec 是新一代文本识别模型。该模型致力于以单一模型高效、精准地支持简体中文、繁体中文、英文、日文四种主要语言，以及手写、竖版、拼音、生僻字等复杂文本场景的识别。在保持识别效果的同时，兼顾推理速度和模型鲁棒性，为各种场景下的文档理解提供高效、精准的技术支撑。</td>\n</tr>\n<tr>\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-08",
+      "score": {
+        "complete": false,
+        "fact_hit_count": 0,
+        "fact_count": 1,
+        "fact_hits": [
+          false
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 1,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 5.92,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 802,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "81651ea46f23519d88f5c4ce5bb72589a37c93552e44aaca1e941f5f9d81ffe3",
+          "attention": "eager"
+        },
+        "window_budget": 256,
+        "window_unit": "characters",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:42"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 5,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:42",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "<table>\n<thead>\n<tr>\n<th>属性</th>\n<th>属性说明</th>\n</tr>\n</thead>\n<tr>\n<td rowspan=\"1\"><code>json</code></td>\n<td rowspan=\"1\">获取预测的 <code>json</code> 格式的结果</td>\n</tr>\n<tr>\n<td rowspan=\"2\"><code>img</code></td>\n",
+          "generation_text": "<table>\n<thead>\n<tr>\n<th>属性</th>\n<th>属性说明</th>\n</tr>\n</thead>\n<tr>\n<td rowspan=\"1\"><code>json</code></td>\n<td rowspan=\"1\">获取预测的 <code>json</code> 格式的结果</td>\n</tr>\n<tr>\n<td rowspan=\"2\"><code>img</code></td>\n<td rowspan=\"2\">获取格式为 <code>dict</code> 的可视化图像</td>\n</tr>\n",
+          "evidence_spans": [
+            {
+              "line_start": 1416,
+              "line_end": 1428,
+              "char_start": 0,
+              "char_end": 206,
+              "content": "<table>\n<thead>\n<tr>\n<th>属性</th>\n<th>属性说明</th>\n</tr>\n</thead>\n<tr>\n<td rowspan=\"1\"><code>json</code></td>\n<td rowspan=\"1\">获取预测的 <code>json</code> 格式的结果</td>\n</tr>\n<tr>\n<td rowspan=\"2\"><code>img</code></td>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:README:11",
+          "version": "v3.0.0",
+          "document_path": "README.md",
+          "text": "```python\nfrom paddleocr import PaddleOCR\n# 初始化 PaddleOCR 实例\nocr = PaddleOCR()\n# 对示例图像执行 OCR 推理 \nresult = ocr.predict(\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png\")\n# 可视化结果并保存 json 结果\n",
+          "generation_text": "```python\nfrom paddleocr import PaddleOCR\n# 初始化 PaddleOCR 实例\nocr = PaddleOCR()\n# 对示例图像执行 OCR 推理 \nresult = ocr.predict(\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png\")\n# 可视化结果并保存 json 结果\nfor res in result:\n    res.print()\n",
+          "evidence_spans": [
+            {
+              "line_start": 91,
+              "line_end": 97,
+              "char_start": 0,
+              "char_end": 227,
+              "content": "```python\nfrom paddleocr import PaddleOCR\n# 初始化 PaddleOCR 实例\nocr = PaddleOCR()\n# 对示例图像执行 OCR 推理 \nresult = ocr.predict(\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png\")\n# 可视化结果并保存 json 结果\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:44",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "<li>HTTP请求方法为POST。</li>\n<li>请求体和响应体均为JSON数据（JSON对象）。</li>\n<li>当请求处理成功时，响应状态码为<code>200</code>，响应体的属性如下：</li>\n</ul>",
+          "generation_text": "<p>对于服务提供的主要操作：</p>\n<ul>\n<li>HTTP请求方法为POST。</li>\n<li>请求体和响应体均为JSON数据（JSON对象）。</li>\n<li>当请求处理成功时，响应状态码为<code>200</code>，响应体的属性如下：</li>\n</ul>",
+          "evidence_spans": [
+            {
+              "line_start": 1455,
+              "line_end": 1458,
+              "char_start": 582,
+              "char_end": 696,
+              "content": "<li>HTTP请求方法为POST。</li>\n<li>请求体和响应体均为JSON数据（JSON对象）。</li>\n<li>当请求处理成功时，响应状态码为<code>200</code>，响应体的属性如下：</li>\n</ul>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:54",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "with open(file_path, \"rb\") as file:\n    file_bytes = file.read()\n    file_data = base64.b64encode(file_bytes).decode(\"ascii\")\n\npayload = {\"file\": file_data, \"fileType\": 1}\n\nresponse = requests.post(API_URL, json=payload)\n\n",
+          "generation_text": "file_path = \"./demo.jpg\"\n\nwith open(file_path, \"rb\") as file:\n    file_bytes = file.read()\n    file_data = base64.b64encode(file_bytes).decode(\"ascii\")\n\npayload = {\"file\": file_data, \"fileType\": 1}\n\nresponse = requests.post(API_URL, json=payload)\n\nassert response.status_code == 200\nresult = response.json()[\"result\"]\n",
+          "evidence_spans": [
+            {
+              "line_start": 1682,
+              "line_end": 1689,
+              "char_start": 219,
+              "char_end": 441,
+              "content": "with open(file_path, \"rb\") as file:\n    file_bytes = file.read()\n    file_data = base64.b64encode(file_bytes).decode(\"ascii\")\n\npayload = {\"file\": file_data, \"fileType\": 1}\n\nresponse = requests.post(API_URL, json=payload)\n\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:43",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "- `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。\n",
+          "generation_text": "- `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。\n- `img` 属性返回的预测结果是一个字典类型的数据。其中，键分别为 `ocr_res_img` 和 `preprocessed_img`，对应的值是两个 `Image.Image` 对象：一个用于显示 OCR 结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则字典中只包含 `ocr_res_img`。\n\n",
+          "evidence_spans": [
+            {
+              "line_start": 1433,
+              "line_end": 1433,
+              "char_start": 0,
+              "char_end": 65,
+              "content": "- `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-09",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 6.13,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 802,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "81651ea46f23519d88f5c4ce5bb72589a37c93552e44aaca1e941f5f9d81ffe3",
+          "attention": "eager"
+        },
+        "window_budget": 256,
+        "window_unit": "characters",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:3"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 16,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:3",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md) （可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md) （可选）\n- [文本行方向分类模块](../module_usage/text_line_orientation_classification.md) （可选）\n\n- [文本检测模块](../module_usage/text_detection.md)\n- [文本识别模块](../module_usage/text_recognition.md)\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary><b>文档图像方向分类模块（可选）：</b></summary>\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/01.png\"/>\n\n<b>通用OCR产线中包含以下5个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n\n## 1. OCR产线介绍\n\nOCR（光学字符识别，Optical Character Recognition）是一种将图像中的文字转换为可编辑文本的技术。它广泛应用于文档数字化、信息提取和数据处理等领域。OCR 可以识别印刷文本、手写文本，甚至某些类型的字体和符号。\n\n",
+          "generation_text": "## 1. OCR产线介绍\n\nOCR（光学字符识别，Optical Character Recognition）是一种将图像中的文字转换为可编辑文本的技术。它广泛应用于文档数字化、信息提取和数据处理等领域。OCR 可以识别印刷文本、手写文本，甚至某些类型的字体和符号。\n\n通用 OCR 产线用于解决文字识别任务，提取图片中的文字信息以文本形式输出，本产线支持PP-OCRv3、PP-OCRv4、PP-OCRv5模型的使用，其中默认模型为 PaddleOCR3.0 发布的 PP-OCRv5_mobile 模型，其在多个场景中较 PP-OCRv4_mobile 提升 13 个百分点。\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/01.png\"/>\n\n<b>通用OCR产线中包含以下5个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md) （可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md) （可选）\n- [文本行方向分类模块](../module_usage/text_line_orientation_classification.md) （可选）\n- [文本检测模块](../module_usage/text_detection.md)\n- [文本识别模块](../module_usage/text_recognition.md)\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary><b>文档图像方向分类模块（可选）：</b></summary>",
+          "evidence_spans": [
+            {
+              "line_start": 17,
+              "line_end": 19,
+              "char_start": 474,
+              "char_end": 684,
+              "content": "- [文档图像方向分类模块](../module_usage/doc_img_orientation_classification.md) （可选）\n- [文本图像矫正模块](../module_usage/text_image_unwarping.md) （可选）\n- [文本行方向分类模块](../module_usage/text_line_orientation_classification.md) （可选）\n"
+            },
+            {
+              "line_start": 20,
+              "line_end": 26,
+              "char_start": 684,
+              "char_end": 860,
+              "content": "- [文本检测模块](../module_usage/text_detection.md)\n- [文本识别模块](../module_usage/text_recognition.md)\n\n在本产线中，您可以根据下方的基准测试数据选择使用的模型。\n\n<details>\n<summary><b>文档图像方向分类模块（可选）：</b></summary>"
+            },
+            {
+              "line_start": 13,
+              "line_end": 16,
+              "char_start": 293,
+              "char_end": 474,
+              "content": "<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/01.png\"/>\n\n<b>通用OCR产线中包含以下5个模块。每个模块均可独立进行训练和推理，并包含多个模型。有关详细信息，请点击相应模块以查看文档。</b>\n\n"
+            },
+            {
+              "line_start": 7,
+              "line_end": 10,
+              "char_start": 0,
+              "char_end": 136,
+              "content": "## 1. OCR产线介绍\n\nOCR（光学字符识别，Optical Character Recognition）是一种将图像中的文字转换为可编辑文本的技术。它广泛应用于文档数字化、信息提取和数据处理等领域。OCR 可以识别印刷文本、手写文本，甚至某些类型的字体和符号。\n\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:21",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "                  <li>文档图像方向分类模型：PaddleOCR 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                  <li>文本图像矫正模型：<a href=\"https://www3.cs.stonybrook.edu/~cvl/docunet.html\">DocUNet</a>。</li>\n\n                  <li>多语言识别模型：PaddleOCR 自建的多语种数据集。</li>\n                  <li>文本行方向分类模型：PaddleOCR 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                </ul>\n             </li>\n              <li><strong>硬件配置：</strong>\n\n                  <li>文本检测模型：PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中检测包含 500 张图片。</li>\n                  <li>中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。</li>\n",
+          "generation_text": "             </strong>\n                <ul>\n                  <li>文档图像方向分类模型：PaddleOCR 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                  <li>文本图像矫正模型：<a href=\"https://www3.cs.stonybrook.edu/~cvl/docunet.html\">DocUNet</a>。</li>\n                  <li>文本检测模型：PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中检测包含 500 张图片。</li>\n                  <li>中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。</li>\n                  <li>ch_SVTRv2_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>A榜评估集。</li>\n                  <li>ch_RepSVTR_rec：<a href=\"https://aistudio.baidu.com/competition/detail/1131/0/introduction\">PaddleOCR算法模型挑战赛 - 赛题一：OCR端到端识别任务</a>B榜评估集。</li>\n                  <li>英文识别模型：PaddleOCR 自建的英文数据集。</li>\n                  <li>多语言识别模型：PaddleOCR 自建的多语种数据集。</li>\n                  <li>文本行方向分类模型：PaddleOCR 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                </ul>\n             </li>\n              <li><strong>硬件配置：</strong>\n                  <ul>\n                      <li>GPU：NVIDIA Tesla T4</li>\n",
+          "evidence_spans": [
+            {
+              "line_start": 460,
+              "line_end": 461,
+              "char_start": 199,
+              "char_end": 388,
+              "content": "                  <li>文档图像方向分类模型：PaddleOCR 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                  <li>文本图像矫正模型：<a href=\"https://www3.cs.stonybrook.edu/~cvl/docunet.html\">DocUNet</a>。</li>\n"
+            },
+            {
+              "line_start": 467,
+              "line_end": 471,
+              "char_start": 943,
+              "char_end": 1161,
+              "content": "                  <li>多语言识别模型：PaddleOCR 自建的多语种数据集。</li>\n                  <li>文本行方向分类模型：PaddleOCR 自建的数据集，覆盖证件和文档等多个场景，包含 1000 张图片。</li>\n                </ul>\n             </li>\n              <li><strong>硬件配置：</strong>\n"
+            },
+            {
+              "line_start": 462,
+              "line_end": 463,
+              "char_start": 388,
+              "char_end": 566,
+              "content": "                  <li>文本检测模型：PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中检测包含 500 张图片。</li>\n                  <li>中文识别模型： PaddleOCR 自建的中文数据集，覆盖街景、网图、文档、手写多个场景，其中文本识别包含 1.1w 张图片。</li>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:33",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "```python\nfrom paddleocr import PaddleOCR\n\nocr = PaddleOCR(\n    use_doc_orientation_classify=False, # 通过 use_doc_orientation_classify 参数指定不使用文档方向分类模型\n    use_doc_unwarping=False, # 通过 use_doc_unwarping 参数指定不使用文本图像矫正模型\n\n    use_textline_orientation=False, # 通过 use_textline_orientation 参数指定不使用文本行方向分类模型\n)\n# ocr = PaddleOCR(lang=\"en\") # 通过 lang 参数来使用英文模型\n# ocr = PaddleOCR(ocr_version=\"PP-OCRv4\") # 通过 ocr_version 参数来使用 PP-OCR 其他版本\n",
+          "generation_text": "```python\nfrom paddleocr import PaddleOCR\n\nocr = PaddleOCR(\n    use_doc_orientation_classify=False, # 通过 use_doc_orientation_classify 参数指定不使用文档方向分类模型\n    use_doc_unwarping=False, # 通过 use_doc_unwarping 参数指定不使用文本图像矫正模型\n    use_textline_orientation=False, # 通过 use_textline_orientation 参数指定不使用文本行方向分类模型\n)\n# ocr = PaddleOCR(lang=\"en\") # 通过 lang 参数来使用英文模型\n# ocr = PaddleOCR(ocr_version=\"PP-OCRv4\") # 通过 ocr_version 参数来使用 PP-OCR 其他版本\n# ocr = PaddleOCR(device=\"gpu\") # 通过 device 参数使得在模型推理时使用 GPU\nresult = ocr.predict(\"./general_ocr_002.png\")\nfor res in result:\n    res.print()\n    res.save_to_img(\"output\")\n    res.save_to_json(\"output\")\n```",
+          "evidence_spans": [
+            {
+              "line_start": 937,
+              "line_end": 942,
+              "char_start": 0,
+              "char_end": 218,
+              "content": "```python\nfrom paddleocr import PaddleOCR\n\nocr = PaddleOCR(\n    use_doc_orientation_classify=False, # 通过 use_doc_orientation_classify 参数指定不使用文档方向分类模型\n    use_doc_unwarping=False, # 通过 use_doc_unwarping 参数指定不使用文本图像矫正模型\n"
+            },
+            {
+              "line_start": 943,
+              "line_end": 946,
+              "char_start": 218,
+              "char_end": 429,
+              "content": "    use_textline_orientation=False, # 通过 use_textline_orientation 参数指定不使用文本行方向分类模型\n)\n# ocr = PaddleOCR(lang=\"en\") # 通过 lang 参数来使用英文模型\n# ocr = PaddleOCR(ocr_version=\"PP-OCRv4\") # 通过 ocr_version 参数来使用 PP-OCR 其他版本\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:57",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "<table>\n<thead>\n<tr>\n<th>情形</th>\n<th>微调模块</th>\n<th>微调参考链接</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>整图旋转矫正不准</td>\n<td>文档图像方向分类模块</td>\n\n<td>文本行旋转矫正不准</td>\n<td>文本行方向分类模块</td>\n<td><a href=\"https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/textline_orientation_classification.html#_5\">链接</a></td>\n</tr>\n<tr>\n<td>文本漏检</td>\n<td>文本检测模块</td>\n\n<td><a href=\"https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#_5\">链接</a></td>\n</tr>\n<tr>\n<td>图像扭曲矫正不准</td>\n<td>文本图像矫正模块</td>\n<td>暂不支持微调</td>\n</tr>\n<tr>\n",
+          "generation_text": "<table>\n<thead>\n<tr>\n<th>情形</th>\n<th>微调模块</th>\n<th>微调参考链接</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>整图旋转矫正不准</td>\n<td>文档图像方向分类模块</td>\n<td><a href=\"https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#_5\">链接</a></td>\n</tr>\n<tr>\n<td>图像扭曲矫正不准</td>\n<td>文本图像矫正模块</td>\n<td>暂不支持微调</td>\n</tr>\n<tr>\n<td>文本行旋转矫正不准</td>\n<td>文本行方向分类模块</td>\n<td><a href=\"https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/textline_orientation_classification.html#_5\">链接</a></td>\n</tr>\n<tr>\n<td>文本漏检</td>\n<td>文本检测模块</td>\n<td><a href=\"https://paddlepaddle.github.io/PaddleOCR/main/version3.x/module_usage/text_detection.html#_5\">链接</a></td>\n</tr>\n",
+          "evidence_spans": [
+            {
+              "line_start": 1707,
+              "line_end": 1718,
+              "char_start": 0,
+              "char_end": 129,
+              "content": "<table>\n<thead>\n<tr>\n<th>情形</th>\n<th>微调模块</th>\n<th>微调参考链接</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td>整图旋转矫正不准</td>\n<td>文档图像方向分类模块</td>\n"
+            },
+            {
+              "line_start": 1727,
+              "line_end": 1733,
+              "char_start": 353,
+              "char_end": 583,
+              "content": "<td>文本行旋转矫正不准</td>\n<td>文本行方向分类模块</td>\n<td><a href=\"https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/textline_orientation_classification.html#_5\">链接</a></td>\n</tr>\n<tr>\n<td>文本漏检</td>\n<td>文本检测模块</td>\n"
+            },
+            {
+              "line_start": 1719,
+              "line_end": 1726,
+              "char_start": 129,
+              "char_end": 353,
+              "content": "<td><a href=\"https://paddlepaddle.github.io/PaddleX/latest/module_usage/tutorials/ocr_modules/doc_img_orientation_classification.html#_5\">链接</a></td>\n</tr>\n<tr>\n<td>图像扭曲矫正不准</td>\n<td>文本图像矫正模块</td>\n<td>暂不支持微调</td>\n</tr>\n<tr>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:40",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数\n            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类\n            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_textline_orientation`: `(bool)` 控制是否启用文本行方向分类功能\n\n\n        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n\n    - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n",
+          "generation_text": "    - `model_settings`: `(Dict[str, bool])` 配置产线所需的模型参数\n\n        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_textline_orientation`: `(bool)` 控制是否启用文本行方向分类功能\n\n    - `doc_preprocessor_res`: `(Dict[str, Union[str, Dict[str, bool], int]])` 文档预处理子产线的输出结果。仅当`use_doc_preprocessor=True`时存在\n        - `input_path`: `(Union[str, None])` 图像预处理子产线接受的图像路径，当输入为`numpy.ndarray`时，保存为`None`\n        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数\n            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类\n            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n    - `dt_scores`: `(List[float])` 文本检测框的置信度列表\n\n\n        - `text_type`: `(str)` 文本检测的类型，当前固定为\"general\"\n\n    - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n    - `rec_texts`: `(List[str])` 文本识别结果列表，仅包含置信度超过`text_rec_score_thresh`的文本\n\n",
+          "evidence_spans": [
+            {
+              "line_start": 1381,
+              "line_end": 1383,
+              "char_start": 555,
+              "char_end": 731,
+              "content": "        - `model_settings`: `(Dict)` 预处理子产线的模型配置参数\n            - `use_doc_orientation_classify`: `(bool)` 控制是否启用文档方向分类\n            - `use_doc_unwarping`: `(bool)` 控制是否启用文本图像矫正\n"
+            },
+            {
+              "line_start": 1376,
+              "line_end": 1378,
+              "char_start": 216,
+              "char_end": 338,
+              "content": "        - `use_doc_preprocessor`: `(bool)` 控制是否启用文档预处理子产线\n        - `use_textline_orientation`: `(bool)` 控制是否启用文本行方向分类功能\n\n"
+            },
+            {
+              "line_start": 1384,
+              "line_end": 1387,
+              "char_start": 731,
+              "char_end": 924,
+              "content": "        - `angle`: `(int)` 文档方向分类的预测结果。启用时取值为[0,1,2,3]，分别对应[0°,90°,180°,270°]；未启用时为-1\n\n    - `dt_polys`: `(List[numpy.ndarray])` 文本检测的多边形框列表。每个检测框由4个顶点坐标构成的numpy数组表示，数组shape为(4, 2)，数据类型为int16\n\n"
+            },
+            {
+              "line_start": 1398,
+              "line_end": 1401,
+              "char_start": 1328,
+              "char_end": 1485,
+              "content": "    - `textline_orientation_angles`: `(List[int])` 文本行方向分类的预测结果。启用时返回实际角度值（如[0,0,1]），未启用时返回[-1,-1,-1]\n\n    - `text_rec_score_thresh`: `(float)` 文本识别结果的过滤阈值\n\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-10",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 0,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 8.58,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 802,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "81651ea46f23519d88f5c4ce5bb72589a37c93552e44aaca1e941f5f9d81ffe3",
+          "attention": "eager"
+        },
+        "window_budget": 256,
+        "window_unit": "characters",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:paddleocr/_pipelines/ocr:3"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 13,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:paddleocr/_pipelines/ocr:3",
+          "version": "v3.0.0",
+          "document_path": "paddleocr/_pipelines/ocr.py",
+          "text": "            \"text_det_box_thresh\": text_det_box_thresh,\n            \"text_det_unclip_ratio\": text_det_unclip_ratio,\n            \"text_det_input_shape\": text_det_input_shape,\n\n        use_textline_orientation=None,\n        text_det_limit_side_len=None,\n        text_det_limit_type=None,\n        text_det_thresh=None,\n        text_det_box_thresh=None,\n        text_det_unclip_ratio=None,\n",
+          "generation_text": "        use_doc_orientation_classify=None,\n        use_doc_unwarping=None,\n        use_textline_orientation=None,\n        text_det_limit_side_len=None,\n        text_det_limit_type=None,\n        text_det_thresh=None,\n        text_det_box_thresh=None,\n        text_det_unclip_ratio=None,\n        text_det_input_shape=None,\n        text_rec_score_thresh=None,\n\n            \"text_det_limit_type\": text_det_limit_type,\n            \"text_det_thresh\": text_det_thresh,\n            \"text_det_box_thresh\": text_det_box_thresh,\n            \"text_det_unclip_ratio\": text_det_unclip_ratio,\n            \"text_det_input_shape\": text_det_input_shape,\n            \"text_rec_score_thresh\": text_rec_score_thresh,\n            \"text_rec_input_shape\": text_rec_input_shape,\n",
+          "evidence_spans": [
+            {
+              "line_start": 120,
+              "line_end": 122,
+              "char_start": 3164,
+              "char_end": 3338,
+              "content": "            \"text_det_box_thresh\": text_det_box_thresh,\n            \"text_det_unclip_ratio\": text_det_unclip_ratio,\n            \"text_det_input_shape\": text_det_input_shape,\n"
+            },
+            {
+              "line_start": 71,
+              "line_end": 76,
+              "char_start": 627,
+              "char_end": 838,
+              "content": "        use_textline_orientation=None,\n        text_det_limit_side_len=None,\n        text_det_limit_type=None,\n        text_det_thresh=None,\n        text_det_box_thresh=None,\n        text_det_unclip_ratio=None,\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:paddleocr/_pipelines/ocr:6",
+          "version": "v3.0.0",
+          "document_path": "paddleocr/_pipelines/ocr.py",
+          "text": "                text_det_thresh=text_det_thresh,\n                text_det_box_thresh=text_det_box_thresh,\n                text_det_unclip_ratio=text_det_unclip_ratio,\n\n        text_det_limit_type=None,\n        text_det_thresh=None,\n        text_det_box_thresh=None,\n        text_det_unclip_ratio=None,\n        text_rec_score_thresh=None,\n    ):\n        return list(\n",
+          "generation_text": "        use_textline_orientation=None,\n        text_det_limit_side_len=None,\n        text_det_limit_type=None,\n        text_det_thresh=None,\n        text_det_box_thresh=None,\n        text_det_unclip_ratio=None,\n        text_rec_score_thresh=None,\n    ):\n        return list(\n            self.predict_iter(\n                input,\n\n                text_det_limit_side_len=text_det_limit_side_len,\n                text_det_limit_type=text_det_limit_type,\n                text_det_thresh=text_det_thresh,\n                text_det_box_thresh=text_det_box_thresh,\n                text_det_unclip_ratio=text_det_unclip_ratio,\n                text_rec_score_thresh=text_rec_score_thresh,\n            )\n",
+          "evidence_spans": [
+            {
+              "line_start": 199,
+              "line_end": 201,
+              "char_start": 778,
+              "char_end": 945,
+              "content": "                text_det_thresh=text_det_thresh,\n                text_det_box_thresh=text_det_box_thresh,\n                text_det_unclip_ratio=text_det_unclip_ratio,\n"
+            },
+            {
+              "line_start": 185,
+              "line_end": 191,
+              "char_start": 209,
+              "char_end": 407,
+              "content": "        text_det_limit_type=None,\n        text_det_thresh=None,\n        text_det_box_thresh=None,\n        text_det_unclip_ratio=None,\n        text_rec_score_thresh=None,\n    ):\n        return list(\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:paddleocr/_pipelines/ocr:5",
+          "version": "v3.0.0",
+          "document_path": "paddleocr/_pipelines/ocr.py",
+          "text": "            text_det_thresh=text_det_thresh,\n            text_det_box_thresh=text_det_box_thresh,\n            text_det_unclip_ratio=text_det_unclip_ratio,\n            text_rec_score_thresh=text_rec_score_thresh,\n\n        text_det_limit_type=None,\n        text_det_thresh=None,\n        text_det_box_thresh=None,\n        text_det_unclip_ratio=None,\n        text_rec_score_thresh=None,\n    ):\n",
+          "generation_text": "        use_textline_orientation=None,\n        text_det_limit_side_len=None,\n        text_det_limit_type=None,\n        text_det_thresh=None,\n        text_det_box_thresh=None,\n        text_det_unclip_ratio=None,\n        text_rec_score_thresh=None,\n    ):\n        return self.paddlex_pipeline.predict(\n            input,\n\n            text_det_limit_side_len=text_det_limit_side_len,\n            text_det_limit_type=text_det_limit_type,\n            text_det_thresh=text_det_thresh,\n            text_det_box_thresh=text_det_box_thresh,\n            text_det_unclip_ratio=text_det_unclip_ratio,\n            text_rec_score_thresh=text_rec_score_thresh,\n        )",
+          "evidence_spans": [
+            {
+              "line_start": 171,
+              "line_end": 174,
+              "char_start": 753,
+              "char_end": 965,
+              "content": "            text_det_thresh=text_det_thresh,\n            text_det_box_thresh=text_det_box_thresh,\n            text_det_unclip_ratio=text_det_unclip_ratio,\n            text_rec_score_thresh=text_rec_score_thresh,\n"
+            },
+            {
+              "line_start": 158,
+              "line_end": 163,
+              "char_start": 214,
+              "char_end": 391,
+              "content": "        text_det_limit_type=None,\n        text_det_thresh=None,\n        text_det_box_thresh=None,\n        text_det_unclip_ratio=None,\n        text_rec_score_thresh=None,\n    ):\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:28",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_box_thresh</code></td>\n<td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>det_db_box_thresh</code></td>\n<td>已废弃，请使用<code>text_det_box_thresh</code>代替。文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n\n<td>文本识别阈值，得分大于该阈值的文本结果会被保留。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值</li></li></ul>\n</td>\n<td><code>float</code></td>\n\n<td><code>det_limit_type</code></td>\n<td>已废弃，请使用<code>text_det_limit_type</code>代替。文本检测的边长度限制类型。\n<ul>\n",
+          "generation_text": "<thead>\n<tr>\n<th>参数</th>\n<th>参数说明</th>\n<th>参数类型</th>\n<th>默认值</th>\n</tr>\n</thead>\n<tr>\n<td><code>text_det_thresh</code></td>\n<td>文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.3</code></li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_box_thresh</code></td>\n<td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.6</code></li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_rec_score_thresh</code></td>\n<td>文本识别阈值，得分大于该阈值的文本结果会被保留。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值</li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n\n</tr>\n<tr>\n<td><code>det_limit_type</code></td>\n<td>已废弃，请使用<code>text_det_limit_type</code>代替。文本检测的边长度限制类型。\n<ul>\n<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code></li>\n<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>max</code>；</li>\n</ul>\n</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>det_db_thresh</code></td>\n<td>已废弃，请使用<code>text_det_thresh</code>代替。文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.3</code></li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>det_db_box_thresh</code></td>\n<td>已废弃，请使用<code>text_det_box_thresh</code>代替。文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.6</code></li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>",
+          "evidence_spans": [
+            {
+              "line_start": 683,
+              "line_end": 689,
+              "char_start": 4565,
+              "char_end": 4743,
+              "content": "<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_box_thresh</code></td>\n<td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n"
+            },
+            {
+              "line_start": 788,
+              "line_end": 794,
+              "char_start": 7537,
+              "char_end": 7741,
+              "content": "<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>det_db_box_thresh</code></td>\n<td>已废弃，请使用<code>text_det_box_thresh</code>代替。文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n"
+            },
+            {
+              "line_start": 713,
+              "line_end": 718,
+              "char_start": 5375,
+              "char_end": 5584,
+              "content": "<td>文本识别阈值，得分大于该阈值的文本结果会被保留。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值</li></li></ul>\n</td>\n<td><code>float</code></td>\n"
+            },
+            {
+              "line_start": 771,
+              "line_end": 773,
+              "char_start": 6830,
+              "char_end": 6932,
+              "content": "<td><code>det_limit_type</code></td>\n<td>已废弃，请使用<code>text_det_limit_type</code>代替。文本检测的边长度限制类型。\n<ul>\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:35",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_box_thresh</code></td>\n<td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n\n<td>文本识别阈值，得分大于该阈值的文本结果会被保留。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值</li></li></ul>\n</td>\n<td><code>float</code></td>\n\n<td><code>text_det_limit_type</code></td>\n<td>文本检测的边长度限制类型。\n<ul>\n",
+          "generation_text": "<thead>\n    <tr>\n      <th>参数</th>\n      <th>参数说明</th>\n      <th>参数类型</th>\n      <th>默认值</th>\n    </tr>\n  </thead>\n</tr>\n<tr>\n<td><code>text_det_limit_type</code></td>\n<td>文本检测的边长度限制类型。\n<ul>\n<li><b>str</b>：支持 <code>min</code> 和 <code>max</code>，<code>min</code> 表示保证图像最短边不小于 <code>det_limit_side_len</code>，<code>max</code> 表示保证图像最长边不大于 <code>limit_side_len</code></li>\n<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值，初始化为 <code>max</code>；</li>\n</ul>\n</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_thresh</code></td>\n<td>文本检测像素阈值，输出的概率图中，得分大于该阈值的像素点才会被认为是文字像素点。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.3</code></li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_box_thresh</code></td>\n<td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n<li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.6</code></li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_rec_score_thresh</code></td>\n<td>文本识别阈值，得分大于该阈值的文本结果会被保留。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值</li></li></ul>\n</td>\n<td><code>float</code></td>\n<td><code>None</code></td>\n</tr>\n",
+          "evidence_spans": [
+            {
+              "line_start": 1089,
+              "line_end": 1095,
+              "char_start": 3755,
+              "char_end": 3933,
+              "content": "<td><code>None</code></td>\n</tr>\n<tr>\n<td><code>text_det_box_thresh</code></td>\n<td>文本检测框阈值，检测结果边框内，所有像素点的平均得分大于该阈值时，该结果会被认为是文字区域。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n"
+            },
+            {
+              "line_start": 1119,
+              "line_end": 1124,
+              "char_start": 4565,
+              "char_end": 4774,
+              "content": "<td>文本识别阈值，得分大于该阈值的文本结果会被保留。\n<ul>\n<li><b>float</b>：大于 <code>0</code> 的任意浮点数\n    <li><b>None</b>：如果设置为 <code>None</code>, 将默认使用产线初始化的该参数值 <code>0.0</code>。即不设阈值</li></li></ul>\n</td>\n<td><code>float</code></td>\n"
+            },
+            {
+              "line_start": 1071,
+              "line_end": 1073,
+              "char_start": 3093,
+              "char_end": 3158,
+              "content": "<td><code>text_det_limit_type</code></td>\n<td>文本检测的边长度限制类型。\n<ul>\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-11",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 1,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 4.83,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 864,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "81651ea46f23519d88f5c4ce5bb72589a37c93552e44aaca1e941f5f9d81ffe3",
+          "attention": "eager"
+        },
+        "window_budget": 256,
+        "window_unit": "characters",
+        "candidate_windows": 6,
+        "requirement_candidates": {
+          "r1": null
+        },
+        "final_evidence_count": 2,
+        "selected_windows": 5,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:93",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+          "text": "# 处理接口返回数据\nassert response.status_code == 200\nresult = response.json()[\"result\"]\nfor i, res in enumerate(result[\"layoutParsingResults\"]):\n    print(res[\"prunedResult\"])\n    md_dir = pathlib.Path(f\"markdown_{i}\")\n\n        print(f\"Output image saved at {img_path}\")\n</code></pre></details>\n</details>\n<br/>\n        img_path.parent.mkdir(parents=True, exist_ok=True)\n        img_path.write_bytes(base64.b64decode(img))\n    print(f\"Markdown document saved at {md_dir / 'doc.md'}\")\n\n    md_dir.mkdir(exist_ok=True)\n    (md_dir / \"doc.md\").write_text(res[\"markdown\"][\"text\"])\n    for img_path, img in res[\"markdown\"][\"images\"].items():\n        img_path = md_dir / img_path\n",
+          "generation_text": "# 处理接口返回数据\nassert response.status_code == 200\nresult = response.json()[\"result\"]\nfor i, res in enumerate(result[\"layoutParsingResults\"]):\n    print(res[\"prunedResult\"])\n    md_dir = pathlib.Path(f\"markdown_{i}\")\n    md_dir.mkdir(exist_ok=True)\n    (md_dir / \"doc.md\").write_text(res[\"markdown\"][\"text\"])\n    for img_path, img in res[\"markdown\"][\"images\"].items():\n        img_path = md_dir / img_path\n        img_path.parent.mkdir(parents=True, exist_ok=True)\n        img_path.write_bytes(base64.b64decode(img))\n    print(f\"Markdown document saved at {md_dir / 'doc.md'}\")\n    for img_name, img in res[\"outputImages\"].items():\n        img_path = f\"{img_name}_{i}.jpg\"\n        with open(img_path, \"wb\") as f:\n            f.write(base64.b64decode(img))\n        print(f\"Output image saved at {img_path}\")\n</code></pre></details>\n</details>\n<br/>",
+          "evidence_spans": [
+            {
+              "line_start": 2887,
+              "line_end": 2892,
+              "char_start": 0,
+              "char_end": 212,
+              "content": "# 处理接口返回数据\nassert response.status_code == 200\nresult = response.json()[\"result\"]\nfor i, res in enumerate(result[\"layoutParsingResults\"]):\n    print(res[\"prunedResult\"])\n    md_dir = pathlib.Path(f\"markdown_{i}\")\n"
+            },
+            {
+              "line_start": 2904,
+              "line_end": 2907,
+              "char_start": 751,
+              "char_end": 842,
+              "content": "        print(f\"Output image saved at {img_path}\")\n</code></pre></details>\n</details>\n<br/>"
+            },
+            {
+              "line_start": 2897,
+              "line_end": 2899,
+              "char_start": 401,
+              "char_end": 573,
+              "content": "        img_path.parent.mkdir(parents=True, exist_ok=True)\n        img_path.write_bytes(base64.b64decode(img))\n    print(f\"Markdown document saved at {md_dir / 'doc.md'}\")\n"
+            },
+            {
+              "line_start": 2893,
+              "line_end": 2896,
+              "char_start": 212,
+              "char_end": 401,
+              "content": "    md_dir.mkdir(exist_ok=True)\n    (md_dir / \"doc.md\").write_text(res[\"markdown\"][\"text\"])\n    for img_path, img in res[\"markdown\"][\"images\"].items():\n        img_path = md_dir / img_path\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/update/upgrade_notes:8",
+          "version": "v3.0.0",
+          "document_path": "docs/update/upgrade_notes.md",
+          "text": "需要特别指出的是，PaddleOCR 2.x 提供的 `PPStructure` 在 PaddleOCR 3.x 中已被移除。建议使用功能更丰富、解析效果更好的 `PPStructureV3` 替代，并参考相关文档了解新接口的用法。\n\n",
+          "generation_text": "需要特别指出的是，PaddleOCR 2.x 提供的 `PPStructure` 在 PaddleOCR 3.x 中已被移除。建议使用功能更丰富、解析效果更好的 `PPStructureV3` 替代，并参考相关文档了解新接口的用法。\n\n此外，在 PaddleOCR 2.x 中，可以通过在构造 `PaddleOCR` 对象时传入 `show_log` 参数来控制日志输出。然而，这种设计存在局限：由于所有 `PaddleOCR` 实例共享一个日志器，当一个实例设置了日志行为后，其它实例也会受到影响，这显然不符合预期。为了解决这一问题，PaddleOCR 3.x 引入了全新的日志系统。详细内容请参阅 [日志](version3.x/logging.md)。",
+          "evidence_spans": [
+            {
+              "line_start": 69,
+              "line_end": 70,
+              "char_start": 0,
+              "char_end": 118,
+              "content": "需要特别指出的是，PaddleOCR 2.x 提供的 `PPStructure` 在 PaddleOCR 3.x 中已被移除。建议使用功能更丰富、解析效果更好的 `PPStructureV3` 替代，并参考相关文档了解新接口的用法。\n\n"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "internal-12",
+      "score": {
+        "complete": true,
+        "fact_hit_count": 1,
+        "fact_count": 1,
+        "fact_hits": [
+          true
+        ],
+        "source_hit_count": 1,
+        "wrong_version_count": 0,
+        "wrong_module_count": 1,
+        "assessment": "literal_fact_evidence_coverage_not_answer_correctness"
+      },
+      "latency_ms": 7.7,
+      "diagnostics": {
+        "requested_strategy": "contextual_bm25",
+        "actual_strategy": "contextual_bm25",
+        "candidate_budget": 40,
+        "eligible_windows": 802,
+        "rerank_calls": 0,
+        "external_model_calls": 0,
+        "fallback_reason": null,
+        "window_failures": [],
+        "model_identity": {
+          "embedding": "NOT_CONFIGURED",
+          "reranker": "81651ea46f23519d88f5c4ce5bb72589a37c93552e44aaca1e941f5f9d81ffe3",
+          "attention": "eager"
+        },
+        "window_budget": 256,
+        "window_unit": "characters",
+        "candidate_windows": 40,
+        "requirement_candidates": {
+          "r1": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:41"
+        },
+        "final_evidence_count": 5,
+        "selected_windows": 7,
+        "status": "OK"
+      },
+      "hits": [
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:41",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "    - `rec_boxes`: `(numpy.ndarray)` 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形框的[x_min, y_min, x_max, y_max]坐标\n    ，其中(x_min, y_min)为左上角坐标，(x_max, y_max)为右下角坐标\n\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n",
+          "generation_text": "    - `rec_boxes`: `(numpy.ndarray)` 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形框的[x_min, y_min, x_max, y_max]坐标\n    ，其中(x_min, y_min)为左上角坐标，(x_max, y_max)为右下角坐标\n\n- 调用`save_to_json()` 方法会将上述内容保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_res.json`，如果指定为文件，则直接保存到该文件中。由于json文件不支持保存numpy数组，因此会将其中的`numpy.array`类型转换为列表形式。\n- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下：",
+          "evidence_spans": [
+            {
+              "line_start": 1408,
+              "line_end": 1410,
+              "char_start": 0,
+              "char_end": 166,
+              "content": "    - `rec_boxes`: `(numpy.ndarray)` 检测框的矩形边界框数组，shape为(n, 4)，dtype为int16。每一行表示一个矩形框的[x_min, y_min, x_max, y_max]坐标\n    ，其中(x_min, y_min)为左上角坐标，(x_max, y_max)为右下角坐标\n\n"
+            },
+            {
+              "line_start": 1414,
+              "line_end": 1414,
+              "char_start": 539,
+              "char_end": 573,
+              "content": "* 此外，也支持通过属性获取带结果的可视化图像和预测结果，具体如下："
+            },
+            {
+              "line_start": 1412,
+              "line_end": 1413,
+              "char_start": 341,
+              "char_end": 539,
+              "content": "- 调用`save_to_img()` 方法会将可视化结果保存到指定的`save_path`中，如果指定为目录，则保存的路径为`save_path/{your_img_basename}_ocr_res_img.{your_img_extension}`，如果指定为文件，则直接保存到该文件中。(产线通常包含较多结果图片，不建议直接指定为具体的文件路径，否则多张图会被覆盖，仅保留最后一张图)\n\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:31",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "若指定了`save_path`，则会保存可视化结果在`save_path`下。可视化结果如下：\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/03.png\"/>",
+          "generation_text": "若指定了`save_path`，则会保存可视化结果在`save_path`下。可视化结果如下：\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/03.png\"/>",
+          "evidence_spans": [
+            {
+              "line_start": 929,
+              "line_end": 931,
+              "char_start": 0,
+              "char_end": 158,
+              "content": "若指定了`save_path`，则会保存可视化结果在`save_path`下。可视化结果如下：\n\n<img src=\"https://raw.githubusercontent.com/cuicheng01/PaddleX_doc_images/main/images/pipelines/ocr/03.png\"/>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:42",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "<td rowspan=\"2\">获取格式为 <code>dict</code> 的可视化图像</td>\n</tr>\n</table>",
+          "generation_text": "<tr>\n<td rowspan=\"2\"><code>img</code></td>\n<td rowspan=\"2\">获取格式为 <code>dict</code> 的可视化图像</td>\n</tr>\n</table>",
+          "evidence_spans": [
+            {
+              "line_start": 1429,
+              "line_end": 1431,
+              "char_start": 206,
+              "char_end": 272,
+              "content": "<td rowspan=\"2\">获取格式为 <code>dict</code> 的可视化图像</td>\n</tr>\n</table>"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:README:11",
+          "version": "v3.0.0",
+          "document_path": "README.md",
+          "text": "```python\nfrom paddleocr import PaddleOCR\n# 初始化 PaddleOCR 实例\nocr = PaddleOCR()\n# 对示例图像执行 OCR 推理 \nresult = ocr.predict(\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png\")\n# 可视化结果并保存 json 结果\n",
+          "generation_text": "```python\nfrom paddleocr import PaddleOCR\n# 初始化 PaddleOCR 实例\nocr = PaddleOCR()\n# 对示例图像执行 OCR 推理 \nresult = ocr.predict(\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png\")\n# 可视化结果并保存 json 结果\nfor res in result:\n    res.print()\n",
+          "evidence_spans": [
+            {
+              "line_start": 91,
+              "line_end": 97,
+              "char_start": 0,
+              "char_end": 227,
+              "content": "```python\nfrom paddleocr import PaddleOCR\n# 初始化 PaddleOCR 实例\nocr = PaddleOCR()\n# 对示例图像执行 OCR 推理 \nresult = ocr.predict(\"https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/general_ocr_002.png\")\n# 可视化结果并保存 json 结果\n"
+            }
+          ]
+        },
+        {
+          "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:43",
+          "version": "v3.0.0",
+          "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+          "text": "- `img` 属性返回的预测结果是一个字典类型的数据。其中，键分别为 `ocr_res_img` 和 `preprocessed_img`，对应的值是两个 `Image.Image` 对象：一个用于显示 OCR 结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则字典中只包含 `ocr_res_img`。\n\n</details>",
+          "generation_text": "- `json` 属性获取的预测结果为dict类型的数据，相关内容与调用 `save_to_json()` 方法保存的内容一致。\n- `img` 属性返回的预测结果是一个字典类型的数据。其中，键分别为 `ocr_res_img` 和 `preprocessed_img`，对应的值是两个 `Image.Image` 对象：一个用于显示 OCR 结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则字典中只包含 `ocr_res_img`。\n\n</details>",
+          "evidence_spans": [
+            {
+              "line_start": 1434,
+              "line_end": 1436,
+              "char_start": 65,
+              "char_end": 249,
+              "content": "- `img` 属性返回的预测结果是一个字典类型的数据。其中，键分别为 `ocr_res_img` 和 `preprocessed_img`，对应的值是两个 `Image.Image` 对象：一个用于显示 OCR 结果的可视化图像，另一个用于展示图像预处理的可视化图像。如果没有使用图像预处理子模块，则字典中只包含 `ocr_res_img`。\n\n</details>"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -5,8 +5,8 @@
   "domain_profile": {
     "id": "paddleocr",
     "name": "PaddleOCR 文档处理应用兼容性审查",
-    "business_scenario": "维护调用 PaddleOCR 进行扫描文档 OCR、版面与表格解析的应用。RAG 根据固定依赖版本查询官方资料；Agent 对原创应用样例或受限输入进行静态审查，核对 v2.9.1 升级到 v3.0.0 时的接口、配置和结果消费方式，逐项绑定应用位置与官方证据，由研发人员确认并运行验证。",
-    "source_scope": "仅收录 PaddlePaddle/PaddleOCR 两个固定提交中与 OCR、PP-Structure 和升级直接相关的中文资料、Python 公共契约及 YAML 配置。v3.0.0 不收录 docs/version2.x 的历史教程，避免把历史 API 作为当前 API。",
+    "business_scenario": "面向内部研发工程师、测试人员和应用负责人，维护扫描页→中文OCR→结果归一化→下游JSON的文档处理应用。POC用PaddleOCR官方中文资料、代码与配置代理内部研发知识，保留来源身份；Agent审查同一应用v2.9.1→v3.0.0升级，输出风险、影响候选、缺口与回归要求，由人处置。PPStructure仅为相关接口检查分支。",
+    "source_scope": "固定两个官方提交的任务相关中文资料、Python接口/API测试、YAML配置；不代表公司完整档案。API测试仅供查证，未在本系统执行。",
     "privacy_boundary": "审查只读取用户选择的代码或配置文本，不运行待审代码；演示使用学生自行编写的原创样例。静态审查不代表真实企业内部验证或实际 OCR 推理结果。",
     "change_types": [
       {
@@ -42,9 +42,10 @@
       }
     ],
     "example_queries": [
-      "从 PaddleOCR v2.9.1 升级到 v3.0.0 后，PPStructure 接口如何迁移？",
-      "PaddleOCR v3.0.0 的 OCR 结果如何读取 rec_texts 和 rec_scores？",
-      "基础 PaddleOCR(lang='ch').ocr(img) 用法升级时有哪些需要验证的地方？"
+      "PaddleOCR 2.9.1 的 OCR 调用如何只识别文字而不检测？",
+      "PaddleOCR 2.9.1 如何用 lang=\"ch\" 初始化中文 OCR？",
+      "PaddleOCR 3.0.0 的 OCR 结果中 rec_texts 和 rec_scores 分别表示什么？",
+      "PaddleOCR 3.0.0 的官方 OCR 测试检查了哪些返回字段？"
     ],
     "current_dependency_version": "v2.9.1",
     "target_dependency_version": "v3.0.0",
@@ -80,12 +81,12 @@
   "languages": [
     "zh"
   ],
-  "source_count": 58,
+  "source_count": 60,
   "chinese_document_count": 44,
-  "python_contract_count": 9,
+  "python_contract_count": 11,
   "yaml_config_count": 5,
-  "unique_document_count": 57,
-  "chunk_count": 1754,
+  "unique_document_count": 59,
+  "chunk_count": 1768,
   "active": true,
   "source_status": "ready",
   "public_body_indexing_enabled": true,
@@ -1832,6 +1833,66 @@
       "title": "端侧部署",
       "size_bytes": 350,
       "scope_note": "官方中文文档"
+    },
+    {
+      "source_id": "v2-9-1-tests-test-paddleocr-api-py-185bd0d0",
+      "version": "v2.9.1",
+      "source_snapshot": "v2.9.1",
+      "document_key": "tests/test_paddleocr_api",
+      "document_title": "OCR 官方 API 测试（仅参考，未执行）",
+      "document_path": "tests/test_paddleocr_api.py",
+      "path": "tests/test_paddleocr_api.py",
+      "local_path": "sources/v2.9.1/tests/test_paddleocr_api.py",
+      "source_type": "official_api_contract",
+      "source_format": "python",
+      "source_content_language": "python",
+      "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/tests/test_paddleocr_api.py",
+      "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/07603421c20a96bb94bb87d0c4211032527ae706/tests/test_paddleocr_api.py",
+      "repository": "PaddlePaddle/PaddleOCR",
+      "publisher": "PaddlePaddle",
+      "commit": "07603421c20a96bb94bb87d0c4211032527ae706",
+      "sha256": "3a15c3009da02a6f9b2d4f5ea730a23cd17230bd7174fdfb841e067739c39143",
+      "git_blob_sha": "0af794d2b8ed62eb8dfc78c65d1304c72f07f962",
+      "language": "zh",
+      "locale": "zh-CN",
+      "license": "Apache-2.0",
+      "license_status": "redistributable",
+      "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/LICENSE",
+      "attribution": "PaddleOCR · v2.9.1 · tests/test_paddleocr_api.py · Apache-2.0 · commit 07603421c20a96bb94bb87d0c4211032527ae706",
+      "document_family": "api_test",
+      "title": "OCR 官方 API 测试（仅参考，未执行）",
+      "size_bytes": 3124,
+      "scope_note": "代码/配置辅助证据；不计为中文教程"
+    },
+    {
+      "source_id": "v3-0-0-tests-pipelines-test-ocr-py-e61d8a41",
+      "version": "v3.0.0",
+      "source_snapshot": "v3.0.0",
+      "document_key": "tests/pipelines/test_ocr",
+      "document_title": "OCR 官方 API 测试（仅参考，未执行）",
+      "document_path": "tests/pipelines/test_ocr.py",
+      "path": "tests/pipelines/test_ocr.py",
+      "local_path": "sources/v3.0.0/tests/pipelines/test_ocr.py",
+      "source_type": "official_api_contract",
+      "source_format": "python",
+      "source_content_language": "python",
+      "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py",
+      "raw_url": "https://raw.githubusercontent.com/PaddlePaddle/PaddleOCR/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py",
+      "repository": "PaddlePaddle/PaddleOCR",
+      "publisher": "PaddlePaddle",
+      "commit": "a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "sha256": "55b9d4c5c92123d114e701230bf5e1a282097acdd8e383fc5166d84b07e31a51",
+      "git_blob_sha": "88e6f7826d1eda698fe6eb7e5c6b4545225dabb1",
+      "language": "zh",
+      "locale": "zh-CN",
+      "license": "Apache-2.0",
+      "license_status": "redistributable",
+      "license_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/LICENSE",
+      "attribution": "PaddleOCR · v3.0.0 · tests/pipelines/test_ocr.py · Apache-2.0 · commit a8474288ad53c0f439c272b786c5fa6240f0cf27",
+      "document_family": "api_test",
+      "title": "OCR 官方 API 测试（仅参考，未执行）",
+      "size_bytes": 3984,
+      "scope_note": "代码/配置辅助证据；不计为中文教程"
     }
   ]
 }

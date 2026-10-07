@@ -33,7 +33,8 @@ def application_fingerprint(files,versions,settings,corpus_fingerprint)->str:
 
 def load_original_application()->list[dict]:
     root=Path(__file__).resolve().parents[2]/'examples/paddleocr_document_app'
-    names=('ocr_client.py','normalizer.py','consumer.py','pipeline.py','contract.json','requirements-v2.txt','design.md','upgrade.md')
+    names=('ocr_client.py','normalizer.py','consumer.py','pipeline.py','contract.json','requirements-v2.txt',
+           'design.md','upgrade.md','tests/test_contract.py')
     manifest=json.loads((root/'application/application_manifest.json').read_text(encoding='utf-8'))
     registry={r['path']:r['sha256'] for r in manifest['files']}
     rows=[]

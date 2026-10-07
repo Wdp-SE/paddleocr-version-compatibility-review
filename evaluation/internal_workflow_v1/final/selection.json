@@ -1,0 +1,7 @@
+{
+  "development_candidate": "scoped_384_k8",
+  "selected": "scoped_384",
+  "validation_gate_passed": true,
+  "holdout_status_at_selection": "NOT_OPENED",
+  "rule": "rank by dev complete coverage, fewer wrong modules, fewer evidence blocks; choose first candidate passing validation against legacy, otherwise retain legacy. Open holdout once without reselection. No latency objective."
+}

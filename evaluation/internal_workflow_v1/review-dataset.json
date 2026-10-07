@@ -1,0 +1,125 @@
+{
+  "label_origin": "developer-authored structural probes; no independent blind audit",
+  "cases": [
+    {
+      "id": "legacy-inline",
+      "file": {
+        "path": "application/main.py",
+        "content": "from paddleocr import PaddleOCR\ne=PaddleOCR()\nr=e.ocr(\"page.png\")\ntext=r[0][0][1][0]\n"
+      },
+      "expected_rules": [
+        "legacy_ocr_result"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "legacy-function",
+      "file": {
+        "path": "application/main.py",
+        "content": "from paddleocr import PaddleOCR\ndef scan(path):\n    engine=PaddleOCR()\n    pages=engine.ocr(path)\n    return pages[0][0][1][0]\n"
+      },
+      "expected_rules": [
+        "legacy_ocr_result"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "legacy-alias",
+      "file": {
+        "path": "application/main.py",
+        "content": "from paddleocr import PaddleOCR as Engine\nengine=Engine()\nresult=engine.ocr(\"page.png\")\nvalue=result[0][0][1][0]\n"
+      },
+      "expected_rules": [
+        "legacy_ocr_result"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "legacy-loop",
+      "file": {
+        "path": "application/main.py",
+        "content": "from paddleocr import PaddleOCR\nengine=PaddleOCR()\nresult=engine.ocr(\"page.png\")\nfor page in result:\n    for line in page:\n        value=line[1][0]\n"
+      },
+      "expected_rules": [
+        "legacy_ocr_result"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "structure-direct",
+      "file": {
+        "path": "application/main.py",
+        "content": "from paddleocr import PPStructure\nengine=PPStructure()\nresult=engine(\"page.png\")\n"
+      },
+      "expected_rules": [
+        "removed_ppstructure"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "structure-alias",
+      "file": {
+        "path": "application/main.py",
+        "content": "from paddleocr import PPStructure as Layout\nengine=Layout()\nresult=engine(\"page.png\")\n"
+      },
+      "expected_rules": [
+        "removed_ppstructure"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "basic-direct",
+      "file": {
+        "path": "application/main.py",
+        "content": "from paddleocr import PaddleOCR\nengine=PaddleOCR()\nresult=engine.ocr(\"page.png\")\n"
+      },
+      "expected_rules": [],
+      "expect_gap": false
+    },
+    {
+      "id": "basic-function",
+      "file": {
+        "path": "application/main.py",
+        "content": "from paddleocr import PaddleOCR\ndef scan(image):\n    engine=PaddleOCR()\n    return engine.ocr(image)\n"
+      },
+      "expected_rules": [],
+      "expect_gap": false
+    },
+    {
+      "id": "unrelated-list",
+      "file": {
+        "path": "application/main.py",
+        "content": "records=[[[(\"hello\",0.9)]]]\ntext=records[0][0][0][0]\n"
+      },
+      "expected_rules": [],
+      "expect_gap": true
+    },
+    {
+      "id": "shadow-sdk",
+      "file": {
+        "path": "application/main.py",
+        "content": "from paddleocr import PaddleOCR\nPaddleOCR=object\nengine=PaddleOCR()\n"
+      },
+      "expected_rules": [],
+      "expect_gap": true
+    },
+    {
+      "id": "dynamic-load",
+      "file": {
+        "path": "application/main.py",
+        "content": "import importlib\nm=importlib.import_module(\"paddleocr\")\nengine=getattr(m,\"PaddleOCR\")()\nresult=engine.ocr(\"page.png\")\n"
+      },
+      "expected_rules": [],
+      "expect_gap": true
+    },
+    {
+      "id": "dynamic-kwargs",
+      "file": {
+        "path": "application/main.py",
+        "content": "from paddleocr import PaddleOCR\nsettings=load_settings()\nengine=PaddleOCR(**settings)\n"
+      },
+      "expected_rules": [],
+      "expect_gap": true
+    }
+  ]
+}

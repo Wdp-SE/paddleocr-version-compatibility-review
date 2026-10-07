@@ -450,13 +450,14 @@ def _execute_public_search(index, payload, generator, *, top_k: int) -> dict:
         base_index=getattr(index,'base_index',index)
         versions=tuple(sorted(base_index._version_members(payload.version) or base_index.manifest['versions']))
         plan=plan_query(payload.query,versions=versions)
-        strategy=payload.evidence_strategy;budget=payload.candidate_budget;use_context=True
+        strategy=payload.evidence_strategy;budget=payload.candidate_budget;use_context=True;window_budget=384
         if strategy=='auto':
             rag_release=load_rag_release(Path(base_index.root))
             release=load_impact_release(Path(base_index.root))
             strategy='contextual_bm25'
             if rag_release:
                 strategy=rag_release['selected_strategy'];budget=rag_release['candidate_budget']
+                use_context=rag_release.get('use_context',True);window_budget=rag_release.get('window_budget',384)
             elif release:
                 selected=release['selected_strategy']
                 strategy,budget=release['configs'][selected]
@@ -464,7 +465,7 @@ def _execute_public_search(index, payload, generator, *, top_k: int) -> dict:
             if strategy=='bm25':
                 baseline=payload.model_copy(update={'retrieval_policy':'bm25'})
                 return _execute_public_search(index,baseline,generator,top_k=top_k)
-        result=configured_evidence_search(index,strategy,use_context=use_context).search(
+        result=configured_evidence_search(index,strategy,use_context=use_context,window_budget=window_budget).search(
             plan,top_k=top_k,candidate_budget=budget,strategy=strategy,
             ranker=getattr(generator,'rerank_candidate_ids',None))
         details=result['diagnostics']; hits=result['results']
