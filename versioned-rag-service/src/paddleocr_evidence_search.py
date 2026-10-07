@@ -16,12 +16,14 @@ _CACHE={}
 _LOCK=threading.Lock()
 
 
-def configured_evidence_search(index,strategy='contextual_bm25',*,use_context=True):
+def configured_evidence_search(index,strategy='contextual_bm25',*,use_context=True,window_budget=384):
+    if type(window_budget) is not int or window_budget not in (256,384):
+        raise ValueError('unsupported evidence window budget')
     base=getattr(index,'base_index',index)
     if base.manifest.get('workspace_id')!='paddleocr':raise ValueError('wrong evidence workspace')
     fingerprint=hashlib.sha256(''.join(c['chunk_id']+c['content'] for c in base.chunks).encode()).hexdigest()
     from src.paddleocr_quality import asset_identity
-    key=(fingerprint,strategy,use_context,asset_identity(os.environ.get('PADDLEOCR_EMBEDDING_PATH','')),asset_identity(os.environ.get('PADDLEOCR_RERANKER_PATH','')))
+    key=(fingerprint,strategy,use_context,window_budget,asset_identity(os.environ.get('PADDLEOCR_EMBEDDING_PATH','')),asset_identity(os.environ.get('PADDLEOCR_RERANKER_PATH','')))
     with _LOCK:
         if key in _CACHE:return _CACHE[key]
         encoder=scorer=count=None
@@ -32,11 +34,13 @@ def configured_evidence_search(index,strategy='contextual_bm25',*,use_context=Tr
                 encoder,scorer,count=model.encoder,model.scorer,getattr(model,'token_count',None)
             except ModelUnavailable:
                 pass
-        views=build_views(base.chunks,token_count=count or len,max_tokens=384)
+        views=build_views(base.chunks,token_count=count or len,max_tokens=window_budget)
         if not use_context:
             views=[{**v,'context_char_end':0,'retrieval_text':v['content']} for v in views]
         search=EvidenceSearch(base,views,encoder=encoder,scorer=scorer,token_count=count)
         search.model_identity={'embedding':key[-2],'reranker':key[-1],'attention':'eager'}
+        search.window_budget = window_budget
+        search.window_unit = 'model_tokens' if count else 'characters'
         _CACHE[key]=search
         return search
 
@@ -85,6 +89,8 @@ class EvidenceSearch:
               'eligible_windows':len(eligible),'rerank_calls':0,'external_model_calls':0,
               'fallback_reason':None,'window_failures':[]}
         diag['model_identity']=getattr(self,'model_identity',{'embedding':'NOT_CONFIGURED','reranker':'NOT_CONFIGURED'})
+        diag['window_budget']=getattr(self,'window_budget',None)
+        diag['window_unit']=getattr(self,'window_unit','caller_supplied')
         if plan.get('status')!='READY':
             return {'results':[],'requirements':plan.get('requirements',[]),'diagnostics':{**diag,'status':'NEEDS_CLARIFICATION'}}
         queries=list(dict.fromkeys([plan['original_query']]+[r['query'] for r in plan['requirements']]+plan.get('proposed_queries',[])))[:9]

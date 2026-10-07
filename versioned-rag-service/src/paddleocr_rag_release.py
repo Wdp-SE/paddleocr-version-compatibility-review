@@ -4,6 +4,10 @@ import json
 from pathlib import Path
 
 def load_rag_release(corpus: Path):
+    from src.paddleocr_internal_release import load_internal_release
+    current=load_internal_release(corpus)
+    if current is not None:
+        return current
     root=Path(__file__).resolve().parents[2]
     folder=root/'evaluation/paddleocr_quality_v4/final'
     try:

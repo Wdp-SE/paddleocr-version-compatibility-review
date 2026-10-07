@@ -7,6 +7,43 @@ import json
 
 VERSIONS=('v2.9.1','v3.0.0')
 
+# These are source-grounded contract anchors, not a semantic correctness score.
+_FACTS = {
+    'legacy_ocr_result': {
+        'v2.9.1': [{'path': 'paddleocr.py', 'tokens': ['ocr_res.append', 'zip(dt_boxes, rec_res)']}],
+        'v3.0.0': [{'path': 'paddleocr/_pipelines/ocr.py', 'tokens': ['def ocr(', 'self.predict']},
+                   {'path': 'docs/version3.x/pipeline_usage/OCR.md', 'tokens': ['rec_texts', 'rec_scores']}],
+    },
+    'removed_ppstructure': {
+        'v2.9.1': [{'path': 'paddleocr.py', 'tokens': ['class PPStructure(']}],
+        'v3.0.0': [{'path': 'docs/update/upgrade_notes.md', 'tokens': ['PPStructure', 'PPStructureV3', '移除']}],
+    },
+    'basic_ocr_surface': {
+        'v2.9.1': [{'path': 'paddleocr.py', 'tokens': ['def ocr(']}],
+        'v3.0.0': [{'path': 'paddleocr/_pipelines/ocr.py', 'tokens': ['def ocr(', 'self.predict']}],
+    },
+}
+
+
+def _assess_content(check, version, rows):
+    facts = check.get('required_facts', {}).get(version, [])
+    tokens = check.get('required_tokens', {}).get(version, [])
+    if not facts and tokens:
+        facts = [{'tokens': tokens}]
+    if not rows:
+        return 'NO_VERIFIED_SOURCE', 'required_source_not_verified', []
+    if not facts:
+        return 'SOURCE_CANDIDATES_ONLY', 'content_criteria_not_defined', []
+    missing = []
+    for fact in facts:
+        content = '\n'.join(r.get('content', '') for r in rows
+                            if not fact.get('path') or r.get('document_path', r.get('path')) == fact['path'])
+        absent = [token for token in fact['tokens'] if token not in content]
+        if absent:
+            missing.append({'path': fact.get('path'), 'tokens': absent})
+    return ('INSUFFICIENT_CONTENT', 'content_requirements_not_covered', missing) if missing else (
+        'REQUIREMENTS_COVERED', None, [])
+
 
 def _digest(value):
     return hashlib.sha256(json.dumps(value,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).hexdigest()
@@ -20,7 +57,8 @@ def build_checks(report:dict)->list[dict]:
         seen.add(key)
         checks.append({'check_id':f'check-{len(checks)+1}','query':finding['title']+' '+finding['desired_check'][:400],
                        'versions':list(VERSIONS),'finding_ids':[f['finding_id'] for f in report['findings'] if f['rule_id']==key],
-                       'application':finding['application'],'required_tokens':{}})
+                       'application':finding['application'],'required_tokens':{},
+                       'required_facts':copy.deepcopy(_FACTS.get(key, {}))})
     for gap in report.get('gaps',[]):
         if len(checks)>=12:break
         key=gap['code']
@@ -56,13 +94,43 @@ def investigate(checks:list[dict],gateway,*,clock,deadline_seconds:float=240,pla
             or not 0<=state['elapsed_seconds']<=240):
         raise ValueError('investigation resume identity or budget mismatch')
     started=clock(); prior_elapsed=state['elapsed_seconds']; trace=[]; checked={};unresolved=[]
-    stop='COMPLETED'; queue=list(checks); seen_queries=set(); processed=0
+    parents={c['check_id']:c for c in checks}
+    if len(parents) != len(checks):
+        # Repeated identical checks share one business obligation.
+        if any(c != parents[c['check_id']] for c in checks):raise ValueError('ambiguous check identity')
+    outcomes={}; accumulated={}
+    stop='COMPLETED'; queue=list(parents.values()); seen_queries=set(); processed=0
+    restored_plans=state.get('planned_checks', [])
+    if not isinstance(restored_plans,list) or len(restored_plans)>12:raise ValueError('invalid saved plans')
+    state['planned_checks']=[]
+    def enqueue(parent_id, query, versions, suffix):
+        parent=parents.get(parent_id)
+        if (parent is None or not isinstance(query,str) or not 0<len(query)<=4000
+                or not isinstance(versions,list) or not versions
+                or any(v not in parent['versions'] for v in versions)):return
+        proposal={**parent,'check_id':f'{parent_id}-{suffix}', 'parent_check_id':parent_id,
+                  'query':query,'versions':list(dict.fromkeys(versions))}
+        if any(r['query']==query and r['versions']==proposal['versions'] for r in queue):return
+        queue.append(proposal);state['planned_checks'].append(proposal)
+    for i,row in enumerate(restored_plans):
+        if not isinstance(row,dict):raise ValueError('invalid saved plan')
+        enqueue(row.get('parent_check_id'),row.get('query'),row.get('versions'),f'saved{i}')
+    def unresolved_items():
+        result=[]
+        for parent_id,parent in parents.items():
+            for version in parent['versions']:
+                outcome=outcomes.get((parent_id,version),{})
+                if outcome.get('status')!='REQUIREMENTS_COVERED':
+                    result.append({'check_id':parent_id,'versions':[version],
+                                   'reason':outcome.get('reason','ROUND_OR_ITEM_BUDGET'),
+                                   'query':parent['query'], 'missing_facts':outcome.get('missing_facts',[])})
+        return result
     def remaining():return max(0,deadline_seconds-prior_elapsed-(clock()-started))
     for round_no in range(1,4):
         batch=queue[:4];queue=queue[4:]
         if not batch:break
         for batch_index,check in enumerate(batch):
-            processed+=1; resolved_versions=[]
+            processed+=1; parent_id=check.get('parent_check_id',check['check_id'])
             if on_progress:on_progress({'stage':'official_lookup','round':round_no,'check_id':check['check_id'],'processed':processed,'elapsed_seconds':round(prior_elapsed+clock()-started,2)})
             for version in dict.fromkeys(check['versions']):
                 if cancelled and cancelled():stop='CANCELLED';break
@@ -83,48 +151,52 @@ def investigate(checks:list[dict],gateway,*,clock,deadline_seconds:float=240,pla
                     except Exception as exc:
                         trace.append({'check_id':check['check_id'],'version':version,'status':'TOOL_FAILED',
                                       'reason':type(exc).__name__,'query':check['query']});continue
-                good=[]
+                good=[];verified_rows=[]
                 for hit in cached.get('results',[])[:20]:
                     try:
                         if validate_evidence is None:raise ValueError('source validator not configured')
                         if hit.get('version')!=version:raise ValueError('wrong version')
                         original=validate_evidence(hit,remaining())
                         if not isinstance(original,dict) or original.get('chunk_id')!=hit.get('chunk_id'):raise ValueError('identity')
-                        if any(t not in original.get('content','') for t in check.get('required_tokens',{}).get(version,[])):continue
                         checked[original['chunk_id']]=original;good.append(original['chunk_id'])
+                        verified_rows.append(original)
                     except Exception:
                         trace.append({'check_id':check['check_id'],'version':version,'status':'EVIDENCE_VALIDATION_REQUIRED',
                                       'query':check['query'],'evidence_id':hit.get('chunk_id')})
-                if good:resolved_versions.append(version)
+                evidence = accumulated.setdefault((parent_id,version),{})
+                evidence.update({row['chunk_id']:row for row in verified_rows})
+                good=list(evidence)
+                assessment,reason,missing_facts=_assess_content(parents[parent_id],version,list(evidence.values()))
+                outcome={'check_id':parent_id,'version':version,'status':assessment,'reason':reason,
+                         'missing_facts':missing_facts,'evidence_ids':good}
+                if outcomes.get((parent_id,version),{}).get('status')!='REQUIREMENTS_COVERED':
+                    outcomes[(parent_id,version)]=outcome
                 trace.append({'check_id':check['check_id'],'version':version,'query':check['query'],
                               'status':'SOURCE_VERIFIED_CANDIDATES' if good else 'NO_VERIFIED_EVIDENCE',
+                              'content_status':assessment, 'missing_facts':missing_facts,
                               'evidence_ids':good,'cached':key in (resume or {}).get('completed',{})})
-            missing=[v for v in check['versions'] if v not in resolved_versions]
-            if missing:unresolved.append({'check_id':check['check_id'],'versions':missing,
-                                         'reason':'required_source_not_verified','query':check['query']})
             if stop in ('CANCELLED','DEADLINE_EXCEEDED','DEADLINE_NOT_ENFORCEABLE','SEARCH_BUDGET_EXHAUSTED'):
                 queue=batch[batch_index+1:]+queue
                 break
         if stop in ('CANCELLED','DEADLINE_EXCEEDED','DEADLINE_NOT_ENFORCEABLE','SEARCH_BUDGET_EXHAUSTED'):break
-        if planner and unresolved and remaining()>0 and state['planner_calls']<3 and processed+len(queue)<12:
+        unresolved=unresolved_items()
+        replannable=[r for r in unresolved if r['reason'] in ('required_source_not_verified','content_requirements_not_covered')]
+        if planner and replannable and remaining()>0 and state['planner_calls']<3 and processed+len(queue)<12 and round_no<3:
             try:
                 if not _bounded_method(planner):raise ValueError('unbounded planner')
                 state['planner_calls']+=1
-                proposal=planner(unresolved=copy.deepcopy(unresolved),request_timeout=remaining())
-                parents={c['check_id']:c for c in checks}
+                proposal=planner(unresolved=copy.deepcopy(replannable),request_timeout=remaining())
+                if not isinstance(proposal,list):raise ValueError('invalid planner result')
                 for row in proposal[:min(4,12-processed-len(queue))]:
-                    parent=parents.get(row.get('parent_check_id'))
-                    if parent is None or not row.get('versions') or not set(row['versions']).issubset(parent['versions']):continue
-                    query=row.get('query')
-                    if not isinstance(query,str) or not 0<len(query)<=4000:continue
-                    queue.append({**parent,'check_id':f"{parent['check_id']}-r{round_no}",'query':query,'versions':row['versions']})
+                    if isinstance(row,dict):enqueue(row.get('parent_check_id'),row.get('query'),row.get('versions'),f'r{round_no}')
                 trace.append({'status':'PLANNER_COMPLETED','round':round_no,'proposed_count':len(proposal)})
             except Exception:
                 trace.append({'status':'PLANNER_FAILED','round':round_no})
-    for c in queue:unresolved.append({'check_id':c['check_id'],'versions':c['versions'],'reason':'ROUND_OR_ITEM_BUDGET'})
+    unresolved=unresolved_items()
     state['elapsed_seconds']=min(240,max(0,prior_elapsed+clock()-started))
     if unresolved and stop=='COMPLETED':stop='NO_NEW_EVIDENCE'
     return {'schema_version':1,'stop_reason':stop,'trace':trace,'checked_evidence':list(checked.values()),
+            'check_assessments':list(outcomes.values()),
             'unresolved':unresolved,'search_calls':state['search_calls'],'planner_calls':state['planner_calls'],
             'elapsed_seconds':state['elapsed_seconds'],'resume':state,
             'assessment':'source_verified_candidates_not_confirmed_business_impact'}

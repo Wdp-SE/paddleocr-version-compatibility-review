@@ -582,12 +582,32 @@
       "publisher": "PaddlePaddle",
       "source_format": "markdown",
       "document_family": "deployment"
+    },
+    {
+      "source_id": "v2-9-1-tests-test-paddleocr-api-py-185bd0d0",
+      "version": "v2.9.1",
+      "path": "tests/test_paddleocr_api.py",
+      "sha256": "3a15c3009da02a6f9b2d4f5ea730a23cd17230bd7174fdfb841e067739c39143",
+      "git_blob_sha": "0af794d2b8ed62eb8dfc78c65d1304c72f07f962",
+      "publisher": "PaddlePaddle",
+      "source_format": "python",
+      "document_family": "api_test"
+    },
+    {
+      "source_id": "v3-0-0-tests-pipelines-test-ocr-py-e61d8a41",
+      "version": "v3.0.0",
+      "path": "tests/pipelines/test_ocr.py",
+      "sha256": "55b9d4c5c92123d114e701230bf5e1a282097acdd8e383fc5166d84b07e31a51",
+      "git_blob_sha": "88e6f7826d1eda698fe6eb7e5c6b4545225dabb1",
+      "publisher": "PaddlePaddle",
+      "source_format": "python",
+      "document_family": "api_test"
     }
   ],
-  "source_count": 58,
+  "source_count": 60,
   "formats": {
     "markdown": 44,
-    "python": 9,
+    "python": 11,
     "yaml": 5
   },
   "required_families": [

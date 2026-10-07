@@ -1,0 +1,341 @@
+{
+  "label_origin": "developer-authored structural probes; no independent blind audit",
+  "cases": [
+    {
+      "id": "legacy-inline",
+      "files": [
+        {
+          "path": "application/main.py",
+          "content": "from paddleocr import PaddleOCR\ne=PaddleOCR()\nr=e.ocr(\"page.png\")\ntext=r[0][0][1][0]\n"
+        }
+      ],
+      "expected_rules": [
+        "legacy_ocr_result"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "legacy-function",
+      "files": [
+        {
+          "path": "application/main.py",
+          "content": "from paddleocr import PaddleOCR\ndef scan(path):\n    engine=PaddleOCR()\n    pages=engine.ocr(path)\n    return pages[0][0][1][0]\n"
+        }
+      ],
+      "expected_rules": [
+        "legacy_ocr_result"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "legacy-alias",
+      "files": [
+        {
+          "path": "application/main.py",
+          "content": "from paddleocr import PaddleOCR as Engine\nengine=Engine()\nresult=engine.ocr(\"page.png\")\nvalue=result[0][0][1][0]\n"
+        }
+      ],
+      "expected_rules": [
+        "legacy_ocr_result"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "legacy-loop",
+      "files": [
+        {
+          "path": "application/main.py",
+          "content": "from paddleocr import PaddleOCR\nengine=PaddleOCR()\nresult=engine.ocr(\"page.png\")\nfor page in result:\n    for line in page:\n        value=line[1][0]\n"
+        }
+      ],
+      "expected_rules": [
+        "legacy_ocr_result"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "structure-direct",
+      "files": [
+        {
+          "path": "application/main.py",
+          "content": "from paddleocr import PPStructure\nengine=PPStructure()\nresult=engine(\"page.png\")\n"
+        }
+      ],
+      "expected_rules": [
+        "removed_ppstructure"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "structure-alias",
+      "files": [
+        {
+          "path": "application/main.py",
+          "content": "from paddleocr import PPStructure as Layout\nengine=Layout()\nresult=engine(\"page.png\")\n"
+        }
+      ],
+      "expected_rules": [
+        "removed_ppstructure"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "basic-direct",
+      "files": [
+        {
+          "path": "application/main.py",
+          "content": "from paddleocr import PaddleOCR\nengine=PaddleOCR()\nresult=engine.ocr(\"page.png\")\n"
+        }
+      ],
+      "expected_rules": [],
+      "expect_gap": false
+    },
+    {
+      "id": "basic-function",
+      "files": [
+        {
+          "path": "application/main.py",
+          "content": "from paddleocr import PaddleOCR\ndef scan(image):\n    engine=PaddleOCR()\n    return engine.ocr(image)\n"
+        }
+      ],
+      "expected_rules": [],
+      "expect_gap": false
+    },
+    {
+      "id": "unrelated-list",
+      "files": [
+        {
+          "path": "application/main.py",
+          "content": "records=[[[(\"hello\",0.9)]]]\ntext=records[0][0][0][0]\n"
+        }
+      ],
+      "expected_rules": [],
+      "expect_gap": true
+    },
+    {
+      "id": "shadow-sdk",
+      "files": [
+        {
+          "path": "application/main.py",
+          "content": "from paddleocr import PaddleOCR\nPaddleOCR=object\nengine=PaddleOCR()\n"
+        }
+      ],
+      "expected_rules": [],
+      "expect_gap": true
+    },
+    {
+      "id": "dynamic-load",
+      "files": [
+        {
+          "path": "application/main.py",
+          "content": "import importlib\nm=importlib.import_module(\"paddleocr\")\nengine=getattr(m,\"PaddleOCR\")()\nresult=engine.ocr(\"page.png\")\n"
+        }
+      ],
+      "expected_rules": [],
+      "expect_gap": true
+    },
+    {
+      "id": "dynamic-kwargs",
+      "files": [
+        {
+          "path": "application/main.py",
+          "content": "from paddleocr import PaddleOCR\nsettings=load_settings()\nengine=PaddleOCR(**settings)\n"
+        }
+      ],
+      "expected_rules": [],
+      "expect_gap": true
+    },
+    {
+      "id": "legacy-inline-with-consumer",
+      "files": [
+        {
+          "path": "application/ocr_client.py",
+          "content": "from paddleocr import PaddleOCR\ne=PaddleOCR()\nr=e.ocr(\"page.png\")\ntext=r[0][0][1][0]\n"
+        },
+        {
+          "path": "application/output.py",
+          "content": "def serialize(text):\n    return {\"text\": text}\n"
+        }
+      ],
+      "expected_rules": [
+        "legacy_ocr_result"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "legacy-function-with-consumer",
+      "files": [
+        {
+          "path": "application/ocr_client.py",
+          "content": "from paddleocr import PaddleOCR\ndef scan(path):\n    engine=PaddleOCR()\n    pages=engine.ocr(path)\n    return pages[0][0][1][0]\n"
+        },
+        {
+          "path": "application/output.py",
+          "content": "def serialize(text):\n    return {\"text\": text}\n"
+        }
+      ],
+      "expected_rules": [
+        "legacy_ocr_result"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "legacy-alias-with-consumer",
+      "files": [
+        {
+          "path": "application/ocr_client.py",
+          "content": "from paddleocr import PaddleOCR as Engine\nengine=Engine()\nresult=engine.ocr(\"page.png\")\nvalue=result[0][0][1][0]\n"
+        },
+        {
+          "path": "application/output.py",
+          "content": "def serialize(text):\n    return {\"text\": text}\n"
+        }
+      ],
+      "expected_rules": [
+        "legacy_ocr_result"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "legacy-loop-with-consumer",
+      "files": [
+        {
+          "path": "application/ocr_client.py",
+          "content": "from paddleocr import PaddleOCR\nengine=PaddleOCR()\nresult=engine.ocr(\"page.png\")\nfor page in result:\n    for line in page:\n        value=line[1][0]\n"
+        },
+        {
+          "path": "application/output.py",
+          "content": "def serialize(text):\n    return {\"text\": text}\n"
+        }
+      ],
+      "expected_rules": [
+        "legacy_ocr_result"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "structure-direct-with-consumer",
+      "files": [
+        {
+          "path": "application/ocr_client.py",
+          "content": "from paddleocr import PPStructure\nengine=PPStructure()\nresult=engine(\"page.png\")\n"
+        },
+        {
+          "path": "application/output.py",
+          "content": "def serialize(text):\n    return {\"text\": text}\n"
+        }
+      ],
+      "expected_rules": [
+        "removed_ppstructure"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "structure-alias-with-consumer",
+      "files": [
+        {
+          "path": "application/ocr_client.py",
+          "content": "from paddleocr import PPStructure as Layout\nengine=Layout()\nresult=engine(\"page.png\")\n"
+        },
+        {
+          "path": "application/output.py",
+          "content": "def serialize(text):\n    return {\"text\": text}\n"
+        }
+      ],
+      "expected_rules": [
+        "removed_ppstructure"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "wrapper-direct-consumer",
+      "files": [
+        {
+          "path": "application/ocr_client.py",
+          "content": "from paddleocr import PaddleOCR\ndef recognize(path):\n    engine=PaddleOCR()\n    return engine.ocr(path)\n"
+        },
+        {
+          "path": "application/main.py",
+          "content": "from .ocr_client import recognize\ndef process(path):\n    pages=recognize(path)\n    return pages[0][0][1][0]\n"
+        }
+      ],
+      "expected_rules": [
+        "legacy_ocr_result"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "wrapper-export-consumer",
+      "files": [
+        {
+          "path": "application/ocr_client.py",
+          "content": "from paddleocr import PaddleOCR\ndef recognize(path):\n    engine=PaddleOCR()\n    return engine.ocr(path)\n"
+        },
+        {
+          "path": "application/consumer.py",
+          "content": "from .ocr_client import recognize\ndef extract(image):\n    result=recognize(image)\n    return result[0][0][1][0]\n"
+        }
+      ],
+      "expected_rules": [
+        "legacy_ocr_result"
+      ],
+      "expect_gap": false
+    },
+    {
+      "id": "basic-with-contract",
+      "files": [
+        {
+          "path": "application/ocr_client.py",
+          "content": "from paddleocr import PaddleOCR\ndef recognize(path):\n    engine=PaddleOCR()\n    return engine.ocr(path)\n"
+        },
+        {
+          "path": "application/contracts/result.json",
+          "content": "{\"text\": \"string\", \"schema_version\": 1}"
+        }
+      ],
+      "expected_rules": [],
+      "expect_gap": false
+    },
+    {
+      "id": "basic-with-tests",
+      "files": [
+        {
+          "path": "application/ocr_client.py",
+          "content": "from paddleocr import PaddleOCR\ndef recognize(path):\n    engine=PaddleOCR()\n    return engine.ocr(path)\n"
+        },
+        {
+          "path": "application/tests/test_contract.py",
+          "content": "def test_empty_output():\n    result={\"text\": \"\"}\n    assert isinstance(result[\"text\"],str)\n"
+        }
+      ],
+      "expected_rules": [],
+      "expect_gap": false
+    },
+    {
+      "id": "missing-wrapper",
+      "files": [
+        {
+          "path": "application/main.py",
+          "content": "from .missing import recognize\ndef scan(path):\n    return recognize(path)\n"
+        }
+      ],
+      "expected_rules": [],
+      "expect_gap": true
+    },
+    {
+      "id": "basic-malformed-contract",
+      "files": [
+        {
+          "path": "application/ocr_client.py",
+          "content": "from paddleocr import PaddleOCR\ndef recognize(path):\n    engine=PaddleOCR()\n    return engine.ocr(path)\n"
+        },
+        {
+          "path": "application/contracts/result.json",
+          "content": "{\"text\":"
+        }
+      ],
+      "expected_rules": [],
+      "expect_gap": true
+    }
+  ]
+}

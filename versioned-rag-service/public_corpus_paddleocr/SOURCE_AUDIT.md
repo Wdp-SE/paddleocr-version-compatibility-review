@@ -2,7 +2,7 @@
 
 PaddleOCR 官方中文资料与代码/配置辅助证据，固定至 v2.9.1 和 v3.0.0 两个提交；默认查询最新已收录版本 v3.0.0。
 
-收录 58 个版本化文件：44 篇中文 Markdown、9 个 Python 契约、5 个 YAML 配置。代码与 YAML 单独计数。
+收录 60 个版本化文件：44 篇中文 Markdown、11 个 Python 契约、5 个 YAML 配置。代码与 YAML 单独计数。
 
 Markdown 保留表格、代码块；Python 使用 AST 定义边界；YAML 保留顶层映射。块长度为软上限，完整大表格或函数可以超过它。每个块内容是原文行切片。
 
@@ -10,7 +10,7 @@ Markdown 保留表格、代码块；Python 使用 AST 定义边界；YAML 保留
 
 Apache-2.0；PaddlePaddle 为原作者。文档中的图片、模型和数据链接仅保留文字，不下载媒体、权重、数据。v3.0.0 的历史 docs/version2.x 不收录，不能借发布提交误判旧 API 的适用版本。
 
-公开运行默认 BM25。更大规模的 BGE 与 cross-encoder 重排实验依赖单独下载的模型资产，未随公网服务部署，不能作为线上成绩展示；只有原文、代码、数据和模型身份均匹配且通过留出门槛的报告才可改变默认策略。索引中的 dense_vectors 是字符哈希基线。144 个图片引用仍未提取，不能把链接当作图像知识或声称已经运行 OCR。
+当前为新语料，尚未建立冻结评测性能数字。索引中的 dense_vectors 是字符哈希基线；默认策略为 BM25。图片证据是与 manifest 绑定的空审核侧车，不代表运行过 OCR。
 
 | 版本 | 类型 | 官方固定提交文件 | 原始字节 SHA-256 |
 | --- | --- | --- | --- |
@@ -72,3 +72,5 @@ Apache-2.0；PaddlePaddle 为原作者。文档中的图片、模型和数据链
 | v2.9.1 | markdown | [算法推理与模型导出](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/algorithm_inference.md) | `5471b532b2308b3e4fb4bf7f84ba6b29ac6850b57f154df10bfbc17f6fedb35c` |
 | v3.0.0 | markdown | [获取 ONNX 模型](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/deployment/obtaining_onnx_models.md) | `d5374680da2c5c70653959b088222a08acbded2d72babaefadead050d6e797e1` |
 | v3.0.0 | markdown | [端侧部署](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/deployment/on_device_deployment.md) | `e4b6e90aa8ae55b99795a576f6888e693bf9d25b31f98478693a0c240d668e3e` |
+| v2.9.1 | python | [OCR 官方 API 测试（仅参考，未执行）](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/tests/test_paddleocr_api.py) | `3a15c3009da02a6f9b2d4f5ea730a23cd17230bd7174fdfb841e067739c39143` |
+| v3.0.0 | python | [OCR 官方 API 测试（仅参考，未执行）](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py) | `55b9d4c5c92123d114e701230bf5e1a282097acdd8e383fc5166d84b07e31a51` |

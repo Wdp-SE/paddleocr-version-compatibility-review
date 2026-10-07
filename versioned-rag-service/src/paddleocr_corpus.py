@@ -42,7 +42,7 @@ PADDLEOCR_SOURCE_PATHS = {
         "ppstructure/docs/quickstart.md", "ppstructure/docs/inference.md",
         "ppstructure/layout/README_ch.md", "ppstructure/table/README_ch.md",
         "ppstructure/recovery/README_ch.md", "ppstructure/return_word_pos.md",
-        "paddleocr.py", "__init__.py", "ppstructure/predict_system.py",
+        "paddleocr.py", "__init__.py", "ppstructure/predict_system.py", "tests/test_paddleocr_api.py",
         "configs/det/ch_PP-OCRv4/ch_PP-OCRv4_det_student.yml",
         "configs/rec/PP-OCRv4/ch_PP-OCRv4_rec.yml", "configs/table/SLANet_ch.yml",
     }),
@@ -68,7 +68,7 @@ PADDLEOCR_SOURCE_PATHS = {
         "docs/version3.x/paddleocr_and_paddlex.md",
         "paddleocr/__init__.py", "paddleocr/_pipelines/__init__.py",
         "paddleocr/_pipelines/ocr.py", "paddleocr/_pipelines/base.py",
-        "paddleocr/_pipelines/pp_structurev3.py", "paddleocr/_common_args.py",
+        "paddleocr/_pipelines/pp_structurev3.py", "paddleocr/_common_args.py", "tests/pipelines/test_ocr.py",
         "configs/table/SLANet_plus.yml", "configs/table/SLANeXt_wired.yml",
     }),
 }

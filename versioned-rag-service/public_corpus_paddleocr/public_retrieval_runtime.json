@@ -8,5 +8,5 @@
   "max_facets": 4,
   "rrf_k": 60,
   "image_top_k": 5,
-  "corpus_manifest_sha256": "1866a6622e55625d934ec84f4c803a236768314867b8ff07dfa77588848340c0"
+  "corpus_manifest_sha256": "2b817e625837886102bb30153238f262e759d19c2f16a455372cf94c9b145a0c"
 }

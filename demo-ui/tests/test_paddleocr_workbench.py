@@ -113,7 +113,7 @@ def test_identical_input_rerun_preserves_active_background_job(client,monkeypatc
     finally:release.set()
 
 
-def test_home_and_query_offer_paddleocr_latest_included_scope_without_old_recipes(client):
+def test_home_shows_latest_but_query_follows_application_dependency(client):
     app = AppTest.from_file(APP, default_timeout=30).run()
     assert not app.exception
     assert any(item.value == "PaddleOCR 文档处理应用研发工作台" for item in app.title)
@@ -121,7 +121,14 @@ def test_home_and_query_offer_paddleocr_latest_included_scope_without_old_recipe
     assert "v3.0.0" in visible(app) and "最新已收录" in visible(app)
     app.button(key="nav_版本检索与问答").click().run()
     assert not app.exception
-    assert app.selectbox(key="official_version").value == "v3.0.0"
+    assert app.selectbox(key="official_version").value == "v2.9.1"
+    assert app.selectbox(key='official_version').disabled
+    app.radio(key='internal_query_mode').set_value('target').run()
+    assert app.selectbox(key='official_version').value == 'v3.0.0'
+    app.radio(key='internal_query_mode').set_value('manual').run()
+    app.selectbox(key='official_version').select('v2.9.1').run()
+    app.run()
+    assert app.selectbox(key='official_version').value == 'v2.9.1'
     assert app.selectbox(key="official_retrieval_policy").options == ["BM25 基线（默认）"]
     assert "PP-Human" not in visible(app)
 
@@ -296,3 +303,43 @@ def test_gateway_posts_only_bounded_request_body_and_keeps_session_header():
     assert method == "POST" and url.endswith("/public/compatibility-review")
     assert kwargs["json"] == {"source_version": "v2.9.1", "target_version": "v3.0.0", "files": files}
     assert kwargs["headers"]["X-Demo-Session-ID"] == "session_12345678"
+
+
+def test_risk_disposition_hold_is_persisted_without_runtime_approval(client):
+    _, temp=client
+    app=open_review()
+    app.button(key='ocr_run_review').click().run()
+    assert not app.exception
+    continuation=next(b for b in app.button if b.label=='人工记录：继续升级流程')
+    assert continuation.disabled  # no disposition or regression logs submitted
+    next(b for b in app.button if b.label=='人工记录：暂缓升级').click().run()
+    assert not app.exception
+    records=SQLiteReviewAudit(temp/'audit.sqlite3').list_recent(session_id=app.session_state['official_session_id'])
+    assert records[0]['event_type']=='upgrade_disposition'
+    assert records[0]['upgrade_decision']=='hold'
+    assert records[0]['runtime_verified'] is False
+    assert 'ocr_disposition_state' in app.session_state
+    app.text_area(key='ocr_application_content').set_value('from paddleocr import PaddleOCR\n').run()
+    assert not app.exception
+    assert 'ocr_disposition_state' not in app.session_state
+
+
+def test_application_context_change_invalidates_bound_review(client):
+    app=open_review()
+    app.button(key='ocr_run_review').click().run()
+    assert not app.exception
+    assert app.session_state['ocr_compatibility_review']['application_context']['application_version'] is None
+    app.text_input(key='ocr_change_reason').set_value('替换底层 OCR 依赖，保持 JSON 输出契约').run()
+    assert not app.exception
+    assert 'ocr_compatibility_review' not in app.session_state
+
+
+def test_benchmark_labels_partial_neural_execution_as_fallback(client,monkeypatch):
+    metrics={'complete_count':15,'count':24,'wrong_module_count':52,'wrong_version_count':0}
+    release={'selected_strategy':'contextual_bm25','limitations':'混合执行不是稳定重排成绩',
+        'retrieval':{'bge_rerank':{'dev':{'metrics':metrics,'execution':'重排 22/24；回退 2'}}}}
+    monkeypatch.setattr(PublicKnowledgeClient,'workspace',lambda self:{**WORKSPACE,'rag_quality_evaluation':release})
+    app=AppTest.from_file(APP).run()
+    app.button(key='nav_检索评测').click().run()
+    assert not app.exception
+    assert '回退 2' in app.dataframe[0].value.to_string(index=False)

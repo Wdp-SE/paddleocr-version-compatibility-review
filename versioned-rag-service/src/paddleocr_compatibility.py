@@ -9,6 +9,7 @@ from __future__ import annotations
 import ast
 import hashlib
 import io
+import json
 import re
 import tokenize
 from collections import Counter, deque
@@ -530,17 +531,22 @@ def review_compatibility(index, *, source_version: str, target_version: str, fil
     if (source_version, target_version) != ("v2.9.1", "v3.0.0"):
         raise ValueError("unsupported PaddleOCR version pair; expected v2.9.1 to v3.0.0")
     evidence, application_files = _Evidence(index), _files(files)
+    from src.paddleocr_application_roles import application_role, regression_requirements
+    for file in application_files:
+        file['role'] = application_role(file['path'], file['content'])
     report = {
         "schema_version": 1, "project_id": "paddleocr", "workspace_id": "paddleocr",
         "source_version": source_version, "target_version": target_version,
         "status": "needs_verification", "runtime_verified": False, "model_call_count": 0,
-        "files": [{"path": f["path"], "sha256": f["sha256"], "line_count": len(f["lines"])} for f in application_files],
+        "files": [{"path": f["path"], "sha256": f["sha256"], "line_count": len(f["lines"]),
+                   "role": f['role']} for f in application_files],
         "findings": [], "gaps": [],
         "verification_steps": [
             "开发者审核每个应用位置与固定版本官方证据，确认升级调整。",
             "在目标依赖环境执行真实扫描文档推理；核对模型加载、文本/版面质量、空页、多页和下游结果契约。静态审查不等于实际推理验证。",
         ],
     }
+    any_usage = False
     for file in application_files:
         analyzer = _Analyzer(file, evidence, report)
         if PurePosixPath(file["path"]).suffix.casefold() != ".py":
@@ -549,7 +555,14 @@ def review_compatibility(index, *, source_version: str, target_version: str, fil
             matches = re.findall(r"(?im)\bpaddleocr\s*==\s*(v?\d+\.\d+\.\d+)\b", file["content"])
             if any(_version(match) != source_version for match in matches):
                 analyzer.gap("dependency_version_mismatch", "配置声明的 PaddleOCR 依赖与审查源版本不一致。", node)
-            analyzer.gap("unreviewed_configuration", "配置仅作为受限文本检查依赖声明；未加载 YAML 对象或证明完整配置迁移兼容。", node)
+            if file['role'] == 'output_contract':
+                try:
+                    contract = json.loads(file['content'])
+                    if not isinstance(contract, dict):raise ValueError('contract must be an object')
+                except (ValueError, RecursionError):
+                    analyzer.gap('invalid_output_contract', '输出契约不是可解析的 JSON 对象，无法据此制定验收。', node)
+            elif file['role'] in ('runtime_configuration', 'dependency_manifest'):
+                analyzer.gap("unreviewed_configuration", "已识别配置/依赖声明；未证明完整环境及配置迁移兼容。", node)
             continue
         try:
             tree = _tree(file["content"])
@@ -560,8 +573,14 @@ def review_compatibility(index, *, source_version: str, target_version: str, fil
             continue
         analyzer.prepare(tree.body)
         analyzer.block(tree.body, {})
-        if not analyzer.ocr_seen:
-            analyzer.gap("no_resolved_paddleocr_usage", "未识别到可证明的 PaddleOCR 构造及调用；空发现不能作为兼容证明。", tree)
+        any_usage = any_usage or analyzer.ocr_seen
+        if not analyzer.ocr_seen and file['role'] == 'sdk_call_code':
+            analyzer.gap("no_resolved_paddleocr_usage", "存在 SDK 导入但未识别到可证明的构造及调用；不能作为兼容证明。", tree)
+    if not any_usage and not any(g['code'] == 'no_resolved_paddleocr_usage' for g in report['gaps']):
+        first = application_files[0]
+        node = ast.Constant(value=None);node.lineno = node.end_lineno = 1
+        _Analyzer(first, evidence, report).gap('no_resolved_paddleocr_usage',
+            '提交范围未识别到可证明的 PaddleOCR 调用；需要补充应用入口，不能判为兼容。', node)
     from src.paddleocr_application_graph import analyze_application, trace_impacts
     graph=analyze_application(files)
     report.update(impact_schema_version=1,application_graph=graph,
@@ -576,11 +595,7 @@ def review_compatibility(index, *, source_version: str, target_version: str, fil
                                  'snippet':'\n'.join(loc['excerpt'].splitlines()[:4])[:600]}
         graph_gaps.append(item)
     report['gaps']=(report['gaps']+graph_gaps)[:MAX_GAPS]
-    report['regression_requirements']=[{
-        'finding_id':finding['finding_id'],'application':finding['application'],
-        'input_conditions':['带文本页','空页','多页'],
-        'expected_contract':finding['desired_check'],'status':'NOT_EXECUTED',
-        'runtime_verified':False} for finding in report['findings']]
+    report['regression_requirements']=regression_requirements(report['findings'])
     risks = sum(f["status"] == "supported_risk" for f in report["findings"])
     if risks:
         report["status"] = "supported_risk"
