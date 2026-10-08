@@ -27,3 +27,10 @@ def test_compound_requirements_keep_their_own_versions():
     plan=plan_query('v2.9.1 OCR cpu_threads 默认值；v3.0.0 OCR cpu_threads 默认值',
                     versions=('v2.9.1','v3.0.0'))
     assert [r['version'] for r in plan['requirements']]==['v2.9.1','v3.0.0']
+
+
+def test_direction_classifier_scope_distinguishes_text_lines_from_documents():
+    from src.paddleocr_query_plan import query_module
+    assert query_module('文本行方向分类的批量大小如何设置？')=='text_line_orientation_classification'
+    assert query_module('文档图像方向分类如何配置？')=='doc_img_orientation_classification'
+    assert query_module('OCR 如何启用文本行方向分类？')=='ocr'

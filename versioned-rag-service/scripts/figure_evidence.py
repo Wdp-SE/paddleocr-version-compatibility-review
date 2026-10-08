@@ -28,7 +28,7 @@ from urllib.parse import quote, unquote, urlsplit
 from urllib.request import Request, urlopen
 
 
-ROOT = Path(__file__).resolve().parents[1] / "public_corpus_pphuman"
+ROOT = Path(__file__).resolve().parents[1] / "public_corpus_paddleocr"
 MAX_IMAGE_BYTES = 2_000_000
 _COMMIT = re.compile(r"^[0-9a-f]{40}$")
 _MARKDOWN_IMAGE = re.compile(

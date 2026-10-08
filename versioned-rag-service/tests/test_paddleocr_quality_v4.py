@@ -226,3 +226,42 @@ def test_auto_policy_uses_validated_release_and_configured_ranker(monkeypatch):
         assert result['actual_policy']=='contextual_llm_rerank'
         assert result['rerank_diagnostics']['candidate_budget']==40
         assert result['rerank_diagnostics']['scored_windows']<=40
+
+
+def test_auto_repair_keeps_structured_selection_and_expands_candidates(monkeypatch):
+    import asyncio
+    from types import SimpleNamespace
+    import src.public_api as api
+    calls=[]
+    async def once(payload,request,**kw):
+        calls.append(payload)
+        return {'status':'OK','answer_completeness':'PARTIAL_SUPPORTED' if len(calls)==1 else 'COMPLETE',
+                'actual_policy':'contextual_rerank','claim_verification':{'status':'SUPPORTED'}}
+    monkeypatch.setattr(api,'_query_once',once)
+    monkeypatch.setattr(api,'_index',lambda request:SimpleNamespace(manifest={'workspace_id':'paddleocr'}))
+    payload=api.SearchRequest(query='OCR parameters',retrieval_policy='paddleocr_evidence',evidence_strategy='auto')
+    asyncio.run(api.query(payload,None))
+    assert calls[1].evidence_strategy=='auto'
+    assert calls[1].candidate_budget==120
+
+
+def test_repair_uses_release_windows_without_overriding_expanded_budget(monkeypatch):
+    from types import SimpleNamespace
+    from pathlib import Path
+    import src.public_api as api
+    import src.paddleocr_evidence_search as es
+    captured=[]
+    class Search:
+        def search(self,plan,**options):
+            captured.append(options)
+            return {'results':[],'requirements':plan['requirements'],'diagnostics':{'actual_strategy':'contextual_rerank','rerank_calls':1,'fallback_reason':None}}
+    def configured(index,strategy,**options):
+        assert options['structure_windows'] is True
+        return Search()
+    monkeypatch.setattr(es,'configured_evidence_search',configured)
+    monkeypatch.setattr(api,'load_rag_release',lambda corpus:{'selected_strategy':'contextual_rerank','candidate_budget':80,'structure_windows':True})
+    monkeypatch.setattr(api,'load_impact_release',lambda corpus:None)
+    index=SimpleNamespace(root=Path('.'),manifest={'workspace_id':'paddleocr','versions':['v3.0.0']},_version_members=lambda v:{'v3.0.0'})
+    payload=api.SearchRequest(query='OCR usage',version='v3.0.0',retrieval_policy='paddleocr_evidence',evidence_strategy='auto',candidate_budget=120)
+    api._execute_public_search(index,payload,None,top_k=8,correction=True)
+    assert captured[0]['candidate_budget']==120

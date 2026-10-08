@@ -1,0 +1,1399 @@
+{
+  "dataset_id": "retrieval-upgrade-v2",
+  "label_origin": "developer authored; exact source-row coverage, not semantic answer accuracy",
+  "split_method": "48 known regressions + 12 new validation + 12 first-frozen questions; shared manuals, no independent expert blind test",
+  "cases": [
+    {
+      "id": "internal-01",
+      "split": "regression",
+      "group": "v2.9.1:doc/doc_ch/whl.md",
+      "version": "v2.9.1",
+      "query": "中文 OCR 初始化如何启用角度分类？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/whl.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "PaddleOCR",
+            "use_angle_cls=True",
+            "lang=\"ch\""
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-02",
+      "split": "regression",
+      "group": "v2.9.1:doc/doc_ch/whl.md",
+      "version": "v2.9.1",
+      "query": "OCR 已有裁剪图时如何只识别，不进行检测？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/whl.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "ocr.ocr",
+            "det=False"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-03",
+      "split": "regression",
+      "group": "v2.9.1:doc/doc_ch/whl.md",
+      "version": "v2.9.1",
+      "query": "OCR 只需要检测文字框时怎样关闭识别？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/whl.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "ocr.ocr",
+            "rec=False"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-04",
+      "split": "regression",
+      "group": "v2.9.1:doc/doc_ch/whl.md",
+      "version": "v2.9.1",
+      "query": "命令行输入 PDF 时如何限制处理页数？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/whl.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "page_num",
+            "默认为0"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-05",
+      "split": "regression",
+      "group": "v2.9.1:paddleocr.py",
+      "version": "v2.9.1",
+      "query": "OCR 旧版本如何组合文字框和识别结果返回一页？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "paddleocr.py"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "ocr_res.append",
+            "zip(dt_boxes, rec_res)"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-06",
+      "split": "regression",
+      "group": "v3.0.0:paddleocr/_pipelines/ocr.py",
+      "version": "v3.0.0",
+      "query": "OCR 的 ocr 入口内部是否调用 predict？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "paddleocr/_pipelines/ocr.py"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "def ocr",
+            "self.predict"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-07",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "OCR 结果的文本与识别得分字段名称是什么？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "rec_texts",
+            "rec_scores"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-08",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "OCR 怎样导出 JSON 结果？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "save_to_json",
+            "save_path"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-09",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "OCR 怎样跳过文档矫正和方向分类？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "use_doc_orientation_classify",
+            "use_doc_unwarping",
+            "use_textline_orientation"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-10",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "OCR text_det_box_thresh 如何决定保留检测框？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "text_det_box_thresh",
+            "平均"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-11",
+      "split": "regression",
+      "group": "v3.0.0:docs/update/upgrade_notes.md",
+      "version": "v3.0.0",
+      "query": "原来的 PPStructure 接口在新版中如何迁移？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/update/upgrade_notes.md"
+          ],
+          "module": "general",
+          "tokens": [
+            "PPStructure",
+            "PPStructureV3"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-12",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "OCR 可视化识别框 rec_boxes 采用什么坐标？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "rec_boxes",
+            "x_min",
+            "y_max"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-13",
+      "split": "regression",
+      "group": "v2.9.1:doc/doc_ch/inference_args.md",
+      "version": "v2.9.1",
+      "query": "旧版 drop_score 的作用及默认值是什么？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/inference_args.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "drop_score",
+            "0.5",
+            "丢弃"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-14",
+      "split": "regression",
+      "group": "v2.9.1:doc/doc_ch/inference_args.md",
+      "version": "v2.9.1",
+      "query": "旧版 cpu_threads 的默认线程数量是多少？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/inference_args.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "cpu_threads",
+            "10"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-15",
+      "split": "regression",
+      "group": "v2.9.1:doc/doc_ch/inference_args.md",
+      "version": "v2.9.1",
+      "query": "旧版 det_limit_type 可选类型如何解释？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/inference_args.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "det_limit_type",
+            "min",
+            "max"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-16",
+      "split": "regression",
+      "group": "v2.9.1:doc/doc_ch/inference_args.md",
+      "version": "v2.9.1",
+      "query": "旧版 use_onnx 参数控制什么？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/inference_args.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "use_onnx",
+            "onnx"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-17",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/installation.md",
+      "version": "v3.0.0",
+      "query": "安装时要求的飞桨框架最低版本是什么？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/installation.md"
+          ],
+          "module": "general",
+          "tokens": [
+            "3.0",
+            "飞桨框架"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-18",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/installation.md",
+      "version": "v3.0.0",
+      "query": "只做推理需安装哪个 pip 包？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/installation.md"
+          ],
+          "module": "general",
+          "tokens": [
+            "pip install paddleocr"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-19",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/installation.md",
+      "version": "v3.0.0",
+      "query": "训练依赖如何从 requirements 文件安装？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/installation.md"
+          ],
+          "module": "general",
+          "tokens": [
+            "pip install -r requirements.txt"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-20",
+      "split": "regression",
+      "group": "v3.0.0:paddleocr/_common_args.py",
+      "version": "v3.0.0",
+      "query": "precision 遇到不支持的值时如何处理？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "paddleocr/_common_args.py"
+          ],
+          "module": "shared",
+          "tokens": [
+            "precision",
+            "ValueError",
+            "SUPPORTED_PRECISION_LIST"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-21",
+      "split": "regression",
+      "group": "v2.9.1:tests/test_paddleocr_api.py",
+      "version": "v2.9.1",
+      "query": "官方测试如何验证仅检测的 OCR 调用？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "tests/test_paddleocr_api.py"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "test_ocr_det_only",
+            "det=True, rec=False",
+            "isinstance(result, list)"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-22",
+      "split": "regression",
+      "group": "v2.9.1:tests/test_paddleocr_api.py",
+      "version": "v2.9.1",
+      "query": "官方测试如何验证仅识别的 OCR 调用？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "tests/test_paddleocr_api.py"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "test_ocr_rec_only",
+            "det=False, rec=True",
+            "isinstance(result, list)"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-23",
+      "split": "regression",
+      "group": "v3.0.0:tests/pipelines/test_ocr.py",
+      "version": "v3.0.0",
+      "query": "官方 OCR predict 测试如何检查每页识别文本类型？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "tests/pipelines/test_ocr.py"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "test_predict",
+            "rec_texts",
+            "isinstance(text, str)"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-24",
+      "split": "regression",
+      "group": "v3.0.0:tests/pipelines/test_ocr.py",
+      "version": "v3.0.0",
+      "query": "官方测试怎样给中文 PP-OCRv4 匹配识别模型名？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "tests/pipelines/test_ocr.py"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "lang=\"ch\", ocr_version=\"PP-OCRv4\"",
+            "PP-OCRv4_mobile_rec"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-25",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/doc_preprocessor.md",
+      "version": "v3.0.0",
+      "query": "文档预处理关闭角度分类时 angle 如何表示？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/doc_preprocessor.md"
+          ],
+          "module": "doc_preprocessor",
+          "tokens": [
+            "angle",
+            "-1"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-26",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/doc_preprocessor.md",
+      "version": "v3.0.0",
+      "query": "文档预处理 json 保存时 numpy.array 如何转换？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/doc_preprocessor.md"
+          ],
+          "module": "doc_preprocessor",
+          "tokens": [
+            "save_to_json",
+            "numpy.array",
+            "列表"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-27",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/doc_preprocessor.md",
+      "version": "v3.0.0",
+      "query": "文档预处理批量保存到一个图片文件路径有什么风险？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/doc_preprocessor.md"
+          ],
+          "module": "doc_preprocessor",
+          "tokens": [
+            "save_to_img",
+            "覆盖"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-28",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/doc_preprocessor.md",
+      "version": "v3.0.0",
+      "query": "文档预处理方向输出可能有哪些角度？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/doc_preprocessor.md"
+          ],
+          "module": "doc_preprocessor",
+          "tokens": [
+            "angle",
+            "0,90,180,270"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-29",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "文字检测框膨胀系数使用哪个参数？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "text_det_unclip_ratio"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-30",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "OCR 如何设置识别文本最低得分？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "text_rec_score_thresh"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-31",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "文字识别批大小如何设置？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "text_recognition_batch_size"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-32",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "文本行方向分类的批大小如何设置？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "text_line_orientation_batch_size"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-33",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "OCR 输入是否接受 numpy 图像数组？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "numpy.ndarray"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-34",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "旧的 det_db_unclip_ratio 迁移为什么参数？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "det_db_unclip_ratio",
+            "text_det_unclip_ratio"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-35",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "文字识别输出的四点多边形字段是什么？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "rec_polys"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-36",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "文字检测输出的多边形字段是什么？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "dt_polys"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-37",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "OCR 结果如何保存可视化图片？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "save_to_img",
+            "save_path"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-38",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/pipeline_usage/OCR.md",
+      "version": "v3.0.0",
+      "query": "怎样在初始化时指定运行设备？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "device"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-39",
+      "split": "regression",
+      "group": "v2.9.1:doc/doc_ch/whl.md",
+      "version": "v2.9.1",
+      "query": "旧版 OCR 的语言参数如何表示中文？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/whl.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "lang",
+            "中英文(ch)"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-40",
+      "split": "regression",
+      "group": "v2.9.1:paddleocr.py",
+      "version": "v2.9.1",
+      "query": "旧 OCR 接口输入列表但开启检测时会怎样？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "paddleocr.py"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "isinstance(img, list)",
+            "det",
+            "exit(0)"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-41",
+      "split": "regression",
+      "group": "v2.9.1:doc/doc_ch/inference_args.md",
+      "version": "v2.9.1",
+      "query": "旧版是否保存识别裁剪图由哪个参数控制？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/inference_args.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "save_crop_res",
+            "False"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-42",
+      "split": "regression",
+      "group": "v2.9.1:doc/doc_ch/inference_args.md",
+      "version": "v2.9.1",
+      "query": "识别裁剪图默认保存在哪里？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/inference_args.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "crop_res_save_dir",
+            "./output"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-43",
+      "split": "regression",
+      "group": "v2.9.1:doc/doc_ch/inference_args.md",
+      "version": "v2.9.1",
+      "query": "旧版使用 TensorRT 推理默认启用吗？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/inference_args.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "use_tensorrt",
+            "False"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-44",
+      "split": "regression",
+      "group": "v2.9.1:doc/doc_ch/inference_args.md",
+      "version": "v2.9.1",
+      "query": "旧版推理 precision 的默认值是什么？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/inference_args.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "precision",
+            "fp32"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-45",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/module_usage/text_recognition.md",
+      "version": "v3.0.0",
+      "query": "文本识别模块结果中得分字段是什么？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/module_usage/text_recognition.md"
+          ],
+          "module": "text_recognition",
+          "tokens": [
+            "rec_score",
+            "置信度"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-46",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/module_usage/text_recognition.md",
+      "version": "v3.0.0",
+      "query": "文本识别模块是否支持 numpy 数组输入？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/module_usage/text_recognition.md"
+          ],
+          "module": "text_recognition",
+          "tokens": [
+            "numpy.ndarray"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-47",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/module_usage/text_recognition.md",
+      "version": "v3.0.0",
+      "query": "文本识别 predict_iter 与 predict 的返回方式有什么区别？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/module_usage/text_recognition.md"
+          ],
+          "module": "text_recognition",
+          "tokens": [
+            "predict_iter",
+            "generator"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "internal-48",
+      "split": "regression",
+      "group": "v3.0.0:docs/version3.x/module_usage/text_recognition.md",
+      "version": "v3.0.0",
+      "query": "文本识别模块如何将结果存为 JSON？",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/module_usage/text_recognition.md"
+          ],
+          "module": "text_recognition",
+          "tokens": [
+            "save_to_json",
+            "save_path"
+          ]
+        }
+      ],
+      "origin": "known_48"
+    },
+    {
+      "id": "fresh-01",
+      "query": "v3.0.0 通用 OCR 如何指定本地文字检测模型目录？不指定时会怎样？",
+      "version": "v3.0.0",
+      "split": "validation",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "<tr>\n<td><code>text_detection_model_dir</code></td>\n<td>文本检测模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-02",
+      "query": "v3.0.0 通用 OCR 如何加载本地文字识别模型，而不重新下载？",
+      "version": "v3.0.0",
+      "split": "sealed",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "<tr>\n<td><code>text_recognition_model_dir</code></td>\n<td>文本识别模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-03",
+      "query": "v3.0.0 通用 OCR 的图像矫正模型可以从本地目录加载吗？",
+      "version": "v3.0.0",
+      "split": "validation",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "<tr>\n<td><code>doc_unwarping_model_dir</code></td>\n<td>文本图像矫正模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-04",
+      "query": "v3.0.0 通用 OCR 的文字行方向模型目录怎么配置？",
+      "version": "v3.0.0",
+      "split": "sealed",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "<tr>\n<td><code>text_line_orientation_model_dir</code></td>\n<td>文本行方向模型的目录路径。如果设置为<code>None</code>, 将会下载官方模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-05",
+      "query": "v3.0.0 通用 OCR 在 CPU 上推理默认用几个线程？",
+      "version": "v3.0.0",
+      "split": "validation",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "<tr>\n<td><code>cpu_threads</code></td>\n<td>在 CPU 上进行推理时使用的线程数。</td>\n<td><code>int</code></td>\n<td><code>8</code></td>\n</tr>"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-06",
+      "query": "v3.0.0 通用 OCR 的高性能推理开关是什么，默认是否启用？",
+      "version": "v3.0.0",
+      "split": "sealed",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "<tr>\n<td><code>enable_hpi</code></td>\n<td>是否启用高性能推理。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-07",
+      "query": "v3.0.0 通用 OCR 如何启用 TensorRT，默认会开启吗？",
+      "version": "v3.0.0",
+      "split": "validation",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "<tr>\n<td><code>use_tensorrt</code></td>\n<td>是否使用 TensorRT 进行推理加速。</td>\n<td><code>bool</code></td>\n<td><code>False</code></td>\n</tr>"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-08",
+      "query": "v3.0.0 通用 OCR 最小子图大小配置的用途和默认值是什么？",
+      "version": "v3.0.0",
+      "split": "sealed",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "<tr>\n<td><code>min_subgraph_size</code></td>\n<td>最小子图大小，用于优化模型子图的计算。</td>\n<td><code>int</code></td>\n<td><code>3</code></td>\n</tr>"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-09",
+      "query": "v3.0.0 通用 OCR 能否传入 PaddleX 产线配置文件路径？",
+      "version": "v3.0.0",
+      "split": "validation",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "<tr>\n<td><code>paddlex_config</code></td>\n<td>PaddleX产线配置文件路径。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-10",
+      "query": "v3.0.0 通用 OCR 的 MKL-DNN 开关设成 None 会怎样？",
+      "version": "v3.0.0",
+      "split": "sealed",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "<tr>\n<td><code>enable_mkldnn</code></td>\n<td>是否启用 MKL-DNN 加速库。如果设置为<code>None</code>, 将默认启用。\n</td>\n<td><code>bool</code></td>\n<td><code>None</code></td>\n</tr>"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-11",
+      "query": "v3.0.0 通用 OCR 未指定文档方向分类模型名称时用什么？",
+      "version": "v3.0.0",
+      "split": "validation",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "<tr>\n<td><code>doc_orientation_classify_model_name</code></td>\n<td>文档方向分类模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-12",
+      "query": "v3.0.0 通用 OCR 未指定图像矫正模型名称时如何选择模型？",
+      "version": "v3.0.0",
+      "split": "sealed",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "<tr>\n<td><code>doc_unwarping_model_name</code></td>\n<td>文本图像矫正模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-13",
+      "query": "v3.0.0 通用 OCR 文字行方向模型名称设为 None 有什么含义？",
+      "version": "v3.0.0",
+      "split": "validation",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "<tr>\n<td><code>text_line_orientation_model_name</code></td>\n<td>文本行方向模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-14",
+      "query": "v3.0.0 通用 OCR 的文字检测模型名称可以配置吗？",
+      "version": "v3.0.0",
+      "split": "sealed",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "<tr>\n<td><code>text_detection_model_name</code></td>\n<td>文本检测模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-15",
+      "query": "v3.0.0 通用 OCR 的文字识别模型名称不填会如何处理？",
+      "version": "v3.0.0",
+      "split": "validation",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "<tr>\n<td><code>text_recognition_model_name</code></td>\n<td>文本识别模型的名称。如果设置为<code>None</code>, 将会使用产线默认模型。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-16",
+      "query": "v3.0.0 通用 OCR 命令行的结果保存路径不设置会自动落盘吗？",
+      "version": "v3.0.0",
+      "split": "sealed",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "<tr>\n<td><code>save_path</code></td>\n<td>指定推理结果文件保存的路径。如果设置为<code>None</code>, 推理结果将不会保存到本地。</td>\n<td><code>str</code></td>\n<td><code>None</code></td>\n</tr>"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-17",
+      "query": "v2.9.1 旧版 OCR 一批识别多少张裁剪图，默认是多少？",
+      "version": "v2.9.1",
+      "split": "validation",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/inference_args.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "|  rec_batch_num | int | 6 | 识别的batch size |"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-18",
+      "query": "v2.9.1 旧版 OCR 方向分类器默认批处理多少张图？",
+      "version": "v2.9.1",
+      "split": "sealed",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/inference_args.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "|  cls_batch_num | int | 6 | 方向分类器预测的batch size |"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-19",
+      "query": "v2.9.1 旧版 OCR 的识别输入图像尺寸如何配置？",
+      "version": "v2.9.1",
+      "split": "validation",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/inference_args.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "|  rec_image_shape | str | \"3,48,320\" | 识别时的图像尺寸 |"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-20",
+      "query": "v2.9.1 旧版 OCR 可以对分割结果进行膨胀吗，默认打开吗？",
+      "version": "v2.9.1",
+      "split": "sealed",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/inference_args.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "|  use_dilation | bool | False | 是否对分割结果进行膨胀以获取更优检测效果 |"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-21",
+      "query": "v2.9.1 旧版 OCR 用什么参数控制文字检测区域扩张，默认是多少？",
+      "version": "v2.9.1",
+      "split": "validation",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/inference_args.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "|  det_db_unclip_ratio | float | 1.5 | `Vatti clipping`算法的扩张系数，使用该方法对文字区域进行扩张 |"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-22",
+      "query": "v2.9.1 旧版 OCR 的 MKL-DNN 默认是否开启？",
+      "version": "v2.9.1",
+      "split": "sealed",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/inference_args.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "|  enable_mkldnn | bool | True | 是否开启mkldnn |"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-23",
+      "query": "v2.9.1 旧版 OCR 如何丢弃低得分识别结果，默认阈值是多少？",
+      "version": "v2.9.1",
+      "split": "validation",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/inference_args.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "|  drop_score | float | 0.5 | 识别得分小于该值的结果会被丢弃，不会作为返回结果 |"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fresh-24",
+      "query": "v2.9.1 旧版 OCR 图像边长约束中 min 与 max 是什么意思？",
+      "version": "v2.9.1",
+      "split": "sealed",
+      "origin": "new_source_grounded",
+      "facts": [
+        {
+          "allowed_paths": [
+            "doc/doc_ch/inference_args.md"
+          ],
+          "module": "ocr",
+          "tokens": [
+            "|  det_limit_type | str | \"max\" | 检测的边长限制类型，目前支持`min`和`max`，`min`表示保证图像最短边不小于`det_limit_side_len`，`max`表示保证图像最长边不大于`det_limit_side_len` |"
+          ]
+        }
+      ]
+    }
+  ]
+}

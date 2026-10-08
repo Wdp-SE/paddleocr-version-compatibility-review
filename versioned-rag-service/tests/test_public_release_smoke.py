@@ -19,6 +19,20 @@ POLICY_HASH = "c" * 64
 EVALUATION_HASH = "d" * 64
 
 
+@pytest.fixture(autouse=True)
+def independent_manifest(tmp_path, monkeypatch):
+    # Legacy smoke protocol is tested with explicit synthetic metadata, never
+    # with the retired production corpus or the current PaddleOCR deployment.
+    manifest = tmp_path / 'manifest.json'
+    manifest.write_text(__import__('json').dumps({
+        'workspace_id': 'pphuman', 'repository': 'PaddlePaddle/PaddleDetection',
+        'current_version': 'v2.9.0',
+        'available_versions': ['v2.5.0', 'v2.6.0', 'v2.7.0', 'v2.8.0', 'v2.8.1', 'v2.9.0'],
+        'versions': {'v2.9.0': {'commit': 'b25522a0f4bde8c80603f3ba5e3472059972e3b5'}},
+    }), encoding='utf8')
+    monkeypatch.setattr(smoke, '_CORPUS_MANIFEST_PATH', manifest)
+
+
 def _client(*, wrong_version=False, unhealthy=False, noanswer_status="OUT_OF_SCOPE"):
     def handler(request: httpx.Request) -> httpx.Response:
         path = request.url.path

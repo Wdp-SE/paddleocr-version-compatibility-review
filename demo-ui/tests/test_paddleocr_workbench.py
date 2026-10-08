@@ -136,6 +136,37 @@ def test_internal_fact_refusal_is_not_mislabeled_as_an_empty_search(client, monk
     assert '未找到可直接支持答案' not in visible(app)
 
 
+def test_question_has_one_label_and_provider_failure_is_prominent(client, monkeypatch):
+    monkeypatch.setattr(PublicKnowledgeClient, 'query_official',
+                        lambda *args, **kwargs: {'status': 'GENERATION_PROVIDER_TIMEOUT', 'evidence': []})
+    app = AppTest.from_file(APP, default_timeout=30).run()
+    app.button(key='nav_版本检索与问答').click().run()
+    assert app.text_area(key='official_question').label == '问题'
+    assert '提出问题' not in visible(app)
+    app.button(key='knowledge_generate').click().run()
+    assert any('超时' in item.value for item in app.error)
+
+
+def test_default_review_explains_human_validation_boundary(client):
+    app = AppTest.from_file(APP, default_timeout=30).run()
+    app.button(key='nav_新建变更审查').click().run()
+    assert '直接运行默认案例' in visible(app)
+    assert '已审阅不等于批准升级' in visible(app)
+
+
+def test_system_description_exposes_comparison_without_inventing_answer_accuracy(client, monkeypatch):
+    workspace={**copy.deepcopy(WORKSPACE),'retrieval_comparison':{
+        'selected':'structure_bm25','selection_reason':'依据冻结验证题选择',
+        'limitations':'开发者标注，不是企业准确率',
+        'rows':[{'strategy':'structure_bm25','split':'validation','complete_count':9,'count':12,
+                 'wrong_version_count':0,'execution_success_count':12,'latency_p50_ms':20}]}}
+    monkeypatch.setattr(PublicKnowledgeClient,'workspace',lambda self:workspace)
+    app=AppTest.from_file(APP,default_timeout=30).run()
+    app.button(key='nav_系统说明').click().run()
+    assert 'BM25 与混合检索对比' in visible(app)
+    assert '不是企业准确率' in visible(app)
+
+
 def open_review():
     app = AppTest.from_file(APP, default_timeout=30).run()
     app.button(key="nav_新建变更审查").click().run()
@@ -230,6 +261,27 @@ def test_static_report_workflow_shows_bound_locations_both_versions_and_human_re
         app.button(key=key).click().run()
         assert not app.exception
         assert app.session_state["ocr_compatibility_review"]["workspace_id"] == "paddleocr"
+
+
+def test_report_collapses_detail_and_deduplicates_exact_sources_without_mutating_report(client):
+    app = open_review()
+    app.button(key='ocr_run_review').click().run()
+    result = copy.deepcopy(app.session_state['ocr_compatibility_review'])
+    finding = result['compatibility_report']['findings'][0]
+    finding['evidence'].append(copy.deepcopy(finding['evidence'][0]))
+    app.session_state['ocr_compatibility_review'] = result
+    app.run()
+    assert not app.exception
+    details = {item.label: item for item in app.expander}
+    assert not details['原因与应用代码'].proto.expanded
+    assert not details['双版本依据 · 2 条来源'].proto.expanded
+    assert any('有证据支持的静态风险' in item.value for item in app.error)
+    assert '下一步核查' in visible(app)
+    assert any(finding['application']['snippet'] == item.value for item in app.code)
+    links = [item.value for item in app.markdown if '](' in item.value and '#L5-L7' in item.value]
+    assert len(links) == 2
+    assert app.session_state['ocr_compatibility_review'] == result
+    assert any(button.label == '确认已审阅本次静态兼容性报告' for button in app.button)
 
 
 def test_human_review_persists_versions_files_and_exact_static_facts(client):

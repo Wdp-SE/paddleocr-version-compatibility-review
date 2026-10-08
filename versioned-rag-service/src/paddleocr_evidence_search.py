@@ -8,7 +8,7 @@ import threading
 from collections import Counter,defaultdict
 import numpy as np
 from src.public_knowledge import tokens
-from src.paddleocr_retrieval_views import build_views, validate_views, materialize_evidence
+from src.paddleocr_retrieval_views import build_views, build_structure_views, validate_views, materialize_evidence
 
 STRATEGIES=('contextual_bm25','contextual_semantic','contextual_rrf',
             'contextual_rerank','contextual_rrf_rerank','contextual_llm_rerank')
@@ -16,31 +16,36 @@ _CACHE={}
 _LOCK=threading.Lock()
 
 
-def configured_evidence_search(index,strategy='contextual_bm25',*,use_context=True,window_budget=384):
+def configured_evidence_search(index,strategy='contextual_bm25',*,use_context=True,window_budget=384,structure_windows=False):
     if type(window_budget) is not int or window_budget not in (256,384):
         raise ValueError('unsupported evidence window budget')
     base=getattr(index,'base_index',index)
     if base.manifest.get('workspace_id')!='paddleocr':raise ValueError('wrong evidence workspace')
     fingerprint=hashlib.sha256(''.join(c['chunk_id']+c['content'] for c in base.chunks).encode()).hexdigest()
     from src.paddleocr_quality import asset_identity
-    key=(fingerprint,strategy,use_context,window_budget,asset_identity(os.environ.get('PADDLEOCR_EMBEDDING_PATH','')),asset_identity(os.environ.get('PADDLEOCR_RERANKER_PATH','')))
+    key=(fingerprint,strategy,use_context,window_budget,structure_windows,asset_identity(os.environ.get('PADDLEOCR_EMBEDDING_PATH','')),asset_identity(os.environ.get('PADDLEOCR_RERANKER_PATH','')))
     with _LOCK:
         if key in _CACHE:return _CACHE[key]
         encoder=scorer=count=None
         if strategy not in ('contextual_bm25','contextual_llm_rerank'):
             from src.paddleocr_quality import configured_quality_retriever, ModelUnavailable
             try:
-                model=configured_quality_retriever(base)
+                model=configured_quality_retriever(base,
+                    load_embedding=strategy in ('contextual_semantic','contextual_rrf','contextual_rrf_rerank'),
+                    load_reranker='rerank' in strategy,build_parent_vectors=False)
                 encoder,scorer,count=model.encoder,model.scorer,getattr(model,'token_count',None)
             except ModelUnavailable:
                 pass
-        views=build_views(base.chunks,token_count=count or len,max_tokens=window_budget)
+        # All channels share identical retrieval units. Tokenizer counts are
+        # used only to bound cross-encoder input, not to change the comparison.
+        views=(build_structure_views(base.chunks,max_chars=window_budget) if structure_windows
+               else build_views(base.chunks,token_count=len,max_tokens=window_budget))
         if not use_context:
             views=[{**v,'context_char_end':0,'retrieval_text':v['content']} for v in views]
         search=EvidenceSearch(base,views,encoder=encoder,scorer=scorer,token_count=count)
-        search.model_identity={'embedding':key[-2],'reranker':key[-1],'attention':'eager'}
+        search.model_identity={'embedding':key[-2],'reranker':key[-1],'attention':'eager','cpu_kernel':'native_serial_v2'}
         search.window_budget = window_budget
-        search.window_unit = 'model_tokens' if count else 'characters'
+        search.window_unit = 'structured_characters' if structure_windows else 'characters'
         _CACHE[key]=search
         return search
 
@@ -100,6 +105,7 @@ class EvidenceSearch:
         for pool in pools:
             for rank,(i,_) in enumerate(pool,1):weights[i]+=1/(60+rank)
         lexical_order=sorted(weights,key=lambda i:(-weights[i],i))
+        diag.update(lexical_candidates=min(len(lexical_order),candidate_budget),semantic_candidates=0)
         # Prefer the artifact requested by the user, without excluding other
         # source roles or inventing facts. Only already relevant windows qualify.
         def role_priority(i):
@@ -109,6 +115,7 @@ class EvidenceSearch:
             if intent.get('kind')=='result_migration':
                 # An interface comparison needs callable behavior as well as
                 # printed fields; serialized examples alone do not define types.
+                if 'return list(' in text and 'self.predict_iter(' in text:return 4
                 if 'ocr_res.append' in text or ('def ocr(' in text and 'self.predict' in text):return 3
                 return 2 if 'rec_texts' in text or 'rec_scores' in text or 'line[1]' in text else 0
             if intent.get('kind')=='test_contract':
@@ -135,6 +142,7 @@ class EvidenceSearch:
                 scores=self.vectors[eligible]@q[0]
                 semantic=sorted(range(len(eligible)),key=lambda j:(-float(scores[j]),eligible[j]))[:candidate_budget]
                 semantic=[eligible[j] for j in semantic]
+                diag['semantic_candidates']=len(semantic)
                 if strategy=='contextual_semantic':order=semantic; weights={i:float(scores[eligible.index(i)]) for i in order}
                 else:
                     fused=defaultdict(float)
@@ -213,13 +221,36 @@ class EvidenceSearch:
             coverage[req['id']]=best['parent_chunk_id'] if best else None
             if best and best not in reserved and len(reserved)<top_k: reserved.append(best)
         if intent.get('kind')=='result_migration':
+            # Callable contracts are required evidence, independent of rerank preference.
+            # Only use retrieved, in-scope code; never synthesize an API contract.
+            contracts=[]
+            for version in plan['versions']:
+                contract=next((v for v in selected_views if v['version']==version
+                               and self.parents[v['parent_chunk_id']].get('document_path','').endswith('.py')
+                               and 'return list(' in v['retrieval_text'] and 'self.predict_iter(' in v['retrieval_text']),None)
+                contract=contract or next((v for v in selected_views if v['version']==version
+                               and self.parents[v['parent_chunk_id']].get('document_path','').endswith('.py')
+                               and ('ocr_res.append' in v['retrieval_text'] or
+                                    ('def ocr(' in v['retrieval_text'] and 'self.predict' in v['retrieval_text']))),None)
+                if contract and contract not in contracts:contracts.append(contract)
+            for version in plan['versions']:
+                access=next((v for v in selected_views if v['version']==version
+                             and self.parents[v['parent_chunk_id']].get('document_path','').startswith('tests/')
+                             and 'assert ' in v['retrieval_text']
+                             and any(t in v['retrieval_text'] for t in ('rec_texts','rec_scores'))),None)
+                if access and access not in contracts:contracts.append(access)
+            reserved=(contracts+reserved)[:top_k]
+        if intent.get('kind')=='result_migration':
             # Keep both the callable behavior and a field contract in an upgrade
             # evidence pack; repeated old usage examples must not crowd it out.
             for version in plan['versions']:
                 field=next((v for v in selected_views if v['version']==version
                             and any(t in v['retrieval_text'] for t in ('rec_texts','rec_scores'))
                             and all(t in self.parents[v['parent_chunk_id']]['content'] for t in ('rec_texts','rec_scores'))),None)
-                if field and field not in reserved and len(reserved)<top_k:reserved.append(field)
+                if field and field not in reserved:
+                    # Field schema is a distinct contract obligation. Reserve it
+                    # before repeated usage windows consume the evidence budget.
+                    reserved = (contracts + [field] + [v for v in reserved if v not in contracts])[:top_k]
         selected_views=reserved+[v for v in selected_views if v not in reserved]
         diag['requirement_candidates']=coverage
         parents=[]; chosen=[]

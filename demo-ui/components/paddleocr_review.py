@@ -7,25 +7,26 @@ def impact_panel(result):
     if report.get('impact_schema_version')!=1:
         st.caption('当前服务提供基础静态报告；应用关系扩展未返回。')
         return
-    st.markdown('**待核查影响路径**')
     paths=report.get('impact_paths',[])
-    if not paths:st.caption('当前提交文本没有可证明的跨文件影响路径。')
-    for i,path in enumerate(paths):
-        label='直接结果流' if path['flow_proven'] else '引用关系'
-        with st.expander(f"{label}候选 · {path['origin_node']} → {path['target_node']}"):
-            st.caption('关系已定位；下游业务是否破坏仍需核查和运行回归。')
+    with st.expander(f'待核查影响路径 · {len(paths)} 条候选'):
+        if not paths:st.caption('当前提交文本没有可证明的跨文件影响路径。')
+        st.caption('关系已定位；下游业务是否破坏仍需核查和运行回归。')
+        for i,path in enumerate(paths):
+            label='直接结果流' if path['flow_proven'] else '引用关系'
+            st.markdown(f"**{i + 1}. {label}候选**")
+            st.write(f"{path['origin_node']} → {path['target_node']}")
             for edge in path['edges']:
                 loc=edge['application']
                 st.write(f"{edge['source']} → {edge['target']} · {edge['kind']}")
                 st.caption(f"{loc['path']}:{loc['line_start']}–{loc['line_end']}")
-                st.code(loc['excerpt'],language='python')
+                st.code(loc['excerpt'],language='python',wrap_lines=True)
     st.markdown('**回归要求（尚未执行）**')
     seen=set()
     for req in report.get('regression_requirements',[]):
         key=(req['expected_contract'],tuple(req['input_conditions']))
         if key in seen:continue
         seen.add(key)
-        st.write(req['expected_contract'])
+        st.markdown(f"**{len(seen)}.** {req['expected_contract']}")
         st.caption('输入条件：'+' / '.join(req['input_conditions']))
     investigation=result.get('investigation')
     if investigation:

@@ -79,6 +79,17 @@ p,li {font-size:clamp(1.14rem,1.06rem + .2vw,1.3rem);line-height:1.65;color:var(
   background:var(--paper)!important;color:var(--body)!important;border-radius:4px;
 }
 [data-testid="stAlert"] svg {color:var(--muted)!important;}
+/* Preserve severity in a quiet monochrome interface. Text/icon distinguish it
+   as well, so color is never the only signal. */
+[data-testid="stAlert"]:has([data-testid="stAlertContentWarning"]) {
+  border-left:4px solid #b77912!important;background:#fff9ed!important;
+}
+[data-testid="stAlert"]:has([data-testid="stAlertContentError"]) {
+  border-left:4px solid #b42318!important;background:#fff3f2!important;
+}
+[data-testid="stAlert"] [data-testid="stAlertContentError"] p,
+[data-testid="stAlert"]:has([data-testid="stAlertContentError"]) svg {color:#b42318!important;}
+[data-testid="stAlert"] [data-testid="stAlertContentWarning"] strong {color:#8b570b!important;}
 [data-testid="stButton"] button {min-height:3rem;border-radius:4px;font-size:clamp(1.12rem,1.05rem + .15vw,1.24rem);font-weight:640;box-shadow:none;}
 [data-testid="stButton"] button [data-testid="stMarkdownContainer"] p {color:inherit!important;font-size:clamp(1.12rem,1.05rem + .15vw,1.24rem)!important;line-height:1.25!important;}
 [data-testid="stButton"] button[kind="primary"] {background:var(--ink);border-color:var(--ink);color:#fff;}
@@ -222,6 +233,16 @@ button:focus-visible,a:focus-visible,textarea:focus-visible,input:focus-visible 
   color:var(--ink)!important;font-size:1.3rem!important;line-height:1.75!important;
 }
 .st-key-generated_answer .citation-index {font-size:1.08rem!important;line-height:1.5!important;}
+[class*="st-key-answer_claim_"] {max-width:76ch;}
+[class*="st-key-answer_claim_"] + [class*="st-key-answer_claim_"] {
+  border-top:1px solid var(--line);padding-top:1rem;
+}
+.evidence-preview {max-width:76ch;line-height:1.7;overflow-wrap:anywhere;color:var(--body);}
+[class*="st-key-ocr_finding_"] {border-radius:4px!important;padding:1.1rem!important;}
+[class*="st-key-ocr_finding_"] [data-testid="stMarkdownContainer"] p {
+  max-width:76ch;line-height:1.7!important;
+}
+[class*="st-key-ocr_finding_"] [data-testid="stCode"] {max-height:20rem;overflow:auto;}
 .st-key-knowledge_generate button,.st-key-knowledge_search button {
   background:var(--paper)!important;color:var(--ink)!important;
   border:1px solid var(--line-strong)!important;

@@ -12,6 +12,10 @@
 **/__pycache__/
 **/.pytest_cache/
 **/.mypy_cache/
+**/.pytest-*/
+**/.test-*/
+**/.task-ocr-*/
+.ocr-ui-tests-*/
 *.py[cod]
 
 # Local workspaces and UI outputs
@@ -43,6 +47,8 @@ RAG-Challenge-2-main/data/domain_corpus_v0_2/ocr_cache/
 RAG-Challenge-2-main/data/domain_corpus_v0_2/offline_reassembly/
 
 # Local logs, IDE and operating-system files
+.local-demo-temp/
+evaluation/retrieval_upgrade_v2/experiment-*/
 *.local.log
 *.token.log
 .idea/

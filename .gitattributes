@@ -41,3 +41,9 @@ evaluation/interview_release_v1/** -text whitespace=cr-at-eol
 versioned-rag-service/src/paddleocr_function_results.py -text whitespace=cr-at-eol
 versioned-rag-service/src/public_scope.py -text whitespace=cr-at-eol
 change-review-agent/app/paddleocr_investigation.py -text whitespace=cr-at-eol
+
+# Keep measured JSON byte identities identical on local and Linux deployments.
+evaluation/retrieval_upgrade_v2/** -text whitespace=cr-at-eol
+versioned-rag-service/src/paddleocr_retrieval_comparison.py -text whitespace=cr-at-eol
+evaluation/interview_release_20261009/** -text whitespace=cr-at-eol
+evaluation/archive/retrieval-upgrade-20261008/** -text whitespace=cr-at-eol

@@ -94,3 +94,30 @@ def test_partial_answer_retains_supported_claim_and_separate_bounded_gap():
 def test_answer_rejects_unbounded_or_invalid_gap_payload(gaps):
     with pytest.raises(ValueError):
         StructuredAnswerGenerator._decode({"claims": [], "relevant_sources": [], "evidence_gaps": gaps})
+
+
+def test_answer_schema_repair_reuses_context_once_and_records_failure(monkeypatch):
+    calls=[]
+    invalid={"claims":[{"text":"fact","evidence_ids":[]}],"relevant_sources":[]}
+    valid={"claims":[{"text":"fact","evidence_ids":["E1"]}],"relevant_sources":[]}
+    def complete(self,messages):
+        calls.append(messages)
+        return json.dumps(invalid if len(calls)==1 else valid),{"finish_reason":"stop","usage":{"total_tokens":10}}
+    monkeypatch.setattr(StructuredAnswerGenerator,'_complete_with_diagnostics',complete)
+    result,diag=object.__new__(StructuredAnswerGenerator).generate_with_diagnostics(question='Q',context='E1: evidence')
+    assert result['claims'][0]['evidence_ids']==['E1']
+    assert len(calls)==2 and 'E1: evidence' in calls[1][1]['content']
+    assert diag['schema_repair_attempts']==1
+    assert diag['usage']['total_tokens']==20
+
+
+def test_schema_repair_never_loops_or_exposes_provider_content(monkeypatch):
+    calls=[]
+    def complete(self,messages):
+        calls.append(messages);return 'private invalid text',{'finish_reason':'stop'}
+    monkeypatch.setattr(StructuredAnswerGenerator,'_complete_with_diagnostics',complete)
+    with pytest.raises(GenerationResponseError) as error:
+        object.__new__(StructuredAnswerGenerator).generate_with_diagnostics(question='Q',context='E1')
+    assert len(calls)==2
+    assert error.value.diagnostics['validation_failure']=='INVALID_JSON'
+    assert 'private' not in str(error.value.diagnostics)

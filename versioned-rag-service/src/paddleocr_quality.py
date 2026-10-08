@@ -1,8 +1,10 @@
 """Optional neural retrieval. Original evidence is never rewritten by ranking."""
 from __future__ import annotations
 import hashlib
+import json
 import os
 import threading
+import uuid
 from collections import OrderedDict
 from pathlib import Path
 import numpy as np
@@ -13,6 +15,36 @@ STRATEGIES = ('bm25', 'semantic', 'bm25_rerank', 'hybrid', 'hybrid_rerank')
 
 class ModelUnavailable(RuntimeError):
     pass
+
+class CachedEncoder:
+    """Reuse exact document representations, never query labels or answers."""
+    def __init__(self, encode, *, identity, cache_root=''):
+        self.encode=encode;self.identity=identity;self.root=Path(cache_root) if cache_root else None
+        self.lock=threading.Lock()
+
+    def __call__(self,texts):
+        with self.lock:
+            path=None
+            if self.root and len(texts)>1:
+                key=hashlib.sha256(json.dumps([self.identity,texts],ensure_ascii=False).encode()).hexdigest()
+                path=self.root/('views-'+key+'.npy')
+                if path.is_file():
+                    values=np.load(path,allow_pickle=False)
+                    if values.ndim!=2 or len(values)!=len(texts) or not np.isfinite(values).all():
+                        raise ModelUnavailable('SEMANTIC_CACHE_INVALID')
+                    return values
+            values=np.asarray(self.encode(texts),dtype=np.float32)
+            if values.ndim!=2 or len(values)!=len(texts) or not np.isfinite(values).all():
+                raise ModelUnavailable('SEMANTIC_NONFINITE_OUTPUT')
+            if path:
+                path.parent.mkdir(parents=True,exist_ok=True)
+                temporary=path.with_suffix('.'+uuid.uuid4().hex+'.tmp')
+                try:
+                    with temporary.open('wb') as output:np.save(output,values,allow_pickle=False)
+                    temporary.replace(path)
+                finally:temporary.unlink(missing_ok=True)
+            return values
+
 
 class ExactScoreCache:
     """Model-instance-local, bounded cache of raw query/text logits; no labels."""
@@ -92,6 +124,14 @@ class QualityRetriever:
 _LOCK=threading.Lock()
 _CACHE={}
 _ASSET_CACHE={}
+_MODELS={}
+
+
+def configure_cpu_inference(torch):
+    # This Windows CPU stack produced drifting embeddings and nonfinite logits
+    # with optimized parallel kernels. Native serial inference was repeatable.
+    torch.set_num_threads(1)
+    torch.backends.mkldnn.enabled=False
 
 
 def asset_identity(folder):
@@ -103,56 +143,69 @@ def asset_identity(folder):
     return _ASSET_CACHE[signature]
 
 
-def configured_quality_retriever(index):
+def configured_quality_retriever(index, *, load_embedding=True, load_reranker=True, build_parent_vectors=True):
     """Load local assets only; HTTP requests never trigger model downloads."""
     base=getattr(index,'base_index',index)
     embedding=os.environ.get('PADDLEOCR_EMBEDDING_PATH','').strip()
     reranking=os.environ.get('PADDLEOCR_RERANKER_PATH','').strip()
+    if not load_embedding:embedding=''
+    if not load_reranker:reranking=''
     if not embedding and not reranking:
         raise ModelUnavailable('QUALITY_MODELS_NOT_CONFIGURED')
     fingerprint=hashlib.sha256(''.join(c['chunk_id']+c['content'] for c in base.chunks).encode()).hexdigest()
-    key=(fingerprint,embedding,reranking,asset_identity(embedding),asset_identity(reranking))
+    key=(fingerprint,embedding,reranking,build_parent_vectors,asset_identity(embedding),asset_identity(reranking))
     with _LOCK:
         if key in _CACHE:
             return _CACHE[key]
         try:
             import torch
-            torch.set_num_threads(4)
+            configure_cpu_inference(torch)
             from sentence_transformers import SentenceTransformer, CrossEncoder
             encoder=vectors=scorer=None
             if embedding:
                 if not Path(embedding).is_dir(): raise ModelUnavailable('SEMANTIC_ASSET_NOT_FOUND')
                 # Eager attention avoids NaN embeddings observed with this CPU Torch/SDPA stack.
-                model=SentenceTransformer(embedding,device='cpu',local_files_only=True,
-                                          model_kwargs={'attn_implementation':'eager'})
-                encoder=lambda texts: model.encode(texts,normalize_embeddings=True,batch_size=16,show_progress_bar=False)
+                embedding_key=('embedding',embedding,key[-2],'native-serial-v2')
+                if embedding_key not in _MODELS:
+                    model=SentenceTransformer(embedding,device='cpu',local_files_only=True,
+                                              model_kwargs={'attn_implementation':'eager'})
+                    encoder=CachedEncoder(lambda texts: model.encode(texts,normalize_embeddings=True,batch_size=8,show_progress_bar=False),
+                                          identity=key[-2]+'native-serial-v2',cache_root=os.environ.get('PADDLEOCR_VECTOR_CACHE',''))
+                    _MODELS[embedding_key]=(encoder,model.tokenizer,model.get_sentence_embedding_dimension())
+                encoder,embedding_tokenizer,embedding_dimension=_MODELS[embedding_key]
                 cache_root=os.environ.get('PADDLEOCR_VECTOR_CACHE','').strip()
                 cache_path=None
                 if cache_root:
                     asset_hash=key[-2]
-                    cache_key=hashlib.sha256((fingerprint+asset_hash+'eager-v1').encode()).hexdigest()
+                    cache_key=hashlib.sha256((fingerprint+asset_hash+'eager-native-serial-v2').encode()).hexdigest()
                     cache_path=Path(cache_root)/(cache_key+'.npy')
-                if cache_path and cache_path.is_file():
+                if not build_parent_vectors:
+                    vectors=None
+                elif cache_path and cache_path.is_file():
                     vectors=np.load(cache_path,allow_pickle=False)
-                    if vectors.shape!=(len(base.chunks),model.get_sentence_embedding_dimension()):
+                    if vectors.shape!=(len(base.chunks),embedding_dimension):
                         raise ModelUnavailable('SEMANTIC_CACHE_SHAPE_MISMATCH')
                 else:
                     vectors=encoder([c['content'] for c in base.chunks])
-                if not np.isfinite(vectors).all():raise ModelUnavailable('SEMANTIC_NONFINITE_OUTPUT')
-                if cache_path and not cache_path.is_file():
+                if vectors is not None and not np.isfinite(vectors).all():raise ModelUnavailable('SEMANTIC_NONFINITE_OUTPUT')
+                if vectors is not None and cache_path and not cache_path.is_file():
                     cache_path.parent.mkdir(parents=True,exist_ok=True)
                     np.save(cache_path,vectors,allow_pickle=False)
             if reranking:
                 if not Path(reranking).is_dir(): raise ModelUnavailable('RERANK_ASSET_NOT_FOUND')
-                model_rank=CrossEncoder(reranking,device='cpu',local_files_only=True,max_length=512,
-                                        model_kwargs={'attn_implementation':'eager'})
-                # Return raw logits, not sigmoid probabilities.
-                scorer=ExactScoreCache(lambda pairs: model_rank.predict(pairs,batch_size=8,activation_fn=torch.nn.Identity(),show_progress_bar=False))
+                rerank_key=('rerank',reranking,key[-1],'native-serial-v2')
+                if rerank_key not in _MODELS:
+                    model_rank=CrossEncoder(reranking,device='cpu',local_files_only=True,max_length=512,
+                                            model_kwargs={'attn_implementation':'eager'})
+                    # Return raw logits, not sigmoid probabilities.
+                    scorer=ExactScoreCache(lambda pairs: model_rank.predict(pairs,batch_size=2,activation_fn=torch.nn.Identity(),show_progress_bar=False))
+                    _MODELS[rerank_key]=(scorer,model_rank.tokenizer)
+                scorer,rerank_tokenizer=_MODELS[rerank_key]
             retriever=QualityRetriever(base,encoder=encoder,vectors=vectors,scorer=scorer)
-            retriever.model_identity={'embedding':key[-2],'reranker':key[-1],'attention':'eager'}
+            retriever.model_identity={'embedding':key[-2],'reranker':key[-1],'attention':'eager','cpu_kernel':'native_serial_v2'}
             tokenizers=[]
-            if embedding:tokenizers.append(model.tokenizer)
-            if reranking:tokenizers.append(model_rank.tokenizer)
+            if embedding:tokenizers.append(embedding_tokenizer)
+            if reranking:tokenizers.append(rerank_tokenizer)
             retriever.token_count=lambda text: max(len(t.encode(text,add_special_tokens=True,truncation=False)) for t in tokenizers)
         except ModelUnavailable:
             raise

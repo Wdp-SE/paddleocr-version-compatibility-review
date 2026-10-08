@@ -38,10 +38,16 @@ def is_out_of_scope_public_request(text: str) -> bool:
     normalized = re.sub(r"\s+", " ", text or "").strip()
     if not normalized:
         return False
+    private_request = bool((_PRIVATE_ORG_CONTEXT.search(normalized) and _PRIVATE_DATA_SUBJECT.search(normalized))
+                           or _PRIVATE_ORG_ENGLISH.search(normalized))
+    if private_request:
+        return True
+    # A checklist can be answered conditionally from component documentation;
+    # it cannot establish that an unsubmitted application passed that checklist.
+    checklist = re.search(r'需要(?:再|核查|检查|验证|提供|补充)|要核查哪些|还.{0,6}(?:资料|测试)|怎么(?:核查|验证)', normalized)
+    direct_fact = re.search(r'请(?:直接)?(?:证明|保证|确认)|是否(?:已经|已)(?:通过|兼容)|(?:已经|已)通过(?:验收|回归)', normalized)
     return bool(
-        (_PRIVATE_ORG_CONTEXT.search(normalized) and _PRIVATE_DATA_SUBJECT.search(normalized))
-        or _PRIVATE_ORG_ENGLISH.search(normalized)
-        or (re.search(r'我们(?:的)?应用|本应用|内部应用', normalized)
+        (not checklist or direct_fact) and (re.search(r'我们(?:的)?应用|本应用|内部应用', normalized)
             and re.search(r'确认|保证|证明|通过|兼容', normalized)
             and re.search(r'输出|下游|升级|回归', normalized))
     )

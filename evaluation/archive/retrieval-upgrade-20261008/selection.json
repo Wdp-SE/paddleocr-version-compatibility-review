@@ -1,0 +1,5 @@
+{
+  "selected_before_sealed": "structure_bm25_rerank",
+  "freeze_sha256": "48eb73808b59bd109b95c8dd568ac7d1d2f9d05494a87f2d86d1132500a93c92",
+  "rule": "No fallback or wrong version; no decline against incumbent in either set. Maximize worst-set coverage, then mean coverage; noise and simplicity break ties."
+}

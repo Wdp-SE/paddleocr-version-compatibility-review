@@ -18,6 +18,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from src.answer_generation import (
     GenerationProviderError, GenerationResponseError,
     StructuredAnswerGenerator, validate_review_evidence_membership,
+    MAX_ANSWER_GAPS, MAX_ANSWER_GAP_CHARS,
 )
 from src.public_knowledge import (
     PublicKnowledgeIndex, pphuman_alias_query, tokens, verified_consistency_notes,
@@ -28,6 +29,7 @@ from src.paddleocr_corpus import PADDLEOCR_WORKSPACE_ID
 from src.paddleocr_evaluation import load_paddleocr_acceptance, load_quality_comparison, load_upgrade_demo, load_independent_probes
 from src.paddleocr_impact_evaluation import load_impact_release
 from src.paddleocr_rag_release import load_rag_release
+from src.paddleocr_retrieval_comparison import load_retrieval_comparison
 from src.rd_v2_runtime import _format_context
 from src.public_evaluation_release import validate_public_evaluation_release, validate_pphuman_dev_diagnostic
 from src.public_reranking import (
@@ -70,6 +72,12 @@ def _update_generation_diagnostics(target: dict, details: dict | None) -> None:
         if label is not None:
             target[field] = label
     usage = details.get("usage")
+    if details.get('validation_failure') in ('INVALID_JSON', 'ANSWER_SCHEMA_INVALID'):
+        target['validation_failure'] = details['validation_failure']
+    if type(details.get('schema_repair_attempts')) is int and details['schema_repair_attempts'] in (0, 1):
+        target['schema_repair_attempts'] = details['schema_repair_attempts']
+    if type(details.get('schema_usage_complete')) is bool:
+        target['schema_usage_complete'] = details['schema_usage_complete']
     if isinstance(usage, dict):
         safe_usage = {
             key: value for key in ("input_tokens", "output_tokens", "total_tokens")
@@ -439,7 +447,7 @@ def _claim_scope_mismatches(claims,hits,requirements):
     return bad
 
 
-def _execute_public_search(index, payload, generator, *, top_k: int) -> dict:
+def _execute_public_search(index, payload, generator, *, top_k: int, correction: bool = False) -> dict:
     """Execute legacy retrieval or the explicitly selected experimental policy."""
     requested = payload.retrieval_policy
     route = route_query(payload.query, task_type="lookup")
@@ -450,7 +458,7 @@ def _execute_public_search(index, payload, generator, *, top_k: int) -> dict:
         base_index=getattr(index,'base_index',index)
         versions=tuple(sorted(base_index._version_members(payload.version) or base_index.manifest['versions']))
         plan=plan_query(payload.query,versions=versions)
-        strategy=payload.evidence_strategy;budget=payload.candidate_budget;use_context=True;window_budget=384
+        strategy=payload.evidence_strategy;budget=payload.candidate_budget;use_context=True;window_budget=384;structure_windows=False
         if strategy=='auto':
             rag_release=load_rag_release(Path(base_index.root))
             release=load_impact_release(Path(base_index.root))
@@ -458,6 +466,7 @@ def _execute_public_search(index, payload, generator, *, top_k: int) -> dict:
             if rag_release:
                 strategy=rag_release['selected_strategy'];budget=rag_release['candidate_budget']
                 use_context=rag_release.get('use_context',True);window_budget=rag_release.get('window_budget',384)
+                structure_windows=rag_release.get('structure_windows',False)
             elif release:
                 selected=release['selected_strategy']
                 strategy,budget=release['configs'][selected]
@@ -465,7 +474,9 @@ def _execute_public_search(index, payload, generator, *, top_k: int) -> dict:
             if strategy=='bm25':
                 baseline=payload.model_copy(update={'retrieval_policy':'bm25'})
                 return _execute_public_search(index,baseline,generator,top_k=top_k)
-        result=configured_evidence_search(index,strategy,use_context=use_context,window_budget=window_budget).search(
+            if correction:
+                budget=max(budget,payload.candidate_budget)
+        result=configured_evidence_search(index,strategy,use_context=use_context,window_budget=window_budget,structure_windows=structure_windows).search(
             plan,top_k=top_k,candidate_budget=budget,strategy=strategy,
             ranker=getattr(generator,'rerank_candidate_ids',None))
         details=result['diagnostics']; hits=result['results']
@@ -975,6 +986,7 @@ def workspace(request: Request) -> dict:
             **({'quality_comparison':load_quality_comparison(Path(index.root)),
                 'impact_evaluation':_impact_summary(index),
                 'rag_quality_evaluation':load_rag_release(Path(index.root)),
+                'retrieval_comparison':load_retrieval_comparison(Path(index.root)),
                 'task_coverage':_task_coverage(index),
                 'independent_probes':load_independent_probes(Path(index.root)),
                 'upgrade_demo':load_upgrade_demo()}
@@ -1336,7 +1348,11 @@ def _workflow_usage(results):
     usages=[c.get('usage') for c in calls]
     known=[u for u in usages if isinstance(u,dict) and type(u.get('total_tokens')) is int]
     return {'total_tokens':sum(u['total_tokens'] for u in known) if known else None,
-            'reported_calls':len(known),'observed_stages':len(calls),'complete':len(known)==len(calls)}
+            'reported_calls':sum(1+c.get('schema_repair_attempts',0) for c in calls
+                                 if isinstance(c.get('usage'),dict) and type(c['usage'].get('total_tokens')) is int
+                                 and c.get('schema_usage_complete',True)),
+            'observed_stages':sum(1+c.get('schema_repair_attempts',0) for c in calls),
+            'complete':len(known)==len(calls) and all(c.get('schema_usage_complete',True) for c in calls)}
 
 
 def _merge_evidence(first, second):
@@ -1378,6 +1394,7 @@ async def query(payload: SearchRequest, request: Request) -> dict:
     strategy = first.get('actual_policy')
     from src.paddleocr_evidence_search import STRATEGIES
     if strategy not in STRATEGIES: strategy = 'contextual_bm25'
+    if payload.evidence_strategy=='auto': strategy='auto'
     repaired = payload.model_copy(update={
         'retrieval_policy': 'paddleocr_evidence', 'evidence_strategy': strategy,
         'candidate_budget': 120, 'top_k': min(20, max(payload.top_k+3, 8)),
@@ -1392,7 +1409,7 @@ async def query(payload: SearchRequest, request: Request) -> dict:
     chosen = second if second.get('status') == 'OK' else first
     chosen['workflow_usage'] = _workflow_usage([first, second])
     chosen['correction'] = {'attempts': 1, 'trigger': reason or 'PARTIAL_SUPPORTED',
-                            'status': 'RECOVERED' if second.get('status') == 'OK' else 'UNRESOLVED',
+                            'status': 'PARTIAL_SUPPORTED' if second.get('status')=='OK' and second.get('evidence_gaps') else 'RECOVERED' if second.get('status') == 'OK' else 'UNRESOLVED',
                             'trace': attempts}
     # A successful repair is one coherent, independently checked answer.
     # Concatenating separately worded passes repeats facts and can exceed the
@@ -1424,7 +1441,7 @@ async def _query_once(payload: SearchRequest, request: Request, *, correction: b
     generator = request.app.state.public_generator
     try:
         execution = await asyncio.to_thread(
-            _execute_public_search, index, payload, generator, top_k=payload.top_k,
+            _execute_public_search, index, payload, generator, top_k=payload.top_k, correction=correction,
         )
     except ValueError as exc:
         raise HTTPException(status_code=422, detail="INVALID_PUBLIC_SEARCH") from exc
@@ -1553,8 +1570,8 @@ async def _query_once(payload: SearchRequest, request: Request, *, correction: b
             )
             return {**base, "status": "ABSTAINED"}
         gaps = generated.get("evidence_gaps", [])
-        if (not isinstance(gaps, list) or len(gaps) > 5
-                or any(not isinstance(gap, str) or not gap.strip() or len(gap) > 800 for gap in gaps)):
+        if (not isinstance(gaps, list) or len(gaps) > MAX_ANSWER_GAPS
+                or any(not isinstance(gap, str) or not gap.strip() or len(gap) > MAX_ANSWER_GAP_CHARS for gap in gaps)):
             raise ValueError("answer evidence gaps violate the bounded schema")
         base["evidence_gaps"] = list(dict.fromkeys(gap.strip() for gap in gaps))
         base["answer_completeness"] = "PARTIAL_SUPPORTED" if gaps and claims else "NOT_ASSESSED"

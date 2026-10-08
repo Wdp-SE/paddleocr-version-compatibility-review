@@ -1,0 +1,1006 @@
+{
+  "schema_version": 1,
+  "selected": "structure_bm25_rerank",
+  "strategy": "contextual_rerank",
+  "structure_windows": true,
+  "candidate_budget": 80,
+  "top_k": 5,
+  "selected_strategy": "contextual_rerank",
+  "window_budget": 384,
+  "use_context": true,
+  "retrieval": {
+    "raw_bm25": {
+      "regression": {
+        "metrics": {
+          "count": 48,
+          "complete_count": 18,
+          "fact_hit_count": 18,
+          "fact_count": 48,
+          "source_hit_count": 33,
+          "wrong_version_count": 0,
+          "wrong_module_count": 159,
+          "complete_rate": 0.375,
+          "fact_recall": 0.375
+        },
+        "execution_success_count": 48,
+        "evaluation_status": "complete",
+        "planned_count": 48,
+        "execution": "实际策略执行 48/48"
+      },
+      "validation": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 2,
+          "fact_hit_count": 2,
+          "fact_count": 12,
+          "source_hit_count": 10,
+          "wrong_version_count": 0,
+          "wrong_module_count": 41,
+          "complete_rate": 0.16666666666666666,
+          "fact_recall": 0.16666666666666666
+        },
+        "execution_success_count": 12,
+        "evaluation_status": "complete",
+        "planned_count": 12,
+        "execution": "实际策略执行 12/12"
+      }
+    },
+    "window_bm25": {
+      "regression": {
+        "metrics": {
+          "count": 48,
+          "complete_count": 31,
+          "fact_hit_count": 31,
+          "fact_count": 48,
+          "source_hit_count": 42,
+          "wrong_version_count": 0,
+          "wrong_module_count": 82,
+          "complete_rate": 0.6458333333333334,
+          "fact_recall": 0.6458333333333334
+        },
+        "execution_success_count": 48,
+        "evaluation_status": "complete",
+        "planned_count": 48,
+        "execution": "实际策略执行 48/48"
+      },
+      "validation": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 6,
+          "fact_hit_count": 6,
+          "fact_count": 12,
+          "source_hit_count": 12,
+          "wrong_version_count": 0,
+          "wrong_module_count": 13,
+          "complete_rate": 0.5,
+          "fact_recall": 0.5
+        },
+        "execution_success_count": 12,
+        "evaluation_status": "complete",
+        "planned_count": 12,
+        "execution": "实际策略执行 12/12"
+      },
+      "sealed": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 8,
+          "fact_hit_count": 8,
+          "fact_count": 12,
+          "source_hit_count": 12,
+          "wrong_version_count": 0,
+          "wrong_module_count": 12,
+          "complete_rate": 0.6666666666666666,
+          "fact_recall": 0.6666666666666666
+        },
+        "execution_success_count": 12,
+        "evaluation_status": "complete",
+        "planned_count": 12,
+        "execution": "实际策略执行 12/12"
+      }
+    },
+    "structure_bm25": {
+      "regression": {
+        "metrics": {
+          "count": 48,
+          "complete_count": 31,
+          "fact_hit_count": 31,
+          "fact_count": 48,
+          "source_hit_count": 39,
+          "wrong_version_count": 0,
+          "wrong_module_count": 83,
+          "complete_rate": 0.6458333333333334,
+          "fact_recall": 0.6458333333333334
+        },
+        "execution_success_count": 48,
+        "evaluation_status": "complete",
+        "planned_count": 48,
+        "execution": "实际策略执行 48/48"
+      },
+      "validation": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 9,
+          "fact_hit_count": 9,
+          "fact_count": 12,
+          "source_hit_count": 11,
+          "wrong_version_count": 0,
+          "wrong_module_count": 9,
+          "complete_rate": 0.75,
+          "fact_recall": 0.75
+        },
+        "execution_success_count": 12,
+        "evaluation_status": "complete",
+        "planned_count": 12,
+        "execution": "实际策略执行 12/12"
+      }
+    },
+    "structure_hybrid": {
+      "regression": {
+        "metrics": {
+          "count": 48,
+          "complete_count": 36,
+          "fact_hit_count": 36,
+          "fact_count": 48,
+          "source_hit_count": 39,
+          "wrong_version_count": 0,
+          "wrong_module_count": 91,
+          "complete_rate": 0.75,
+          "fact_recall": 0.75
+        },
+        "execution_success_count": 48,
+        "evaluation_status": "complete",
+        "planned_count": 48,
+        "execution": "实际策略执行 48/48"
+      },
+      "validation": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 8,
+          "fact_hit_count": 8,
+          "fact_count": 12,
+          "source_hit_count": 10,
+          "wrong_version_count": 0,
+          "wrong_module_count": 11,
+          "complete_rate": 0.6666666666666666,
+          "fact_recall": 0.6666666666666666
+        },
+        "execution_success_count": 12,
+        "evaluation_status": "complete",
+        "planned_count": 12,
+        "execution": "实际策略执行 12/12"
+      }
+    },
+    "structure_bm25_rerank": {
+      "regression": {
+        "metrics": {
+          "count": 48,
+          "complete_count": 35,
+          "fact_hit_count": 35,
+          "fact_count": 48,
+          "source_hit_count": 37,
+          "wrong_version_count": 0,
+          "wrong_module_count": 96,
+          "complete_rate": 0.7291666666666666,
+          "fact_recall": 0.7291666666666666
+        },
+        "execution_success_count": 48,
+        "evaluation_status": "complete",
+        "planned_count": 48,
+        "execution": "实际策略执行 48/48"
+      },
+      "validation": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 10,
+          "fact_hit_count": 10,
+          "fact_count": 12,
+          "source_hit_count": 10,
+          "wrong_version_count": 0,
+          "wrong_module_count": 11,
+          "complete_rate": 0.8333333333333334,
+          "fact_recall": 0.8333333333333334
+        },
+        "execution_success_count": 12,
+        "evaluation_status": "complete",
+        "planned_count": 12,
+        "execution": "实际策略执行 12/12"
+      },
+      "sealed": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 11,
+          "fact_hit_count": 11,
+          "fact_count": 12,
+          "source_hit_count": 11,
+          "wrong_version_count": 0,
+          "wrong_module_count": 13,
+          "complete_rate": 0.9166666666666666,
+          "fact_recall": 0.9166666666666666
+        },
+        "execution_success_count": 12,
+        "evaluation_status": "complete",
+        "planned_count": 12,
+        "execution": "实际策略执行 12/12"
+      }
+    },
+    "structure_hybrid_rerank": {
+      "regression": {
+        "metrics": {
+          "count": 48,
+          "complete_count": 33,
+          "fact_hit_count": 33,
+          "fact_count": 48,
+          "source_hit_count": 36,
+          "wrong_version_count": 0,
+          "wrong_module_count": 99,
+          "complete_rate": 0.6875,
+          "fact_recall": 0.6875
+        },
+        "execution_success_count": 48,
+        "evaluation_status": "complete",
+        "planned_count": 48,
+        "execution": "实际策略执行 48/48"
+      },
+      "validation": {
+        "metrics": {
+          "count": 12,
+          "complete_count": 10,
+          "fact_hit_count": 10,
+          "fact_count": 12,
+          "source_hit_count": 10,
+          "wrong_version_count": 0,
+          "wrong_module_count": 10,
+          "complete_rate": 0.8333333333333334,
+          "fact_recall": 0.8333333333333334
+        },
+        "execution_success_count": 12,
+        "evaluation_status": "complete",
+        "planned_count": 12,
+        "execution": "实际策略执行 12/12"
+      }
+    }
+  },
+  "selection_reason": "按完整证据覆盖优先选型，执行回退和错版本不得算作成功。首次封存题未低于窗口基线，允许启用。",
+  "conditions": {
+    "top_k": 5,
+    "same_corpus": true,
+    "known_regression": 48,
+    "new_validation": 12,
+    "first_frozen": 12,
+    "sealed_status": "原首次封存题在补查链路修复后复验，已不属于未见题；未据其更换问题、策略或参数。首次结果保存在 first-sealed-history.json。",
+    "runtime_versions": {
+      "torch": "2.4.0+cpu",
+      "transformers": "5.4.0",
+      "sentence-transformers": "5.3.0",
+      "numpy": "1.26.4"
+    },
+    "cpu_kernel": "native_serial_v2：单线程，关闭 MKLDNN，eager attention；此前不稳定内核的成绩作废",
+    "candidate_budget": {
+      "window": 40,
+      "structured": 80
+    },
+    "structured_unit": "完整参数行、段落和代码示例；原始字符位置引用",
+    "latency": "本地 CPU，模型初始化不计；首个语义问题可能含文档向量计算。不是公网 P95 或企业 SLA。"
+  },
+  "models": {
+    "embedding": "ba70b41bd018d3b7d57bf31b7111833db90564128f699220113ae16d00c155e5",
+    "reranker": "81651ea46f23519d88f5c4ce5bb72589a37c93552e44aaca1e941f5f9d81ffe3"
+  },
+  "disqualified": {},
+  "failures": {
+    "raw_bm25/regression": [
+      {
+        "id": "internal-01",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-02",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-03",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-05",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-07",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-08",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-10",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-11",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-13",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-16",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-21",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-22",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-23",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-24",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-25",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-26",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-28",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-29",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-31",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-32",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-34",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-35",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-37",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-39",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-40",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-42",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-44",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-45",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-46",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-48",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      }
+    ],
+    "raw_bm25/validation": [
+      {
+        "id": "fresh-01",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-03",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-05",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-07",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-09",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-11",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-15",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-17",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-19",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-23",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      }
+    ],
+    "window_bm25/regression": [
+      {
+        "id": "internal-01",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-03",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-05",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-08",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-10",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-25",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-28",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-31",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-32",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-35",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-38",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-39",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-40",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-42",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-44",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-45",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-46",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      }
+    ],
+    "window_bm25/validation": [
+      {
+        "id": "fresh-01",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-03",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-09",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-15",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-17",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-23",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      }
+    ],
+    "window_bm25/sealed": [
+      {
+        "id": "fresh-02",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-04",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-10",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-16",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      }
+    ],
+    "structure_bm25/regression": [
+      {
+        "id": "internal-01",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-03",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-05",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-08",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-13",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-28",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-29",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-31",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-32",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-35",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-39",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-40",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-42",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-43",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-44",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-45",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-46",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      }
+    ],
+    "structure_bm25/validation": [
+      {
+        "id": "fresh-15",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-17",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-23",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      }
+    ],
+    "structure_hybrid/regression": [
+      {
+        "id": "internal-01",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-02",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-03",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-05",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-32",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-35",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-40",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-41",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-42",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-43",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-45",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-46",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      }
+    ],
+    "structure_hybrid/validation": [
+      {
+        "id": "fresh-15",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-17",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-19",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-23",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      }
+    ],
+    "structure_bm25_rerank/regression": [
+      {
+        "id": "internal-01",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-02",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-03",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-05",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-13",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-32",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-35",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-39",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-40",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-41",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-42",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-43",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-46",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      }
+    ],
+    "structure_bm25_rerank/validation": [
+      {
+        "id": "fresh-17",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-19",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      }
+    ],
+    "structure_bm25_rerank/sealed": [
+      {
+        "id": "fresh-18",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      }
+    ],
+    "structure_hybrid_rerank/regression": [
+      {
+        "id": "internal-01",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-02",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-03",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-05",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-06",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-13",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-15",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-32",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-35",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-38",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-39",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-40",
+        "stage": "candidate_or_representation",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-41",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-42",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "internal-43",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      }
+    ],
+    "structure_hybrid_rerank/validation": [
+      {
+        "id": "fresh-17",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      },
+      {
+        "id": "fresh-19",
+        "stage": "selection_or_ranking",
+        "fallback_reason": null
+      }
+    ]
+  },
+  "generation_evaluation": null,
+  "rerank_readiness": {
+    "status": "EVALUATED",
+    "reason": "前期 CPU 优化内核出现非有限输出和数值漂移；改用串行原生内核重新冻结测试。仅完整运行且无回退的结果参与选型，部分结果不作质量对照。"
+  },
+  "limitations": "开发者编写并按原文标注；48 题为已知回归，新增 24 题共享已收录手册。首次封存不等于未见文档或企业专家盲测。指标为字面事实完整证据覆盖，不是回答准确率。不同候选数是方案组合对照，不能将变化全部归因于 embedding。模型回退单列；不宣称企业用户收益。"
+}

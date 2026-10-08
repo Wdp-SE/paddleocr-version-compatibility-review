@@ -12,7 +12,7 @@ from src.public_knowledge import (
     PublicKnowledgeIndex, _parts, build_index, verified_consistency_notes,
 )
 
-CORPUS = Path(__file__).resolve().parents[1] / "public_corpus_pphuman"
+CORPUS = Path(__file__).resolve().parents[1] / "public_corpus_paddleocr"
 
 
 @pytest.fixture(scope="module")
@@ -20,30 +20,17 @@ def index() -> PublicKnowledgeIndex:
     return PublicKnowledgeIndex(CORPUS)
 
 
-def test_pinned_chinese_pphuman_corpus_metadata_and_source_hashes(index):
-    manifest = index.manifest
-    assert manifest["workspace_id"] == "pphuman"
-    assert manifest["repository"] == "PaddlePaddle/PaddleDetection"
-    assert manifest["current_version"] == "v2.9.0"
-    assert manifest["available_versions"] == ["v2.5.0", "v2.6.0", "v2.7.0", "v2.8.0", "v2.8.1", "v2.9.0"]
-    assert len(manifest["sources"]) == 83
-    assert {row["language"] for row in manifest["sources"]} == {"zh"}
-    assert {row["locale"] for row in manifest["sources"]} == {"zh-CN"}
-    for row in manifest["sources"]:
-        assert row["source_url"].startswith("https://github.com/PaddlePaddle/PaddleDetection/blob/")
-        assert row["commit"] == manifest["versions"][row["version"]]["commit"]
-        assert hashlib.sha256((CORPUS / row["local_path"]).read_bytes()).hexdigest() == row["sha256"]
 
 
 def test_chinese_and_snapshot_filters_keep_one_workspace(index):
-    snapshot = "v2.9.0"
-    hits = index.search("PP-Human 行人跟踪模型 推理配置", language="zh", version="latest")
+    snapshot = "v3.0.0"
+    hits = index.search("PaddleOCR OCR 结果", language="zh", version="latest")
     assert hits
     assert all(row["locale"] == "zh-CN" and row["version"] == snapshot for row in hits)
-    assert all(row["repository"] == "PaddlePaddle/PaddleDetection" for row in hits)
-    assert index.search("行人跟踪", language="zh", version=snapshot)
+    assert all(row["repository"] == "PaddlePaddle/PaddleOCR" for row in hits)
+    assert index.search("OCR 结果", language="zh", version=snapshot)
     with pytest.raises(ValueError, match="unsupported public corpus scope"):
-        index.search("行人跟踪", language="zh", version="not-a-pinned-release")
+        index.search("OCR 结果", language="zh", version="not-a-pinned-release")
 
 
 def test_consistency_warning_only_reports_verifiable_version_text_difference():
@@ -77,11 +64,11 @@ def test_consistency_warning_does_not_compare_different_languages_as_version_con
 
 def test_current_scope_is_only_the_pinned_document_snapshot(index):
     snapshot = index.manifest["current_version"]
-    current = index.search("行人跟踪", version="latest", language="zh")
-    exact = index.search("Jetson", version=snapshot, language="zh")
+    current = index.search("OCR 结果", version="latest", language="zh")
+    exact = index.search("PaddleOCR", version=snapshot, language="zh")
     assert current and exact
     assert {row["version"] for row in current + exact} == {snapshot}
-    assert len(index.manifest["available_versions"]) == 6
+    assert len(index.manifest["available_versions"]) == 2
 
 
 def test_parts_keep_inherited_heading_path():
@@ -149,30 +136,13 @@ def test_fielded_bm25_does_not_compute_dense_or_baseline_scores(index, monkeypat
     monkeypatch.setattr("src.public_knowledge.dense_vector", unexpected)
 
     hits = index.search(
-        "PP-Human 行人跟踪推理配置", version="latest", language="zh", policy="bm25_fields"
+        "PaddleOCR OCR 结果", version="latest", language="zh", policy="bm25_fields"
     )
 
     assert hits
     assert all(hit["retrieval_policy"] == "bm25_fields" for hit in hits)
 
 
-def test_technical_expansion_recovers_tracker_config_for_chinese_paraphrase(index):
-    query = "跟踪器参数具体放在哪个配置文件里？"
-    baseline = index.search(query, top_k=5, version="v2.9.0", language="zh", policy="bm25")
-    hits = index.search(
-        query,
-        top_k=5,
-        version="v2.9.0",
-        language="zh",
-        policy="bm25_pphuman_term_expansion_rrf",
-    )
-
-    assert any(
-        row["source_id"] == "v2-9-0-deploy-pipeline-config-tracker-config-yml-0b088dd"
-        for row in hits
-    )
-    assert [row["chunk_id"] for row in hits[:2]] == [row["chunk_id"] for row in baseline[:2]]
-    assert all(row["version"] == "v2.9.0" and row["language"] == "zh" for row in hits)
 
 
 def test_source_diverse_bm25_exposes_more_relevant_documents_without_changing_default(monkeypatch):
@@ -276,5 +246,7 @@ def test_public_index_rejects_tampered_prebuilt_artifact(tmp_path, artifact):
         tampered[-1] ^= 1
         artifact_path.write_bytes(tampered)
 
-    with pytest.raises(ValueError, match="public corpus index artifact hash mismatch"):
+    expected = ("PaddleOCR chunk line coordinates or content do not match source bytes"
+                if artifact == "chunks.json" else "public corpus index artifact hash mismatch")
+    with pytest.raises(ValueError, match=expected):
         PublicKnowledgeIndex(tmp_path)

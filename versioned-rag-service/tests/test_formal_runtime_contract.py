@@ -265,6 +265,7 @@ def test_deepseek_diagnostics_report_returned_model_usage_and_finish_reason(monk
         "provider": "deepseek", "requested_model": "deepseek-v4-flash",
         "returned_model": "deepseek-v4-flash", "finish_reason": "stop",
         "usage": {"input_tokens": 80, "output_tokens": 20, "total_tokens": 100},
+        "schema_repair_attempts": 0, "schema_usage_complete": True,
     }
     assert "test-secret-value" not in str(diagnostics)
 

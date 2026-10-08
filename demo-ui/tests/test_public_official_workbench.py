@@ -347,7 +347,7 @@ def test_workbench_warns_when_public_rag_workspace_is_not_paddleocr(monkeypatch)
     assert "PaddleOCR 官方中文资料不匹配" in warning
     assert "RAG_API_BASE_URL" not in warning
     assert "public_corpus_other" not in warning
-    assert not any("资料规模" in item.value for item in list(app.markdown) + list(app.caption))
+    assert not any("资料规模" in item.value for item in list(app.markdown) + list(app.caption) + list(app.error))
 
 
 def test_home_hides_operational_and_corpus_detail_copy(monkeypatch):
@@ -482,7 +482,7 @@ def test_public_home_has_pphuman_modules_and_change_review_flow(monkeypatch):
     app = AppTest.from_file(APP, default_timeout=40).run()
     assert not app.exception
     assert [item.value for item in app.title] == ["研发知识版本服务与变更影响审查"]
-    text = "\n".join(item.value for item in list(app.markdown) + list(app.caption))
+    text = "\n".join(item.value for item in list(app.markdown) + list(app.caption) + list(app.error))
     assert "PP-Human 行人分析工程知识" in text
     assert "版本化研发知识服务 · RAG" in text
     assert "Agent · 研发资料变更审查" in text
@@ -508,7 +508,7 @@ def test_public_rag_keeps_answer_before_real_cited_source(monkeypatch):
     assert app.selectbox(key="official_version").value == "wiki-1eadc6584f96"
     next(button for button in app.button if button.label == "生成带引用回答").click().run()
     assert not app.exception
-    text = "\n".join(item.value for item in list(app.markdown) + list(app.caption))
+    text = "\n".join(item.value for item in list(app.markdown) + list(app.caption) + list(app.error))
     assert {item.value for item in app.subheader} >= {"回答", "引用依据"}
     assert "阅读原始页面" in text
     assert "[1] Jetson 刷写与软件基线" in text
@@ -652,7 +652,7 @@ def test_version_selector_tracks_new_latest_release_after_manual_old_selection(m
     assert app.selectbox(key="official_version").value == "wiki-next-snapshot"
     app.selectbox(key="official_version").set_value("wiki-1eadc6584f96").run()
     assert app.selectbox(key="official_version").value == "wiki-1eadc6584f96"
-    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption))
+    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption) + list(app.error))
     assert "最新已收录" in app.selectbox(key="official_version").options[0]
     assert "最近收录：" in visible and "2026-09-28 09:15 UTC" in visible
 
@@ -667,7 +667,7 @@ def test_offline_version_fallback_is_not_presented_as_latest(monkeypatch):
 
     assert not app.exception
     assert app.selectbox(key="official_version").value == "等待连接"
-    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption))
+    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption) + list(app.error))
     assert "无法确认最新已收录版本" in visible
     assert "暂未获取当前版本信息" in visible
 
@@ -726,7 +726,7 @@ def test_agent_shows_retrieval_trace_and_uncovered_change_clause(monkeypatch):
 
     assert not app.exception
     assert app.session_state["official_request_review"]["retrieval_trace"]["uncovered_queries"]
-    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption))
+    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption) + list(app.error))
     assert "检索过程与覆盖范围" in {item.label for item in app.expander}
     assert "待排查调度失败恢复说明" in visible
 
@@ -845,7 +845,8 @@ def test_generation_rate_limit_keeps_evidence_and_explains_retry(monkeypatch):
     next(button for button in app.button if button.label == "生成带引用回答").click().run()
 
     assert not app.exception
-    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption))
+    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption) + list(app.error))
+    assert app.error
     assert "限流" in visible and "稍后重试" in visible
     assert "[1] Jetson 刷写与软件基线" in visible
     assert "test-request-1" in visible
@@ -866,7 +867,9 @@ def test_long_hit_fragment_is_complete_once_and_links_to_original_page(monkeypat
 
     assert not app.exception
     visible = "\n".join(item.value for item in app.markdown)
-    assert visible.count("命中证据。") == 200
+    assert sum(item.value == long_hit['content'] for item in app.markdown) == 1
+    detail = next(item for item in app.expander if item.label == '查看原文片段 · 1 段')
+    assert not detail.proto.expanded
     assert all("完整命中片段" not in item.label for item in app.expander)
     assert "阅读原始页面" in visible
 
@@ -903,7 +906,7 @@ def test_generated_answer_renders_claim_level_references_without_confidence_grad
     next(button for button in app.button if button.label == "版本化知识检索").click().run()
     next(button for button in app.button if button.label == "生成带引用回答").click().run()
 
-    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption))
+    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption) + list(app.error))
     assert "当前片段记录上游参数优先" in visible
     assert "[1]" in visible
     assert "引用编号对应本次检索片段" in visible
@@ -1067,7 +1070,8 @@ def test_public_rag_without_generation_shows_compact_evidence_fallback(monkeypat
     next(button for button in app.button if button.label == "生成带引用回答").click().run()
 
     assert not app.exception
-    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption) + list(app.info))
+    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption) + list(app.error))
+    assert app.error
     assert "检索证据仍可查看" in visible
     assert "模型生成尚未启用" in visible
     assert "API_KEY" not in visible
@@ -1174,7 +1178,8 @@ def test_provider_connection_failure_explains_proxy_or_network(monkeypatch):
     next(button for button in app.button if button.label == "版本化知识检索").click().run()
     next(button for button in app.button if button.label == "生成带引用回答").click().run()
 
-    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption) + list(app.info))
+    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption) + list(app.error))
+    assert app.error
     assert "后端无法连接模型服务" in visible
     assert "检索证据已保留" in visible
     assert "[1] Jetson 刷写与软件基线" in visible
@@ -1192,13 +1197,13 @@ def test_provider_rejection_and_invalid_response_explain_safe_fallback(monkeypat
     app = AppTest.from_file(APP, default_timeout=40).run()
     next(button for button in app.button if button.label == "版本化知识检索").click().run()
     next(button for button in app.button if button.label == "生成带引用回答").click().run()
-    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption))
+    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption) + list(app.error))
     assert "模型服务拒绝了请求" in visible
     assert "检索证据已保留" in visible
 
     next(button for button in app.button if button.label == "生成带引用回答").click().run()
-    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption))
-    assert "模型返回内容未满足引用要求" in visible
+    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption) + list(app.error))
+    assert "模型输出未通过结构校验" in visible
     assert "检索证据已保留" in visible
 
 
@@ -1652,7 +1657,7 @@ def test_public_agent_shows_explicit_document_reference_without_confirming_parag
     next(button for button in app.button if button.label == "生成修改前后对照").click().run()
     assert not app.exception
     assert "已确认文档关联" in {item.value for item in app.subheader}
-    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption))
+    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption) + list(app.error))
     assert "刷写前需要确认设备型号、目标载板与系统镜像版本" in visible
     assert "https://wiki.seeedstudio.com/cn/jetson_developtool_flash_firmware/" in visible
     assert "官方实现 PR" not in visible and "DSIP" not in visible
@@ -1804,7 +1809,7 @@ def test_edge_version_page_distinguishes_snapshot_from_software_baselines(monkey
     app = AppTest.from_file(APP, default_timeout=40).run()
     next(button for button in app.button if button.label == "版本与历史").click().run()
 
-    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption))
+    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption) + list(app.error))
     assert not app.exception
     assert "当前固定中文资料快照" in visible
     assert "JetPack / L4T 基线" in visible
@@ -1859,7 +1864,7 @@ def test_agent_review_sections_remain_session_bound_after_navigation(monkeypatch
     _start_agent_request(app)
     assert not app.exception
     next(button for button in app.button if button.label == "影响候选").click().run()
-    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption))
+    visible = "\n".join(item.value for item in list(app.markdown) + list(app.caption) + list(app.error))
     assert "可能相关资料" in visible or "阅读原始页面" in visible
     next(button for button in app.button if button.label == "人工审核").click().run()
     assert app.session_state["official_request_review"]["sandbox_only"] is True

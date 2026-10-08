@@ -14,7 +14,7 @@ _MODULES={'文本检测':'text_detection','文本识别':'text_recognition',
 def retrieval_intent(text: str) -> dict:
     """Task aliases for source selection, never an answer or a version override."""
     if re.search(r'结果|返回', text) and re.search(r'读取|消费|结构|格式', text) and re.search(r'升级|迁移|差异|变化', text):
-        return {'kind': 'result_migration', 'aliases': ['ocr_res append zip dt_boxes rec_res', 'line box txt score', 'rec_texts rec_scores', 'def ocr self predict'],
+        return {'kind': 'result_migration', 'aliases': ['ocr_res append zip dt_boxes rec_res', 'line box txt score', 'rec_texts rec_scores', 'def ocr self predict', 'return list self.predict_iter'],
                 'preferred_role': 'result_contract'}
     if re.search(r'测试|断言|\btest\b|\bassert', text, re.I):
         return {'kind': 'test_contract', 'aliases': ['assert result isinstance'],
@@ -38,6 +38,7 @@ def query_module(text: str) -> str | None:
         (r'(?<![\w-])OCR(?!\w)|\bPaddleOCR\s*\(', 'ocr'),
         (r'文档预处理|DocPreprocessor', 'doc_preprocessor'),
         (r'表格识别产线|通用表格识别v2|TableRecognitionPipelineV2', 'table_recognition_v2'),
+        (r'文本行方向分类|TextLineOrientationClassification', 'text_line_orientation_classification'),
     ):
         if re.search(pattern, text): return module
     values={v for k,v in _MODULES.items() if k in text}

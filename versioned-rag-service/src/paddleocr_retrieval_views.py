@@ -2,6 +2,7 @@
 from __future__ import annotations
 import hashlib
 import re
+import html
 from collections import OrderedDict
 
 
@@ -98,6 +99,57 @@ def build_views(chunks: list[dict], *, token_count, max_tokens: int = 384) -> li
     return views
 
 
+def _readable(text: str) -> str:
+    # Only the ranking representation is cleaned. Citations retain exact bytes.
+    text = re.sub(r'<[^>]+>', ' ', text)
+    text = re.sub(r'!?\[([^\]]*)\]\([^)]*\)', r'\1', text)
+    return re.sub(r'[ \t]+', ' ', html.unescape(text)).strip()
+
+
+def build_structure_views(chunks: list[dict], *, max_chars: int = 384) -> list[dict]:
+    """Index complete table rows, fenced examples and bounded paragraphs."""
+    if type(max_chars) is not int or not 128 <= max_chars <= 1536:
+        raise ValueError('invalid structured window budget')
+    output=[]
+    for parent in chunks:
+        text=parent['content']
+        protected=[m.span() for m in re.finditer(r'<tr\b[^>]*>.*?</tr>|```[^\n]*\n.*?```',text,re.S|re.I)]
+        ranges=[];cursor=0
+        for lo,hi in protected+[(len(text),len(text))]:
+            if lo<cursor:continue
+            gap=text[cursor:lo]
+            ranges.extend((cursor+m.start(),cursor+m.end()) for m in re.finditer(r'\S(?:.*?\S)?(?=\n\s*\n|\Z)',gap,re.S))
+            if hi>lo:ranges.append((lo,hi))
+            cursor=hi
+        context=_context(parent)
+        # HTML headers are source text, not model-generated facts.
+        header=re.search(r'<tr\b[^>]*>.*?<th\b.*?</tr>',text,re.S|re.I)
+        if header:context+='\n'+header.group(0)
+        context=_readable(context)[:max_chars//4]
+        prefix=context+'\n' if context else ''
+        for lo,hi in ranges:
+            if len(_readable(text[lo:hi]))>max_chars or hi-lo>6000:
+                parts=[];start=lo
+                while start<hi:
+                    end=min(start+max_chars,hi)
+                    if end<hi:
+                        boundary=text.rfind('\n',start,end)
+                        if boundary>start:end=boundary+1
+                    parts.append((start,end));start=end
+            else:parts=[(lo,hi)]
+            for start,end in parts:
+                value=text[start:end]
+                output.append({**{k:parent[k] for k in ('source_id','version','source_sha256') if k in parent},
+                    'parent_chunk_id':parent['chunk_id'], 'representation':'structured',
+                    'view_id':hashlib.sha256(f"{parent['chunk_id']}:{start}:{end}".encode()).hexdigest(),
+                    'line_start':parent['line_start']+text[:start].count('\n'),
+                    'line_end':parent['line_start']+text[:end-1].count('\n'),
+                    'char_start':start,'char_end':end,'content':value,'module':module_for(parent),
+                    'context_char_end':len(context),'retrieval_text':prefix+_readable(value),
+                    'token_count':len(prefix+_readable(value))})
+    return output
+
+
 def validate_views(chunks: list[dict], views: list[dict]) -> None:
     parents={c['chunk_id']:c for c in chunks}; seen=set()
     for view in views:
@@ -107,8 +159,12 @@ def validate_views(chunks: list[dict], views: list[dict]) -> None:
         value=_span_text(parent,view)
         count=view.get('context_char_end')
         context=_context(parent)
+        if view.get('representation')=='structured':
+            header=re.search(r'<tr\b[^>]*>.*?<th\b.*?</tr>',parent['content'],re.S|re.I)
+            if header:context+='\n'+header.group(0)
+            context=_readable(context)
         if type(count) is not int or not 0<=count<=len(context): raise ValueError('invalid view context')
-        expected=(context[:count]+'\n' if count else '')+value
+        expected=(context[:count]+'\n' if count else '')+(_readable(value) if view.get('representation')=='structured' else value)
         vid=hashlib.sha256(f"{parent['chunk_id']}:{view['char_start']}:{view['char_end']}".encode()).hexdigest()
         if (view.get('retrieval_text')!=expected or view.get('module')!=module_for(parent)
                 or view.get('view_id')!=vid or vid in seen):

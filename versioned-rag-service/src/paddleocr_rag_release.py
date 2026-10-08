@@ -4,6 +4,10 @@ import json
 from pathlib import Path
 
 def load_rag_release(corpus: Path):
+    from src.paddleocr_retrieval_comparison import load_retrieval_comparison
+    comparison=load_retrieval_comparison(corpus)
+    if comparison and comparison['promotion_eligible']:
+        return comparison
     from src.paddleocr_internal_release import load_internal_release
     current=load_internal_release(corpus)
     if current is not None:

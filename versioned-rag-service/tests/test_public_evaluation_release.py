@@ -9,7 +9,7 @@ from src.public_knowledge import PublicKnowledgeIndex
 
 ROOT = Path(__file__).resolve().parents[2]
 SERVICE = ROOT / "versioned-rag-service"
-CORPUS = SERVICE / "public_corpus_pphuman"
+CORPUS = SERVICE / "public_corpus_paddleocr"
 
 
 def _identity():

@@ -254,15 +254,3 @@ def test_markdown_link_is_document_relative_while_command_path_is_repo_relative(
     result = trace_configuration(index, ["v2.9.0:zh:docs/start"], "v2.9.0")
     assert {row["target_path"] for row in result["relations"]} == {"docs/configs/local.yml", "configs/root.yml"}
     assert result["gaps"] == []
-
-
-def test_current_pphuman_tracker_has_real_incoming_configuration_relation():
-    root = Path(__file__).resolve().parents[1] / "public_corpus_pphuman"
-    index = SimpleNamespace(root=root,
-        manifest=json.loads((root / "corpus_manifest.json").read_text(encoding="utf-8")),
-        chunks=json.loads((root / "chunks.json").read_text(encoding="utf-8")))
-    result = trace_configuration(index, ["v2.9.0:zh:deploy/pipeline/config/tracker_config"], "v2.9.0")
-    assert any(row["path"] == "deploy/pipeline/config/infer_cfg_pphuman.yml"
-        and row["target_status"] == "indexed" and row["direction"] == "incoming"
-        for row in result["relations"])
-    assert all(row["version"] == "v2.9.0" for row in result["relations"])

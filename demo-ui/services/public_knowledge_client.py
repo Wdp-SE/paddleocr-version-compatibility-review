@@ -85,7 +85,7 @@ class PublicKnowledgeClient(RAGClient):
         })
         return self._request(
             "POST", "/public/query", retry_limit=0,
-            request_timeout=300.0 if retrieval_policy in ('paddleocr_quality','paddleocr_evidence') else 120.0,
+            request_timeout=600.0 if retrieval_policy=='paddleocr_evidence' else 300.0 if retrieval_policy=='paddleocr_quality' else 120.0,
             json=payload,
         )
 
