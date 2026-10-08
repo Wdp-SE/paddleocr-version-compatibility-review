@@ -47,6 +47,19 @@ def test_metadata_is_session_and_backend_bound():
     assert client.calls == 3
 
 
+def test_navigation_after_reading_does_not_block_on_another_metadata_request():
+    client, state = Client(), {}
+    cached_workspace(state, client, now=0, max_age=None)
+    client.value = RuntimeError('backend is slow')
+    assert cached_workspace(state, client, now=120, max_age=None)['rag_ready']
+    assert client.calls == 1
+    # Submission/refresh must still fail closed and discard the cached ready state.
+    with pytest.raises(RuntimeError):
+        cached_workspace(state, client, now=121, force=True, max_age=None)
+    assert 'navigation_workspace_cache' not in state
+    assert client.calls == 2
+
+
 def test_interview_copy_keeps_version_and_business_scope_without_mutating_manifest():
     original = [
         'PaddleOCR 2.9.1 的 OCR 调用如何只识别文字而不检测？',

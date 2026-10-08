@@ -298,8 +298,15 @@ def _client() -> PublicKnowledgeClient:
 
 
 def _request_workspace(client, *, force=False):
-    return _request(lambda: cached_workspace(st.session_state, client, force=force),
-                    fallback="知识服务暂未连接，页面仍可浏览。")
+    def load():
+        return _request(lambda: cached_workspace(st.session_state, client, force=force, max_age=None),
+                        fallback="知识服务暂未连接，页面仍可浏览。")
+    cached = st.session_state.get('navigation_workspace_cache')
+    if force or not cached or cached.get('base_url') != client.base_url:
+        message = '正在核验知识库版本与服务状态…' if force else '正在读取知识库信息，首次连接可能稍慢…'
+        with st.spinner(message):
+            return load()
+    return load()
 
 
 def _validate_submission_workspace(client, workspace):

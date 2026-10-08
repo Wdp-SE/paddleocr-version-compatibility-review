@@ -2,11 +2,13 @@
 from time import monotonic
 
 
-def cached_workspace(state, client, *, now=None, force=False):
+def cached_workspace(state, client, *, now=None, force=False, max_age=30):
+    """Reuse navigation metadata; force refresh remains mandatory before submission."""
     now = monotonic() if now is None else now
     cached = state.get('navigation_workspace_cache')
     if (not force and cached and cached['base_url'] == client.base_url
-            and 0 <= now - cached['at'] < 30):
+            and now >= cached['at']
+            and (max_age is None or now - cached['at'] < max_age)):
         return cached['workspace']
     # Failed refresh must never silently restore a previously ready backend.
     state.pop('navigation_workspace_cache', None)

@@ -94,6 +94,8 @@ def test_interview_examples_keep_cross_version_question_and_select_scope(client,
 
 def test_navigation_cache_and_query_submission_refresh(client, monkeypatch):
     workspace_calls, query_calls = [], []
+    clock = {'at': 0}
+    monkeypatch.setattr('services.query_experience.monotonic', lambda: clock['at'])
     def workspace(self):
         workspace_calls.append(self)
         return copy.deepcopy(WORKSPACE)
@@ -101,6 +103,7 @@ def test_navigation_cache_and_query_submission_refresh(client, monkeypatch):
     monkeypatch.setattr(PublicKnowledgeClient, 'query_official',
                         lambda self, question, **kwargs: query_calls.append(kwargs) or {'status': 'NO_EVIDENCE'})
     app = AppTest.from_file(APP, default_timeout=30).run()
+    clock['at'] = 120  # Reading a page must not trigger a slow metadata refresh.
     app.button(key='nav_版本检索与问答').click().run()
     app.slider(key='official_top_k').set_value(8).run()
     assert len(workspace_calls) == 1
