@@ -16,7 +16,7 @@ After both hosted services have deployed the intended GitHub `main` commit, copy
 
 ```powershell
 python versioned-rag-service/scripts/public_release_smoke.py `
-  --ui-url https://enterprise-rag-agent-suite-bfmkgsimdisxcewgco7ydk.streamlit.app/ `
+  --ui-url https://paddleocr-version-compatibility-review.streamlit.app/ `
   --ui-revision <40-character-frontend-sha> `
   --api-url https://version-aware-rag-public-demo.onrender.com `
   --expected-sha <40-character-github-main-sha>

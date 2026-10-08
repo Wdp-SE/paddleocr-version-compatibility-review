@@ -1,5 +1,7 @@
 # PaddleOCR 版本知识 RAG 与应用兼容性审查
 
+[在线体验](https://paddleocr-version-compatibility-review.streamlit.app/) · [GitHub 仓库](https://github.com/Wdp-SE/paddleocr-version-compatibility-review)
+
 面试封版口径与固定演示顺序见 [2026-10-09 封版说明](docs/interview-stable-release-2026-10-09.md)。本版继续遵守 [固定业务边界](docs/business_scope.md)，投递期间不再更换主场景。
 
 面向公司内部维护文档处理应用的研发工程师、测试人员与应用负责人：按适用版本查询研发知识，并审查同一应用升级依赖后的调用、配置和结果消费风险。学生 POC 使用 PaddleOCR 真实中文文档、代码与配置代理内部组件知识，保留实际发布者；原创应用展示扫描页 → 中文 OCR → 归一化 → JSON，不冒充企业生产数据。
