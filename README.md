@@ -2,7 +2,7 @@
 
 [在线体验](https://paddleocr-version-compatibility-review.streamlit.app/) · [GitHub 仓库](https://github.com/Wdp-SE/paddleocr-version-compatibility-review)
 
-面试封版口径与固定演示顺序见 [2026-10-09 封版说明](docs/interview-stable-release-2026-10-09.md)。本版继续遵守 [固定业务边界](docs/business_scope.md)，投递期间不再更换主场景。
+业务范围与实现边界见 [业务说明](docs/business_scope.md)。
 
 面向公司内部维护文档处理应用的研发工程师、测试人员与应用负责人：按适用版本查询研发知识，并审查同一应用升级依赖后的调用、配置和结果消费风险。学生 POC 使用 PaddleOCR 真实中文文档、代码与配置代理内部组件知识，保留实际发布者；原创应用展示扫描页 → 中文 OCR → 归一化 → JSON，不冒充企业生产数据。
 
@@ -53,7 +53,7 @@ python -m streamlit run app.py --server.address 127.0.0.1 --server.port 8520
 
 ## 效果口径
 
-2026-10-09 已按当前源码重新冻结六策略对照，见[当前比较与选型记录](evaluation/retrieval_upgrade_v2/README.md)和[封版案例验收](evaluation/interview_release_20261009/README.md)。本地选中结构 BM25 + BGE 重排；公网未安装神经模型资产时显式回退 BM25。升级示例能返回差异证据，但仍保留部分支持和资料缺口；不宣称完整回答成功或公网耗时保证。
+2026-10-09 已按当前源码重新冻结六策略对照，见[当前比较与选型记录](evaluation/retrieval_upgrade_v2/README.md)和[案例验收记录](evaluation/interview_release_20261009/README.md)。本地选中结构 BM25 + BGE 重排；公网未安装神经模型资产时显式回退 BM25。升级示例能返回差异证据，但仍保留部分支持和资料缺口；不宣称完整回答成功或公网耗时保证。
 
 当前检索对照见 [结构检索与真实 BGE 混合/重排实验](evaluation/retrieval_upgrade_v2/README.md)：相同资料比较原始 BM25、窗口、多查询融合、结构分块、真实神经混合与交叉编码器重排；系统说明显示完整成绩、执行回退、分母和限制。当前代码/资料变化后，旧实验不自动代表新成绩。生成补查沿用自动选型的结构设置，仍有缺口时不会标作完全恢复；原封存题复验明确标注为已见题。
 

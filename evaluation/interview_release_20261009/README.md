@@ -1,4 +1,4 @@
-# 面试封版验收
+# RAG 与应用升级审查案例验收
 
 四道查询从当前 UI 的 `interview_queries` 读取，三种审查输入从 `DEMO_CASES` / `demo_application` 读取。每组重复两轮，保留完整响应、提交文件、源码指纹和工作区信息。生成使用当前配置的 DeepSeek；用户明确授权仅公开资料和学生原创演示数据向该 API 传输。
 
@@ -12,6 +12,6 @@
 
 `deployment-profile-acceptance.json` 使用最终选型记录和未安装 BGE 资产的公网等效配置重新运行：8 次 RAG 请求均返回 OK，耗时 20.09–53.98 秒；6 次 Agent 的三个分支状态各重复一致，耗时 2.35–42.55 秒，全部 runtime_verified=false。RAG 六次标记 PARTIAL_SUPPORTED，两次 NOT_ASSESSED；后者不是完整正确的证明。没有请求异常记录，但模型输出仍有波动，不能称八题全部正确。
 
-记录中的模型核验不是专家标注。此次封版停止新增业务，复合回答完整性和独立人工标注作为后续改进项。
+记录中的模型核验不是专家标注。复合回答完整性和独立人工标注仍是后续改进项。
 
 运行：`python evaluation/interview_release_20261009/run_acceptance.py --output 新报告路径 --repeats 2`。默认调用已配置的外部生成服务，运行前须确认数据范围与授权。已有报告不会被覆盖。
