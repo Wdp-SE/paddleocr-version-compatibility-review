@@ -6,6 +6,11 @@ from services.rag_client import RAGClient
 
 
 class PublicKnowledgeClient(RAGClient):
+    def application_search(self, files, question, *, application_id, application_commit, top_k=5):
+        return self._request('POST', '/public/application-search', retry_limit=0,
+                             json={'files': files, 'query': question, 'application_id': application_id,
+                                   'application_commit': application_commit, 'top_k': top_k})
+
     def plan_investigation(self,*,unresolved:list[dict],request_timeout:float)->list[dict]:
         items=[{'check_id':r['check_id'],'query':r.get('query','PaddleOCR 结果契约'),'versions':r['versions']} for r in unresolved[:4]]
         result=self._request('POST','/public/investigation-plan',retry_limit=0,request_timeout=request_timeout,

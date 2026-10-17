@@ -93,6 +93,16 @@ def test_workspace_identity_change_invalidates_cached_results_across_corpus_vers
     assert not workspace_identity_changed(current, dict(current))
 
 
+def test_same_corpus_with_changed_service_policy_clears_reports_and_baseline():
+    before = _paddleocr_workspace(service_code_fingerprint='old', retrieval_config_fingerprint='same')
+    after = _paddleocr_workspace(service_code_fingerprint='new', retrieval_config_fingerprint='same')
+    state = {'official_workspace': before, 'official_result': 'old',
+             'ocr_compatibility_review': 'old', 'ocr_comparison_baseline': 'old', 'ocr_disposition_state': 'old'}
+    assert clear_workspace_bound_results(state, after)
+    assert all(k not in state for k in ('official_result', 'ocr_compatibility_review',
+                                       'ocr_comparison_baseline', 'ocr_disposition_state'))
+
+
 def test_switching_to_paddleocr_clears_old_corpus_evidence_decisions_and_question():
     previous = {
         "workspace_id": "edge_ai_device",

@@ -33,3 +33,12 @@ def render_answer(payload):
             st.caption('依据：' + '、'.join(f'[{n}]' for n in claim.get('source_indexes', [])))
     with st.expander('回答核验说明'):
         st.caption('引用编号对应本次检索片段；请对照原文确认语义。模型核验不替代人工确认，也不是正确率认证。')
+        coverage = payload.get('requirement_coverage') or {}
+        if coverage.get('items'):
+            st.markdown('**逐要点覆盖（模型复核）**')
+            labels = {'COVERED': '有支持的回答', 'PARTIAL': '仅部分覆盖', 'MISSING': '仍缺依据或回答'}
+            for row in coverage['items']:
+                st.write(f"{labels.get(row['status'], '尚未核对')}：{row['query']}")
+                st.caption(row['reason'])
+        else:
+            st.caption('逐要点完整性尚未评估；不能仅凭引用通过判断问题已答全。')

@@ -3,6 +3,20 @@ from streamlit.testing.v1 import AppTest
 from components.reading_layout import paragraph_blocks, unique_citations, evidence_excerpt
 
 
+def test_requirement_coverage_is_visible_and_not_presented_as_accuracy():
+    app = AppTest.from_string('''
+from components.answer_reading import render_answer
+render_answer({'answer':'字段已解释','claims':[], 'requirement_coverage':{
+    'status':'PARTIAL_SUPPORTED', 'items':[
+      {'query':'文字怎么取','status':'COVERED','reason':'有原文支持'},
+      {'query':'空页怎么处理','status':'MISSING','reason':'缺空页处理契约'}]}})
+''').run()
+    text = '\n'.join(str(r.value) for r in list(app.markdown) + list(app.caption) + list(app.warning))
+    assert not app.exception
+    assert '空页怎么处理' in text and '缺空页处理契约' in text
+    assert '模型复核' in text
+
+
 def test_paragraphs_keep_code_and_every_fact_without_splitting_code_punctuation():
     text = '旧接口读取位置需要调整。' * 12 + '`consume("a。b")` 返回字段需核查。\n```python\nx = "句。号"\n```\n仍需运行回归。'
     blocks = paragraph_blocks(text)

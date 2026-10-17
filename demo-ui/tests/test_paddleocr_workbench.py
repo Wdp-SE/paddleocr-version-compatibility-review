@@ -59,7 +59,7 @@ def client(monkeypatch, tmp_path):
     calls = []
     monkeypatch.setattr(PublicKnowledgeClient, "workspace", lambda self: copy.deepcopy(WORKSPACE))
     monkeypatch.setattr(PublicKnowledgeClient, "documents", lambda self: copy.deepcopy(CHUNKS))
-    monkeypatch.setattr(PublicKnowledgeClient, "document", lambda self, document_id: copy.deepcopy(CHUNKS))
+    monkeypatch.setattr(PublicKnowledgeClient, "document", lambda self, document_id, **scope: copy.deepcopy(CHUNKS))
     def compatibility(self, files, **scope):
         calls.append((copy.deepcopy(files), scope))
         return static_report(files)
@@ -153,7 +153,7 @@ def test_question_has_one_label_and_provider_failure_is_prominent(client, monkey
 def test_default_review_explains_human_validation_boundary(client):
     app = AppTest.from_file(APP, default_timeout=30).run()
     app.button(key='nav_新建变更审查').click().run()
-    assert '直接运行默认案例' in visible(app)
+    assert '已登记应用和 Git 提交' in visible(app)
     assert '已审阅不等于批准升级' in visible(app)
 
 
@@ -182,12 +182,52 @@ def test_full_application_is_default_and_edits_clear_review(client):
     calls,_=client
     app=AppTest.from_file(APP,default_timeout=30).run()
     app.button(key='nav_新建变更审查').click().run()
-    assert app.selectbox(key='ocr_input_mode').value=='完整文档处理应用'
+    assert app.selectbox(key='ocr_input_mode').value=='已登记应用（Git 提交）'
+    app.selectbox(key='ocr_input_mode').select('完整文档处理应用').run()
     app.button(key='ocr_run_review').click().run()
     assert not app.exception
     assert len(calls[0][0])>4
     app.text_area(key='ocr_bundle_content').input('from paddleocr import PaddleOCR\n').run()
     assert not app.session_state.get('ocr_compatibility_review')
+
+
+def test_registered_application_input_requires_loading_a_commit(client):
+    app = AppTest.from_file(APP, default_timeout=30).run()
+    app.button(key='nav_新建变更审查').click().run()
+    assert app.selectbox(key='ocr_input_mode').value == '已登记应用（Git 提交）'
+    assert '先读取应用提交' in visible(app)
+    assert not any(b.key == 'ocr_run_review' for b in app.button)
+    assert not app.exception
+
+
+def test_registered_commit_submission_and_report_keep_identity(client, monkeypatch):
+    import services.paddleocr_jobs as jobs
+    captured = []
+    original_start = jobs.start_job
+    def record_job(*args, **kwargs):
+        job = original_start(*args, **kwargs); captured.append(job); return job
+    monkeypatch.setattr(jobs, 'start_job', record_job)
+    monkeypatch.setattr(PublicKnowledgeClient, 'application_search', lambda *args, **kwargs: {'results': []})
+    app = AppTest.from_file(APP, default_timeout=30).run()
+    app.button(key='nav_新建变更审查').click().run()
+    next(button for button in app.button if button.label == '读取提交与检查范围').click().run()
+    assert not app.exception
+    assert len(app.session_state['registered_snapshot']['files']) == 12
+    app.button(key='ocr_run_review').click().run()
+    assert not app.exception
+    if app.session_state.get('ocr_job'):
+        app.session_state['ocr_job']['future'].result(timeout=20)
+        app.run()
+    for job in captured: job['future'].result(timeout=20)
+    assert not app.session_state.get('ocr_job_error'), app.session_state.get('ocr_job_error')
+    result = app.session_state['ocr_compatibility_review']
+    assert result['application_snapshot']['head_commit'] == app.session_state['registered_snapshot']['head_commit']
+    assert result['input_coverage']['status'] == 'REGISTERED_SCOPE_COMPLETE'
+    assert '审查对象与检查范围' in visible(app)
+    from services.review_tasks import ReviewTaskStore
+    record = ReviewTaskStore(client[1] / 'application_tasks.sqlite3').load(app.session_state['ocr_task_ticket'])
+    assert record['state'] == 'DONE'
+    assert record['result']['application_snapshot']['head_commit'] == result['application_snapshot']['head_commit']
 
 
 def test_identical_input_rerun_preserves_active_background_job(client,monkeypatch):
@@ -447,6 +487,23 @@ def test_application_context_change_invalidates_bound_review(client):
     app.text_input(key='ocr_change_reason').set_value('替换底层 OCR 依赖，保持 JSON 输出契约').run()
     assert not app.exception
     assert 'ocr_compatibility_review' not in app.session_state
+
+
+def test_comparison_baseline_survives_file_edit_without_reusing_disposition(client, monkeypatch):
+    monkeypatch.setattr(PublicKnowledgeClient, 'workspace',
+                        lambda self: {**copy.deepcopy(WORKSPACE), 'corpus_fingerprint': 'test-corpus'})
+    app = open_review()
+    app.button(key='ocr_run_review').click().run()
+    app.button(key='ocr_save_baseline').click().run()
+    app.session_state['ocr_disposition_state'] = {'old': 'decision'}
+    app.text_area(key='ocr_application_content').set_value(
+        'from paddleocr import PaddleOCR\nengine = PaddleOCR(lang="ch")\nengine.ocr("page.png")').run()
+    assert 'ocr_comparison_baseline' in app.session_state
+    assert 'ocr_disposition_state' not in app.session_state
+    app.button(key='ocr_run_review').click().run()
+    assert not app.exception
+    assert '与基准报告对照' in visible(app)
+    assert '原处置和回归记录不自动沿用' in visible(app)
 
 
 def test_benchmark_labels_partial_neural_execution_as_fallback(client,monkeypatch):
