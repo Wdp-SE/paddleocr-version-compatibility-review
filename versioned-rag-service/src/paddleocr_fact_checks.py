@@ -9,6 +9,24 @@ from src.paddleocr_query_plan import claim_scope_module, explicit_versions
 _DEFAULT=re.compile(r'\b([A-Za-z][\w]*)\b\s*(?:的)?\s*默认(?:值)?\s*(?:为|是|=|：|:)?\s*([-+]?\d+(?:\.\d+)?|True|False|None)\b',re.I)
 
 
+def parameter_scope_mismatch(question: str, claim: str) -> bool:
+    """Conservative PaddleOCR argument-family guard; not general entailment.
+
+    The inference guide separates detection, recognition and end-to-end settings.
+    A generic task must not silently be answered with an alternate branch's
+    parameter. No query strings, default values or evaluation labels are used.
+    """
+    catalog = re.search(r'哪些|有哪些|比较|区别', question) and re.search(r'算法|模型|模式', question)
+    if catalog:
+        return False
+    if re.search(r'\be2e_\w+|\bPGNet\b', claim, re.I) and not re.search(r'\bPGNet\b|端到端|\be2e_', question, re.I):
+        return True
+    recognition = '识别' in question or re.search(r'\brec_\w+|\bdrop_score\b', question)
+    detection = '检测' in question or re.search(r'\bdet_\w+', question)
+    return bool((recognition and not detection and re.search(r'\bdet_\w+', claim))
+                or (detection and not recognition and re.search(r'\brec_\w+|\bdrop_score\b', claim)))
+
+
 def _defaults(text):
     pairs={}
     # Only a parsed function signature defines a Python default. A call example

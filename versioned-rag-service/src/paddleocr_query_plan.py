@@ -16,6 +16,12 @@ def retrieval_intent(text: str) -> dict:
     if re.search(r'结果|返回', text) and re.search(r'读取|消费|结构|格式', text) and re.search(r'升级|迁移|差异|变化', text):
         return {'kind': 'result_migration', 'aliases': ['ocr_res append zip dt_boxes rec_res', 'line box txt score', 'rec_texts rec_scores', 'def ocr self predict', 'return list self.predict_iter'],
                 'preferred_role': 'result_contract'}
+    # Bridge colloquial workload units to parameter-table vocabulary. These are
+    # search terms only, learned from the document format, never parameter values.
+    if re.search(r'批量|一批|batch|(?:一次|每次).{0,12}(?:张|幅)', text, re.I):
+        stage = '识别' if '识别' in text else '检测' if '检测' in text else ''
+        return {'kind': 'parameter_lookup', 'aliases': [f'{stage} batch size 批量'],
+                'preferred_role': 'parameter_definition'}
     if re.search(r'测试|断言|\btest\b|\bassert', text, re.I):
         return {'kind': 'test_contract', 'aliases': ['assert result isinstance'],
                 'preferred_role': 'test_assertion'}
@@ -68,7 +74,8 @@ def plan_query(query: str, *, versions: tuple[str,...], planner=None) -> dict:
     explicit=explicit_versions(query)
     module=query_module(query)
     requirements=[]
-    for text in re.split(r'[；;\n？?]+|以及',query):
+    clauses = [text.strip() for text in re.split(r'[；;\n？?]+|以及',query) if text.strip()]
+    for text in clauses:
         if not text.strip(): continue
         clause_versions=explicit_versions(text)
         requirements.append({'id':f'r{len(requirements)+1}','query':text.strip(),
@@ -79,6 +86,7 @@ def plan_query(query: str, *, versions: tuple[str,...], planner=None) -> dict:
     result={'status':'NEEDS_CLARIFICATION' if explicit-set(versions) else 'READY',
             'original_query':query,'versions':list(versions),'language':'zh',
             'namespace':'project_primary','requirements':requirements,'planner_status':'NOT_REQUESTED',
+            'omitted_requirements':clauses[4:],
             'retrieval_intent':retrieval_intent(query)}
     if len(explicit)>1 and not explicit-set(versions):
         # Each version is a separate evidence obligation. One high-ranking old
@@ -88,6 +96,7 @@ def plan_query(query: str, *, versions: tuple[str,...], planner=None) -> dict:
             for version in sorted(explicit) if requirement['version'] is None else [requirement['version']]:
                 expanded.append({**requirement,'id':f'r{len(expanded)+1}','version':version})
         result['requirements']=expanded[:4]
+        result['omitted_requirements'] += [f"{r['query']}（{r['version']}）" for r in expanded[4:]]
     if planner and result['status']=='READY':
         try:
             proposal=planner(query=query,versions=list(versions),requirements=requirements)

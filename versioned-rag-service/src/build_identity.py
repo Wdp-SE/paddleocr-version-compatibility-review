@@ -92,6 +92,9 @@ def public_build_identity(
         "build_revision": git_revision(repo_root) or "unknown",
         "corpus_fingerprint": corpus_fingerprint,
         "retrieval_config_fingerprint": retrieval_fingerprint,
+        "service_code_fingerprint": content_fingerprint({
+            path.name: path for path in (repo_root / 'versioned-rag-service' / 'src').glob('*.py')
+        })['fingerprint_sha256'],
         "evaluation_fingerprint": evaluation_fingerprint,
     }
 

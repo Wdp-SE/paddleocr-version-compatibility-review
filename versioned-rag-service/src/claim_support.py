@@ -5,7 +5,7 @@ from src.paddleocr_retrieval_views import generation_evidence_text as evidence_t
 from src.paddleocr_retrieval_views import module_for
 
 
-def check_claim_support(claims, evidence, judge, *, question=None):
+def check_claim_support(claims, evidence, judge, *, question=None, requirements=None):
     failure={'status':'CHECK_FAILED','claims':[],'rejected':[],'diagnostics':{},
              'failure_type':'InvalidCheckerResponse',
              'assessment_type':'model_assessment_not_human_validation'}
@@ -25,6 +25,8 @@ def check_claim_support(claims, evidence, judge, *, question=None):
             if question is not None:
                 if not isinstance(question,str) or not 0<len(question)<=4000:return failure
                 payload[-1]['question']=question
+        if requirements:
+            payload[0]['requirements'] = requirements
         if len(json.dumps(payload,ensure_ascii=False))>60000:
             return {**failure,'failure_type':'EvidenceBudgetExceeded'}
         result,diagnostics=judge(payload)
@@ -41,9 +43,12 @@ def check_claim_support(claims, evidence, judge, *, question=None):
             seen.add(i)
         supported={row['claim_index'] for row in rows if row['supported']}
         rejected=[row for row in rows if not row['supported']]
+        from src.requirement_coverage import assess_requirement_coverage
+        coverage = assess_requirement_coverage(requirements, result.get('requirement_verdicts'),
+                                               claims, supported, evidence)
         return {'status':'SUPPORTED' if len(supported)==len(claims) else 'PARTIAL_SUPPORTED' if supported else 'UNSUPPORTED',
                 'claims':[claim for i,claim in enumerate(claims) if i in supported],
-                'rejected':rejected,'diagnostics':diagnostics,
+                'rejected':rejected,'diagnostics':diagnostics,'coverage':coverage,
                 'assessment_type':'model_assessment_not_human_validation'}
     except Exception as exc:
         # A checker failure must not promote an unchecked answer. Preserve safe category only.
