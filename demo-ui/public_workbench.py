@@ -739,13 +739,13 @@ def _home(ready: bool, workspace: dict | None) -> None:
         with st.container(border=True, key="public_agent_module"):
             _module_heading("Agent · 应用兼容性审查" if ocr else "Agent · 研发资料变更审查")
             st.markdown("### 应用依赖升级兼容性审查" if ocr else "### 研发资料变更影响审查")
-            st.write("提交原创应用样例或粘贴文本，核对调用、配置和结果消费方式，输出有出处的影响项与验证清单。" if ocr else "根据变更描述查找相关资料并整理修改建议，由人工确认。")
+            st.write("选择已登记应用的提交，自动收集调用与消费者上下文，核对版本证据并关联回归记录。" if ocr else "根据变更描述查找相关资料并整理修改建议，由人工确认。")
             st.button("发起兼容性审查" if ocr else "发起变更审查", type="primary", use_container_width=True,
                       on_click=_navigate, args=("新建变更审查",))
     st.markdown('<div class="section-rule">业务流程</div>', unsafe_allow_html=True)
     st.markdown(
-        '<div class="flow-track"><span>应用文本</span><span>固定依赖版本</span><span>静态检查</span>'
-        '<span>官方证据</span><span>影响清单</span><span>人工审核</span><span>推理回归验证</span></div>'
+        '<div class="flow-track"><span>应用提交</span><span>检查范围</span><span>静态检查</span>'
+        '<span>版本证据</span><span>影响清单</span><span>人工审核</span><span>提交绑定回归</span></div>'
         if ocr else '<div class="flow-track"><span>研发资料</span><span>版本化检索</span>'
         '<span>引用溯源</span><span>资料变更</span><span>影响候选</span>'
         '<span>修改建议</span><span>人工审核</span></div>',
@@ -2007,7 +2007,9 @@ def _ocr_example(label: str) -> tuple[str, str]:
 
 def _clear_ocr_review() -> None:
     job=st.session_state.pop('ocr_job',None)
-    if job:job['cancel'].set()
+    if job:
+        from services.paddleocr_jobs import cancel_job
+        cancel_job(job)
     st.session_state.pop("ocr_compatibility_review", None)
     st.session_state.pop("ocr_review_input_fingerprint", None)
     st.session_state.pop('ocr_disposition_state', None)
@@ -2060,27 +2062,42 @@ def _analyze_ocr_application(client: PublicKnowledgeClient, files: list[dict], *
     )
 
 
+def _application_workflow_policy():
+    """Invalidate restored call caches when collection/orchestration code changes."""
+    root = Path(__file__).resolve().parent
+    paths = [root / 'services' / name for name in (
+        'registered_application.py', 'registered_review.py', 'application_review_context.py',
+        'review_tasks.py', 'paddleocr_application_inputs.py')]
+    paths.extend(sorted((root.parent / 'change-review-agent/app').glob('paddleocr*.py')))
+    paths.append(root.parent / 'config/internal_applications.json')
+    paths.extend([root / 'public_workbench.py', root / 'services/public_knowledge_client.py'])
+    return hashlib.sha256(b''.join(p.read_bytes() for p in paths)).hexdigest()
+
+
 @st.fragment(run_every=1)
 def _ocr_job_progress(input_fingerprint):
-    from services.paddleocr_jobs import snapshot
+    from services.paddleocr_jobs import snapshot, cancel_job, job_diagnostics
+    from concurrent.futures import CancelledError
     job=st.session_state.get('ocr_job')
     if not job:return
     if job['identity']!=input_fingerprint:
-        job['cancel'].set();st.session_state.pop('ocr_job',None);return
+        cancel_job(job);st.session_state.pop('ocr_job',None);return
     state=snapshot(job)
     stages={'static_review':'检查应用调用与配置','evidence_validation':'核验固定版本证据','official_lookup':'逐项查询官方资料','model_advice':'核对模型建议'}
     if not state['done']:
-        with st.status(stages.get(state.get('stage'),'正在审查'),expanded=True):
+        with st.status('正在排队' if state.get('state') == 'QUEUED' else stages.get(state.get('stage'),'正在审查'),expanded=True):
             st.write(f"已用 {state['elapsed_seconds']:.1f} 秒；已处理查证项 {state.get('processed',0)}，最多 12 项。")
             if st.button('取消后续查证',key='ocr_cancel_job'):
-                job['cancel'].set()
+                cancel_job(job)
                 st.info('已请求取消；当前网络请求结束后停止，保留已完成的静态报告与证据。')
         return
     st.session_state.pop('ocr_job',None)
     try:result=job['future'].result()
+    except CancelledError:st.session_state['ocr_job_error']='排队任务已取消，未调用查证服务。'
     except (ValueError,ServiceError) as exc:st.session_state['ocr_job_error']=str(exc)
     except Exception:st.session_state['ocr_job_error']='任务失败，未生成可核验报告。请重试。'
     else:
+        result['job_diagnostics'] = job_diagnostics(job)
         st.session_state['ocr_compatibility_review']=result
         st.session_state['ocr_review_input_fingerprint']=input_fingerprint
     st.rerun()
@@ -2145,12 +2162,21 @@ def _ocr_findings(result: dict, *, show_related: bool = False) -> None:
 
 
 def _ocr_report(result: dict) -> None:
+    from components.registered_application import render_snapshot_report
+    render_snapshot_report(result)
     report = result["compatibility_report"]
     status_labels = {"supported_risk": "存在有证据支持的静态升级风险", "needs_verification": "当前静态证据不足，需要补充验证",
                      "unaffected": "基础调用形式未发现变更，仍需实际推理验证"}
     st.subheader("应用兼容性静态报告")
+    if result.get('job_diagnostics'):
+        with st.expander('任务诊断'):
+            details = result['job_diagnostics']
+            st.caption(f"任务 {details['job_id']} · {details['state']} · 耗时 {details['elapsed_seconds']} 秒")
+            st.caption('单进程最多 4 个执行任务、8 个执行或排队任务；诊断不记录应用原文。')
     st.write(f"{report['source_version']} → {report['target_version']}：{status_labels[report['status']]}")
     st.caption("实际 OCR 推理未验证。静态报告不证明运行环境、模型下载、文档质量或下游输出已兼容。")
+    from components.review_comparison import render_review_comparison
+    render_review_comparison(result)
     risks = [f for f in report.get('findings', []) if f['status'] == 'supported_risk']
     unresolved = (result.get('investigation') or {}).get('unresolved', [])
     st.caption(f"静态风险 {len(risks)} 处 · 待验证记录 {len(report.get('gaps') or [])} 项 · 未完成查证 {len(unresolved)} 项")
@@ -2229,26 +2255,40 @@ def _ocr_report(result: dict) -> None:
 def _ocr_agent(client: PublicKnowledgeClient, ready: bool, workspace: dict | None) -> None:
     _page_header("变更审查", "应用依赖升级兼容性审查", page_key="ocr_agent")
     st.write("审查文档处理应用从 PaddleOCR v2.9.1 升级到 v3.0.0 后的接口、配置和结果消费方式。")
-    st.info('可直接运行默认案例：系统已装载原创应用文件，无需安装 OCR。也可选择修改后复查或缺资料案例。')
+    st.info('正式预审请选择已登记应用和 Git 提交。临时诊断也可使用可编辑原创案例或代码片段，无需安装 OCR。')
     with st.expander('需要人工完成什么？'):
         st.write('核对提交文件和风险证据 → 确认或退回报告 → 在授权开发环境修改并执行回归 → 负责人决定是否升级。')
         st.caption('已审阅不等于批准升级。系统不执行上传代码、不自动修改应用；默认案例的静态结论不证明用户应用运行成功。')
-    app_name = st.text_input('内部应用名称（演示标签）', value='文档处理应用', max_chars=80,
-                             key='ocr_internal_app_name', on_change=_clear_ocr_review)
+    mode=st.selectbox('应用输入',['已登记应用（Git 提交）','完整文档处理应用','规则片段'],key='ocr_input_mode',on_change=_clear_ocr_review)
+    app_name = ('文档处理应用' if mode == '已登记应用（Git 提交）' else
+                st.text_input('内部应用名称（演示标签）', value='文档处理应用', max_chars=80,
+                              key='ocr_internal_app_name', on_change=_clear_ocr_review))
     change_reason = st.text_input('升级目的与验收说明', value='保留中文 OCR 归一化与下游 JSON 契约',
                                   max_chars=1000, key='ocr_change_reason', on_change=_clear_ocr_review)
     application_context = {'application_name': app_name, 'application_version': None,
                            'change_reason': change_reason, 'source_identity': 'student_poc_application',
                            'business_scope': 'internal_document_processing'}
-    st.caption('内部应用版本未登记。依赖版本独立管理；默认原创应用使用 OCR 主链，PPStructure 仅是相关接口检查分支。')
+    st.caption('应用提交与依赖版本分别管理。原创应用使用 OCR 主链，PPStructure 仅是相关接口检查分支。')
     before, after = st.columns(2, gap="medium")
     with before:
         source_version = st.selectbox("应用当前依赖", ["v2.9.1"], key="ocr_source_version")
     with after:
         target_version = st.selectbox("升级目标依赖", ["v3.0.0"], key="ocr_target_version")
     from services.paddleocr_application_inputs import load_original_application, parse_application_inputs, application_fingerprint
-    mode=st.selectbox('应用输入',['完整文档处理应用','规则片段'],key='ocr_input_mode',on_change=_clear_ocr_review)
-    if mode=='完整文档处理应用':
+    registered_snapshot = base_snapshot = None
+    if mode == '已登记应用（Git 提交）':
+        from components.registered_application import render_registered_input
+        registered_snapshot, base_snapshot = render_registered_input(client, ready, on_change=_clear_ocr_review,
+            public_demo=_setting('APP_ENV', 'local').casefold() == 'public_demo')
+        if registered_snapshot is None:
+            return
+        application_context['application_name'] = registered_snapshot['application_name']
+        application_context['source_identity'] = registered_snapshot['source_identity']
+        application_context['application_id'] = registered_snapshot['application_id']
+        files = registered_snapshot['files']
+        content = ''.join(row['content'] for row in files)
+    elif mode=='完整文档处理应用':
+        st.caption('临时诊断：仅审查当前文本，未绑定 Git 提交；文件齐全不等于整个仓库均已检查。')
         from services.interview_examples import DEMO_CASES, demo_application
         label = st.selectbox('应用演示案例', list(DEMO_CASES), key='ocr_demo_case', on_change=_select_ocr_demo)
         st.caption(DEMO_CASES[label])
@@ -2280,6 +2320,7 @@ def _ocr_agent(client: PublicKnowledgeClient, ready: bool, workspace: dict | Non
         files=rows
         content=''.join(r['content'] for r in rows)
     else:
+        st.caption('片段诊断：缺少调用层、消费者或契约时只能说明证据缺口，不能认定应用兼容。')
         st.selectbox('原创应用示例',list(_OCR_EXAMPLES),key='ocr_example',on_change=_select_ocr_example)
         if 'ocr_application_content' not in st.session_state:_select_ocr_example()
         path=st.text_input('应用文件相对路径',max_chars=160,key='ocr_application_path',on_change=_clear_ocr_review)
@@ -2292,9 +2333,20 @@ def _ocr_agent(client: PublicKnowledgeClient, ready: bool, workspace: dict | Non
     try:
         files=parse_application_inputs(files)
         input_fingerprint=application_fingerprint(files,(source_version,target_version),
-            {'generate_advice':generate, 'application_context':application_context},(workspace or {}).get('corpus_fingerprint'))
+            {'generate_advice':generate, 'application_context':application_context,
+             'application_snapshot': {k: v for k, v in registered_snapshot.items() if k != 'files'} if registered_snapshot else None,
+             'workflow_policy': _application_workflow_policy(),
+             'service_code_fingerprint': (workspace or {}).get('service_code_fingerprint'),
+             'retrieval_config_fingerprint': (workspace or {}).get('retrieval_config_fingerprint')},
+            (workspace or {}).get('corpus_fingerprint'))
     except ValueError as exc:
         st.error(str(exc));_clear_ocr_review();return
+    task_store = None
+    if registered_snapshot:
+        from services.review_tasks import ReviewTaskStore
+        from components.registered_application import render_task_recovery
+        task_store = ReviewTaskStore(_audit_repository().database_path.with_name('application_tasks.sqlite3'))
+        render_task_recovery(task_store, input_fingerprint)
     previous=st.session_state.get('ocr_compatibility_review')
     active_job=st.session_state.get('ocr_job')
     stale_report=previous and st.session_state.get('ocr_review_input_fingerprint')!=input_fingerprint
@@ -2310,29 +2362,71 @@ def _ocr_agent(client: PublicKnowledgeClient, ready: bool, workspace: dict | Non
     if run_clicked or resume_clicked:
         if not _validate_submission_workspace(client, workspace):
             return
-        from services.paddleocr_jobs import start_job
+        from services.paddleocr_jobs import start_job, job_diagnostics
         from concurrent.futures import TimeoutError as FutureTimeout
         import copy
         restored=previous.get('resume_state') if resume_clicked else None
         _clear_ocr_review()
         st.session_state.pop('ocr_job_error',None)
         submitted=copy.deepcopy(files)
+        ticket = None
+        if task_store:
+            ticket = st.session_state.get('ocr_task_ticket')
+            try:
+                if ticket: task_store.load(ticket, identity=input_fingerprint)
+            except ValueError: ticket = None
+            if not ticket:
+                ticket = task_store.create(input_fingerprint)
+            st.session_state['ocr_task_ticket'] = ticket
         def work(cancelled,update):
-            result = _analyze_ocr_application(client,submitted,source_version=source_version,target_version=target_version,
-                generate_advice=generate,on_progress=update,investigation_progress=update,cancelled=cancelled,resume=restored)
-            result['application_context'] = application_context
-            return result
-        job=start_job(work,input_fingerprint);st.session_state['ocr_job']=job
+            try:
+                gateway = client
+                if task_store:
+                    from services.review_tasks import CachedReviewGateway
+                    task_store.start(ticket)
+                    gateway = CachedReviewGateway(client, task_store, ticket, expected_workspace=workspace)
+                options = dict(source_version=source_version,target_version=target_version,
+                    generate_advice=generate,on_progress=update,investigation_progress=update,cancelled=cancelled,resume=restored)
+                if registered_snapshot:
+                    from services.registered_review import run_registered_review
+                    result = run_registered_review(gateway, registered_snapshot, base_snapshot=base_snapshot,
+                        analyze=_analyze_ocr_application, context=application_context, **options)
+                else:
+                    result = _analyze_ocr_application(gateway,submitted,**options)
+                    result['application_context'] = application_context
+                result['corpus_fingerprint'] = (workspace or {}).get('corpus_fingerprint')
+                if task_store:
+                    task_store.finish(ticket, result)
+                return result
+            except BaseException as exc:
+                if task_store:
+                    task_store.fail(ticket, type(exc).__name__)
+                raise
+        import uuid
+        owner = st.session_state.setdefault('ocr_job_owner', uuid.uuid4().hex)
+        try:
+            job=start_job(work,input_fingerprint,owner=owner)
+        except ValueError as exc:
+            st.warning(str(exc));return
+        st.session_state['ocr_job']=job
         # Fast local checks finish in-place; longer requests are polled by the fragment.
         try:result=job['future'].result(timeout=1)
         except FutureTimeout:pass
         except (ValueError,ServiceError) as exc:
             st.session_state['ocr_job_error']=str(exc);st.session_state.pop('ocr_job',None)
+        except Exception:
+            st.session_state['ocr_job_error']='任务失败，未生成可核验报告。请重试。';st.session_state.pop('ocr_job',None)
         else:
+            result['job_diagnostics'] = job_diagnostics(job)
             st.session_state.pop('ocr_job',None)
             st.session_state['ocr_compatibility_review']=result
             st.session_state['ocr_review_input_fingerprint']=input_fingerprint
     if st.session_state.get('ocr_job'):_ocr_job_progress(input_fingerprint)
+    if task_store and st.session_state.get('ocr_task_ticket'):
+        with st.expander('任务恢复凭据与离线留存'):
+            st.caption('离开页面前下载凭据。它可恢复当前输入绑定的结果或已完成查证缓存，请妥善保存。')
+            st.download_button('下载任务恢复凭据', json.dumps(st.session_state['ocr_task_ticket']),
+                file_name='review-task-ticket.json', mime='application/json', key='ocr_download_ticket')
     if st.session_state.get('ocr_job_error'):st.error(st.session_state['ocr_job_error'])
     result = st.session_state.get("ocr_compatibility_review")
     if result and st.session_state.get("ocr_review_input_fingerprint") == input_fingerprint:
@@ -2349,7 +2443,7 @@ def _ocr_review_subpage(choice: str, workspace: dict) -> None:
     _page_header("变更审查", _page_label(choice, workspace), page_key="ocr_review", parent="新建变更审查")
     result = st.session_state.get("ocr_compatibility_review")
     if not result or result.get("workspace_id") != "paddleocr":
-        st.info("先提交应用文本，生成带官方证据的静态兼容性报告。")
+        st.info("先选择应用提交或提交诊断文本，生成带版本证据的静态兼容性报告。")
         st.button("发起兼容性审查", on_click=_navigate, args=("新建变更审查",))
         return
     _review_steps(3 if _review_decision_for(result) else 2)

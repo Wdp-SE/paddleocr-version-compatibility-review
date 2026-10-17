@@ -17,6 +17,8 @@ _WORKSPACE_RESULT_KEYS = (
     "official_change_document", "official_draft_source_id",
     "official_review_draft", "official_proposed_text",
     "ocr_compatibility_review", "ocr_review_input_fingerprint",
+    "ocr_comparison_baseline",
+    "ocr_disposition_state",
     "ocr_review_decision", "ocr_application_content", "ocr_application_path",
     "official_question", "official_change_request", "official_change_request_draft",
 )
@@ -79,6 +81,8 @@ def workspace_identity_changed(previous: dict | None, current: dict | None) -> b
             workspace.get("repository"),
             workspace.get("current_version"),
             fingerprint.get("fingerprint_sha256") if isinstance(fingerprint, dict) else None,
+            workspace.get('service_code_fingerprint'),
+            workspace.get('retrieval_config_fingerprint'),
         )
     return identity(previous) != identity(current)
 

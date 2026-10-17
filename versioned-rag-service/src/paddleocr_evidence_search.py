@@ -73,9 +73,12 @@ class EvidenceSearch:
             if score>0:rows.append((i,score))
         return sorted(rows,key=lambda x:(-x[1],x[0]))
 
-    def search(self,plan:dict,*,top_k:int=5,candidate_budget:int=80,strategy:str='contextual_bm25',ranker=None)->dict:
+    def search(self,plan:dict,*,top_k:int=5,candidate_budget:int=80,strategy:str='contextual_bm25',ranker=None,
+               max_windows_per_source:int=4)->dict:
         if type(top_k) is not int or not 1<=top_k<=20 or candidate_budget not in (40,80,120) or strategy not in STRATEGIES:
             raise ValueError('invalid evidence search options')
+        if type(max_windows_per_source) is not int or not 1 <= max_windows_per_source <= 8:
+            raise ValueError('invalid context window budget')
         if not isinstance(plan.get('versions'),list) or not plan['versions']:
             raise ValueError('missing version scope')
         eligible=[i for i,v in enumerate(self.views) if v['version'] in plan['versions']
@@ -93,6 +96,7 @@ class EvidenceSearch:
         diag={'requested_strategy':strategy,'actual_strategy':strategy,'candidate_budget':candidate_budget,
               'eligible_windows':len(eligible),'rerank_calls':0,'external_model_calls':0,
               'fallback_reason':None,'window_failures':[]}
+        diag['context_window_limit_per_source'] = max_windows_per_source
         diag['model_identity']=getattr(self,'model_identity',{'embedding':'NOT_CONFIGURED','reranker':'NOT_CONFIGURED'})
         diag['window_budget']=getattr(self,'window_budget',None)
         diag['window_unit']=getattr(self,'window_unit','caller_supplied')
@@ -259,8 +263,8 @@ class EvidenceSearch:
             if pid not in parents:
                 if len(parents)>=top_k:continue
                 parents.append(pid)
-            # At most 4 relevant windows per source block; exclude irrelevant additional tails.
-            if sum(v['parent_chunk_id']==pid for v in chosen)<4:chosen.append(view)
+            # Repair can inspect more windows in a long source, while remaining bounded.
+            if sum(v['parent_chunk_id']==pid for v in chosen)<max_windows_per_source:chosen.append(view)
         hits=materialize_evidence(self.index.chunks,chosen)
         for rank,hit in enumerate(hits,1):
             hit.update(rank=rank,retrieval_policy=diag['actual_strategy'],

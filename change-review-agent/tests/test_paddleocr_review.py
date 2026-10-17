@@ -196,6 +196,19 @@ def test_resuming_does_not_repeat_completed_advice_request():
     assert resumed['model_advice_request_count']==1
     assert resumed['model_suggestions']==first['model_suggestions']
 
+
+def test_policy_change_invalidates_resume_and_previous_request_identity(monkeypatch):
+    import app.paddleocr_review as module
+    gateway = Gateway()
+    monkeypatch.setattr(module, '_analysis_policy', lambda _: 'policy-a')
+    first = PaddleOCRReviewAgent(gateway).analyze(FILES)
+    monkeypatch.setattr(module, '_analysis_policy', lambda _: 'policy-b')
+    with pytest.raises(ValueError, match='不能恢复'):
+        PaddleOCRReviewAgent(gateway).analyze(FILES, resume=first['resume_state'])
+    fresh = PaddleOCRReviewAgent(gateway).analyze(FILES)
+    assert first['request_fingerprint'] != fresh['request_fingerprint']
+    assert fresh['analysis_policy_fingerprint'] == 'policy-b'
+
 def test_resuming_does_not_repeat_failed_advice_request():
     gateway=Gateway();calls=[]
     def fail(*args,request_timeout=None,**kwargs):

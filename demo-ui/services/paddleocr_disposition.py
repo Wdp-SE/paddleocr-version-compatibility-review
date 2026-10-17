@@ -15,6 +15,7 @@ def binding(result):
     payload = {'report': result.get('report_fingerprint'),
                'request': result.get('request_fingerprint'),
                'context': result.get('application_context'),
+               'snapshot': result.get('application_snapshot'),
                'source_version': result.get('source_version'),
                'target_version': result.get('target_version'),
                'files': sorted((row['path'], row['sha256']) for row in _report(result).get('files', []))}
@@ -28,6 +29,8 @@ def gap_id(gap):
 def regression_template(result):
     return {'schema_version': 1, 'report_binding': binding(result),
             'source_version': result.get('source_version'), 'target_version': result.get('target_version'),
+            'application_id': (result.get('application_snapshot') or {}).get('application_id'),
+            'application_commit': (result.get('application_snapshot') or {}).get('head_commit'),
             'actual_dependency': '', 'environment': '',
             'application_files': _report(result).get('files', []),
             'results': [{'finding_id': row['finding_id'], 'input_conditions': row['input_conditions'],
@@ -39,6 +42,9 @@ def validate_regression(result, data):
     if not isinstance(data, dict) or len(json.dumps(data, ensure_ascii=False).encode()) > 200_000:
         raise ValueError('回归记录必须是小于 200 KB 的 JSON 对象。')
     expected = regression_template(result)
+    for key in ('application_id', 'application_commit'):
+        if data.get(key) != expected.get(key):
+            raise ValueError('回归记录的应用或提交不一致；请在当前候选提交上重新执行回归。')
     for key in ('schema_version', 'report_binding', 'source_version', 'target_version', 'application_files'):
         if data.get(key) != expected[key]:
             raise ValueError('回归记录与当前报告、版本或应用文件绑定不一致，请重新审查后导出模板。')
@@ -74,6 +80,8 @@ def validate_regression(result, data):
 
 def assess_disposition(result, risks, gaps, regression):
     blockers = []
+    if result.get('input_coverage', {}).get('status') == 'INCOMPLETE':
+        blockers.append('登记范围内输入不完整，必须补齐并重新审查；不能仅以接受残余风险代替。')
     report = _report(result)
     findings = report.get('findings', [])
     if not findings:

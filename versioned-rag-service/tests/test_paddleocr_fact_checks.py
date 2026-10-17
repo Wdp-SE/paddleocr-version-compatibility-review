@@ -6,6 +6,21 @@ def test_same_name_from_other_module_does_not_satisfy_requirement():
     assert result['requirements']['r1']['status']=='MISSING_APPLICABLE_EVIDENCE'
 
 
+def test_parameter_advice_must_not_silently_switch_ocr_branch_or_processing_stage():
+    from src.paddleocr_fact_checks import parameter_scope_mismatch
+    assert parameter_scope_mismatch('OCR 识别得分过低时如何过滤？', '使用 e2e_pgnet_score_thresh 参数')
+    assert parameter_scope_mismatch('OCR 识别结果如何丢弃低分项？', '调整 det_db_box_thresh')
+    assert parameter_scope_mismatch('OCR 检测框阈值如何设置？', '调整 rec_score_thresh')
+    assert not parameter_scope_mismatch('PGNet 端到端识别如何过滤低分？', '使用 e2e_pgnet_score_thresh')
+    assert not parameter_scope_mismatch('det_db_box_thresh 的默认值？', 'det_db_box_thresh 默认值为 0.5')
+    assert not parameter_scope_mismatch('OCR 支持哪些不同算法和模型？', '可查看 PGNet 的 e2e_pgnet_score_thresh')
+    from src.public_api import _claim_scope_mismatches
+    assert _claim_scope_mismatches(
+        [{'text': '使用 e2e_pgnet_score_thresh', 'evidence_ids': ['c']}],
+        [{'chunk_id': 'c', 'version': 'v2.9.1', 'module': 'ocr', 'content': 'e2e_pgnet_score_thresh'}],
+        [{'id': 'r1', 'module': 'ocr', 'query': 'OCR 识别得分如何过滤？', 'version': 'v2.9.1'}]) == {0}
+
+
 def test_wrong_numeric_default_is_rejected_but_explanations_not_auto_approved():
     from src.paddleocr_fact_checks import check_mechanical_facts
     hit={'chunk_id':'c1','module':'ocr','version':'v3.0.0',

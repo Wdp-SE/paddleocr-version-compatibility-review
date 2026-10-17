@@ -1,0 +1,19 @@
+{
+  "applications": [{
+    "id": "document-ocr", "name": "扫描文档处理应用", "repository": "..",
+    "root": "examples/paddleocr_document_app",
+    "include": ["application/", "result_adapter.py"],
+    "exclude": ["application/application_manifest.json"],
+    "owner": "学生原创应用维护者（演示）", "source_identity": "student_poc_application",
+    "roles": {
+      "entry": ["application/ocr_client.py"],
+      "normalizer": ["application/normalizer.py"],
+      "adapter": ["result_adapter.py"],
+      "consumer": ["application/consumer.py"],
+      "contract": ["application/contract.json"],
+      "tests": ["application/tests/test_contract.py"],
+      "dependency": ["application/requirements-v2.txt", "application/requirements-v3.txt"],
+      "design": ["application/design.md"]
+    }
+  }]
+}

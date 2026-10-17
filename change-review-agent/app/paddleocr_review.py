@@ -43,6 +43,14 @@ def _fingerprint(value: object) -> str:
                                      separators=(",", ":")).encode("utf-8")).hexdigest()
 
 
+def _analysis_policy(workspace: dict) -> str:
+    paths = sorted(Path(__file__).parent.glob('paddleocr*.py')) + [PROFILE_PATH, Path(__file__).parent / 'domain_profile.py']
+    return _fingerprint({'agent_files': {p.name: hashlib.sha256(p.read_bytes().replace(b'\r\n', b'\n')).hexdigest()
+                                         for p in paths},
+                         'service': workspace.get('service_code_fingerprint'),
+                         'retrieval': workspace.get('retrieval_config_fingerprint')})
+
+
 def _version(value: object) -> str:
     # Requests use release tags. Evidence must use the registry's exact tag.
     return str(value or "")
@@ -261,7 +269,7 @@ class PaddleOCRReviewAgent:
             raise ValueError("本审查仅支持 PaddleOCR v2.9.1 升级到 v3.0.0")
         submitted = _request_files(files)
         workspace = _workspace(self.gateway.workspace())
-        task_identity=_fingerprint({'files':files,'versions':[source_version,target_version],
+        task_identity=_fingerprint({'files':files,'versions':[source_version,target_version], 'policy': _analysis_policy(workspace),
                                     'corpus':workspace.get('corpus_fingerprint'),'generate_advice':generate_advice})
         if resume and resume.get('task_identity')!=task_identity:raise ValueError('输入、语料或设置已变化，不能恢复旧任务')
         if on_progress:
@@ -417,6 +425,7 @@ class PaddleOCRReviewAgent:
                     advice_cache={'status':model_status,'claim_verification':{'status':'UNSUPPORTED','request_count':0}}
         request_identity = {"workspace_id": PROJECT_ID, "source_version": source_version,
                             "target_version": target_version, "files": file_rows,
+                            "analysis_policy_fingerprint": _analysis_policy(workspace),
                             "corpus_fingerprint": workspace.get("corpus_fingerprint")}
         fingerprint = _fingerprint(request_identity)
         total_elapsed=min(240,previous_elapsed+time.monotonic()-started)
@@ -424,6 +433,8 @@ class PaddleOCRReviewAgent:
         return {
             "schema_version": 1, "task_id": f"paddleocr-{fingerprint[:24]}",
             "request_fingerprint": fingerprint, "report_fingerprint": _fingerprint(report),
+            "analysis_policy_fingerprint": _analysis_policy(workspace),
+            "corpus_fingerprint": workspace.get('corpus_fingerprint'),
             "request_mode": "paddleocr_compatibility", "workspace_id": PROJECT_ID, "project_id": PROJECT_ID,
             "source_version": source_version, "target_version": target_version,
             "request_summary": f"PaddleOCR {source_version} → {target_version}：" + "、".join(submitted),

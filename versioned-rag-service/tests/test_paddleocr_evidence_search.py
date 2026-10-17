@@ -22,6 +22,23 @@ def test_search_filters_version_and_namespace_before_scoring():
     assert out['diagnostics']['eligible_windows']==1
 
 
+def test_repair_can_expand_windows_inside_one_source_without_unbounded_context():
+    from src.paddleocr_evidence_search import EvidenceSearch
+    from src.paddleocr_query_plan import plan_query
+    idx = Index()
+    idx.chunks = [{**idx.chunks[0], 'line_end': 8,
+                   'content': '\n'.join(f'page_num option_{i} default {i}' for i in range(8))}]
+    search = EvidenceSearch(idx, build_views(idx.chunks, token_count=len, max_tokens=30))
+    plan = plan_query('page_num', versions=('v3.0.0',))
+    first = search.search(plan, max_windows_per_source=4)
+    second = search.search(plan, max_windows_per_source=8)
+    assert first['diagnostics']['selected_windows'] == 4
+    assert second['diagnostics']['selected_windows'] == 8
+    assert second['diagnostics']['context_window_limit_per_source'] == 8
+    with pytest.raises(ValueError):
+        search.search(plan, max_windows_per_source=100)
+
+
 def test_configured_window_budget_is_bounded_and_cache_distinguishes_it():
     from src.paddleocr_evidence_search import configured_evidence_search
     idx = Index(); idx.manifest = {'workspace_id': 'paddleocr'}
