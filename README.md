@@ -1,69 +1,42 @@
-# PaddleOCR 版本知识 RAG 与应用兼容性审查
+# 内部 OCR 组件维护工作台
 
-[在线体验](https://paddleocr-version-compatibility-review.streamlit.app/) · [GitHub 仓库](https://github.com/Wdp-SE/paddleocr-version-compatibility-review)
+面向内部研发、测试和应用负责人的个人项目。用 PaddleOCR 官方公开资料代理版本化组件知识，用原创扫描文档应用模拟 OCR 调用、结果归一化和 JSON 消费。
 
-业务范围与实现边界见 [业务说明](docs/business_scope.md)。
+[在线体验](https://paddleocr-version-compatibility-review.streamlit.app/) · [业务范围](docs/business_scope.md) · [工作流](docs/change_review_workflows.md)
 
-面向公司内部维护文档处理应用的研发工程师、测试人员与应用负责人：按适用版本查询研发知识，并审查同一应用升级依赖后的调用、配置和结果消费风险。学生 POC 使用 PaddleOCR 真实中文文档、代码与配置代理内部组件知识，保留实际发布者；原创应用展示扫描页 → 中文 OCR → 归一化 → JSON，不冒充企业生产数据。
+## 三个可复现的案例
 
-RAG 是统一证据服务，供人工查询和受控审查工作流使用。Agent 结合静态代码检查与版本证据，给出应用文件位置、迁移风险、需人工确认的未知项和回归建议。系统不执行待审代码、不自动修改应用或上游仓库、不替开发者批准升级。
+| 任务 | 操作 | 核对结果 |
+| --- | --- | --- |
+| 版本查证 | 在知识查询中选 v3.0.0，查询 `rec_texts` 和 `rec_scores`，打开原文 | 查看来源版本、出处及行号 |
+| 依赖升级 | 在变更审查中运行旧结果消费案例，再运行字段适配案例 | 对照 v2.9.1 → v3.0.0 的风险位置、两版依据与回归要求 |
+| 配置审查 | 在同一应用和 v2.9.1 下对照识别分数阈值 | 查看值的声明和覆盖路径、空页及 JSON 契约的验证要求 |
 
-## 固定业务范围
+RAG 采用版本前置过滤、结构化 BM25、多查询排序融合和逐项引用核验。Agent 用 LangGraph 编排静态检查、定向查证和报告。内部工作台可按登记应用的 Git 提交及入口查证，报告按项关联受信 CI 记录。静态风险、影响候选、夹具、实际 OCR 运行和人工处置分别保留来源。
 
-- 同一上游：PaddlePaddle/PaddleOCR，按正式 tag 固定到完整提交，中文教程与必要 Python/YAML 契约证据逐文件保留哈希、路径、行号和 Apache-2.0 许可。
-- 可复现升级案例：v2.9.1 → v3.0.0。日常问答默认使用应用**当前依赖** v2.9.1，升级查询显式切换 v3.0.0，仍可手动选择。内部应用发行版本尚未登记，不能把依赖版本冒充应用版本。
-- 主链检查：旧结果消费方式、基础 `PaddleOCR` 用法的兼容范围；`PPStructure` 公共 API 迁移是相关检查分支，不是默认应用已验证的版面解析功能。动态反射、跨文件未解析的结果消费或官方资料不足时保留验证边界，静态发现不等于实际推理通过。
-- v3.0.0 仓库里的 `docs/version2.x` 不进入新接口默认问答，避免“提交版本正确、内容适用版本错误”。旧接口从 v2.9.1 快照查询。
-- 知识索引不导入模型权重、数据集或第三方媒体。图片内部信息尚不作为可检索证据；原创三页回归图片只用于测试应用。以实际导入清单为准，不宣称覆盖所有上游内容。
+公网入口使用公开和原创示例。实际回归由开发或受控 CI 环境执行，应用负责人通过组织流程作出处置。企业身份、PostgreSQL 及真实 CI 的接入需单独验收。 [内部部署说明](deploy/internal/README.md)
 
-## 工程闭环
+## 本地运行
 
-1. 开发者按依赖版本查询 API、安装、OCR 和文档解析资料，答案逐条引用检索证据，证据不足时保留具体缺口。
-2. 从服务器登记的应用选择 Git 提交，发起升级前预审，或填写基准与候选提交进行对照；自动收集登记范围中的调用、归一化、未修改的消费者、契约和测试。可编辑示例与代码片段保留为临时诊断。服务只读取对象和解析文本，不运行其中的命令。
-3. 只读工具识别公共 API 调用、字面参数和结果消费位置，匹配固定版本的官方迁移契约。
-4. Agent 复核来源身份，调用相同知识空间补充检索，并逐核查点、逐版本验证契约锚点覆盖。真实但无关的来源不能关闭缺口；模型建议不能改变静态发现。
-5. 基准与候选分别审查，再对照规则风险；人工填写处置与残余风险理由，在开发者控制的环境运行回归，将外部记录绑定到应用提交、报告、文件哈希、实际依赖和环境。旧提交记录不能套用新提交。系统不认证匿名提交日志的真实性、不自动批准升级。
-6. 本地 SQLite 保存任务结果和已完成查证响应，可凭恢复凭据取回；服务重启后的运行中任务标记为中断，不自动重跑。同一输入与策略下重试复用成功的查证响应。云临时盘不保证永久保存，凭据不是企业账号权限。
-
-登记文件、操作步骤和边界见[内部应用提交审查](docs/registered_application_review.md)。应用契约与测试资料由同一知识服务的 `/public/application-search` 按本次提交检索，与官方 SDK 证据分开，不写入公共官方索引。
-
-## 运行与目录
-
-- `versioned-rag-service/`：FastAPI 版本检索、引用校验、来源完整性、受限兼容性工具。
-- `change-review-agent/app/paddleocr_review.py`：证据约束的应用升级审查工作流。
-- `demo-ui/`：人工知识查询、兼容性报告与审核。
-- `examples/paddleocr_document_app/`：原创文档处理应用示例。
-- `versioned-rag-service/public_corpus_paddleocr/`：当前活动语料，范围及构建步骤见来源审计。
-- `evaluation/paddleocr_compatibility_v1/`：基础来源派生与静态规则验收。
-- `evaluation/paddleocr_quality_v2/`：五策略冻结对比、独立补充探针、真实升级回归与 DeepSeek 冒烟记录。旧领域资料不进入活动入口或当前成绩。
+使用 Python 3.11 或 3.12。在 Windows 仓库根目录运行以下命令，可在无模型密钥环境体验证据检索和固定静态案例。
 
 ```powershell
-.\start_prototype.ps1 -RagPort 8770 -UiPort 8520
+python -m venv .venv-maintenance
+.\.venv-maintenance\Scripts\python.exe -m pip install -r requirements-dev.txt
+.\start_prototype.ps1 -DisableGeneration
 ```
 
-本机环境有 DeepSeek 密钥时启动脚本启用生成；`-DisableGeneration` 可只核对原文。密钥只在服务端环境变量配置。应用不设置固定会话生成次数上限，供应商计费与限流仍适用；每次工具请求的文本、解析复杂度、上下文与输出有明确边界。
+模型生成可通过服务端配置启用。分开启动、端口及网络设置见[界面运行说明](demo-ui/README.md)。
 
-分别安装服务和 UI 的 requirements 后也可手动启动：
+## 验证
 
-```powershell
-# 服务目录
-python -m uvicorn src.public_server:app --host 127.0.0.1 --port 8770
-# UI 目录（另一终端）
-$env:APP_ENV = 'public_demo'
-$env:RAG_API_BASE_URL = 'http://127.0.0.1:8770'
-python -m streamlit run app.py --server.address 127.0.0.1 --server.port 8520
-```
+- 离线检索验收包含 22 道固定题和 9 道开发改写，逐项核对必要原文事实、版本、模块和证据不足时的行为。 [数据与复现命令](evaluation/business_quality_v1/README_retrieval.md)
+- 原创应用用同一组三页样本比较旧入口和目标适配入口，覆盖真实推理、结果归一化、空页及同一 JSON 消费者。记录附依赖、样本、权重和应用文件身份。 [运行与限制](evaluation/business_quality_v1/v3-resolution.md)
+- GitHub Actions 运行静态、夹具、内部 API 和检索回归，保留逐项结果。历史试验按各自构建和题集解释。 [历史评测索引](evaluation/archive/README.md)
 
-## 效果口径
+## 代码入口
 
-2026-10-17 增加逐要点覆盖核验、补查证据预算、OCR 参数适用范围检查、修改后报告对照与有界任务队列，见[可靠性检查与已知失败项](evaluation/reliability_v1/README.md)。本轮普通窗口与补查预算在相同已有问题上的完整字面证据覆盖分别为 32/48、7/12 和 33/48、10/12；这些数字不是回答准确率，也不是独立盲测成绩。
-
-2026-10-09 的源码快照做过六策略对照，见[历史比较与选型记录](evaluation/retrieval_upgrade_v2/README.md)和[历史案例验收记录](evaluation/interview_release_20261009/README.md)。当时本地选中结构 BM25 + BGE 重排；公网未安装神经模型资产时显式回退 BM25。源码变化后，该选型不会自动代表当前版本。升级示例能返回差异证据，但仍保留部分支持和资料缺口；不宣称完整回答成功或公网耗时保证。
-
-此前的 [结构检索与真实 BGE 混合/重排实验](evaluation/retrieval_upgrade_v2/README.md)使用相同资料比较原始 BM25、窗口、多查询融合、结构分块、真实神经混合与交叉编码器重排；只有身份一致的成绩才展示为当前选型。生成补查扩大完整来源单元的上下文，仍有缺口时不会标作完全恢复；原封存题复验明确标注为已见题。
-
-活动资料为 60 条来源、1768 个原文块：44 Markdown、11 Python、5 YAML，补入两版官方 OCR API 测试。按版本和模块限定范围，比较原始 BM25、256/384 字符窗口、上下文、40/80 候选、Top-K 5/8 与本地 BGE 重排；只有冻结语料、源码、成绩核验及质量门槛通过才启用新选型，失败回退有明确诊断。保留原始 BM25 对照，速度不参与本轮选型。前轮[验证记录与失败项](evaluation/internal_workflow_v1/README.md)使用 48 条开发者原文标注查询和 24 个静态审查探针，已有开放题作分组回归，不能称为专家盲评。旧 [V4 成绩](evaluation/paddleocr_quality_v4/README.md)属于旧资料/代码，不能作为当前效果；本地神经模型实验不直接代表公网效果。
-
-生成先验证引用身份，再逐条进行原文支持度模型复核；复核失败或不支持的主张不显示。引用可追溯、模型复核通过和答案正确率分别统计。原创应用已在两版真实环境执行三页回归：旧结果消费者在新版失败，版本适配器通过。它不能代替客户扫描件质量、任意应用兼容性或独立专家盲评，没有依据时不展示伪置信度。
-
-项目用于展示 AI 应用工程方案，并非 PaddlePaddle 官方产品。公网发布需核对 Render 后端与 Streamlit 前端的相同工作区和语料指纹；本轮本地实现不自动代表公网已经部署。
+- `versioned-rag-service/` 提供 FastAPI 证据服务、应用提交查证、任务和结果记录。
+- `change-review-agent/` 编排升级与配置审查，生成证据和回归要求。
+- `demo-ui/` 提供公开演示及受身份保护的内部工作台。
+- `examples/paddleocr_document_app/` 包含原创 OCR 应用、输出契约和回归入口。

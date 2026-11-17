@@ -20,11 +20,18 @@ def render_review_comparison(result):
                 for row in comparison['findings']:
                     st.write(f"{labels[row['change']]}：{row['path']} · {row['rule_id']} "
                              f"（原 {row['previous_count']} 处，现 {row['current_count']} 处）")
+                with st.expander('具体位置对照'):
+                    for row in comparison.get('site_comparisons',[]):
+                        old='、'.join(str(loc['line']) for loc in row['previous_locations']) or '无'
+                        new='、'.join(str(loc['line']) for loc in row['current_locations']) or '无'
+                        st.write(f"{row.get('symbol') or '位置身份不完整'}：原第 {old} 行 → 现第 {new} 行")
+                        st.caption(labels[row['change']])
+                        if row['match_status']!='EXACT_AST_IDENTITY':st.caption('代码位置对应存在歧义，未按行号猜测修复。')
                 with st.expander('文件变化与待验证项'):
                     names = {'ADDED': '新增', 'REMOVED': '移除', 'MODIFIED': '修改', 'UNCHANGED': '未变'}
                     for row in comparison['files']:
                         st.caption(f"{names[row['change']]}：{row['path']}")
-                    st.caption(f"当前仍有 {comparison['remaining_gaps']} 项缺口；按规则与文件比较，不声称逐语句修复认证。")
+                    st.caption(f"当前仍有 {comparison['remaining_gaps']} 项缺口；位置对照不代表运行验证通过。")
         else:
             st.caption('先保存当前报告为基准，再修改或补充文件并重新审查。版本、目的和验收要求沿用原任务。')
         save, clear = st.columns(2)

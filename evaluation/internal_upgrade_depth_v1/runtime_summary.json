@@ -1,0 +1,223 @@
+{
+  "recorded_on": "2026-10-17",
+  "scope": "Author-controlled original application; three synthetic pages; explicit local CPU/model configuration. Not execution of uploaded code or approval of an upgrade.",
+  "application_identity": "working-tree file hashes; not claimed as a committed candidate",
+  "reports": [
+    {
+      "paddleocr_version": "2.9.1",
+      "paddle_version": "2.6.2",
+      "numpy_version": "1.26.4",
+      "paddlex_version": null,
+      "origin": "original synthetic Chinese documents, not customer scans",
+      "input_sha256": [
+        "2fe4365f436845df7fb75565bb872c0c5b8c88ba6bf7609e7c3f894d84f2e3b3",
+        "9a82c25b87d66558ed10e0d714e7b971e50035f7305570022f2942ee9ca6266b",
+        "c772d294d72f02fca38f4c9a6fa39f11e91c6b9f5ebeaad7f5a018c5862eb32e"
+      ],
+      "application_sha256": "25523c395afcff2714723b99fa17db210188eb9c14ed13ea844a604b73305805",
+      "adapter_sha256": "702df5052cf64c19c524bdb7ee2a1b931fdc7030e9f09cf2db9842cedb3681cf",
+      "consumer_sha256": "769e965d3f9a318ecfa8bf3e0b015e43154d7e345059cfb0734e34cd78cb91e1",
+      "application_files_sha256": {
+        "application/application_manifest.json": "0d540a93c02efb2e4c12c1bdddc6b4b501de8369e6008dce9792e84a0efc01d1",
+        "application/consumer.py": "769e965d3f9a318ecfa8bf3e0b015e43154d7e345059cfb0734e34cd78cb91e1",
+        "application/contract.json": "8497d02cec52712d255270f26fe89c44a206fd1741889df9aa9cad1235b0087e",
+        "application/design.md": "d028eeb81f36aee61d6d63028be69ed437abf35ac852139650a0a2a9b7351382",
+        "application/normalizer.py": "32d811893353415861e4bc4a82525cee6bffa0257f8995f30161ef28836525fb",
+        "application/ocr_client.py": "a6155f06223ad57ed854482f5f818bd5832a647f3fe6066b4916db4a6cbab702",
+        "application/pipeline.py": "7176f736af377ed925fc3ada9593f5e423258f59ca4c7049ed7bf2722c6d8f02",
+        "application/requirements-v2.txt": "33e42943a1f915eb34f36b649f706e774cf3f904f113f792540c46a15c9fe23e",
+        "application/requirements-v3.txt": "8f82f4eeffa94bf738f58b0f51eb4d3071139c64ce465e4de8403deedab78865",
+        "application/upgrade.md": "4b7a4d558cb57a1221cac4a55c663d87ca4dab9b343295b11a7543127d6f0601",
+        "application/__init__.py": "916835a1e2c8e2ebc1ed808457eef0cea0e16fbcd2362fcb70359dad8c0a8192",
+        "application/tests/test_contract.py": "a5c7d0906fb2e66fc3dac8b08185339303f22d887fd167fe6bad081040dec9af"
+      },
+      "application_commit": "dcc08040e6b3a518a267796aa582729dea69431f",
+      "application_worktree_dirty": true,
+      "input_method": "file_path",
+      "normalization_checks": [
+        {
+          "page_index": 0,
+          "text": "文档处理应用测试 合同编号DEMO-2026-001 金额1234元",
+          "expected_fragments": [
+            "DEMO",
+            "1234"
+          ],
+          "passed": true
+        },
+        {
+          "page_index": 1,
+          "text": "文档处理应用第二页 交付日期2026-10-04 数量5件",
+          "expected_fragments": [
+            "2026",
+            "数量"
+          ],
+          "passed": true
+        },
+        {
+          "page_index": 2,
+          "text": "",
+          "expected_fragments": [],
+          "passed": true
+        }
+      ],
+      "entrypoint_regression": {
+        "entrypoint": "application.pipeline.process",
+        "results": [
+          {
+            "input_sha256": "2fe4365f436845df7fb75565bb872c0c5b8c88ba6bf7609e7c3f894d84f2e3b3",
+            "entrypoint": "application.pipeline.process",
+            "passed": true,
+            "output": {
+              "schema_version": 1,
+              "pages": [
+                {
+                  "page_index": 0,
+                  "text": "文档处理应用测试\n合同编号DEMO-2026-001\n金额1234元"
+                }
+              ]
+            },
+            "checks": {
+              "output_contract": true,
+              "expected_text_or_empty_page": true
+            },
+            "engine_scope": "explicit runner configuration through original call wrapper"
+          },
+          {
+            "input_sha256": "9a82c25b87d66558ed10e0d714e7b971e50035f7305570022f2942ee9ca6266b",
+            "entrypoint": "application.pipeline.process",
+            "passed": true,
+            "output": {
+              "schema_version": 1,
+              "pages": [
+                {
+                  "page_index": 0,
+                  "text": "文档处理应用第二页\n交付日期2026-10-04\n数量5件"
+                }
+              ]
+            },
+            "checks": {
+              "output_contract": true,
+              "expected_text_or_empty_page": true
+            },
+            "engine_scope": "explicit runner configuration through original call wrapper"
+          },
+          {
+            "input_sha256": "c772d294d72f02fca38f4c9a6fa39f11e91c6b9f5ebeaad7f5a018c5862eb32e",
+            "entrypoint": "application.pipeline.process",
+            "passed": true,
+            "output": {
+              "schema_version": 1,
+              "pages": [
+                {
+                  "page_index": 0,
+                  "text": ""
+                }
+              ]
+            },
+            "checks": {
+              "output_contract": true,
+              "expected_text_or_empty_page": true
+            },
+            "engine_scope": "explicit runner configuration through original call wrapper"
+          }
+        ],
+        "passed": true,
+        "notice": "Adapter-only success does not override a failed application entry point. The runner uses explicit local model configuration."
+      },
+      "actual_entrypoint_contract_passed": true,
+      "sample_regression_passed": true,
+      "sample_regression_scope": "separate adapter probe; not the default application entry point",
+      "inference_seconds": 2.63
+    },
+    {
+      "paddleocr_version": "3.0.0",
+      "paddle_version": "3.0.0",
+      "numpy_version": "1.24.4",
+      "paddlex_version": "3.0.0",
+      "origin": "original synthetic Chinese documents, not customer scans",
+      "input_sha256": [
+        "2fe4365f436845df7fb75565bb872c0c5b8c88ba6bf7609e7c3f894d84f2e3b3",
+        "9a82c25b87d66558ed10e0d714e7b971e50035f7305570022f2942ee9ca6266b",
+        "c772d294d72f02fca38f4c9a6fa39f11e91c6b9f5ebeaad7f5a018c5862eb32e"
+      ],
+      "application_sha256": "25523c395afcff2714723b99fa17db210188eb9c14ed13ea844a604b73305805",
+      "adapter_sha256": "702df5052cf64c19c524bdb7ee2a1b931fdc7030e9f09cf2db9842cedb3681cf",
+      "consumer_sha256": "769e965d3f9a318ecfa8bf3e0b015e43154d7e345059cfb0734e34cd78cb91e1",
+      "application_files_sha256": {
+        "application/application_manifest.json": "0d540a93c02efb2e4c12c1bdddc6b4b501de8369e6008dce9792e84a0efc01d1",
+        "application/consumer.py": "769e965d3f9a318ecfa8bf3e0b015e43154d7e345059cfb0734e34cd78cb91e1",
+        "application/contract.json": "8497d02cec52712d255270f26fe89c44a206fd1741889df9aa9cad1235b0087e",
+        "application/design.md": "d028eeb81f36aee61d6d63028be69ed437abf35ac852139650a0a2a9b7351382",
+        "application/normalizer.py": "32d811893353415861e4bc4a82525cee6bffa0257f8995f30161ef28836525fb",
+        "application/ocr_client.py": "a6155f06223ad57ed854482f5f818bd5832a647f3fe6066b4916db4a6cbab702",
+        "application/pipeline.py": "7176f736af377ed925fc3ada9593f5e423258f59ca4c7049ed7bf2722c6d8f02",
+        "application/requirements-v2.txt": "33e42943a1f915eb34f36b649f706e774cf3f904f113f792540c46a15c9fe23e",
+        "application/requirements-v3.txt": "8f82f4eeffa94bf738f58b0f51eb4d3071139c64ce465e4de8403deedab78865",
+        "application/upgrade.md": "4b7a4d558cb57a1221cac4a55c663d87ca4dab9b343295b11a7543127d6f0601",
+        "application/__init__.py": "916835a1e2c8e2ebc1ed808457eef0cea0e16fbcd2362fcb70359dad8c0a8192",
+        "application/tests/test_contract.py": "a5c7d0906fb2e66fc3dac8b08185339303f22d887fd167fe6bad081040dec9af"
+      },
+      "application_commit": "dcc08040e6b3a518a267796aa582729dea69431f",
+      "application_worktree_dirty": true,
+      "input_method": "locally_decoded_bgr_array_for_windows_unicode_paths",
+      "normalization_checks": [
+        {
+          "page_index": 0,
+          "text": "文档处理应用测试 合同编号DEMO-2026-001 金额1234元",
+          "expected_fragments": [
+            "DEMO",
+            "1234"
+          ],
+          "passed": true
+        },
+        {
+          "page_index": 1,
+          "text": "文档处理应用第二页 交付日期2026-10-04 数量5件",
+          "expected_fragments": [
+            "2026",
+            "数量"
+          ],
+          "passed": true
+        },
+        {
+          "page_index": 2,
+          "text": "",
+          "expected_fragments": [],
+          "passed": true
+        }
+      ],
+      "entrypoint_regression": {
+        "entrypoint": "application.pipeline.process",
+        "results": [
+          {
+            "input_sha256": "2fe4365f436845df7fb75565bb872c0c5b8c88ba6bf7609e7c3f894d84f2e3b3",
+            "entrypoint": "application.pipeline.process",
+            "passed": false,
+            "error": "ValueError",
+            "engine_scope": "explicit runner configuration through original call wrapper"
+          },
+          {
+            "input_sha256": "9a82c25b87d66558ed10e0d714e7b971e50035f7305570022f2942ee9ca6266b",
+            "entrypoint": "application.pipeline.process",
+            "passed": false,
+            "error": "ValueError",
+            "engine_scope": "explicit runner configuration through original call wrapper"
+          },
+          {
+            "input_sha256": "c772d294d72f02fca38f4c9a6fa39f11e91c6b9f5ebeaad7f5a018c5862eb32e",
+            "entrypoint": "application.pipeline.process",
+            "passed": false,
+            "error": "ValueError",
+            "engine_scope": "explicit runner configuration through original call wrapper"
+          }
+        ],
+        "passed": false,
+        "notice": "Adapter-only success does not override a failed application entry point. The runner uses explicit local model configuration."
+      },
+      "actual_entrypoint_contract_passed": false,
+      "sample_regression_passed": true,
+      "sample_regression_scope": "separate adapter probe; not the default application entry point",
+      "inference_seconds": 203.22
+    }
+  ]
+}

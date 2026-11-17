@@ -58,6 +58,7 @@ def build_checks(report:dict)->list[dict]:
         checks.append({'check_id':f'check-{len(checks)+1}','query':finding['title']+' '+finding['desired_check'][:400],
                        'versions':list(VERSIONS),'finding_ids':[f['finding_id'] for f in report['findings'] if f['rule_id']==key],
                        'application':finding['application'],'required_tokens':{},
+                       'applications':[f['application'] for f in report['findings'] if f['rule_id']==key],
                        'required_facts':copy.deepcopy(_FACTS.get(key, {}))})
         # Component contracts have source anchors. Application regression
         # instructions are not facts the official SDK can establish.
@@ -67,12 +68,15 @@ def build_checks(report:dict)->list[dict]:
                 value for rows in facts.values() for row in rows
                 for value in [row['path'], *row['tokens']]))
     for gap in report.get('gaps',[]):
+        if gap.get('blocking') is False:
+            continue
         if len(checks)>=12:break
         key=gap['code']
         if key in seen:continue
         seen.add(key)
         checks.append({'check_id':f'check-{len(checks)+1}','query':'PaddleOCR '+gap['detail'][:400],
                        'versions':list(VERSIONS),'gap_code':key,'required_tokens':{},
+                       'applications':[g.get('application') for g in report['gaps'] if g['code']==key],
                        'evidence_domain':'application_validation'})
     if not checks:checks=[{'check_id':'check-1','query':'PaddleOCR 安装 推理 结果契约', 'versions':list(VERSIONS)}]
     return checks[:12]
@@ -102,6 +106,7 @@ def investigate(checks:list[dict],gateway,*,clock,deadline_seconds:float=240,pla
             or not 0<=state['elapsed_seconds']<=240):
         raise ValueError('investigation resume identity or budget mismatch')
     started=clock(); prior_elapsed=state['elapsed_seconds']; trace=[]; checked={};unresolved=[]
+    validation_cache={};validation_calls=validation_cache_hits=0
     parents={c['check_id']:c for c in checks}
     if len(parents) != len(checks):
         # Repeated identical checks share one business obligation.
@@ -118,8 +123,10 @@ def investigate(checks:list[dict],gateway,*,clock,deadline_seconds:float=240,pla
                 or any(v not in parent['versions'] for v in versions)):return
         proposal={**parent,'check_id':f'{parent_id}-{suffix}', 'parent_check_id':parent_id,
                   'query':query,'versions':list(dict.fromkeys(versions))}
-        if any(r['query']==query and r['versions']==proposal['versions'] for r in queue):return
+        if any(r['query']==query and r['versions']==proposal['versions'] for r in queue):return False
+        if all(_digest({'query':' '.join(query.casefold().split()),'version':v}) in seen_queries for v in versions):return False
         queue.append(proposal);state['planned_checks'].append(proposal)
+        return True
     for i,row in enumerate(restored_plans):
         if not isinstance(row,dict):raise ValueError('invalid saved plan')
         enqueue(row.get('parent_check_id'),row.get('query'),row.get('versions'),f'saved{i}')
@@ -172,7 +179,18 @@ def investigate(checks:list[dict],gateway,*,clock,deadline_seconds:float=240,pla
                     try:
                         if validate_evidence is None:raise ValueError('source validator not configured')
                         if hit.get('version')!=version:raise ValueError('wrong version')
-                        original=validate_evidence(hit,remaining())
+                        # Scope/provenance/content changes invalidate reuse; rank
+                        # changes do not. Never restore this trust cache from user resume data.
+                        identity_keys=('chunk_id','source_id','version','source_sha256','sha256','commit','source_url','url',
+                                       'document_path','path','line_start','line_end','content','evidence_spans')
+                        validation_key=_digest({k:hit.get(k) for k in identity_keys})
+                        if validation_key in validation_cache:
+                            original=copy.deepcopy(validation_cache[validation_key]);validation_cache_hits+=1
+                        else:
+                            validation_calls+=1
+                            original=validate_evidence(hit,remaining())
+                            if not isinstance(original,dict) or original.get('chunk_id')!=hit.get('chunk_id'):raise ValueError('identity')
+                            validation_cache[validation_key]=copy.deepcopy(original)
                         if not isinstance(original,dict) or original.get('chunk_id')!=hit.get('chunk_id'):raise ValueError('identity')
                         checked[original['chunk_id']]=original;good.append(original['chunk_id'])
                         verified_rows.append(original)
@@ -197,7 +215,19 @@ def investigate(checks:list[dict],gateway,*,clock,deadline_seconds:float=240,pla
         if stop in ('CANCELLED','DEADLINE_EXCEEDED','DEADLINE_NOT_ENFORCEABLE','SEARCH_BUDGET_EXHAUSTED'):break
         unresolved=unresolved_items()
         replannable=[r for r in unresolved if r['reason'] in ('required_source_not_verified','content_requirements_not_covered')]
-        if planner and replannable and remaining()>0 and state['planner_calls']<3 and processed+len(queue)<12 and round_no<3:
+        targeted=0
+        if remaining()>0 and round_no<3:
+            for item in replannable:
+                parent=parents[item['check_id']]
+                facts=item.get('missing_facts') or parent.get('required_facts',{}).get(item['versions'][0],[])
+                for fact in facts:
+                    if processed+len(queue)>=12:break
+                    if not fact.get('path') or not fact.get('tokens'):continue
+                    query='PaddleOCR '+fact['path']+' '+' '.join(fact['tokens'])
+                    if enqueue(item['check_id'],query,item['versions'],f'target{round_no}-{targeted}'):
+                        targeted+=1
+            if targeted:trace.append({'status':'TARGETED_FACT_LOOKUP','round':round_no,'proposed_count':targeted})
+        if not targeted and planner and replannable and remaining()>0 and state['planner_calls']<3 and processed+len(queue)<12 and round_no<3:
             try:
                 if not _bounded_method(planner):raise ValueError('unbounded planner')
                 state['planner_calls']+=1
@@ -215,4 +245,5 @@ def investigate(checks:list[dict],gateway,*,clock,deadline_seconds:float=240,pla
             'check_assessments':list(outcomes.values()),
             'unresolved':unresolved,'search_calls':state['search_calls'],'planner_calls':state['planner_calls'],
             'elapsed_seconds':state['elapsed_seconds'],'resume':state,
+            'validation_calls':validation_calls,'validation_cache_hits':validation_cache_hits,
             'assessment':'source_verified_candidates_not_confirmed_business_impact'}

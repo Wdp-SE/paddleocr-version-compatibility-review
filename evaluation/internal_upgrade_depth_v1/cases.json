@@ -1,0 +1,16 @@
+{
+  "dataset_id": "internal-upgrade-depth-v1",
+  "assessment_type": "known_task_regression_not_blind_accuracy",
+  "sdk_cases": [
+    {"id":"old-call","query":"PaddleOCR 2.9.1 Python 接口如何只识别已有文本图片而不检测？","versions":["v2.9.1"],"evidence":[{"version":"v2.9.1","tokens":["det=False"]}]},
+    {"id":"migration-contract","query":"PaddleOCR 2.9.1 升级到 3.0.0，为什么旧结果读取需要调整？","versions":["v2.9.1","v3.0.0"],"evidence":[{"version":"v2.9.1","tokens":["ocr_res.append"]},{"version":"v3.0.0","tokens":["rec_texts","rec_scores"]}]},
+    {"id":"official-tests","query":"PaddleOCR 3.0.0 的官方 OCR 测试检查了哪些返回字段？","versions":["v3.0.0"],"evidence":[{"version":"v3.0.0","tokens":["assert isinstance(res[\"rec_texts\"], list)"]}]},
+    {"id":"removed-layout","query":"PaddleOCR 3.0.0 还能使用 PPStructure 吗？迁移到什么接口？","versions":["v3.0.0"],"evidence":[{"version":"v3.0.0","tokens":["PPStructure","PPStructureV3","移除"]}]}
+  ],
+  "application_cases": [
+    {"id":"output","query":"应用的输出契约要求哪些字段？空页怎么保留？","paths":["application/contract.json"]},
+    {"id":"entry-tests","query":"空页与页号的实际应用入口有哪些测试断言？","paths":["application/tests/test_contract.py"]},
+    {"id":"contract-and-test","query":"空页的契约和测试断言是什么？","paths":["application/contract.json","application/tests/test_contract.py"]}
+  ],
+  "missing_internal_fact": "仅凭官方资料能否证明我们内部应用已经完成目标环境回归并获准上线？"
+}

@@ -19,6 +19,26 @@ def capture_baseline(result, *, corpus_fingerprint):
     return {**payload, 'integrity': _digest(payload)}
 
 
+def _compare_sites(was,now,*,rule,path,uncertain):
+    old,new=defaultdict(list),defaultdict(list)
+    for rows,target in ((was,old),(now,new)):
+        for finding in rows:
+            loc=finding['application']
+            key=(loc.get('symbol'),loc.get('expression_fingerprint'))
+            target[key].append(loc)
+    out=[]
+    for key in sorted(old.keys()|new.keys(),key=str):
+        before,after=old[key],new[key]
+        ambiguous=not all(key) or len(before)>1 or len(after)>1
+        change=('UNRESOLVED' if ambiguous else 'PERSISTS' if before and after else
+                'NEW' if after else 'UNRESOLVED' if uncertain else 'NOT_OBSERVED_NOW')
+        out.append({'rule_id':rule,'path':path,'symbol':key[0],'change':change,
+                    'match_status':'AMBIGUOUS_DUPLICATES' if len(before)>1 or len(after)>1 else
+                                   'IDENTITY_UNAVAILABLE' if not all(key) else 'EXACT_AST_IDENTITY',
+                    'previous_locations':before,'current_locations':after})
+    return out
+
+
 def compare_reviews(baseline, result, *, corpus_fingerprint):
     refused = {'status': 'INCOMPARABLE', 'reason': '对照报告身份、版本或语料不一致，请重新保存基准。',
                'prior_records_reusable': False, 'runtime_verified': False, 'findings': [], 'files': []}
@@ -30,6 +50,7 @@ def compare_reviews(baseline, result, *, corpus_fingerprint):
         if any(old_snapshot.get(k) != new_snapshot.get(k) for k in ('application_id', 'registered_root', 'source_identity')):
             return refused
         if (baseline.get('integrity') != _digest(payload) or payload['corpus_fingerprint'] != corpus_fingerprint
+                or previous.get('workflow_type', 'dependency_upgrade') != result.get('workflow_type', 'dependency_upgrade')
                 or not corpus_fingerprint or result.get('runtime_verified') is not False
                 or any(previous.get(k) != result.get(k) for k in ('workspace_id', 'source_version', 'target_version',
                                                                   'analysis_policy_fingerprint', 'application_context'))
@@ -53,10 +74,10 @@ def compare_reviews(baseline, result, *, corpus_fingerprint):
         # Missing inputs or newly unresolvable flow cannot masquerade as a fix.
         missing_files = old_files.keys() - new_files.keys()
         blocking_gaps = [r for r in after.get('gaps', [])
-                         if r.get('code') not in ('runtime_not_verified', 'actual_runtime_not_verified')]
+                         if r.get('blocking') is not False and r.get('code') not in ('runtime_not_verified', 'actual_runtime_not_verified')]
         uncertain_paths = {r.get('application', {}).get('path') for r in after.get('findings', [])
                            if r.get('status') == 'needs_verification'}
-        findings = []
+        findings = [];sites=[]
         for key in sorted(old.keys() | new.keys()):
             was, now = old[key], new[key]
             if now:
@@ -69,10 +90,12 @@ def compare_reviews(baseline, result, *, corpus_fingerprint):
                              'previous_count': len(was), 'current_count': len(now),
                              'previous_locations': [r['application'] for r in was],
                              'current_locations': [r['application'] for r in now]})
+            sites.extend(_compare_sites(was,now,rule=key[0],path=key[1],
+                uncertain=bool(missing_files or blocking_gaps or key[1] in uncertain_paths or key[1] not in new_files)))
         return {'status': 'COMPARED', 'files': changes, 'findings': findings,
                 'previous_application_commit': old_snapshot.get('head_commit'),
                 'current_application_commit': new_snapshot.get('head_commit'),
-                'comparison_scope': 'rule_and_file_not_exact_site_identity',
+                'comparison_scope': 'rule_file_and_available_ast_sites', 'site_comparisons':sites,
                 'prior_records_reusable': False, 'runtime_verified': False,
                 'previous_request': previous.get('request_fingerprint'),
                 'current_request': result.get('request_fingerprint'),

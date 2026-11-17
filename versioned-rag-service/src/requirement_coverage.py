@@ -1,5 +1,7 @@
 """Validate model coverage labels against surviving claims and evidence scope."""
 from __future__ import annotations
+from src.paddleocr_applicability import version_applies
+from src.paddleocr_query_plan import REQUIREMENT_BUDGET
 
 ASSESSMENT = 'model_assessment_not_human_validation'
 
@@ -10,7 +12,7 @@ def assess_requirement_coverage(requirements, verdicts, claims, supported, evide
         return unknown
     try:
         by_requirement = {r['id']: r for r in requirements}
-        if len(by_requirement) != len(requirements) or not 1 <= len(requirements) <= 4:
+        if len(by_requirement) != len(requirements) or not 1 <= len(requirements) <= REQUIREMENT_BUDGET:
             return unknown
         if not isinstance(verdicts, list) or len(verdicts) != len(requirements):
             return unknown
@@ -34,21 +36,27 @@ def assess_requirement_coverage(requirements, verdicts, claims, supported, evide
                 refs = [by_evidence[cid] for cid in claims[i]['evidence_ids']]
                 # A label cannot override scope validation or resurrect a rejected claim.
                 if i in supported and any(
-                    (not requirement.get('version') or ref.get('version') == requirement['version'])
+                    (not requirement.get('version') or version_applies(ref,requirement['version']))
+                    and (not requirement.get('source_identity') or ref.get('source_identity') == requirement['source_identity'])
                     and (not requirement.get('module') or ref.get('module', module_for(ref))
                          in (requirement['module'], 'shared', 'general')) for ref in refs
                 ):
                     valid.append(i)
             status = row['status'] if valid or row['status'] == 'MISSING' else 'MISSING'
+            if status == 'MISSING' and valid:
+                # Contradictory grader output is not proof of missing source data.
+                status = 'CONFLICTING'
             if status == 'MISSING':
                 valid = []
             ids = list(dict.fromkeys(cid for i in valid for cid in claims[i]['evidence_ids']))
             indexed[rid] = {'requirement_id': rid, 'query': requirement['query'],
                             'version': requirement.get('version'), 'status': status,
-                            'evidence_ids': ids, 'reason': row['reason'] if status == row['status']
+                            'evidence_ids': ids, 'reason': '核验器引用了已获支持的回答，又将其判为完全缺失；需人工确认覆盖程度。'
+                            if status == 'CONFLICTING' else row['reason'] if status == row['status']
                             else '对应主张未通过支持度或适用范围核验，不能关闭此要点。'}
         items = [indexed[r['id']] for r in requirements]
-        return {'status': 'MODEL_ASSESSED_COMPLETE' if all(r['status'] == 'COVERED' for r in items)
+        return {'status': 'CONFLICTING_ASSESSMENTS' if any(r['status'] == 'CONFLICTING' for r in items)
+                else 'MODEL_ASSESSED_COMPLETE' if all(r['status'] == 'COVERED' for r in items)
                 else 'PARTIAL_SUPPORTED', 'items': items, 'assessment_type': ASSESSMENT}
     except (KeyError, TypeError, ValueError):
         return unknown

@@ -1,6 +1,50 @@
 import pytest
 
 
+def test_exact_evidence_validation_is_reused_within_run():
+    from app.paddleocr_investigation import investigate
+    calls=[]
+    hit={'chunk_id':'same','source_id':'s','version':'v3.0.0','content':'contract'}
+    class Gateway:
+        def search(self,question,**kw):return {'results':[dict(hit,rank_score=len(question))]}
+    def validate(row,remaining):calls.append(row);return row
+    checks=[{'check_id':str(i),'query':'OCR '+str(i),'versions':['v3.0.0']} for i in range(2)]
+    out=investigate(checks,Gateway(),clock=lambda:0,validate_evidence=validate)
+    assert len(calls)==1
+    assert out['validation_cache_hits']==1
+    assert out['validation_calls']==1
+
+
+def test_changed_content_with_same_chunk_identity_requires_fresh_validation():
+    from app.paddleocr_investigation import investigate
+    calls=[]
+    class Gateway:
+        def search(self,question,**kw):
+            return {'results':[{'chunk_id':'same','source_id':'s','version':'v3.0.0',
+                                'content':'contract '+question}]}
+    def validate(row,remaining):calls.append(row);return row
+    checks=[{'check_id':str(i),'query':'OCR '+str(i),'versions':['v3.0.0']} for i in range(2)]
+    out=investigate(checks,Gateway(),clock=lambda:0,validate_evidence=validate)
+    assert len(calls)==2
+    assert out['validation_calls']==2 and out['validation_cache_hits']==0
+
+
+def test_missing_fact_gets_bounded_targeted_lookup_before_model_planner():
+    from app.paddleocr_investigation import investigate
+    calls=[]
+    class Gateway:
+        def search(self,query,**kwargs):
+            calls.append(query)
+            if len(calls)==1:return {'results':[]}
+            return {'results':[{'chunk_id':'c','version':'v3.0.0','document_path':'docs/OCR.md','content':'rec_texts rec_scores'}]}
+    def planner(**kwargs):pytest.fail('deterministic missing facts should not need a model')
+    checks=[{'check_id':'r','query':'OCR mixed query','versions':['v3.0.0'],
+             'required_facts':{'v3.0.0':[{'path':'docs/OCR.md','tokens':['rec_texts','rec_scores']}]}}]
+    out=investigate(checks,Gateway(),clock=lambda:0,planner=planner,validate_evidence=lambda row,remaining:row)
+    assert out['unresolved']==[] and out['search_calls']==2 and out['planner_calls']==0
+    assert 'docs/OCR.md' in calls[1] and 'rec_texts' in calls[1]
+
+
 def test_repeated_query_stops_without_spending_another_search():
     from app.paddleocr_investigation import investigate
     class Gateway:

@@ -43,6 +43,7 @@ PADDLEOCR_SOURCE_PATHS = {
         "ppstructure/layout/README_ch.md", "ppstructure/table/README_ch.md",
         "ppstructure/recovery/README_ch.md", "ppstructure/return_word_pos.md",
         "paddleocr.py", "__init__.py", "ppstructure/predict_system.py", "tests/test_paddleocr_api.py",
+        "tools/infer/predict_rec.py", "tools/infer/predict_system.py",
         "configs/det/ch_PP-OCRv4/ch_PP-OCRv4_det_student.yml",
         "configs/rec/PP-OCRv4/ch_PP-OCRv4_rec.yml", "configs/table/SLANet_ch.yml",
     }),

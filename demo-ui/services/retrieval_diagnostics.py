@@ -10,10 +10,11 @@ def retrieval_policy_options(workspace: dict | None) -> list[dict[str, str | boo
     quality=(workspace or {}).get('quality_retrieval',{})
     impact=(workspace or {}).get('impact_evaluation')
     rag=(workspace or {}).get('rag_quality_evaluation')
-    if (workspace or {}).get('workspace_id')=='paddleocr' and isinstance(rag,dict):
+    evidence = (workspace or {}).get('evidence_retrieval') or {}
+    if (workspace or {}).get('workspace_id')=='paddleocr' and (isinstance(rag,dict) or evidence.get('available') is True):
         options[0]['label']='BM25 基线（对照）'
-        options.insert(0,{'id':'paddleocr_evidence','label':'按产线范围检索与证据核验（默认）','experimental':False})
-    if (workspace or {}).get('workspace_id')=='paddleocr' and isinstance(impact,dict) and not isinstance(rag,dict):
+        options.insert(0,{'id':'paddleocr_evidence','label':'结构化证据检索（默认）','experimental':False})
+    if (workspace or {}).get('workspace_id')=='paddleocr' and isinstance(impact,dict) and not isinstance(rag,dict) and not evidence.get('available'):
         selected=impact.get('selected_strategy','bm25')
         if selected!='bm25':
             option={'id':'paddleocr_evidence','label':'当前验证通过的证据检索（默认）','experimental':False}

@@ -1,12 +1,32 @@
 """Verify a deployed revision and pinned PaddleOCR corpus; never infer UI revision from HTTP 200."""
 import argparse
 import json
+import re
+import sys
 from pathlib import Path
 
 import requests
 
 
+def validate_release_identity(actual, expected):
+    revision = expected.get('build_revision')
+    if not isinstance(revision, str) or not re.fullmatch(r'[0-9a-f]{40}', revision):
+        raise ValueError('Release requires a committed, known revision')
+    if actual.get('build_revision') != revision:
+        raise ValueError('Release revision mismatch')
+    for key in ('corpus_fingerprint', 'service_code_fingerprint',
+                'review_code_fingerprint', 'retrieval_config_fingerprint'):
+        wanted, observed = expected.get(key), actual.get(key)
+        if key == 'corpus_fingerprint':
+            wanted = wanted.get('fingerprint_sha256') if isinstance(wanted, dict) else None
+            observed = observed.get('fingerprint_sha256') if isinstance(observed, dict) else None
+        if not isinstance(wanted, str) or not re.fullmatch(r'[0-9a-f]{64}', wanted) or observed != wanted:
+            raise ValueError('Release content mismatch: ' + key)
+
+
 def run(base_url, expected_revision, ui_url, output):
+    if not re.fullmatch(r'[0-9a-f]{40}', expected_revision):
+        raise ValueError('Expected revision must be a full committed SHA, never unknown')
     session = requests.Session()
     session.trust_env = False
     def get(path):
@@ -22,6 +42,16 @@ def run(base_url, expected_revision, ui_url, output):
         if payload.get('workspace_id') != 'paddleocr':
             raise RuntimeError('Unexpected workspace')
     local = json.loads((Path(__file__).resolve().parents[1] / 'public_corpus_paddleocr/corpus_manifest.json').read_text(encoding='utf8'))
+    service_root = Path(__file__).resolve().parents[1]
+    if str(service_root) not in sys.path:
+        sys.path.insert(0, str(service_root))
+    from src.build_identity import public_build_identity
+    expected = public_build_identity(repo_root=service_root.parent,
+        corpus_root=service_root/'public_corpus_paddleocr',
+        retrieval_config_path=service_root/'public_corpus_paddleocr/public_retrieval_runtime.json')
+    if expected['build_revision'] != expected_revision:
+        raise ValueError('Local checkout is uncommitted or differs from expected release')
+    validate_release_identity(workspace, expected)
     if workspace.get('repository') != 'PaddlePaddle/PaddleOCR' or workspace.get('languages') != ['zh']:
         raise RuntimeError('Unexpected publisher or language scope')
     documents = get('/public/documents')['documents']

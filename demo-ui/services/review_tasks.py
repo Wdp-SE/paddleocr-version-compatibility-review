@@ -5,6 +5,7 @@ from pathlib import Path
 import secrets
 import sqlite3
 import uuid
+from contextlib import contextmanager
 
 PROCESS = uuid.uuid4().hex
 
@@ -21,10 +22,13 @@ class ReviewTaskStore:
             db.execute('CREATE TABLE IF NOT EXISTS application_tasks (id TEXT PRIMARY KEY, token_hash TEXT NOT NULL, identity TEXT NOT NULL, process TEXT NOT NULL, state TEXT NOT NULL, result TEXT, error_type TEXT, created TEXT DEFAULT CURRENT_TIMESTAMP, updated TEXT DEFAULT CURRENT_TIMESTAMP)')
             db.execute('CREATE TABLE IF NOT EXISTS application_tool_cache (task TEXT NOT NULL, key TEXT NOT NULL, value TEXT NOT NULL, PRIMARY KEY(task,key))')
 
+    @contextmanager
     def _db(self):
         db = sqlite3.connect(self.path, timeout=10)
         db.row_factory = sqlite3.Row
-        return db
+        try:
+            with db:yield db
+        finally:db.close()
 
     def create(self, identity):
         ticket = {'task_id': uuid.uuid4().hex, 'token': secrets.token_urlsafe(32)}
@@ -117,6 +121,9 @@ class CachedReviewGateway:
 
     def document(self, document_id, *, request_timeout=None):
         return self._call('document', [document_id], {'request_timeout': request_timeout} if request_timeout else {})
+
+    def configuration_review(self, before_files, after_files, *, dependency_version):
+        return self._call('configuration_review', [before_files, after_files], {'dependency_version': dependency_version})
 
     def plan_investigation(self, *, unresolved, request_timeout):
         return self._call('plan_investigation', [], {'unresolved': unresolved, 'request_timeout': request_timeout})

@@ -1,6 +1,3 @@
-import json
-from pathlib import Path
-
 import streamlit as st
 import public_workbench as workbench
 
@@ -16,7 +13,12 @@ elif st.session_state.get("test_panel") == "unresolved":
 elif st.session_state.get("test_panel") == "answer_gaps":
     workbench._answer_gaps_panel({"evidence_gaps": ["未提供目标模型的精度和跟踪回归记录。"]})
 else:
-    path = Path(__file__).resolve().parents[3] / "evaluation/pphuman_release_candidate_v1/report.json"
     workbench._pphuman_development_evaluation({
-        "development_evaluation": json.loads(path.read_text(encoding="utf-8")),
+        "development_evaluation": {
+            "assessment_type": "dev_diagnostic_only",
+            "default_promotion_eligible": False,
+            "denominators": {"rag_answerable": 11, "rag_unanswerable": 1, "agent_answerable": 2},
+            "rag": {"bm25@5": {"top_k": 5, "mean_required_source_recall": 0.5}},
+            "agent": {"bm25": {"required_evidence_source_recall": 0.5}},
+        },
     })

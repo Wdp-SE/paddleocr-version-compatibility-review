@@ -58,3 +58,13 @@ def test_versioned_comparison_accepts_each_claims_own_version_evidence():
           for v,n in [('v2.9.1',8),('v3.0.0',10)]]
     claims=[{'text':f'{v} OCR cpu_threads 默认值为 {n}','evidence_ids':[v]} for v,n in [('v2.9.1',8),('v3.0.0',10)]]
     assert [r['status'] for r in check_mechanical_facts(claims,hits,requirements=reqs)['claims']]==['CONSISTENT_PARSED_FACT']*2
+def test_v3_plain_dictionary_assertion_is_not_proved_by_printed_fields():
+    from src.paddleocr_fact_checks import check_mechanical_facts
+    hit = {'chunk_id':'c','version':'v3.0.0','document_path':'docs/quick_start.md',
+           'content': "{'rec_texts': ['a'], 'rec_scores': [0.9]}"}
+    claims = [{'text':'PaddleOCR 3.0.0 的 OCR 结果改为按字段组织的字典。','evidence_ids':['c']},
+              {'text':'打印示例中的字典包含 rec_texts。','evidence_ids':['c']},
+              {'text':'单项结果可按 rec_texts 键访问。','evidence_ids':['c']}]
+    out = check_mechanical_facts(claims, [hit], requirements=[])
+    assert out['claims'][0]['status'] == 'UNPROVEN_RETURN_TYPE'
+    assert all(r['status'] == 'NOT_MECHANICALLY_CHECKABLE' for r in out['claims'][1:])

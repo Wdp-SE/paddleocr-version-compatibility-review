@@ -1,0 +1,51 @@
+name: Internal OCR upgrade checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  original-application-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.11'
+      - name: Install bounded offline test dependencies
+        run: python -m pip install pytest==8.4.2 numpy==1.26.4
+      - name: Check static review boundaries
+        working-directory: versioned-rag-service
+        run: >-
+          python -m pytest tests/test_upgrade_review_depth.py
+          tests/test_paddleocr_compatibility.py tests/test_paddleocr_application_graph.py
+          tests/test_registered_upgrade_cli.py -q --junitxml=../ocr-static-tests.xml
+      - name: Check original application entry point with fixture results
+        run: >-
+          python -m pytest examples/paddleocr_document_app -q --junitxml=ocr-application-tests.xml
+      - name: Produce advisory static report for this Git snapshot
+        run: >-
+          python versioned-rag-service/scripts/review_registered_upgrade.py
+          --head HEAD --advisory --output ocr-review.json
+      - name: Upload static report and fixture checks
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ocr-review-verification
+          path: |
+            ocr-review.json
+            ocr-*-tests.xml
+      - name: Explain review scope
+        shell: bash
+        run: |
+          echo 'Static checks and fixture regressions completed. The intentionally old adapter remains a review example.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'This workflow does not run OCR models, authenticate external logs, or approve deployment.' >> "$GITHUB_STEP_SUMMARY"

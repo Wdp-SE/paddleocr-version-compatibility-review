@@ -17,12 +17,17 @@ def render_claim(text):
                 st.markdown(part)
 
 
-def render_answer(payload):
+def render_answer(payload, *, show_heading=True):
+    from components.graph_execution import graph_execution_panel
+    graph_execution_panel(payload)
     claims = payload.get('claims') or []
+    coverage = payload.get('requirement_coverage') or {}
     partial = payload.get('answer_completeness') == 'PARTIAL_SUPPORTED' or bool(payload.get('evidence_gaps'))
-    if partial:
+    if coverage.get('status') == 'CONFLICTING_ASSESSMENTS':
+        st.warning('完整性核验意见不一致：以下保留有证据支持的内容；未解决的要点仍需核对，不能视为已经答全。')
+    elif partial:
         st.warning('部分要点有证据支持；其余要点仍需补充资料。')
-    st.markdown('**直接回答**')
+    if show_heading:st.markdown('**直接回答**')
     if not claims:
         render_claim(payload['answer'])
     for i, claim in enumerate(claims):
@@ -33,10 +38,14 @@ def render_answer(payload):
             st.caption('依据：' + '、'.join(f'[{n}]' for n in claim.get('source_indexes', [])))
     with st.expander('回答核验说明'):
         st.caption('引用编号对应本次检索片段；请对照原文确认语义。模型核验不替代人工确认，也不是正确率认证。')
-        coverage = payload.get('requirement_coverage') or {}
+        retired = [r for r in (payload.get('generator_gap_review') or {}).get('items', []) if r.get('retired')]
+        for row in retired:
+            st.caption('已复核的生成器疑问：' + row['original_gap'])
+            st.caption(row['reason'])
         if coverage.get('items'):
             st.markdown('**逐要点覆盖（模型复核）**')
-            labels = {'COVERED': '有支持的回答', 'PARTIAL': '仅部分覆盖', 'MISSING': '仍缺依据或回答'}
+            labels = {'COVERED': '有支持的回答', 'PARTIAL': '仅部分覆盖', 'MISSING': '仍缺依据或回答',
+                      'CONFLICTING': '核验意见不一致，需人工确认'}
             for row in coverage['items']:
                 st.write(f"{labels.get(row['status'], '尚未核对')}：{row['query']}")
                 st.caption(row['reason'])

@@ -81,6 +81,15 @@ class Gateway:
         return self.advice
 
 
+def test_stage_latencies_are_observed_and_static_preview_precedes_optional_advice():
+    events=[];gateway=Gateway()
+    result=PaddleOCRReviewAgent(gateway).analyze(FILES,generate_advice=True,investigation_progress=events.append)
+    assert any(event.get('static_preview',{}).get('risk_count')==1 for event in events)
+    assert set(result['stage_latency_ms'])=={'static_tool','source_validation','official_lookup','model_advice'}
+    assert all(type(value) in (int,float) and value>=0 for value in result['stage_latency_ms'].values())
+    assert result['runtime_verified'] is False
+
+
 def test_profile_and_controlled_review_bind_app_and_both_official_versions():
     assert load_change_profile(PROFILE_PATH)["id"] == "paddleocr"
     gateway = Gateway()
@@ -100,6 +109,47 @@ def test_investigation_records_each_checked_item_and_tool_budget():
     assert result['investigation']['search_calls']==2
     assert result['investigation']['trace']
     assert result['compatibility_report']['status']=='supported_risk'
+
+
+def test_application_validation_does_not_mark_official_lookup_incomplete(monkeypatch):
+    from app.paddleocr_investigation import _FACTS
+    monkeypatch.setitem(_FACTS,'removed_structure_api',{
+        v:[{'path':source(v)['path'],'tokens':['官方接口导出契约']}] for v in COMMITS})
+    gateway=Gateway()
+    gateway.payload['gaps']=[{'code':'unreviewed_configuration','detail':'环境回归尚未执行',
+                             'application':gateway.payload['findings'][0]['application']}]
+    gateway.payload['summary']['gap_count']=1
+    result=PaddleOCRReviewAgent(gateway).analyze(FILES)
+    assert result['stage_status']['official_lookup']=='completed'
+    assert result['lookup_gaps']==[]
+    assert result['stage_status']['application_validation']=='pending'
+    assert len(result['application_validation_requirements'])==2
+    assert result['manual_review_required'] and result['runtime_verified'] is False
+
+
+def test_contract_requirements_cannot_be_forged_by_static_gateway():
+    files=[*FILES, {'path':'contract.json','content':'{"output_fields":["pages"]}'}]
+    gateway=Gateway();gateway.payload=report(files)
+    gateway.payload['application_contracts']=[{'path':'contract.json','sha256':hashlib.sha256(files[1]['content'].encode()).hexdigest(),
+        'line_start':1,'line_end':1,'source_identity':'submitted_application',
+        'requirements':{'output_fields':['approved']},'runtime_verified':False}]
+    with pytest.raises(ValueError,match='契约'):
+        PaddleOCRReviewAgent(gateway).analyze(files)
+
+
+@pytest.mark.parametrize('omission',['entire_contract','fields','regression'])
+def test_contract_requirements_and_regressions_cannot_be_omitted(omission):
+    from app.paddleocr_application_evidence import validate_contracts
+    text='{"output_fields":["pages"],"page_policy":"preserve_empty_pages"}'
+    source={'path':'contract.json','sha256':hashlib.sha256(text.encode()).hexdigest(),
+        'line_start':1,'line_end':1,'source_identity':'submitted_application',
+        'requirements':{'output_fields':['pages'],'page_policy':'preserve_empty_pages'},
+        'status':'DECLARED_NOT_VERIFIED','runtime_verified':False}
+    payload={'application_contracts':[] if omission=='entire_contract' else [source],
+             'regression_requirements':[]}
+    if omission=='fields': source['requirements']={}
+    with pytest.raises(ValueError,match='契约'):
+        validate_contracts(payload,{'contract.json':text})
 
 
 def test_long_valid_static_report_uses_bounded_advice_summary_without_losing_report():

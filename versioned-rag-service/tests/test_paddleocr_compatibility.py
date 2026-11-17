@@ -38,6 +38,17 @@ def review(index, content, path="app.py", **versions):
     )
 
 
+def test_risk_location_has_function_and_expression_identity_independent_of_line_number(index):
+    code='from paddleocr import PaddleOCR\ndef adapt(path):\n result=PaddleOCR().ocr(path)\n return result[0][0][1][0]\n'
+    first=review(index,code)
+    second=review(index,'\n\n'+code)
+    a=next(f['application'] for f in first['findings'] if f['rule_id']=='legacy_ocr_result')
+    b=next(f['application'] for f in second['findings'] if f['rule_id']=='legacy_ocr_result')
+    assert a['symbol']==b['symbol']=='adapt'
+    assert a['expression_fingerprint']==b['expression_fingerprint']
+    assert a['line']+2==b['line']
+
+
 def assert_bound(report, index, content):
     sources = {source["source_id"]: source for source in index.manifest["sources"]}
     chunks = {chunk["chunk_id"]: chunk for chunk in index.chunks}
@@ -309,10 +320,11 @@ def test_count_bytes_lines_and_parser_depth_are_bounded(guard_index):
         review(guard_index, "x=[" + ",".join("0" for _ in range(15001)) + "]")
 
 
-def test_config_dependency_mismatch_is_explicit_without_yaml_execution(guard_index):
+def test_config_dependency_role_is_unknown_without_declaration_and_yaml_is_not_executed(guard_index):
     report = review(guard_index, "paddleocr==3.0.0\n", path="requirements.txt")
     assert report["status"] == "needs_verification"
-    assert "dependency_version_mismatch" in {gap["code"] for gap in report["gaps"]}
+    assert "dependency_role_unknown" in {gap["code"] for gap in report["gaps"]}
+    assert "dependency_version_mismatch" not in {gap["code"] for gap in report["gaps"]}
     yaml_report = review(guard_index, "factory: !!python/object/apply:os.system [whoami]\n", path="pipeline.yaml")
     assert yaml_report["status"] == "needs_verification"
     assert "unreviewed_configuration" in {gap["code"] for gap in yaml_report["gaps"]}

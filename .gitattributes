@@ -47,3 +47,6 @@ evaluation/retrieval_upgrade_v2/** -text whitespace=cr-at-eol
 versioned-rag-service/src/paddleocr_retrieval_comparison.py -text whitespace=cr-at-eol
 evaluation/interview_release_20261009/** -text whitespace=cr-at-eol
 evaluation/archive/retrieval-upgrade-20261008/** -text whitespace=cr-at-eol
+
+# Original application manifests and regression records bind exact source bytes.
+examples/paddleocr_document_app/** -text whitespace=cr-at-eol

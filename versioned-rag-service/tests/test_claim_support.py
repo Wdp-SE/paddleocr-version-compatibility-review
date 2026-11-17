@@ -1,6 +1,29 @@
 import pytest
 
 
+def test_provider_verifier_sends_shared_excerpt_once_without_merging_claim_citations():
+    import json
+    from types import SimpleNamespace
+    from src.answer_generation import StructuredAnswerGenerator
+
+    first = {'id': 'a', 'version': 'v3.0.0', 'content': '原始共同证据'}
+    second = {'id': 'b', 'version': 'v2.9.1', 'content': '原始独立证据'}
+    rows = [{'claim_index': 0, 'claim': '第一条', 'evidence': [first], 'question': '原问题'},
+            {'claim_index': 1, 'claim': '第二条', 'evidence': [first, second]}]
+    seen = []
+
+    def complete(messages):
+        seen.extend(messages)
+        return '{"verdicts":[]}', {}
+
+    StructuredAnswerGenerator.verify_claims_with_diagnostics(SimpleNamespace(_complete_with_diagnostics=complete), rows)
+    data = json.loads(seen[-1]['content'])
+    assert data['evidence_by_id'] == {'a': first, 'b': second}
+    assert [row['evidence_ids'] for row in data['claims']] == [['a'], ['a', 'b']]
+    assert '原问题' in seen[-1]['content']
+    assert seen[-1]['content'].count('原始共同证据') == 1
+
+
 def test_answer_checker_receives_original_question_to_reject_off_target_truths():
     from src.claim_support import check_claim_support
     seen=[]

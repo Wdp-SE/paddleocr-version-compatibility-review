@@ -1,30 +1,42 @@
-# PaddleOCR 文档处理应用研发工作台
+# 内部 OCR 组件维护工作台
 
-面向维护扫描文档 OCR、版面/表格解析与结果归一化应用的开发者。人工查询按依赖版本检索官方中文资料；兼容性审查 Agent 读取应用文本，定位依赖升级需要核对的调用和结果消费位置。两者共用一个 RAG API，审查不执行提交代码、不修改应用或上游资料。
+面向公司内部研发、测试与应用负责人。人工知识查询和两条变更审查流程共用版本化证据服务。学生原型使用 PaddleOCR 官方公开资料与作者原创应用模拟维护任务，保留实际来源身份。
 
-## 当前范围
+## 当前流程
 
-活动知识空间为 PaddlePaddle/PaddleOCR 的两个固定版本：v2.9.1 与 v3.0.0。收录40份中文 Markdown、9份 Python 接口契约和5份 YAML，共54条版本来源、1545个检索片段。代码和配置属于辅助契约证据，不算中文教程。默认 v3.0.0 表示最新已收录版本，不表示上游目前最新版。旧领域资料不进入该工作台活动默认链路。
+- 知识查询：选择底层依赖版本，检索原文、生成带引用回答并保留缺口。
+- 依赖升级：围绕同一登记应用的 PaddleOCR v2.9.1 → v3.0.0，核对调用、适配、输出与内部使用位置。
+- 配置变更：依赖保持 v2.9.1，检查已支持的阈值变化、来源及回归要求。
 
-三个原创应用片段覆盖 PPStructure 接口移除、旧 OCR 嵌套结果消费以及基本 OCR 调用形式；它们是静态审查样例，不是已经通过真实 OCR 推理的生产应用。动态调用、未覆盖配置及安装环境保留为待验证项。
+主案例为扫描页 OCR → 归一化 → JSON。PPStructure 仅为相关静态检查分支，不代表默认应用已完成该功能运行验证。活动资料数量、来源和策略以 `/public/workspace` 的当前构建为准，不沿用旧版固定数字。
+
+三条流程由 LangGraph 编排；任务完成、证据支持、实际运行和人工处置分别显示。Agent 不执行提交代码、不自动修改或批准发布。
 
 ## 本地运行
 
-从项目根目录运行 start_prototype.ps1，或先按服务说明启动 API，再从本目录启动 Streamlit。模型密钥仅放在 RAG 后端，不填写到页面。
+从项目根目录安装统一环境并启动后端与界面：
 
 ```powershell
-$env:APP_ENV = "public_demo"
-$env:RAG_API_BASE_URL = "http://127.0.0.1:8770"
-$env:DEMO_ALLOW_RAG_QUERY = "true"
-..\OpenManus-rag\.venv\Scripts\python.exe -m streamlit run app.py --server.address 127.0.0.1 --server.port 8520
+python -m venv .venv-maintenance
+.\.venv-maintenance\Scripts\python.exe -m pip install -r requirements-dev.txt
+.\start_prototype.ps1 -RagPort 8775 -UiPort 8533
 ```
 
-工作台从 /public/workspace 读取实际身份、版本、构建指纹和生成配置。身份不匹配时停止查询并清除绑定结果。人工问答默认 BM25，可配置证据 Top-K；十条来源派生小样本用于工程验收，不能当作独立回答准确率。
+模型密钥由后端环境变量配置。仅检索时使用启动参数 `-DisableGeneration`。已单独启动 API 时，可以从本目录仅启动界面：
 
-## 审查与审核
+```powershell
+$env:APP_ENV = 'public_demo'
+$env:RAG_API_BASE_URL = 'http://127.0.0.1:8775'
+..\.venv-maintenance\Scripts\python.exe -m streamlit run app.py --server.address 127.0.0.1 --server.port 8533
+```
 
-选择当前依赖和升级目标，提交相对路径与受限 Python/YAML 文本，查看应用行号、升级前后官方出处、静态风险/缺口和验证清单。可选模型核查建议仅使用已校验目标版证据，与静态事实分开展示；格式或引用失败时保留静态报告和实际生成诊断。
+`start_demo.ps1` 同样使用项目根目录的统一环境，不再回退旧工程目录。公开演示只处理公开与原创资料；内部部署须配置并验收身份、权限、持久任务与可信运行记录。
 
-人工确认只记录“已审阅静态报告”。JSON 导出包含版本、应用文件哈希、完整报告与来源身份。匿名会话的 SQLite 审计不等于企业实名审批，临时云磁盘不能保证重启后保留。真实 OCR 推理、模型加载和下游回归尚未验证；审核不能提升该验证状态。
+## 相关说明
 
-公网发布需另行核对 Render 后端和 Streamlit 前端的同一构建及语料指纹。本轮迁移完成本地实现与验收，不自动发布。
+- [业务边界](../docs/business_scope.md)
+- [两类维护流程](../docs/change_review_workflows.md)
+- [LangGraph 迁移与验证](../docs/maintenance/2026-11-12-langgraph-migration.md)
+- [内部部署](../deploy/internal/README.md)
+
+公网部署、真实 OCR 回归、人工回答正确性和生产基础设施分别验收；界面或单元测试通过不代表这些条件已满足。

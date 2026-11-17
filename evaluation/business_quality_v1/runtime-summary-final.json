@@ -1,0 +1,153 @@
+{
+  "generated_at_utc": "2026-11-14T01:52:51.133313+00:00",
+  "source_type": "developer_original_application",
+  "application_files_sha256": {
+    "application/application_manifest.json": "4478255ca58a0a0b498b30b339ec2c7a4a9e5a6b15a56937525778087b6c291c",
+    "application/consumer.py": "769e965d3f9a318ecfa8bf3e0b015e43154d7e345059cfb0734e34cd78cb91e1",
+    "application/contract.json": "8497d02cec52712d255270f26fe89c44a206fd1741889df9aa9cad1235b0087e",
+    "application/design.md": "eaeb660b641cc8146b2b759229b425847add5cab9be5c2a3fdd7d1bf23bb6a5a",
+    "application/normalizer.py": "32d811893353415861e4bc4a82525cee6bffa0257f8995f30161ef28836525fb",
+    "application/ocr_client.py": "59047b1b8e0327874a930803368608125f297b0a8d3c4682efecf2027a1972b8",
+    "application/pipeline.py": "f23be46c3d594bd7df0f9ef46eadd19bb5170ab801653150d2bc8294e857eece",
+    "application/requirements-v2.txt": "33e42943a1f915eb34f36b649f706e774cf3f904f113f792540c46a15c9fe23e",
+    "application/requirements-v3.txt": "8f82f4eeffa94bf738f58b0f51eb4d3071139c64ce465e4de8403deedab78865",
+    "application/upgrade.md": "4b7a4d558cb57a1221cac4a55c663d87ca4dab9b343295b11a7543127d6f0601",
+    "application/__init__.py": "916835a1e2c8e2ebc1ed808457eef0cea0e16fbcd2362fcb70359dad8c0a8192",
+    "application/tests/test_contract.py": "a5c7d0906fb2e66fc3dac8b08185339303f22d887fd167fe6bad081040dec9af"
+  },
+  "default_entrypoint": "application.pipeline.process",
+  "configured_entrypoint": "application.pipeline.process_configured",
+  "tests": {
+    "passed": 50,
+    "log": ".local-demo-temp/business-quality-20261114/app-final.log"
+  },
+  "fixture": {
+    "artifact": ".local-demo-temp/business-quality-20261114/runtime-fixtures-final.json",
+    "sha256": "61a0eabdd4b365490e4ba3138bab295f69add7c4b9d08c5d0e44e94ba894655a",
+    "case_count": 8,
+    "expectations_met": true,
+    "observed_failed_cases": [
+      "file_changed_not_adopted",
+      "v3_default_entry_fails",
+      "unchanged_call_runtime_bad_type"
+    ]
+  },
+  "real_ocr_v2": [
+    {
+      "configuration": "default",
+      "artifact": ".local-demo-temp/business-quality-20261114/real-v2-verified-default.json",
+      "sha256": "bc015586be984a8f76a842cc8ee76040440c9203d3e3c2c8dbb784bcee1edb67",
+      "runtime_status": "PASSED",
+      "configuration_provenance": {
+        "config_sha256": null,
+        "declared_values": {},
+        "effective_values": {
+          "lang": "ch",
+          "drop_score": 0.5
+        },
+        "value_sources": {
+          "lang": "default",
+          "drop_score": "default"
+        },
+        "factory_parameters": {
+          "lang": "ch"
+        }
+      },
+      "actual_entrypoint_contract_passed": true,
+      "normalization_contract_passed": true
+    },
+    {
+      "configuration": "old",
+      "artifact": ".local-demo-temp/business-quality-20261114/real-v2-verified-old.json",
+      "sha256": "897673d30d54d541f2a9f80e073926f4665d1d411d5f2c6a7291dce1f223f395",
+      "runtime_status": "PASSED",
+      "configuration_provenance": {
+        "config_sha256": "3aac5b921cce991976dcd069e371695545269c2f1cf308e6f3c902b5e2584919",
+        "declared_values": {
+          "schema_version": 1,
+          "drop_score": 0.5
+        },
+        "effective_values": {
+          "lang": "ch",
+          "drop_score": 0.5
+        },
+        "value_sources": {
+          "lang": "default",
+          "drop_score": "json"
+        },
+        "factory_parameters": {
+          "lang": "ch",
+          "drop_score": 0.5
+        }
+      },
+      "actual_entrypoint_contract_passed": true,
+      "normalization_contract_passed": true
+    },
+    {
+      "configuration": "new",
+      "artifact": ".local-demo-temp/business-quality-20261114/real-v2-verified-new.json",
+      "sha256": "dd8b81a0f74fe4fefc6fe53fc53c617fc7c3e778aa3ea47417a23e1833428ae6",
+      "runtime_status": "PASSED",
+      "configuration_provenance": {
+        "config_sha256": "5e9df4ca862d65318f1256fbdabfa3f8855d75956bb1826ca6df8f92123e5e6a",
+        "declared_values": {
+          "schema_version": 1,
+          "drop_score": 0.8
+        },
+        "effective_values": {
+          "lang": "ch",
+          "drop_score": 0.8
+        },
+        "value_sources": {
+          "lang": "default",
+          "drop_score": "json"
+        },
+        "factory_parameters": {
+          "lang": "ch",
+          "drop_score": 0.8
+        }
+      },
+      "actual_entrypoint_contract_passed": true,
+      "normalization_contract_passed": true
+    },
+    {
+      "configuration": "override",
+      "artifact": ".local-demo-temp/business-quality-20261114/real-v2-verified-override.json",
+      "sha256": "1c4449ad28bd40a2401b81fa9d44379bea066b3c230c6b3f0d52b016275ce223",
+      "runtime_status": "PASSED",
+      "configuration_provenance": {
+        "config_sha256": "5e9df4ca862d65318f1256fbdabfa3f8855d75956bb1826ca6df8f92123e5e6a",
+        "declared_values": {
+          "schema_version": 1,
+          "drop_score": 0.8
+        },
+        "effective_values": {
+          "lang": "ch",
+          "drop_score": 0.5
+        },
+        "value_sources": {
+          "lang": "default",
+          "drop_score": "explicit_override"
+        },
+        "factory_parameters": {
+          "lang": "ch",
+          "drop_score": 0.5
+        }
+      },
+      "actual_entrypoint_contract_passed": true,
+      "normalization_contract_passed": true
+    }
+  ],
+  "real_ocr_v3_current": "NOT_VERIFIED_AFTER_ENTRYPOINT_SEPARATION",
+  "historical_v3_native_failure": {
+    "artifact": ".local-demo-temp/business-quality-20261114/supervised-real-v3-default.json",
+    "status": "NOT_AVAILABLE",
+    "child_exit_code": 3221225477,
+    "current_source_identity": false
+  },
+  "limitations": [
+    "Three clean synthetic pages had unchanged text across 0.5/0.8; no measured OCR quality gain.",
+    "The v3 shape-failure fixture is not an actual OCR result.",
+    "Default and explicit configuration entrypoints are separate; no new SDK distribution/version asserted."
+  ]
+}

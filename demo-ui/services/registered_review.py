@@ -1,8 +1,7 @@
 """Orchestrate fixed-application snapshots through the existing Agent and knowledge service."""
-from services.application_review_context import attach_application_context, finalize_application_report
+from services.application_review_context import attach_application_context
 from services.review_comparison import capture_baseline, compare_reviews
 import hashlib
-import json
 
 
 def validate_application_evidence(value, snapshot):
@@ -26,22 +25,23 @@ def validate_application_evidence(value, snapshot):
 def run_registered_review(client, snapshot, *, analyze, context, base_snapshot=None,
                           source_version, target_version, generate_advice=False, **options):
     def review(current, *, advice, resume=None):
+        try:
+            evidence = validate_application_evidence(client.application_search(current['files'],
+                '应用输出契约 required_line_fields output_fields page_fields page_policy 测试验收',
+                application_id=current['application_id'], application_commit=current['head_commit']), current)
+        except Exception:
+            evidence = {'results': [], 'status': 'UNAVAILABLE', 'runtime_verified': False}
         result = analyze(client, current['files'], source_version=source_version, target_version=target_version,
                          generate_advice=advice, **{**options, 'resume': resume})
         result['application_context'] = context
+        result['application_evidence'] = evidence
+        if evidence.get('status') == 'UNAVAILABLE':
+            result['compatibility_report']['gaps'].append({'code': 'application_evidence_unavailable',
+                'category': 'analysis_gap', 'blocking': True,
+                'detail': '当前提交的应用资料检索未完成；静态工具仅按已提交原文检查，不能用官方资料补造应用契约。'})
         return attach_application_context(result, current)
     baseline = review(base_snapshot, advice=False) if base_snapshot else None
     result = review(snapshot, advice=generate_advice, resume=options.get('resume'))
-    try:
-        result['application_evidence'] = validate_application_evidence(client.application_search(snapshot['files'],
-            'required_line_fields output_fields text confidence page_index schema_version pages 测试 契约',
-            application_id=snapshot['application_id'], application_commit=snapshot['head_commit']), snapshot)
-    except Exception:
-        result['application_evidence'] = {'results': [], 'status': 'UNAVAILABLE', 'runtime_verified': False}
-        result['compatibility_report']['gaps'].append({'code': 'application_evidence_unavailable',
-            'detail': '当前提交的应用资料检索未完成；请直接核对已提交的契约、设计和测试文件。'})
-        # Bind the additional gap too; never leave a report fingerprint from before enrichment.
-        finalize_application_report(result)
     if baseline:
         result['commit_comparison'] = compare_reviews(
             capture_baseline(baseline, corpus_fingerprint=baseline.get('corpus_fingerprint')),

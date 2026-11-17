@@ -1,0 +1,19 @@
+{
+  "suite": "depth_quality_v1",
+  "split": "developer_authored_regression_not_independent_blind",
+  "human_accuracy": null,
+  "cases": [
+    {"id":"depth-01","version":"all","question_type":"compound_fact","query":"同一个扫描件应用准备由 PaddleOCR 2.9.1 升到 3.0.0，只保留旧的 line[1][0] 读取方式为什么不稳妥？","expected_facts":["区分旧用法示例与新版结果契约","新版接口与字段需要独立依据"],"oracle_sources":[{"version":"v2.9.1","path":"doc/doc_ch/whl.md","tokens":["line[1][0]"]},{"version":"v3.0.0","path":"paddleocr/_pipelines/ocr.py","tokens":["def ocr("]},{"version":"v3.0.0","path":"docs/version3.x/pipeline_usage/OCR.md","tokens":["rec_texts","rec_scores"]}]},
+    {"id":"depth-02","version":"all","question_type":"wording_variant","query":"OCR 2.9.1 到 3.0.0，调用名 ocr 还存在就能认定结果归一化不用修改吗？","expected_facts":["调用名称保留不证明返回消费兼容","两版结果读取依据"]},
+    {"id":"depth-03","version":"v2.9.1","question_type":"compound_fact","query":"扫描件方向不固定。PaddleOCR 2.9.1 初始化启用了 use_angle_cls，但调用 ocr 时 cls=False，还会做方向分类吗？","expected_facts":["加载分类器与实际调用开关分别核查","引用控制分类执行的条件分支"],"oracle_sources":[{"version":"v2.9.1","path":"paddleocr.py","tokens":["def ocr("]},{"version":"v2.9.1","path":"tools/infer/predict_system.py","tokens":["self.use_angle_cls and cls"]}]},
+    {"id":"depth-04","version":"all","question_type":"compound_fact","query":"PaddleOCR 2.9.1 升级到 3.0.0 后 show_log 和 det_db_thresh 参数分别如何处理？","expected_facts":["两个参数分别说明","弃用映射与未接受参数的处理链不能混淆"]},
+    {"id":"depth-05","version":"all","question_type":"compound_fact","query":"PaddleOCR 2.9.1 升级到 3.0.0，调用入口、初始化参数和结果读取应分别核查什么？","expected_facts":["三个维度两版事实","不能只列新版说明"]},
+    {"id":"depth-06","version":"v3.0.0","question_type":"evidence_gap","query":"PaddleOCR 3.0.0 通用 OCR 的 rec_texts 和 rec_scores 分别表示什么，如何对应？","expected_facts":["字段含义","对应关系不足时保留缺口"]},
+    {"id":"depth-07","version":"v2.9.1","question_type":"compound_fact","query":"PaddleOCR 2.9.1 的 rec_batch_num 控制什么，是否等于一次处理的扫描页数？","expected_facts":["识别批次对象","组件批次与应用分页区分"]},
+    {"id":"depth-08","version":"all","question_type":"application_boundary","query":"没有提交应用源码和 JSON 契约，只看 PaddleOCR 2.9.1 与 3.0.0 官方资料，能否保证我们升级后输出兼容？","expected_facts":["不能保证","所需应用输入"],"expected_status":"NEEDS_APPLICATION_CONTEXT"},
+    {"id":"depth-09","version":"v3.0.0","question_type":"application_boundary","query":"官方 OCR 3.0.0 文档能否证明我们服务器的模型已经成功下载并加载？","expected_facts":["文档不能证明实际运行","目标环境记录"],"expected_status":"NEEDS_APPLICATION_CONTEXT"},
+    {"id":"depth-10","version":"v2.9.1","question_type":"component_fact","query":"OCR 2.9.1 结果分数刚好等于 drop_score 时，主链过滤代码保留还是丢弃？","expected_facts":["等于阈值的比较分支与保留结果"]},
+    {"id":"depth-11","version":"v2.9.1","question_type":"clarification","query":"OCR 3.0.0 的 text_rec_score_thresh 是什么？","expected_facts":["提示问题与所选版本冲突"],"expected_status":"NEEDS_CLARIFICATION"},
+    {"id":"depth-12","version":"v3.0.0","question_type":"mixed_component_application","query":"OCR 3.0.0 的 save_to_json 如何使用？该文件是否天然符合我们应用自己的 pages/page_index 契约？","expected_facts":["官方导出方式","不得声称满足未提供的应用契约"]}
+  ]
+}

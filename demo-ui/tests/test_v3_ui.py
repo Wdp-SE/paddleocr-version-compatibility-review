@@ -67,9 +67,9 @@ def test_streamlit_exposes_current_edge_knowledge_and_review_controls(monkeypatc
     app = AppTest.from_file(Path(__file__).parents[1] / "app.py", default_timeout=60).run()
     assert not app.exception
     navigation = {item.label for item in app.button}
-    assert {"版本化知识检索", "版本与历史", "发起兼容性审查"} <= navigation
+    assert {"知识查询", "资料库", "变更审查"} <= navigation
 
-    next(button for button in app.button if button.label == "版本化知识检索").click().run()
+    next(button for button in app.button if button.label == "知识查询").click().run()
     assert not app.exception
     selectors = {item.label for item in app.selectbox}
     assert {"版本范围", "资料语言", "示例问题（选择后可编辑）"} <= selectors

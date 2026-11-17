@@ -12,28 +12,21 @@ def demo_application(label):
     if label not in DEMO_CASES:
         raise ValueError('unknown interview example')
     rows = load_original_application()
-    old = '''from .ocr_client import recognize
-
-
-def normalize_legacy(path):
-    pages = recognize(path)
-    return [{'text': line[1][0], 'confidence': line[1][1], 'page_index': 0} for line in pages[0]]
+    old = '''def normalize_legacy(raw):
+    return [{'text': line[1][0], 'confidence': line[1][1], 'page_index': page_index}
+            for page_index, page in enumerate(raw) if page is not None for line in page]
 '''
-    new = '''from .ocr_client import recognize
-from result_adapter import normalize_v3
+    new = '''from result_adapter import normalize_v3
 
 
-def normalize_legacy(path):
-    pages = recognize(path)
-    return normalize_v3(pages)
+def normalize_legacy(raw):
+    return normalize_v3(raw)
 '''
     # Explicitly marked demonstration variants. The original manifest/files are
     # unchanged and runtime regression history is never attached automatically.
     for row in rows:
         if row['path'] == 'application/normalizer.py':
             row['content'] = new if label == '修改后复查：字段适配' else old
-        elif row['path'] == 'application/pipeline.py':
-            row['content'] = 'from .normalizer import normalize_legacy\nfrom .consumer import to_json\n\ndef process(path):\n    lines = normalize_legacy(path)\n    return to_json(lines)\n'
         elif row['path'] == 'application/design.md':
             row['content'] += '\n当前输入为学生原创应用的可编辑演示变体，不附带运行成功证明。扫描页经 OCR、归一化后由下游消费 JSON。\n'
     if label == '资料缺口：调用层未提交':

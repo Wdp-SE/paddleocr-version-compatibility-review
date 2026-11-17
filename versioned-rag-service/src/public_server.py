@@ -18,7 +18,7 @@ from src.answer_generation import (
     default_generation_model,
     generation_api_key_env,
 )
-from src.build_identity import public_build_identity
+from src.build_identity import public_build_identity, service_identity_digest
 from src.engineering_change import (
     EngineeringImpactService, EngineeringItem, TraceLink, compare_engineering_items,
 )
@@ -40,6 +40,11 @@ def _is_public_demo() -> bool:
 def _configured_public_corpus_root() -> Path:
     if _is_public_demo():
         return SERVICE_ROOT / "public_corpus_paddleocr"
+    if os.environ.get('RAG_CORPUS_RELEASE_POINTER'):
+        from src.corpus_release import resolve
+        from src.build_identity import content_fingerprint
+        code=content_fingerprint({p.name:p for p in (SERVICE_ROOT/'src').glob('*.py')})['fingerprint_sha256']
+        return resolve(os.environ['RAG_CORPUS_RELEASE_POINTER'],code_identity=code)
     configured = os.environ.get("RAG_PUBLIC_CORPUS_ROOT", "").strip()
     if not configured:
         return SERVICE_ROOT / "public_corpus_paddleocr"
@@ -47,14 +52,18 @@ def _configured_public_corpus_root() -> Path:
     return path if path.is_absolute() else (SERVICE_ROOT / path).resolve()
 
 
-def _configured_public_retrieval_config() -> Path:
+def _configured_public_retrieval_config(corpus_root: Path | None = None) -> Path:
+    root=corpus_root or _configured_public_corpus_root()
     if _is_public_demo():
-        return _configured_public_corpus_root() / "public_retrieval_runtime.json"
+        return root / "public_retrieval_runtime.json"
     configured = os.environ.get("RAG_PUBLIC_RETRIEVAL_CONFIG", "").strip()
     if not configured:
-        return _configured_public_corpus_root() / "public_retrieval_runtime.json"
+        return root / "public_retrieval_runtime.json"
     path = Path(configured).expanduser()
-    return path if path.is_absolute() else (SERVICE_ROOT / path).resolve()
+    resolved=path if path.is_absolute() else (SERVICE_ROOT / path).resolve()
+    if os.environ.get('RAG_CORPUS_RELEASE_POINTER') and resolved.resolve()!=(root/'public_retrieval_runtime.json').resolve():
+        raise ValueError('Release retrieval configuration must come from the resolved release')
+    return resolved
 
 
 class DiffRequest(BaseModel):
@@ -88,9 +97,12 @@ def create_app(*, index: PublicKnowledgeIndex | None = None, generator=None,
         active_retrieval_config_path = Path(
             retrieval_config_path or (
                 base_index.root / "public_retrieval_runtime.json" if index is not None
-                else _configured_public_retrieval_config()
+                else _configured_public_retrieval_config(base_index.root)
             )
         ).resolve()
+        if (not _is_public_demo() and os.environ.get('RAG_CORPUS_RELEASE_POINTER')
+                and active_retrieval_config_path!=(base_index.root/'public_retrieval_runtime.json').resolve()):
+            raise ValueError('Release retrieval configuration must come from the resolved release')
         app.state.public_base_knowledge_index = base_index
         app.state.public_knowledge_index = PublicRetrievalRuntime(
             base_index,
@@ -147,6 +159,9 @@ def create_app(*, index: PublicKnowledgeIndex | None = None, generator=None,
         lifespan=lifespan,
     )
     app.include_router(public_router)
+    if os.environ.get('APP_ENV','').casefold()=='internal':
+        from src.internal_bootstrap import configure
+        configure(app)
 
     @app.middleware("http")
     async def request_observability(request: Request, call_next):
@@ -168,6 +183,9 @@ def create_app(*, index: PublicKnowledgeIndex | None = None, generator=None,
         duration_ms = round((time.perf_counter() - started) * 1000)
         route = getattr(request.scope.get("route"), "path", "unmatched")
         response.headers["X-Request-ID"] = request_id
+        identity = getattr(app.state, 'public_build_identity', None)
+        if identity is not None:
+            response.headers['X-Service-Identity'] = service_identity_digest(identity)
         logger.info(
             "api_request request_id=%s method=%s route=%s status=%s duration_ms=%s stage=request",
             request_id, request.method, route, response.status_code, duration_ms,

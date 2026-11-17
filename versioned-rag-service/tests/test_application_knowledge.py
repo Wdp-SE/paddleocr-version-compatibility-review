@@ -19,6 +19,17 @@ def test_different_commit_and_no_match_do_not_fall_back_to_official_sources():
     assert value['results'] == []
 
 
+def test_colloquial_page_order_question_keeps_application_contract_and_implementation():
+    rows = [
+        {'path': 'application/contract.json', 'content': '{"page_policy":"preserve_empty_pages","page_fields":["page_index","text"]}'},
+        {'path': 'application/consumer.py', 'content': 'def to_json(rows, page_count):\n    return [{"page_index": index} for index in range(page_count)]'},
+        {'path': 'application/design.md', 'content': '扫描十多张，里面可能有一张没字。' * 14},
+    ]
+    result = search_application(rows, '扫描十多张，里面有一张没字，导出的第几页怎么算？',
+        application_id='ocr', application_commit='a'*40, top_k=2)
+    assert [x['path'] for x in result['results']] == ['application/contract.json', 'application/consumer.py']
+
+
 def test_application_search_rejects_unbounded_or_ambiguous_input():
     with pytest.raises(ValueError):
         search_application([{'path': '../secret', 'content': 'secret'}], 'text', application_id='ocr', application_commit='a'*40)

@@ -45,8 +45,9 @@ def _is_paddleocr(workspace: dict | None) -> bool:
 
 def _page_label(page: str, workspace: dict | None) -> str:
     if _is_paddleocr(workspace):
-        return {"新建变更审查": "发起兼容性审查", "可能相关资料": "影响与证据",
-                "修改前后对照": "升级审查报告"}.get(page, NAV_PAGE_LABELS.get(page, page))
+        return {"版本检索与问答":"知识查询","资料库":"资料库","新建变更审查":"变更审查",
+                "检索评测":"评测报告","系统说明":"帮助","可能相关资料":"证据与代码",
+                "修改前后对照":"审查结果","人工审核":"处理记录"}.get(page,NAV_PAGE_LABELS.get(page,page))
     return NAV_PAGE_LABELS.get(page, page)
 
 
@@ -179,7 +180,12 @@ def _sync_workspace_version(workspace: dict | None) -> str | None:
         previous = st.session_state.get(default_key)
         previous_confirmed = st.session_state.get(confirmed_key, False)
         if current and (current != previous or not previous_confirmed):
-            st.session_state[widget_key] = current
+            default = current
+            if widget_key == 'official_version' and (workspace or {}).get('workspace_id') == 'paddleocr':
+                from services.internal_application_scope import CURRENT_DEPENDENCY
+                if CURRENT_DEPENDENCY in _published_versions(workspace):
+                    default = CURRENT_DEPENDENCY
+            st.session_state[widget_key] = default
         if current:
             st.session_state[default_key] = current
         st.session_state[confirmed_key] = bool(current)
@@ -230,7 +236,8 @@ def _document_family_label(value: object) -> str:
     labels = {"deployment": "部署方式", "inference_config": "推理配置", "installation": "安装指南",
               "model_config": "模型配置", "ocr_api": "OCR 接口契约", "ocr_pipeline": "OCR 使用说明",
               "structure_api": "版面解析接口", "structure_pipeline": "版面与表格解析",
-              "upgrade_notes": "升级说明", "quick_start": "快速开始", "python_package": "Python 包接口"}
+              "upgrade_notes": "升级说明", "quick_start": "快速开始", "python_package": "Python 包接口",
+              "api_test": "官方接口测试"}
     return labels.get(raw, raw.replace("_", " "))
 
 
@@ -479,12 +486,17 @@ def _source_card(row: dict, *, index: int, key_prefix: str = "evidence", query: 
         else "历史资料快照" if current_version else "版本状态未确认"
     )
     source_label = {
+        "submitted_application": "应用提交资料",
         "official_documentation": "官方文档",
         "community_translation": "中文社区译本",
         "github_release": "官方 Release",
         "github_issue": "官方 Issue",
         "github_pull_request": "官方 PR",
     }.get(row.get("source_type"), "官方公开资料")
+    if row.get('source_identity') == 'submitted_application':
+        source_label = '应用提交资料'
+        version_label = '应用提交 '+str(row.get('application_commit',''))[:12]
+        version = ''
     if row.get("modality") == "image_ocr" and not _verified_image_citation(row):
         st.warning(f"[{index}] 截图证据未通过来源校验，已隐藏识别文本。")
         return
@@ -518,7 +530,7 @@ def _source_card(row: dict, *, index: int, key_prefix: str = "evidence", query: 
                         if span['line_start'] is not None:
                             st.caption(f"原文第 {span['line_start']}–{span['line_end']} 行")
                         content = _replace_markdown_images(span['content'])
-                        content = _rewrite_relative_source_links(content, row.get("source_url", ""))
+                        content = _rewrite_relative_source_links(content, row.get("source_url") or "")
                         st.write(content)
             if row.get("source_type") == "community_translation":
                 st.caption("社区维护的中文译本；关键参数请结合固定提交来源核对。")
@@ -601,6 +613,8 @@ NAV_GROUPS = (
     ("变更审查", ("新建变更审查", "可能相关资料", "修改前后对照", "人工审核")),
     ("系统说明", ("检索评测", "已知限制", "系统说明")),
 )
+TASK_NAV_GROUPS=(("工作台",("总览","版本检索与问答","新建变更审查","资料库")),
+                 ("支持",("检索评测","系统说明")))
 NAV_GROUP_LABELS = {
     "知识服务": "版本化知识服务",
     "变更审查": "变更影响审查",
@@ -625,7 +639,7 @@ SECTION_LABELS = {
     "变更审查": "变更影响审查",
     "系统说明": "系统说明",
 }
-NAV_PAGES = frozenset(page for _, pages in NAV_GROUPS for page in pages)
+NAV_PAGES = frozenset(page for _, pages in (*NAV_GROUPS,*TASK_NAV_GROUPS) for page in pages)
 PAGE_PARENTS = {
     "可能相关资料": "新建变更审查",
     "修改前后对照": "新建变更审查",
@@ -665,6 +679,22 @@ def _navigate_back() -> None:
 
 
 def _page_header(section: str, title: str, *, page_key: str, parent: str | None = None) -> None:
+    if title in {"知识查询", "资料库", "变更审查", "评测报告", "帮助"}:
+        with st.container(key=f"page_header_{page_key}"):
+            back, home, separator, current = st.columns([.22, .5, .12, 4.2], gap="small")
+            with back:
+                st.button("←", key=f"nav_back_{page_key}", help="返回上一个操作模块",
+                          on_click=_navigate_back)
+            with home:
+                st.button("首页", key=f"breadcrumb_home_{page_key}", help="跳转到工作台总览",
+                          on_click=_navigate, args=("总览",))
+            with separator:
+                st.markdown('<div class="breadcrumb-separator">›</div>', unsafe_allow_html=True)
+            with current:
+                st.markdown(f'<div class="breadcrumbs-current" aria-current="page">{escape(title)}</div>',
+                            unsafe_allow_html=True)
+        st.title(title)
+        return
     with st.container(key=f"page_header_{page_key}"):
         back, trail = st.columns([.22, 4.2], gap="small")
         with back:
@@ -707,9 +737,11 @@ def _home(ready: bool, workspace: dict | None) -> None:
     ocr = _is_paddleocr(workspace)
     st.title("PaddleOCR 文档处理应用研发工作台" if ocr else "研发知识版本服务与变更影响审查")
     st.write(
-        "维护扫描文档上传、OCR 识别与结果归一化应用：按固定依赖版本查阅官方中文资料，审查 v2.9.1 升级到 v3.0.0 对应用调用和结果消费的影响。"
+        "维护内部扫描文档处理应用：按版本查阅组件资料，审查 OCR 组件从 v2.9.1 升级到 v3.0.0 对调用封装、结果适配与输出契约的影响。"
         if ocr else f"基于 {name} 的官方中文研发资料进行版本检索；变更审查整理有来源支持的影响候选和证据缺口，最终由工程师确认。"
     )
+    if ocr:
+        _application_dependency_context(workspace)
     state = "已连接" if ready else (
         "许可待核实" if workspace and workspace.get("source_status") == "pending_redistribution_license"
         else "等待连接或语料激活"
@@ -732,15 +764,15 @@ def _home(ready: bool, workspace: dict | None) -> None:
         with st.container(border=True, key="public_rag_module"):
             _module_heading("版本化研发知识服务 · RAG")
             st.markdown("### 版本化知识检索与问答")
-            st.write("按依赖版本查询 OCR、版面解析和结果结构，保留固定提交的出处。" if ocr else "按正式版本、功能模块和配置检索 PP-Human 研发资料，并保留原文出处。")
+            st.write("日常维护时查调用、参数和结果读取；准备升级时对照两版资料。此处解释组件用法，不替代应用审查。" if ocr else "按正式版本、功能模块和配置检索 PP-Human 研发资料，并保留原文出处。")
             st.button("进入知识检索", type="primary", use_container_width=True,
                       on_click=_navigate, args=("版本检索与问答",))
     with right:
         with st.container(border=True, key="public_agent_module"):
-            _module_heading("Agent · 应用兼容性审查" if ocr else "Agent · 研发资料变更审查")
-            st.markdown("### 应用依赖升级兼容性审查" if ocr else "### 研发资料变更影响审查")
-            st.write("选择已登记应用的提交，自动收集调用与消费者上下文，核对版本证据并关联回归记录。" if ocr else "根据变更描述查找相关资料并整理修改建议，由人工确认。")
-            st.button("发起兼容性审查" if ocr else "发起变更审查", type="primary", use_container_width=True,
+            _module_heading("Agent · 内部应用变更审查" if ocr else "Agent · 研发资料变更审查")
+            st.markdown("### 内部应用变更影响审查" if ocr else "### 研发资料变更影响审查")
+            st.write("选择同一应用，审查依赖升级或 OCR 配置变化；定位使用位置、查证组件资料，并关联当前提交的回归记录。" if ocr else "根据变更描述查找相关资料并整理修改建议，由人工确认。")
+            st.button("发起变更审查", type="primary", use_container_width=True,
                       on_click=_navigate, args=("新建变更审查",))
     st.markdown('<div class="section-rule">业务流程</div>', unsafe_allow_html=True)
     st.markdown(
@@ -765,13 +797,30 @@ def _home(ready: bool, workspace: dict | None) -> None:
 
 def _use_example() -> None:
     st.session_state["official_question"] = st.session_state["official_example"]
-    versions = set(re.findall(r'(?<![\w.])v?(\d+\.\d+\.\d+)(?![\w.])', st.session_state['official_example']))
-    if versions == {'2.9.1', '3.0.0'}:
-        st.session_state['internal_query_mode'] = 'manual'
-        st.session_state['official_version'] = 'all'
-    elif versions in ({'2.9.1'}, {'3.0.0'}):
-        st.session_state['internal_query_mode'] = 'current' if '2.9.1' in versions else 'target'
-        st.session_state['official_version'] = 'v' + next(iter(versions))
+    st.session_state.pop('official_result', None)
+
+
+def _application_dependency_context(workspace: dict | None, *, compact=False) -> None:
+    """Keep knowledge availability distinct from an application's upgrade status."""
+    versions = _published_versions(workspace)
+    from services.internal_application_scope import CURRENT_DEPENDENCY, TARGET_DEPENDENCY
+    if compact:
+        st.caption(f'扫描文档处理应用 · OCR 组件 {CURRENT_DEPENDENCY} → {TARGET_DEPENDENCY}')
+        if not all(v in versions for v in (CURRENT_DEPENDENCY,TARGET_DEPENDENCY)):
+            st.warning('组件版本资料尚未齐备。')
+        return
+    st.markdown('**文档处理应用** · 扫描页 OCR → 归一化 → JSON')
+    st.caption(f'演示应用现用依赖 {CURRENT_DEPENDENCY} → 拟升级依赖 {TARGET_DEPENDENCY}；实际审查以应用提交为准。')
+    if all(version in versions for version in (CURRENT_DEPENDENCY, TARGET_DEPENDENCY)):
+        st.caption('两版组件资料均已收录。资料可查 ≠ 应用已升级或验证兼容。')
+    else:
+        st.warning('组件资料尚未齐备，请以当前可选范围为准；缺少版本资料时不能完成双版本查证。')
+
+
+def _query_scope_label(version: str) -> str:
+    return {'v2.9.1': '现用版本资料 · PaddleOCR 2.9.1',
+            'v3.0.0': '升级目标资料 · PaddleOCR 3.0.0',
+            'all': '两版对照 · 2.9.1 → 3.0.0'}.get(version, version)
 
 
 def _answer_gaps_panel(payload: dict) -> None:
@@ -788,7 +837,7 @@ def _answer_gaps_panel(payload: dict) -> None:
 
 
 def _knowledge(client: PublicKnowledgeClient, ready: bool, workspace: dict | None) -> None:
-    _page_header("知识服务", "版本化知识检索与问答", page_key="knowledge")
+    _page_header("知识服务", "知识查询" if _is_paddleocr(workspace) else "版本化知识检索与问答", page_key="knowledge")
     _knowledge_body(client, ready, workspace)
 
 
@@ -797,29 +846,34 @@ def _knowledge_body(client: PublicKnowledgeClient, ready: bool, workspace: dict 
     versions = _published_versions(workspace)
     current = _confirmed_current_version(workspace)
     internal_ocr = bool(workspace and workspace.get('workspace_id') == 'paddleocr')
+    application_snapshot = None
     if internal_ocr:
-        from services.internal_application_scope import dependency_scope
-        labels = {'current': '当前应用依赖 · v2.9.1', 'target': '升级目标依赖 · v3.0.0', 'manual': '手动选择依赖资料范围'}
-        mode = st.radio('查询任务', list(labels), format_func=labels.get, horizontal=True, key='internal_query_mode')
-        try:
-            scoped_version = dependency_scope(versions, mode, st.session_state.get('official_version'))
-        except ValueError as exc:
-            st.warning(str(exc))
-            if mode != 'manual':
-                return
-            scoped_version = versions[0] if versions else 'all'
-        if mode != 'manual':
-            st.session_state['official_version'] = scoped_version
-        current = scoped_version
+        from services.knowledge_examples import examples_for_scope, sync_scope_examples
+        _application_dependency_context(workspace,compact=True)
+        choices = [value for value in ('v2.9.1', 'v3.0.0') if value in versions]
+        if len(choices) == 2:
+            choices.append('all')
+        choices = choices or versions
+        if st.session_state.get('official_version') not in choices:
+            st.session_state['official_version'] = choices[0]
+        version = st.selectbox('组件资料版本', choices, format_func=_query_scope_label,
+                               key='official_version')
+        current = version
+        sync_scope_examples(st.session_state, version)
+        language = 'zh'
+        from components.knowledge_application import application_context
+        application_snapshot = application_context()
     name = _workspace_name(workspace)
     rag_release=(workspace or {}).get('rag_quality_evaluation')
     default_policy = ('产线范围检索 + 模型重排' if isinstance(rag_release,dict) and
                       rag_release.get('selected_strategy') in ('contextual_llm_rerank','contextual_rerank') else
-                      '产线范围检索 + 上下文补齐' if isinstance(rag_release,dict) else
+                      '结构化证据检索 + 上下文补齐' if isinstance(rag_release,dict) or
+                      ((workspace or {}).get('evidence_retrieval') or {}).get('available') else
                       str(workspace.get("retrieval_policy", "由服务配置") if workspace else "由服务配置").upper())
     default_version_label = _version_option_label(current, workspace) if current else "无法确认最新已收录版本"
-    st.caption(f'{default_version_label} · 中文资料 · 选择示例后可编辑问题')
-    with st.expander('资料范围与来源', expanded=internal_ocr and mode == 'manual'):
+    if not internal_ocr:
+        st.caption(f'{default_version_label} · 中文资料 · 选择示例后可编辑问题')
+    with st.expander('资料来源与收录信息' if internal_ocr else '资料范围与来源'):
         if not current:
             st.caption('暂未获取当前版本信息；请以可选范围为准。')
         latest_source_time = _format_snapshot_timestamp(
@@ -827,34 +881,48 @@ def _knowledge_body(client: PublicKnowledgeClient, ready: bool, workspace: dict 
         if latest_source_time:
             st.caption(f'最近收录：{latest_source_time}')
         if internal_ocr:
-            st.caption('这里选择 PaddleOCR 依赖版本，内部应用版本尚未登记。官方资料作为内部研发知识的 POC 代理，保留真实来源。')
+            st.caption('PaddleOCR 官方中文文档、接口代码与配置，代理内部组件知识；保留真实发布者和固定提交出处，不代表企业私有资料。')
         st.caption(f'知识空间：{name}；默认检索：{default_policy}')
         a, b, c = st.columns([1, 1, .9], gap="medium")
         with a:
-            version = st.selectbox(
-                "版本范围", [*versions, "all"],
-                format_func=lambda x: _version_option_label(x, workspace),
-                key="official_version",
-                disabled=internal_ocr and st.session_state.get('internal_query_mode') != 'manual',
-            )
+            if internal_ocr:
+                st.markdown('**本次资料范围**')
+                st.caption(_query_scope_label(version))
+                st.caption('所选版本是 PaddleOCR 组件版本，不是内部应用版本。')
+            else:
+                version = st.selectbox(
+                    "版本范围", [*versions, "all"],
+                    format_func=lambda x: _version_option_label(x, workspace),
+                    key="official_version",
+                )
         with b:
             language_options = _published_language_options(workspace)
             language_values = [value for value, _label in language_options]
-            language = st.selectbox(
-                "资料语言", language_values,
-                format_func=lambda x: dict(language_options)[x],
-                key="official_language",
-            )
+            if internal_ocr:
+                st.markdown('**资料语言**')
+                st.caption('中文；接口和参数保留原始名称')
+            else:
+                language = st.selectbox(
+                    "资料语言", language_values,
+                    format_func=lambda x: dict(language_options)[x],
+                    key="official_language",
+                )
         with c:
             st.markdown("**资料类型**")
             families = sorted({
                 _document_family_label(row.get("document_family"))
                 for row in (workspace or {}).get("source_breakdown", []) if isinstance(row, dict)
+                and (not internal_ocr or version == 'all' or row.get('version') == version)
             })
-            st.caption(" / ".join(families[:4]) if families else "当前公开工程资料")
+            st.caption(" / ".join(families) if families else "当前公开工程资料")
     selected_scope = _device_scope_controls(workspace, prefix="official")
     filters = {key: value for key, value in selected_scope.items() if value is not None}
-    examples = interview_queries(workspace)
+    if application_snapshot:
+        # Include the immutable app identity in result invalidation, not API retrieval facets.
+        selected_scope = {**selected_scope, 'application_commit':application_snapshot['head_commit'],
+                          'application_id':application_snapshot['application_id']}
+    scoped_examples = examples_for_scope(version) if internal_ocr else ()
+    examples = [row.question for row in scoped_examples] if internal_ocr else interview_queries(workspace)
     examples = [str(item) for item in examples if isinstance(item, str) and item.strip()]
     if not examples:
         examples = [f"{name} 中某个功能或参数是如何设计的？"]
@@ -862,10 +930,20 @@ def _knowledge_body(client: PublicKnowledgeClient, ready: bool, workspace: dict 
     if st.session_state.get(example_key) not in examples:
         st.session_state[example_key] = examples[0]
     st.selectbox(
-        "示例问题（选择后可编辑）", examples, key="official_example",
+        "维护场景示例（可编辑）" if internal_ocr else "示例问题（选择后可编辑）", examples, key="official_example",
         on_change=_use_example,
+        format_func=(lambda question: next((f'{row.category} · {question}' for row in scoped_examples
+                                            if row.question == question), question)),
     )
-    question = st.text_area("问题", value="", placeholder=examples[0], height=100, key="official_question")
+    question_help=None
+    if scoped_examples:
+        selected_example = next(row for row in scoped_examples if row.question == st.session_state[example_key])
+        question_help=selected_example.purpose
+    question = st.text_area("问题", value="", placeholder=examples[0], height=100, key="official_question",help=question_help)
+    if internal_ocr and version != 'all':
+        mentioned = {'v' + value for value in re.findall(r'(?<![\w.])v?(\d+\.\d+\.\d+)(?![\w.])', question)}
+        if mentioned - {version}:
+            st.warning('问题提到了所选范围以外的版本。若要比较两版，请将上方资料范围改为“两版对照”。')
     submitted_question = question.strip() or examples[0]
     with st.container(key='knowledge_actions'):
         generate_col, search_col, settings_col = st.columns([1.6, 1, 1], gap="small")
@@ -896,9 +974,20 @@ def _knowledge_body(client: PublicKnowledgeClient, ready: bool, workspace: dict 
         if not submission_ready:
             return
     if ask_now:
+        if (workspace or {}).get('progressive_evidence'):
+            preview = _request(lambda: client.search(submitted_question, version=version, language=language,
+                top_k=top_k, retrieval_policy=retrieval_policy, **filters), fallback='预检索暂不可用，将继续正式查询。')
+            if preview and preview.get('results'):
+                with st.expander('已找到的组件资料', expanded=True):
+                    for row in preview['results'][:3]:
+                        st.caption(str(row.get('document_title') or row.get('document_path') or '资料'))
+                        st.code(str(row.get('content',''))[:900], language=None)
         with request_status.container(), st.spinner("正在检索资料、生成回答并核对引用……", show_time=True):
             payload = _request(
-                lambda: client.query_official(
+                lambda: client.application_query(application_snapshot['files'], submitted_question,
+                    application_id=application_snapshot['application_id'],
+                    application_commit=application_snapshot['head_commit'],version=version,top_k=min(top_k,10))
+                if application_snapshot else client.query_official(
                     submitted_question, version=version, language=language, top_k=top_k,
                     retrieval_policy=retrieval_policy, **filters,
                 ),
@@ -938,20 +1027,29 @@ def _knowledge_body(client: PublicKnowledgeClient, ready: bool, workspace: dict 
             if docs is not None:
                 _remember_document_titles(docs)
         mode, _, _, _, _filters, _policy, payload = result
-        st.markdown('<div class="section-rule">结果与核验</div>', unsafe_allow_html=True)
+        if mode!='query':st.markdown('<div class="section-rule">检索结果</div>', unsafe_allow_html=True)
         if mode == "query":
             st.subheader("回答")
+            if payload.get('cache',{}).get('hit'):
+                st.caption('复用本会话相同输入与资料版本的已核验回答；本次未调用模型。')
             sources = payload.get("sources") or []
             if payload.get("status") == "OK" and sources:
                 with st.container(border=True, key="generated_answer"):
                     from components.answer_reading import render_answer
-                    render_answer(payload)
+                    render_answer(payload,show_heading=False)
             else:
-                if payload.get("status") == "OUT_OF_SCOPE":
+                if payload.get('status')=='NEEDS_APPLICATION_CONTEXT':
+                    st.info(payload['answer'])
+                    for needed in payload.get('required_inputs',[]):st.markdown('- '+needed)
+                elif payload.get("status") == "OUT_OF_SCOPE":
                     st.warning("**缺少应用验证资料，无法确认兼容。** 当前知识库不能证明未提交的内部应用事实，已停止生成。")
                     st.write('若要确认应用升级兼容，需要应用调用与消费代码、输出契约和目标环境的回归记录。官方资料只能提供 SDK 行为依据。')
                 elif payload.get("status") == "NO_EVIDENCE":
                     st.warning("**未找到支持答案的证据。** 当前版本与语言范围内未找到匹配资料；请核对资料范围。")
+                elif payload.get('status') == 'NEEDS_CLARIFICATION':
+                    st.warning('**请先核对资料版本。** ' + payload.get('clarification_message', '问题版本与所选范围不一致。'))
+                    details = payload.get('clarification') or {}
+                    st.caption('已收录：' + '、'.join(details.get('available_versions', [])))
                 elif payload.get("status") == "ABSTAINED":
                     diagnostic = payload.get("generation") or {}
                     reason = diagnostic.get("failure_reason")
@@ -1049,12 +1147,14 @@ def _knowledge_body(client: PublicKnowledgeClient, ready: bool, workspace: dict 
                 if remaining:
                     with st.expander(f"查看其余检索结果（{len(remaining)}）"):
                         _evidence(remaining, heading="其他相关资料", query=submitted_question)
-            elif payload.get('status') != 'OUT_OF_SCOPE':
+            elif payload.get('status') not in ('OUT_OF_SCOPE', 'NEEDS_CLARIFICATION', 'NEEDS_APPLICATION_CONTEXT'):
                 _evidence(payload.get("evidence", []), heading="检索到的资料", query=submitted_question)
         else:
             _consistency(payload.get("consistency_notes", []))
             if payload.get("status") == "OUT_OF_SCOPE":
                 st.caption("问题涉及当前公开语料无法提供的企业内部信息；系统已停止检索。")
+            elif payload.get('status') == 'NEEDS_CLARIFICATION':
+                st.warning('**请先核对资料版本。** ' + payload.get('clarification_message', '问题版本与所选范围不一致。'))
             else:
                 _evidence(payload.get("results", []), heading="检索到的资料", query=submitted_question)
         with st.expander("本次检索技术详情"):
@@ -1469,34 +1569,31 @@ def _save_review_draft() -> None:
 
 
 def _review_panel(result: dict) -> None:
-    st.subheader("人工审核")
-    st.info(
-        "此处为匿名演示审核记录，可能随实例重启清空，不能替代正式审批；请勿提交敏感信息。"
-    )
     compatibility = result.get("request_mode") == "paddleocr_compatibility"
+    st.subheader('审核意见' if compatibility else '人工审核')
+    if not compatibility:
+        st.info("此处为匿名演示审核记录，不能替代正式审批；请勿提交敏感信息。")
     request_only = result.get("request_mode") == "natural_language"
     review_target = "本次静态兼容性报告" if compatibility else "本次影响分析" if request_only else "会话草案"
-    if compatibility:
-        st.caption("确认仅记录已审阅报告。实际 OCR 推理、安装依赖和下游输出回归仍由开发者验证。")
     target_id = _review_target_id(result)
     session_id = st.session_state.setdefault("official_session_id", uuid.uuid4().hex)
     if compatibility:
         from components.paddleocr_disposition import render_disposition
         render_disposition(result, _audit_repository(), session_id)
     approve, reject = st.columns(2)
-    approve.button(f"确认已审阅{review_target}", use_container_width=True,
+    approve.button('记录已审阅' if compatibility else f"确认已审阅{review_target}", use_container_width=True,
                    on_click=_set_review_decision, args=("reviewed", target_id, result, session_id))
-    reject.button(f"退回{review_target}", use_container_width=True,
+    reject.button('记录需修改' if compatibility else f"退回{review_target}", use_container_width=True,
                   on_click=_set_review_decision, args=("rejected", target_id, result, session_id))
     decision = _review_decision_for(result)
     if decision == "reviewed":
         if st.session_state.get("official_review_audit_event_id"):
-            st.success(f"审核结果已写入本地审查记录。未创建候选版本，公共基线未修改。")
+            st.success('已记录审阅意见' if compatibility else '审核结果已写入本地审查记录。未创建候选版本，公共基线未修改。')
         else:
             st.warning(st.session_state.get("official_review_audit_error", "审核结果尚未确认持久化。"))
     elif decision == "rejected":
         if st.session_state.get("official_review_audit_event_id"):
-            st.info(f"{review_target}已退回，决定已写入本地审查记录。公共基线未修改。")
+            st.info('已记录需修改意见' if compatibility else f"{review_target}已退回，决定已写入本地审查记录。公共基线未修改。")
         else:
             st.warning(st.session_state.get("official_review_audit_error", "退回决定尚未确认持久化。"))
     if decision:
@@ -2085,11 +2182,22 @@ def _ocr_job_progress(input_fingerprint):
     state=snapshot(job)
     stages={'static_review':'检查应用调用与配置','evidence_validation':'核验固定版本证据','official_lookup':'逐项查询官方资料','model_advice':'核对模型建议'}
     if not state['done']:
-        with st.status('正在排队' if state.get('state') == 'QUEUED' else stages.get(state.get('stage'),'正在审查'),expanded=True):
-            st.write(f"已用 {state['elapsed_seconds']:.1f} 秒；已处理查证项 {state.get('processed',0)}，最多 12 项。")
-            if st.button('取消后续查证',key='ocr_cancel_job'):
+        with st.container(border=True):
+            stage=state.get('stage')
+            labels={'static_review':'正在检查代码','evidence_validation':'正在核验版本资料',
+                    'official_lookup':'正在查证版本差异','model_advice':'正在汇总核查建议'}
+            st.markdown('**'+('等待执行' if state.get('state')=='QUEUED' else labels.get(stage,'正在审查'))+'**')
+            st.caption(f"读取应用 → 静态检查 → 版本查证 → 汇总报告　｜　已用 {state['elapsed_seconds']:.0f} 秒")
+            preview=state.get('static_preview')
+            if preview:
+                st.info(f"静态证据核验已完成：发现 {preview['risk_count']} 个风险位置。后续查证仍在进行，尚不能提交处理意见。")
+                for item in preview['findings'][:3]:st.write(f"{item['path']}:{item['line']} · {item['title']}")
+            with st.expander('执行详情'):
+                st.write(stages.get(stage,'排队'))
+                st.caption(f"已处理查证记录 {state.get('processed',0)} 条")
+            if st.button('取消审查',key='ocr_cancel_job'):
                 cancel_job(job)
-                st.info('已请求取消；当前网络请求结束后停止，保留已完成的静态报告与证据。')
+                st.info('已请求取消，正在结束当前请求。')
         return
     st.session_state.pop('ocr_job',None)
     try:result=job['future'].result()
@@ -2103,33 +2211,42 @@ def _ocr_job_progress(input_fingerprint):
     st.rerun()
 
 
-def _ocr_findings(result: dict, *, show_related: bool = False) -> None:
+def _ocr_findings(result: dict, *, show_related: bool = False, details: bool = True) -> None:
     from components.reading_layout import paragraph_blocks, unique_citations
+    from services.review_action_summary import finding_groups
     report = result["compatibility_report"]
     priority = {"supported_risk": 0, "needs_verification": 1, "unaffected": 2}
-    findings = sorted(report.get("findings") or [], key=lambda row: priority.get(row.get("status"), 1))
+    groups = sorted(finding_groups(result),key=lambda row:priority.get(row['finding'].get('status'),1))
+    if not details:
+        groups=[g for g in groups if g['finding'].get('status')!='unaffected']
     labels = {"supported_risk": "有证据支持的静态风险", "needs_verification": "待验证",
               "unaffected": "基础调用形式未发现变更"}
-    for index, finding in enumerate(findings):
+    for index, group in enumerate(groups):
+        finding=group['finding']
         location = finding["application"]
-        with (st.expander(f"调用形式未发现变更，仍需回归 · {finding['title']}")
-              if finding['status'] == 'unaffected' else st.container(border=True, key=f"ocr_finding_{index}")):
+        with (st.expander(f"调用形式未发现变更 · {finding['title']}")
+              if finding['status'] == 'unaffected' else st.container(border=True, key=f"ocr_finding_{'detail' if details else 'summary'}_{index}")):
             status_label = labels.get(finding['status'], '待验证')
             if finding['status'] == 'supported_risk':
-                st.error(status_label, icon='🔴')
+                st.caption('需修改或说明不适用')
             elif finding['status'] == 'needs_verification':
                 st.warning(status_label)
             else:
                 st.caption(status_label + ' · 仍需运行回归')
             st.markdown(f"**{finding['title']}**")
-            st.caption(f"应用位置：{location['path']} · 第 {location['line']}–{location['end_line']} 行")
-            st.markdown('**下一步核查**')
+            lines='、'.join(str(loc['line']) if loc['line']==loc.get('end_line',loc['line'])
+                            else f"{loc['line']}–{loc['end_line']}" for loc in group['locations'])
+            st.caption(f"{location['path']} · 第 {lines} 行 · {len(group['locations'])} 个位置")
             for paragraph in paragraph_blocks(finding['desired_check']):
                 st.markdown(paragraph)
+            if not details:continue
             with st.expander('原因与应用代码'):
                 for paragraph in paragraph_blocks(finding['explanation']):
                     st.markdown(paragraph)
-                st.code(location["snippet"], language="python" if location["path"].endswith(".py") else "yaml", wrap_lines=True)
+                for member in group['findings']:
+                    loc=member['application']
+                    st.caption(f"{loc['path']}:{loc['line']} · 记录 {member['finding_id']}")
+                    st.code(loc['snippet'],language='python' if loc['path'].endswith('.py') else 'yaml',wrap_lines=True)
             citations = unique_citations(finding['evidence'])
             with st.expander(f'双版本依据 · {len(citations)} 条来源'):
                 before, after = st.columns(2, gap="medium")
@@ -2149,7 +2266,7 @@ def _ocr_findings(result: dict, *, show_related: bool = False) -> None:
                 st.caption('来源提交与文件哈希（按上述来源顺序）')
                 for citation in citations:
                     st.code(f"{citation['version']} · {citation['path']}:{citation['line_start']}–{citation['line_end']}\ncommit={citation['commit']}\nsha256={citation['sha256']}", language='text', wrap_lines=True)
-    if not findings:
+    if not groups:
         st.info("当前文本没有形成可绑定双版本证据的影响项；请查看待验证项。")
     if show_related:
         related = result.get("related_materials") or []
@@ -2161,192 +2278,169 @@ def _ocr_findings(result: dict, *, show_related: bool = False) -> None:
             st.warning(gap)
 
 
-def _ocr_report(result: dict) -> None:
+def _ocr_report(result: dict, *, with_processing: bool = False, records=None) -> None:
+    from components.review_overview import render_overview
     from components.registered_application import render_snapshot_report
-    render_snapshot_report(result)
-    report = result["compatibility_report"]
-    status_labels = {"supported_risk": "存在有证据支持的静态升级风险", "needs_verification": "当前静态证据不足，需要补充验证",
-                     "unaffected": "基础调用形式未发现变更，仍需实际推理验证"}
-    st.subheader("应用兼容性静态报告")
-    if result.get('job_diagnostics'):
-        with st.expander('任务诊断'):
-            details = result['job_diagnostics']
-            st.caption(f"任务 {details['job_id']} · {details['state']} · 耗时 {details['elapsed_seconds']} 秒")
-            st.caption('单进程最多 4 个执行任务、8 个执行或排队任务；诊断不记录应用原文。')
-    st.write(f"{report['source_version']} → {report['target_version']}：{status_labels[report['status']]}")
-    st.caption("实际 OCR 推理未验证。静态报告不证明运行环境、模型下载、文档质量或下游输出已兼容。")
     from components.review_comparison import render_review_comparison
-    render_review_comparison(result)
-    risks = [f for f in report.get('findings', []) if f['status'] == 'supported_risk']
-    unresolved = (result.get('investigation') or {}).get('unresolved', [])
-    st.caption(f"静态风险 {len(risks)} 处 · 待验证记录 {len(report.get('gaps') or [])} 项 · 未完成查证 {len(unresolved)} 项")
-    if risks:
-        st.warning(f'先处理 {len(risks)} 处已定位的静态升级风险，再执行目标环境回归。')
-    else:
-        st.info('当前支持范围内未定位已证实的升级风险；不能据此确认兼容。')
-    st.markdown('**风险位置与版本依据**')
-    _ocr_findings(result)
-    if unresolved:
-        reasons = {'required_source_not_verified': '缺少核验通过的固定版本来源',
-                   'content_requirements_not_covered': '返回片段没有覆盖必要契约事实',
-                   'content_criteria_not_defined': '尚无可自动关闭的核查标准',
-                   'application_validation_required': '需补充应用资料或在内部环境回归，官方资料不能代替验证'}
-        st.markdown('**尚未完成的查证**')
-        grouped_reasons = {}
-        for gap in unresolved:
-            versions = grouped_reasons.setdefault(gap['reason'], set())
-            versions.update(gap['versions'])
-        for reason, versions in grouped_reasons.items():
-            st.markdown(f"- **{reasons.get(reason, reason)}**（{', '.join(sorted(versions))}）")
-        st.caption('按缺口原因合并展示；逐项义务与编号保留在查证轨迹中，义务数不等于业务风险数。')
+    from components.review_action_summary import render_gap_summary
     from components.paddleocr_review import impact_panel
-    impact_panel(result)
-    st.markdown("**待验证项与证据缺口**")
-    groups={}
-    for gap in report.get('gaps') or []:
-        groups.setdefault((gap.get('application') or {}).get('path','任务范围'),[]).append(gap)
-    if groups:st.caption(f"{len(report['gaps'])} 项待验证记录，涉及 {len(groups)} 个文件或范围。")
-    for filename,items in groups.items():
-        with st.expander(f'{filename} · {len(items)} 项待验证'):
-            for gap in items:
-                location=gap.get('application') or {}
-                prefix=f"第 {location['line']} 行：" if location else ''
-                st.write(prefix+gap['detail'])
-                if location.get('snippet'):st.code(location['snippet'],language='python')
-    if not report.get("gaps"):
-        st.caption("本次受限静态范围未记录额外证据缺口；实际推理仍待验证。")
-    with st.expander('开发者完整验证清单'):
-        for step in dict.fromkeys(report.get("verification_steps") or []):
-            st.markdown(f"- {step}")
-    suggestions = result.get("model_suggestions") or []
-    if suggestions:
-        with st.expander(f'模型核查建议（待人工确认）· {len(suggestions)} 项'):
-            st.caption("模型建议未验证，不改变上述静态发现或实际推理状态。")
-            for row in suggestions:
-                source = row["evidence"]
-                st.write(row["reason"])
-                st.markdown(f"建议核查：{row['suggested_action']} · [目标版出处]({source['source_url']})")
-    elif result.get("model_status") not in {None, "NOT_REQUESTED"}:
-        explanations = {
-            "GENERATION_RESPONSE_INVALID": "模型已返回结果，但建议结构或引用未通过校验，已隐藏建议。",
-            "GENERATION_RESPONSE_TRUNCATED": "模型回复达到输出长度上限，建议未完整生成。",
-            "GENERATION_NOT_CONFIGURED": "建议生成服务尚未配置。",
-            "GENERATION_AUTH_FAILED": "模型服务拒绝认证，请由管理员核对后端密钥。",
-            "GENERATION_BILLING_REQUIRED": "模型服务返回余额或计费问题。",
-            "GENERATION_RATE_LIMITED": "模型服务返回限流，请稍后重试。",
-            "GENERATION_PROVIDER_TIMEOUT": "等待模型服务回复超时。",
-            "GENERATION_PROVIDER_UNAVAILABLE": "本次建议生成请求未完成。",
-            "ABSTAINED": "本次证据不足以生成可绑定出处的核查建议。",
-            "NO_VERIFIED_TARGET_EVIDENCE": "本次没有已核验的目标版证据，不调用模型生成建议。",
-        }
-        st.info(explanations.get(result.get("model_status"), "本次未获得可绑定目标版证据的模型核查建议。")
-                + "静态报告仍可审阅。")
-    generation = result.get("model_generation") or {}
-    if generation.get("requested_model") or generation.get("returned_model") or generation.get("usage"):
-        with st.expander("本次建议生成记录"):
-            st.write(f"请求模型：{generation.get('requested_model') or '未确认'}")
-            st.write(f"实际模型：{generation.get('returned_model') or '未返回'}")
-            st.write(f"Token 用量：{generation.get('usage') or '未返回'}")
-    st.download_button("下载静态报告（JSON）", data=json.dumps(result, ensure_ascii=False, indent=2),
-                       file_name=f"paddleocr-static-{result.get('task_id', 'review')}.json", mime="application/json",
-                       key="ocr_static_report_export")
+    st.subheader("审查结果")
+    render_overview(result,records=records)
+    report=result['compatibility_report']
+    names=['审查结果','证据与代码','回归要求']+(['处理记录'] if with_processing else [])
+    tabs=st.tabs(names)
+    with tabs[0]:
+        st.markdown('**需要处理**')
+        _ocr_findings(result,details=False)
+        render_gap_summary(result)
+        suggestions=result.get('model_suggestions') or []
+        if suggestions:
+            with st.expander(f'补充建议 · {len(suggestions)} 项'):
+                st.caption('模型建议，待人工核对')
+                for row in suggestions:
+                    st.write(row['suggested_action'])
+                    with st.expander('建议依据'):
+                        st.write(row['reason'])
+                        source=row['evidence']
+                        st.markdown(f"[来源原文]({source['source_url']})")
+        elif result.get('model_status') not in (None,'NOT_REQUESTED','OK'):
+            st.caption('补充建议未生成；静态检查结果已保留。')
+    with tabs[1]:
+        render_snapshot_report(result)
+        render_review_comparison(result)
+        _ocr_findings(result,details=True)
+        impact_panel(result,show_regression=False,show_trace=False)
+    with tabs[2]:
+        impact_panel(result,show_paths=False,show_trace=False)
+        if not report.get('regression_requirements'):
+            st.info('尚无可执行的回归清单，请先处理资料缺口。')
+        st.caption('实际回归由授权开发环境执行，结果需绑定本次应用提交。')
+    if with_processing:
+        with tabs[3]:_review_panel(result)
+    with st.expander('执行记录'):
+        details=result.get('job_diagnostics') or {}
+        if details:st.caption(f"任务 {details.get('job_id','')} · {details.get('state','')} · {details.get('elapsed_seconds','')} 秒")
+        impact_panel(result,show_paths=False,show_regression=False,show_trace=True)
+        generation=result.get('model_generation') or {}
+        if generation:
+            st.caption('请求模型：'+str(generation.get('requested_model') or '未确认'))
+            st.caption('实际模型：'+str(generation.get('returned_model') or '未返回'))
+            if generation.get('usage'):st.json(generation['usage'])
+        if result.get('model_status'):
+            reasons={'GENERATION_RESPONSE_INVALID':'建议结构或引用未通过校验',
+                     'GENERATION_RESPONSE_TRUNCATED':'建议回复达到长度上限',
+                     'GENERATION_PROVIDER_TIMEOUT':'模型建议请求超时',
+                     'GENERATION_PROVIDER_UNAVAILABLE':'模型服务连接失败',
+                     'GENERATION_AUTH_FAILED':'模型服务认证失败',
+                     'NO_VERIFIED_TARGET_EVIDENCE':'缺少已核验的目标版证据，未调用模型'}
+            status=result['model_status']
+            st.caption('建议生成状态：'+reasons.get(status,status))
+        with st.expander('完整验证清单'):
+            for step in dict.fromkeys(report.get('verification_steps') or []):st.markdown('- '+step)
+    st.download_button("下载报告",data=json.dumps(result,ensure_ascii=False,indent=2),
+        file_name=f"paddleocr-static-{result.get('task_id','review')}.json",mime='application/json',key='ocr_static_report_export')
 
 
 def _ocr_agent(client: PublicKnowledgeClient, ready: bool, workspace: dict | None) -> None:
-    _page_header("变更审查", "应用依赖升级兼容性审查", page_key="ocr_agent")
-    st.write("审查文档处理应用从 PaddleOCR v2.9.1 升级到 v3.0.0 后的接口、配置和结果消费方式。")
-    st.info('正式预审请选择已登记应用和 Git 提交。临时诊断也可使用可编辑原创案例或代码片段，无需安装 OCR。')
-    with st.expander('需要人工完成什么？'):
-        st.write('核对提交文件和风险证据 → 确认或退回报告 → 在授权开发环境修改并执行回归 → 负责人决定是否升级。')
-        st.caption('已审阅不等于批准升级。系统不执行上传代码、不自动修改应用；默认案例的静态结论不证明用户应用运行成功。')
-    mode=st.selectbox('应用输入',['已登记应用（Git 提交）','完整文档处理应用','规则片段'],key='ocr_input_mode',on_change=_clear_ocr_review)
-    app_name = ('文档处理应用' if mode == '已登记应用（Git 提交）' else
-                st.text_input('内部应用名称（演示标签）', value='文档处理应用', max_chars=80,
-                              key='ocr_internal_app_name', on_change=_clear_ocr_review))
-    change_reason = st.text_input('升级目的与验收说明', value='保留中文 OCR 归一化与下游 JSON 契约',
-                                  max_chars=1000, key='ocr_change_reason', on_change=_clear_ocr_review)
-    application_context = {'application_name': app_name, 'application_version': None,
-                           'change_reason': change_reason, 'source_identity': 'student_poc_application',
-                           'business_scope': 'internal_document_processing'}
-    st.caption('应用提交与依赖版本分别管理。原创应用使用 OCR 主链，PPStructure 仅是相关接口检查分支。')
-    before, after = st.columns(2, gap="medium")
-    with before:
-        source_version = st.selectbox("应用当前依赖", ["v2.9.1"], key="ocr_source_version")
-    with after:
-        target_version = st.selectbox("升级目标依赖", ["v3.0.0"], key="ocr_target_version")
-    from services.paddleocr_application_inputs import load_original_application, parse_application_inputs, application_fingerprint
-    registered_snapshot = base_snapshot = None
-    if mode == '已登记应用（Git 提交）':
-        from components.registered_application import render_registered_input
-        registered_snapshot, base_snapshot = render_registered_input(client, ready, on_change=_clear_ocr_review,
-            public_demo=_setting('APP_ENV', 'local').casefold() == 'public_demo')
-        if registered_snapshot is None:
-            return
-        application_context['application_name'] = registered_snapshot['application_name']
-        application_context['source_identity'] = registered_snapshot['source_identity']
-        application_context['application_id'] = registered_snapshot['application_id']
-        files = registered_snapshot['files']
-        content = ''.join(row['content'] for row in files)
-    elif mode=='完整文档处理应用':
-        st.caption('临时诊断：仅审查当前文本，未绑定 Git 提交；文件齐全不等于整个仓库均已检查。')
-        from services.interview_examples import DEMO_CASES, demo_application
-        label = st.selectbox('应用演示案例', list(DEMO_CASES), key='ocr_demo_case', on_change=_select_ocr_demo)
-        st.caption(DEMO_CASES[label])
-        if 'ocr_bundle_files' not in st.session_state:
-            st.session_state['ocr_bundle_files']=demo_application(label)
-        rows=st.session_state['ocr_bundle_files']
-        names=[r['path'] for r in rows]
-        if st.session_state.get('ocr_bundle_file') not in names:
-            st.session_state['ocr_bundle_file']=names[0]
-            _pick_ocr_bundle_file()
-        st.selectbox('应用文件',names,key='ocr_bundle_file',on_change=_pick_ocr_bundle_file)
-        st.text_area('文件文本',height=260,max_chars=50000,key='ocr_bundle_content',on_change=_edit_ocr_bundle_file)
-        st.caption(f'当前 {len(rows)} 个文件；路径仅作相对标签，不读取或执行你的应用。')
-        uploaded=st.file_uploader('导入 UTF-8 应用文件',type=['py','json','md','txt','yaml','yml'],accept_multiple_files=True,key='ocr_uploads')
-        if uploaded and st.button('使用上传文件',key='ocr_import_files'):
-            try:
-                new_rows=parse_application_inputs([{'path':u.name,'content':u.getvalue().decode('utf-8-sig')} for u in uploaded])
-                st.session_state['ocr_bundle_files']=new_rows
-                st.session_state.pop('ocr_bundle_file',None)
-                _clear_ocr_review();st.rerun()
-            except (ValueError,UnicodeDecodeError) as exc:st.error(str(exc))
-        remove,reset=st.columns(2)
-        if remove.button('移除当前文件',disabled=len(rows)<=1,key='ocr_remove_file'):
-            st.session_state['ocr_bundle_files']=[r for r in rows if r['path']!=st.session_state['ocr_bundle_file']]
-            st.session_state.pop('ocr_bundle_file',None);_clear_ocr_review();st.rerun()
-        if reset.button('恢复当前演示案例',key='ocr_reset_bundle'):
-            st.session_state['ocr_bundle_files']=demo_application(label)
-            st.session_state.pop('ocr_bundle_file',None);_clear_ocr_review();st.rerun()
-        files=rows
-        content=''.join(r['content'] for r in rows)
-    else:
-        st.caption('片段诊断：缺少调用层、消费者或契约时只能说明证据缺口，不能认定应用兼容。')
-        st.selectbox('原创应用示例',list(_OCR_EXAMPLES),key='ocr_example',on_change=_select_ocr_example)
-        if 'ocr_application_content' not in st.session_state:_select_ocr_example()
-        path=st.text_input('应用文件相对路径',max_chars=160,key='ocr_application_path',on_change=_clear_ocr_review)
-        content=st.text_area('应用文件文本',height=240,max_chars=50000,key='ocr_application_content',on_change=_clear_ocr_review)
-        files=[{'path':path,'content':content}]
-    available = bool((workspace or {}).get("generation_available"))
-    generate = st.checkbox("生成核查建议", value=available, disabled=not available,
-                           key="ocr_generate_advice", on_change=_clear_ocr_review,
-                           help="可选模型建议仅使用已核验的目标版官方证据，不改变静态报告。")
-    try:
-        files=parse_application_inputs(files)
-        input_fingerprint=application_fingerprint(files,(source_version,target_version),
-            {'generate_advice':generate, 'application_context':application_context,
-             'application_snapshot': {k: v for k, v in registered_snapshot.items() if k != 'files'} if registered_snapshot else None,
-             'workflow_policy': _application_workflow_policy(),
-             'service_code_fingerprint': (workspace or {}).get('service_code_fingerprint'),
-             'retrieval_config_fingerprint': (workspace or {}).get('retrieval_config_fingerprint')},
-            (workspace or {}).get('corpus_fingerprint'))
-    except ValueError as exc:
-        st.error(str(exc));_clear_ocr_review();return
-    task_store = None
-    if registered_snapshot:
-        from services.review_tasks import ReviewTaskStore
-        from components.registered_application import render_task_recovery
-        task_store = ReviewTaskStore(_audit_repository().database_path.with_name('application_tasks.sqlite3'))
-        render_task_recovery(task_store, input_fingerprint)
+    _page_header("变更审查", "变更审查", page_key="ocr_agent")
+    workflow = st.radio('审查任务', ['依赖升级', 'OCR 配置变更'], horizontal=True, key='ocr_workflow_type')
+    if workflow == 'OCR 配置变更':
+        from components.configuration_workbench import render_configuration_workbench
+        render_configuration_workbench(client, ready, workspace, _audit_repository(),
+            st.session_state.setdefault('official_session_id', uuid.uuid4().hex))
+        return
+    _application_dependency_context(workspace,compact=True)
+    with st.expander('审查输入',expanded=not bool(st.session_state.get('ocr_compatibility_review'))):
+        mode=st.selectbox('输入方式',['已登记应用（Git 提交）','完整文档处理应用','规则片段'],
+            format_func=lambda value:{'已登记应用（Git 提交）':'登记应用 · Git 提交','完整文档处理应用':'示例应用','规则片段':'代码片段'}[value],
+            key='ocr_input_mode',on_change=_clear_ocr_review)
+        app_name = ('文档处理应用' if mode == '已登记应用（Git 提交）' else
+                    st.text_input('应用名称', value='文档处理应用', max_chars=80,
+                                  key='ocr_internal_app_name', on_change=_clear_ocr_review))
+        change_reason = st.text_input('变更目标', value='保留中文 OCR 归一化与下游 JSON 契约',
+                                      max_chars=1000, key='ocr_change_reason', on_change=_clear_ocr_review)
+        application_context = {'application_name': app_name, 'application_version': None,
+                               'change_reason': change_reason, 'source_identity': 'student_poc_application',
+                               'business_scope': 'internal_document_processing'}
+        before, after = st.columns(2, gap="medium")
+        with before:
+            source_version = st.selectbox("当前组件版本", ["v2.9.1"], key="ocr_source_version")
+        with after:
+            target_version = st.selectbox("目标组件版本", ["v3.0.0"], key="ocr_target_version")
+        from services.paddleocr_application_inputs import load_original_application, parse_application_inputs, application_fingerprint
+        registered_snapshot = base_snapshot = None
+        if mode == '已登记应用（Git 提交）':
+            from components.registered_application import render_registered_input
+            registered_snapshot, base_snapshot = render_registered_input(client, ready, on_change=_clear_ocr_review,
+                public_demo=_setting('APP_ENV', 'local').casefold() == 'public_demo')
+            if registered_snapshot is None:
+                return
+            application_context['application_name'] = registered_snapshot['application_name']
+            application_context['source_identity'] = registered_snapshot['source_identity']
+            application_context['application_id'] = registered_snapshot['application_id']
+            files = registered_snapshot['files']
+            content = ''.join(row['content'] for row in files)
+        elif mode=='完整文档处理应用':
+            st.caption('临时诊断：仅审查当前文本，未绑定 Git 提交；文件齐全不等于整个仓库均已检查。')
+            from services.interview_examples import DEMO_CASES, demo_application
+            label = st.selectbox('应用演示案例', list(DEMO_CASES), key='ocr_demo_case', on_change=_select_ocr_demo)
+            st.caption(DEMO_CASES[label])
+            if 'ocr_bundle_files' not in st.session_state:
+                st.session_state['ocr_bundle_files']=demo_application(label)
+            rows=st.session_state['ocr_bundle_files']
+            names=[r['path'] for r in rows]
+            if st.session_state.get('ocr_bundle_file') not in names:
+                st.session_state['ocr_bundle_file']=names[0]
+                _pick_ocr_bundle_file()
+            st.selectbox('应用文件',names,key='ocr_bundle_file',on_change=_pick_ocr_bundle_file)
+            st.text_area('文件文本',height=260,max_chars=50000,key='ocr_bundle_content',on_change=_edit_ocr_bundle_file)
+            st.caption(f'当前 {len(rows)} 个文件；路径仅作相对标签，不读取或执行你的应用。')
+            uploaded=st.file_uploader('导入 UTF-8 应用文件',type=['py','json','md','txt','yaml','yml'],accept_multiple_files=True,key='ocr_uploads')
+            if uploaded and st.button('使用上传文件',key='ocr_import_files'):
+                try:
+                    new_rows=parse_application_inputs([{'path':u.name,'content':u.getvalue().decode('utf-8-sig')} for u in uploaded])
+                    st.session_state['ocr_bundle_files']=new_rows
+                    st.session_state.pop('ocr_bundle_file',None)
+                    _clear_ocr_review();st.rerun()
+                except (ValueError,UnicodeDecodeError) as exc:st.error(str(exc))
+            remove,reset=st.columns(2)
+            if remove.button('移除当前文件',disabled=len(rows)<=1,key='ocr_remove_file'):
+                st.session_state['ocr_bundle_files']=[r for r in rows if r['path']!=st.session_state['ocr_bundle_file']]
+                st.session_state.pop('ocr_bundle_file',None);_clear_ocr_review();st.rerun()
+            if reset.button('恢复当前演示案例',key='ocr_reset_bundle'):
+                st.session_state['ocr_bundle_files']=demo_application(label)
+                st.session_state.pop('ocr_bundle_file',None);_clear_ocr_review();st.rerun()
+            files=rows
+            content=''.join(r['content'] for r in rows)
+        else:
+            st.caption('片段诊断：缺少调用层、消费者或契约时只能说明证据缺口，不能认定应用兼容。')
+            st.selectbox('原创应用示例',list(_OCR_EXAMPLES),key='ocr_example',on_change=_select_ocr_example)
+            if 'ocr_application_content' not in st.session_state:_select_ocr_example()
+            path=st.text_input('应用文件相对路径',max_chars=160,key='ocr_application_path',on_change=_clear_ocr_review)
+            content=st.text_area('应用文件文本',height=240,max_chars=50000,key='ocr_application_content',on_change=_clear_ocr_review)
+            files=[{'path':path,'content':content}]
+        available = bool((workspace or {}).get("generation_available"))
+        with st.expander('审查选项'):
+            generate = st.checkbox("生成补充建议", value=available, disabled=not available,
+                                   key="ocr_generate_advice", on_change=_clear_ocr_review,
+                                   help="使用已核验的目标版证据生成建议，不改变静态检查结论。")
+        try:
+            files=parse_application_inputs(files)
+            input_fingerprint=application_fingerprint(files,(source_version,target_version),
+                {'generate_advice':generate, 'application_context':application_context,
+                 'application_snapshot': {k: v for k, v in registered_snapshot.items() if k != 'files'} if registered_snapshot else None,
+                 'workflow_policy': _application_workflow_policy(),
+                 'service_code_fingerprint': (workspace or {}).get('service_code_fingerprint'),
+                 'retrieval_config_fingerprint': (workspace or {}).get('retrieval_config_fingerprint')},
+                (workspace or {}).get('corpus_fingerprint'))
+        except ValueError as exc:
+            st.error(str(exc));_clear_ocr_review();return
+        task_store = None
+        if registered_snapshot:
+            from services.review_tasks import ReviewTaskStore
+            from components.registered_application import render_task_recovery
+            task_store = ReviewTaskStore(_audit_repository().database_path.with_name('application_tasks.sqlite3'))
+            render_task_recovery(task_store, input_fingerprint)
     previous=st.session_state.get('ocr_compatibility_review')
     active_job=st.session_state.get('ocr_job')
     stale_report=previous and st.session_state.get('ocr_review_input_fingerprint')!=input_fingerprint
@@ -2355,9 +2449,12 @@ def _ocr_agent(client: PublicKnowledgeClient, ready: bool, workspace: dict | Non
         _clear_ocr_review()
         previous=None
     resume_clicked=False
-    if previous and previous.get('investigation',{}).get('unresolved'):
+    from services.investigation_actions import can_resume
+    if previous and can_resume(previous.get('investigation',{})):
         resume_clicked=st.button('继续未完成查证',key='ocr_resume_job',
             disabled=previous['investigation']['elapsed_seconds']>=240 or bool(st.session_state.get('ocr_job')))
+    elif previous and previous.get('investigation',{}).get('unresolved'):
+        st.caption('剩余事项需补充应用资料或关联目标环境回归；重复自动查证无法代替这些工作。')
     run_clicked=st.button('审查应用兼容性',type='primary',disabled=not ready or not content.strip() or bool(st.session_state.get('ocr_job')),key='ocr_run_review')
     if run_clicked or resume_clicked:
         if not _validate_submission_workspace(client, workspace):
@@ -2402,7 +2499,6 @@ def _ocr_agent(client: PublicKnowledgeClient, ready: bool, workspace: dict | Non
                 if task_store:
                     task_store.fail(ticket, type(exc).__name__)
                 raise
-        import uuid
         owner = st.session_state.setdefault('ocr_job_owner', uuid.uuid4().hex)
         try:
             job=start_job(work,input_fingerprint,owner=owner)
@@ -2430,9 +2526,7 @@ def _ocr_agent(client: PublicKnowledgeClient, ready: bool, workspace: dict | Non
     if st.session_state.get('ocr_job_error'):st.error(st.session_state['ocr_job_error'])
     result = st.session_state.get("ocr_compatibility_review")
     if result and st.session_state.get("ocr_review_input_fingerprint") == input_fingerprint:
-        _review_steps(3 if _review_decision_for(result) else 2)
-        _ocr_report(result)
-        _review_panel(result)
+        _ocr_report(result,with_processing=True)
     elif not ready:
         notice = workspace_page_readiness_notice(workspace, "知识服务暂不可用，连接恢复后可审查应用文本。")
         if notice:
@@ -2456,8 +2550,8 @@ def _ocr_review_subpage(choice: str, workspace: dict) -> None:
         _review_panel(result)
 
 
-def _versions(client: PublicKnowledgeClient, ready: bool, workspace: dict | None) -> None:
-    _page_header("知识服务", "版本与历史", page_key="versions")
+def _versions(client: PublicKnowledgeClient, ready: bool, workspace: dict | None, *, show_header=True) -> None:
+    if show_header:_page_header("知识服务", "组件资料版本" if _is_paddleocr(workspace) else "版本与历史", page_key="versions")
     if not ready:
         notice = workspace_page_readiness_notice(
             workspace, "知识服务暂不可用，连接恢复后可查看各版本的真实资料。",
@@ -2558,8 +2652,8 @@ def _versions(client: PublicKnowledgeClient, ready: bool, workspace: dict | None
     st.button("进入知识检索", on_click=_navigate, args=("版本检索与问答",))
 
 
-def _sources(client: PublicKnowledgeClient, ready: bool, workspace: dict | None) -> None:
-    _page_header("知识服务", "资料来源", page_key="sources")
+def _sources(client: PublicKnowledgeClient, ready: bool, workspace: dict | None, *, show_header=True) -> None:
+    if show_header:_page_header("知识服务", "资料来源", page_key="sources")
     name = _workspace_name(workspace)
     profile = (workspace or {}).get("domain_profile") or {}
     source_scope = profile.get("source_scope") or (workspace or {}).get("data_origin")
@@ -2639,7 +2733,7 @@ def _pphuman_development_evaluation(workspace: dict) -> None:
 
 
 def _benchmark(workspace: dict | None) -> None:
-    _page_header("系统说明", "检索评测", page_key="benchmark")
+    _page_header("系统说明", "评测报告" if _is_paddleocr(workspace) else "检索评测", page_key="benchmark")
     st.subheader("当前语料评测状态")
     if not workspace:
         st.info("知识服务尚未连接，当前无法确认语料与检索策略。")
@@ -2824,8 +2918,8 @@ def _benchmark(workspace: dict | None) -> None:
     st.caption("当前新语料默认使用可解释的 BM25 基线；重排策略需在同一冻结题集上验证后再考虑启用。")
 
 
-def _limits(workspace: dict | None = None) -> None:
-    _page_header("系统说明", "已知限制", page_key="limits")
+def _limits(workspace: dict | None = None, *, show_header=True) -> None:
+    if show_header:_page_header("系统说明", "能力边界", page_key="limits")
     for index, (title, detail) in enumerate((
         ("资料范围", "仅覆盖已收录的公开资料。"),
         ("回答", "请对照引用原文核验；证据不足时系统会拒答。"),
@@ -2838,8 +2932,8 @@ def _limits(workspace: dict | None = None) -> None:
             st.write(detail)
 
 
-def _about(workspace: dict | None) -> None:
-    _page_header("系统说明", "系统说明", page_key="about")
+def _about(workspace: dict | None, *, show_header=True) -> None:
+    if show_header:_page_header("系统说明", "系统说明", page_key="about")
     st.write("面向内部研发团队，RAG 查询版本化研发知识，Agent 审查同一文档处理应用升级。当前 POC 使用 PaddleOCR 真实资料代理组件知识；应用输出契约和回归状态以提交的应用文件与记录为准。" if _is_paddleocr(workspace) else "RAG 按版本检索公开资料并保留来源；Agent 根据证据整理影响候选和修改建议，交由人工确认。")
     name = _workspace_name(workspace)
     st.caption('学生 POC · 非 PaddlePaddle 官方产品 · 不会写回源资料。' if _is_paddleocr(workspace) else f"独立工程演示 · 非 {name} 官方产品 · 不会写回源资料。")
@@ -2879,17 +2973,22 @@ def render() -> None:
     workspace = st.session_state.get('official_workspace')
     if workspace is None:
         workspace = _request_workspace(client)
+    if _is_paddleocr(workspace):
+        choice={"版本与历史":"资料库","资料与来源":"资料库","已知限制":"系统说明"}.get(choice,choice)
+        st.session_state['official_nav']=choice
     with st.sidebar:
-        st.markdown('<div class="sidebar-mark">工作台导航</div>', unsafe_allow_html=True)
-        for group, pages in NAV_GROUPS:
+        st.markdown('<div class="sidebar-mark">研发工作台</div>', unsafe_allow_html=True)
+        for group, pages in (TASK_NAV_GROUPS if _is_paddleocr(workspace) else NAV_GROUPS):
             st.markdown(f'<div class="nav-heading">{escape(NAV_GROUP_LABELS.get(group, group))}</div>', unsafe_allow_html=True)
             for page in pages:
                 st.button(_page_label(page, workspace), key="nav_" + page,
                           type="primary" if choice == page else "secondary",
                           on_click=_navigate, args=(page,), use_container_width=True)
-        st.button('刷新知识库状态', key='refresh_workspace',
-                  on_click=lambda: st.session_state.pop('navigation_workspace_cache', None),
-                  use_container_width=True)
+        with st.expander('服务状态'):
+            st.caption('公开与原创示例数据' if _is_paddleocr(workspace) else '知识服务')
+            st.button('刷新状态', key='refresh_workspace',
+                      on_click=lambda: st.session_state.pop('navigation_workspace_cache', None),
+                      use_container_width=True)
     workspace = _request_workspace(client)
     ready = bool(workspace) and workspace.get("rag_ready", True) is not False
     _sync_workspace_version(workspace)
@@ -2907,6 +3006,11 @@ def render() -> None:
         _home(ready, workspace)
     elif choice == "版本检索与问答":
         _knowledge(client, ready, workspace)
+    elif choice == '资料库':
+        _page_header('知识服务','资料库',page_key='library')
+        versions,sources=st.tabs(['组件资料版本','资料来源'])
+        with versions:_versions(client,ready,workspace,show_header=False)
+        with sources:_sources(client,ready,workspace,show_header=False)
     elif choice == "版本与历史":
         _versions(client, ready, workspace)
     elif choice == "资料与来源":
@@ -2927,4 +3031,9 @@ def render() -> None:
     elif choice == "已知限制":
         _limits(workspace)
     else:
-        _about(workspace)
+        if _is_paddleocr(workspace):
+            _page_header('系统说明','帮助',page_key='help')
+            guide,limits=st.tabs(['使用说明','能力边界'])
+            with guide:_about(workspace,show_header=False)
+            with limits:_limits(workspace,show_header=False)
+        else:_about(workspace)

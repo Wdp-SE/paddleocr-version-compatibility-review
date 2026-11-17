@@ -1,8 +1,8 @@
 # PaddleOCR 固定版本语料来源审计
 
-PaddleOCR 官方中文资料与代码/配置辅助证据，固定至 v2.9.1 和 v3.0.0 两个提交；默认查询最新已收录版本 v3.0.0。
+PaddleOCR 官方中文资料与代码/配置辅助证据，固定至 v2.9.1 和 v3.0.0 两个提交。日常查询使用当前应用依赖 v2.9.1；升级审查对照目标依赖 v3.0.0。
 
-收录 60 个版本化文件：44 篇中文 Markdown、11 个 Python 契约、5 个 YAML 配置。代码与 YAML 单独计数。
+收录 62 个版本化文件：44 篇中文 Markdown、13 个 Python 契约、5 个 YAML 配置。代码与 YAML 单独计数。
 
 Markdown 保留表格、代码块；Python 使用 AST 定义边界；YAML 保留顶层映射。块长度为软上限，完整大表格或函数可以超过它。每个块内容是原文行切片。
 
@@ -20,8 +20,10 @@ Apache-2.0；PaddlePaddle 为原作者。文档中的图片、模型和数据链
 | v2.9.1 | yaml | [PaddleOCR ch_PP-OCRv4_rec 模型配置](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/configs/rec/PP-OCRv4/ch_PP-OCRv4_rec.yml) | `01afd2f8fb272e3f4f1722b00ff4f4df43bb5a71be8d1d9593b85d9ff2fb4595` |
 | v2.9.1 | yaml | [PaddleOCR SLANet_ch 模型配置](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/configs/table/SLANet_ch.yml) | `9933986765695c2588765597b60e89ded84c75893457c9d52661c15291ad4a97` |
 | v2.9.1 | markdown | [OCR 常见问题](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/FAQ.md) | `b50c9d0955f1a81038285cad126462d49e1b626d0c98f5304afd86506694b6e2` |
+| v2.9.1 | markdown | [算法推理与模型导出](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/algorithm_inference.md) | `5471b532b2308b3e4fb4bf7f84ba6b29ac6850b57f154df10bfbc17f6fedb35c` |
 | v2.9.1 | markdown | [文本方向分类](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/angle_class.md) | `23d537b3e5f1094915410ede9cea8a9a6df7d8bbac6a6a0b5ec7ffdeb2dbd3b8` |
 | v2.9.1 | markdown | [OCR 配置说明](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/config.md) | `74a506f54426d692b60361ca01660ce6683ebdd8a2f7e7a287ebb478ac86a38b` |
+| v2.9.1 | markdown | [模型推理总览](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/inference.md) | `95331d6f75b8cefd5fdf659b9260e328fbee1e5b8dddbf05f70c8480e0e82d36` |
 | v2.9.1 | markdown | [OCR 推理参数](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/inference_args.md) | `60812c30e0cd0d9ea351b82b3df0f54106cc36f3943f2072b88dd2a3fb6d59af` |
 | v2.9.1 | markdown | [OCR 模型推理](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/inference_ppocr.md) | `54e49679a1f0303105a93b7d23665bb92b2d04af7ada32d89c6bbc8e934fc57e` |
 | v2.9.1 | markdown | [PaddleOCR 安装依赖](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/installation.md) | `05315110378d6df377a839df3928c1867210b5d79440ceb1858ca14084fe8da0` |
@@ -39,12 +41,17 @@ Apache-2.0；PaddlePaddle 为原作者。文档中的图片、模型和数据链
 | v2.9.1 | markdown | [PP-Structure 中文说明](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/ppstructure/recovery/README_ch.md) | `09ba2bc597d469f9996d45fca956890bca684f7320814a06a229901ecbc0cf91` |
 | v2.9.1 | markdown | [返回文字位置](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/ppstructure/return_word_pos.md) | `5f64b30b4accf28e2f6b9acc030ec3819d9d26232d21247db778409df4a237ff` |
 | v2.9.1 | markdown | [PP-Structure 中文说明](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/ppstructure/table/README_ch.md) | `0cf25f375eb9ec3ee4dac8c5433ae7ba9236b2dee629309ae35f6fdff76b4b54` |
+| v2.9.1 | python | [OCR 官方 API 测试（仅参考，未执行）](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/tests/test_paddleocr_api.py) | `3a15c3009da02a6f9b2d4f5ea730a23cd17230bd7174fdfb841e067739c39143` |
+| v2.9.1 | python | [OCR 识别器裁剪图分批处理实现](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/tools/infer/predict_rec.py) | `f0863010c1576ff1e2b24f482488db90e8292cf0f6323bffd380293f0cae8006` |
+| v2.9.1 | python | [OCR 检测裁剪与识别调用实现](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/tools/infer/predict_system.py) | `8b2df4845824d93595b970eba9d093982e3c2ed52d8eefe8b3c213126efc361c` |
 | v3.0.0 | markdown | [PaddleOCR 项目说明](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/README.md) | `b2d88b0efe84623dff83d13a8dc208b032eb9c1be2e03b6f4fcdbb4dcea54e08` |
 | v3.0.0 | yaml | [PaddleOCR SLANeXt_wired 模型配置](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/configs/table/SLANeXt_wired.yml) | `0b7895ae6b73e205748ff6bef8db0906768281e5591839ba61e3d21fb49e39ed` |
 | v3.0.0 | yaml | [PaddleOCR SLANet_plus 模型配置](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/configs/table/SLANet_plus.yml) | `5eb686fc725998a40513cc3222d09fd18d51179a30b1523934374f5ab1fb8a5c` |
 | v3.0.0 | markdown | [PaddleOCR 快速开始](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/quick_start.md) | `54344c131077a19b8d81912d968e0098705e4ed6b83633024c07082e1996bc5b` |
 | v3.0.0 | markdown | [PaddleOCR 3.0 升级说明](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/update/upgrade_notes.md) | `7b49f5758e45b217b8c3ed04aea3913e26fbf1d1d1a26277d09e55ed365fd994` |
 | v3.0.0 | markdown | [高性能推理部署](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/deployment/high_performance_inference.md) | `e1ea0614aa091df2e8a818248836cbc7fc3bf11bff167fad327f0b9cb1e343b0` |
+| v3.0.0 | markdown | [获取 ONNX 模型](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/deployment/obtaining_onnx_models.md) | `d5374680da2c5c70653959b088222a08acbded2d72babaefadead050d6e797e1` |
+| v3.0.0 | markdown | [端侧部署](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/deployment/on_device_deployment.md) | `e4b6e90aa8ae55b99795a576f6888e693bf9d25b31f98478693a0c240d668e3e` |
 | v3.0.0 | markdown | [服务化部署](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/deployment/serving.md) | `19805ff5ea655fe68975296650e9429698ecd6010f33e484b5170c643b368556` |
 | v3.0.0 | markdown | [PaddleOCR 安装依赖](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/installation.md) | `1ac79a8903314d5a0da69c5664fb04755f51a3beb961936a77662c0c15dd5e5b` |
 | v3.0.0 | markdown | [PaddleOCR 日志配置](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/logging.md) | `f96479622438d62f5f6ff478d12a709c8436d5fd23a24e801c597a944e9d7c84` |
@@ -68,9 +75,4 @@ Apache-2.0；PaddlePaddle 为原作者。文档中的图片、模型和数据链
 | v3.0.0 | python | [PaddleOCR base 公共 API 实现](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/paddleocr/_pipelines/base.py) | `8f9ace27768cf162bc322d37cdd0fae1161f06f66abe75f56821f385a7fe859e` |
 | v3.0.0 | python | [PaddleOCR ocr 公共 API 实现](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/paddleocr/_pipelines/ocr.py) | `d81073c98ac08125c389d8a292837d9b2e12242ba0601ef65fb5d1c5a176a9a8` |
 | v3.0.0 | python | [PaddleOCR pp_structurev3 公共 API 实现](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/paddleocr/_pipelines/pp_structurev3.py) | `9281167b47940f4cc81fe1f37e934b658981483b153021d68b07fab38c0b0239` |
-| v2.9.1 | markdown | [模型推理总览](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/inference.md) | `95331d6f75b8cefd5fdf659b9260e328fbee1e5b8dddbf05f70c8480e0e82d36` |
-| v2.9.1 | markdown | [算法推理与模型导出](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/algorithm_inference.md) | `5471b532b2308b3e4fb4bf7f84ba6b29ac6850b57f154df10bfbc17f6fedb35c` |
-| v3.0.0 | markdown | [获取 ONNX 模型](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/deployment/obtaining_onnx_models.md) | `d5374680da2c5c70653959b088222a08acbded2d72babaefadead050d6e797e1` |
-| v3.0.0 | markdown | [端侧部署](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/deployment/on_device_deployment.md) | `e4b6e90aa8ae55b99795a576f6888e693bf9d25b31f98478693a0c240d668e3e` |
-| v2.9.1 | python | [OCR 官方 API 测试（仅参考，未执行）](https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/tests/test_paddleocr_api.py) | `3a15c3009da02a6f9b2d4f5ea730a23cd17230bd7174fdfb841e067739c39143` |
 | v3.0.0 | python | [OCR 官方 API 测试（仅参考，未执行）](https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py) | `55b9d4c5c92123d114e701230bf5e1a282097acdd8e383fc5166d84b07e31a51` |

@@ -1,0 +1,85 @@
+# Configuration template: requires real SSO proxy, refreshed worker identity and pinned images.
+x-service: &service
+  image: ${INTERNAL_IMAGE:?Set approved application image digest}
+  platform: linux/amd64
+  restart: unless-stopped
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  tmpfs: [/tmp:size=128m,mode=1777]
+  env_file: [./internal.env]
+  environment: &environment
+    APP_ENV: internal
+    INTERNAL_ENVIRONMENT: production
+    INTERNAL_DATABASE_URL_FILE: /run/secrets/database_url
+    INTERNAL_ACCESS_POLICY: /etc/review/access-policy.json
+    INTERNAL_APPLICATION_REGISTRY: /etc/review/applications.json
+    RAG_CORPUS_RELEASE_POINTER: /corpora/active.json
+    RD_V2_ALLOW_EXTERNAL_GENERATION: 'false'
+  volumes: &volumes
+    - ${INTERNAL_CONFIG_DIR:?Set private configuration directory}:/etc/review:ro
+    - ${INTERNAL_CORPUS_DIR:?Set validated release directory}:/corpora:ro
+    - ${INTERNAL_REPOSITORY_DIR:?Set registered read-only Git repository}:/repos/document-ocr:ro
+  secrets: [database_url]
+  networks: [review]
+  mem_limit: 2g
+  cpus: 2
+services:
+  database:
+    image: ${POSTGRES_IMAGE:?Set approved PostgreSQL image digest}
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: review
+      POSTGRES_USER: review_owner
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    secrets: [postgres_password]
+    volumes: [review-db:/var/lib/postgresql/data]
+    networks: [review]
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U review_owner -d review]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+  api:
+    <<: *service
+    command: [uvicorn, src.public_server:app, --host, 0.0.0.0, --port, '8765', --ssl-keyfile, /run/secrets/api_key, --ssl-certfile, /etc/review/api.crt]
+    secrets: [database_url, api_key]
+    depends_on:
+      database: {condition: service_healthy}
+    expose: ['8765']
+  worker:
+    <<: *service
+    command: [python, -m, src.internal_worker]
+    environment:
+      <<: *environment
+      INTERNAL_API_URL: https://api:8765
+      INTERNAL_WORKER_TOKEN_FILE: /run/identity/access-token
+      REQUESTS_CA_BUNDLE: /etc/review/ca.crt
+    volumes:
+      - ${INTERNAL_CONFIG_DIR}:/etc/review:ro
+      - ${INTERNAL_IDENTITY_DIR:?Set identity-agent token directory}:/run/identity:ro
+    depends_on: [api]
+  frontend:
+    <<: *service
+    working_dir: /app/demo-ui
+    command: [streamlit, run, app.py, --server.address, 0.0.0.0, --server.port, '8501', --server.headless, 'true', --browser.gatherUsageStats, 'false']
+    environment:
+      APP_ENV: internal
+      RAG_API_BASE_URL: https://api:8765
+      REQUESTS_CA_BUNDLE: /etc/review/ca.crt
+    secrets: []
+    volumes:
+      - ${INTERNAL_CONFIG_DIR}:/etc/review:ro
+    expose: ['8501']
+    depends_on: [api]
+networks:
+  review: {}
+volumes:
+  review-db: {}
+secrets:
+  database_url:
+    file: ${INTERNAL_DATABASE_SECRET_FILE:?Set runtime DB URL file}
+  postgres_password:
+    file: ${INTERNAL_POSTGRES_PASSWORD_FILE:?Set database owner password file}
+  api_key:
+    file: ${INTERNAL_API_TLS_KEY_FILE:?Set API TLS key file}

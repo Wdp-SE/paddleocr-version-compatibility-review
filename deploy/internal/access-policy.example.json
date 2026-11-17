@@ -1,0 +1,9 @@
+{
+  "principals": {},
+  "applications": {
+    "document-ocr": {
+      "classification": "internal",
+      "external_models": []
+    }
+  }
+}

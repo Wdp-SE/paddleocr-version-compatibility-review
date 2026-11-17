@@ -6,6 +6,16 @@ from services.rag_client import RAGClient
 
 
 class PublicKnowledgeClient(RAGClient):
+    def application_query(self, files, question, *, application_id, application_commit, version, top_k=5):
+        return self._request('POST', '/public/application-query', retry_limit=0, request_timeout=600,
+            json={'files':files, 'query':question, 'application_id':application_id,
+                  'application_commit':application_commit, 'version':version, 'top_k':top_k})
+
+    def configuration_review(self, before_files, after_files, *, dependency_version):
+        return self._request('POST', '/public/configuration-review', retry_limit=0,
+                             json={'before_files': before_files, 'after_files': after_files,
+                                   'dependency_version': dependency_version})
+
     def application_search(self, files, question, *, application_id, application_commit, top_k=5):
         return self._request('POST', '/public/application-search', retry_limit=0,
                              json={'files': files, 'query': question, 'application_id': application_id,
@@ -18,7 +28,12 @@ class PublicKnowledgeClient(RAGClient):
         if result.get('status')!='OK':raise ValueError(result.get('status','PLANNER_INVALID_RESPONSE'))
         return result['queries']
     def workspace(self) -> dict:
-        return self._request("GET", "/public/workspace")
+        workspace = self._request("GET", "/public/workspace")
+        if self._service_identity_digest is not None:
+            # Check the workspace body as well as its response header. A caller
+            # cannot silently repin a running task to a newer deployment.
+            self.bind_service_identity(workspace)
+        return workspace
 
     def documents(self) -> list[dict]:
         return self._request("GET", "/public/documents")["documents"]

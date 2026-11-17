@@ -12,24 +12,30 @@ def render_disposition(result, repository, session_id):
     if state.get('report_binding') != key:
         state.clear()
         state.update(report_binding=key, regression=None)
-    st.subheader('风险处置与回归记录')
-    st.caption('填写处置理由、外部测试结果及残余风险。记录属于匿名演示，不能替代企业审批或自动证明升级成功。')
+    st.subheader('处理事项')
+    st.caption('演示处理记录，不构成发布审批。')
     risks = {}
-    choices = {'pending': '待处理', 'needs_change': '需修改', 'mitigated': '已采取措施，待核对', 'not_applicable': '判定不适用，须说明理由'}
+    configuration = result.get('workflow_type') == 'configuration_change'
+    choices = ({'pending': '待确认', 'accepted_change': '行为变化符合预期（须说明）'} if configuration else
+               {'pending': '待处理', 'needs_change': '需修改', 'mitigated': '已采取措施，待核对', 'not_applicable': '判定不适用，须说明理由'})
     report = result['compatibility_report']
-    for finding in report.get('findings', []):
-        if finding.get('status') != 'supported_risk':
-            continue
-        fid = finding['finding_id']
-        with st.expander(f"{fid} · {finding.get('rule_id', '升级风险')}"):
-            decision = st.selectbox('处置状态', list(choices), format_func=choices.get, key=prefix + fid + '_decision')
-            reason = st.text_area('处置理由 / 修改位置', max_chars=2000, key=prefix + fid + '_reason')
-            risks[fid] = {'decision': decision, 'reason': reason}
+    from services.review_action_summary import finding_groups
+    for group in finding_groups(result,statuses=('supported_risk','behavior_change')):
+        finding=group['finding']
+        with st.expander(f"{finding['title']} · {len(group['locations'])} 个位置"):
+            # Display grouping does not batch-accept individual findings.
+            for member in group['findings']:
+                fid=member['finding_id'];location=member.get('application') or {}
+                st.caption(f"{location.get('path','')}:{location.get('line','')} · {fid}")
+                decision = st.selectbox('处置状态', list(choices), format_func=choices.get, key=prefix + fid + '_decision')
+                reason = st.text_area('处置理由 / 修改位置', max_chars=2000, key=prefix + fid + '_reason')
+                risks[fid] = {'decision': decision, 'reason': reason}
     gaps = {}
-    residual = [*report.get('gaps', []), *(result.get('investigation') or {}).get('unresolved', [])]
+    residual = [g for g in [*report.get('gaps', []), *(result.get('investigation') or {}).get('unresolved', [])]
+                if g.get('blocking') is not False]
     if residual:
-        with st.expander(f'逐项填写残余风险（{len(residual)} 项）'):
-            st.caption('仅在人工处置阶段填写；折叠不会删除缺口或自动接受风险。')
+        with st.expander('待确认事项'):
+            st.caption('逐项记录资料缺口和未验证事项的处理理由。')
             for gap in residual:
                 gid = gap_id(gap)
                 location = gap.get('application') or {}
@@ -38,13 +44,18 @@ def render_disposition(result, repository, session_id):
                 with st.container(border=True):
                     st.markdown('**' + label + '**')
                     st.write(gap.get('detail') or gap.get('reason') or gap)
-                    accepted = st.checkbox('已人工评估并记录接受该残余风险的理由', key=prefix + gid + '_accepted')
+                    accepted = st.checkbox('已评估此未验证事项，并明确接受其不确定性', key=prefix + gid + '_accepted')
                     reason = st.text_area('理由与后续核查责任', max_chars=2000, key=prefix + gid + '_reason')
                     gaps[gid] = {'decision': 'accepted_residual' if accepted else 'pending', 'reason': reason}
     st.download_button('下载外部回归记录模板（JSON）',
         json.dumps(regression_template(result), ensure_ascii=False, indent=2),
         file_name='ocr-regression-template.json', mime='application/json', key=prefix + '_template')
-    uploaded = st.file_uploader('导入外部回归记录（最多 200 KB）', type=['json'], key=prefix + '_upload')
+    with st.container(key='review_regression_upload'):
+        st.markdown('''<style>
+        .st-key-review_regression_upload [data-testid="stFileUploaderDropzoneInstructions"] {display:none;}
+        </style>''',unsafe_allow_html=True)
+        uploaded = st.file_uploader('导入回归记录', type=['json'], key=prefix + '_upload',max_upload_size=1)
+        st.caption('JSON · 最大 200 KB')
     if uploaded is not None and st.button('校验并关联回归记录', key=prefix + '_validate'):
         try:
             if uploaded.size > 200_000:
@@ -56,21 +67,22 @@ def render_disposition(result, repository, session_id):
             st.error(str(exc))
     assessment = assess_disposition(result, risks, gaps, state.get('regression'))
     if assessment['blockers']:
-        st.info(f"还有 {len(assessment['blockers'])} 项未完成。可暂缓升级，或补齐处置与回归记录。")
-        with st.expander('查看未完成项'):
+        st.info('尚有未完成的处理事项，暂不能继续评审。')
+        with st.expander('查看处理要求'):
             for message in assessment['blockers']:
                 st.write(message)
     if state.get('regression'):
         st.caption('已关联外部回归记录：人工提交，真实性未认证。')
     continue_col, hold_col = st.columns(2)
-    continued = continue_col.button('人工记录：继续升级流程', disabled=not assessment['eligible_for_human_continuation'], key=prefix + '_continue')
-    held = hold_col.button('人工记录：暂缓升级', key=prefix + '_hold')
+    continued = continue_col.button('记录继续评审', disabled=not assessment['eligible_for_human_continuation'], key=prefix + '_continue')
+    held = hold_col.button('记录暂缓变更', key=prefix + '_hold')
     if continued or held:
         event = {'task_id': result['task_id'], 'workspace_id': 'paddleocr',
-                 'request_mode': 'paddleocr_compatibility', 'request_fingerprint': result.get('request_fingerprint'),
+                 'request_mode': result.get('request_mode', 'paddleocr_compatibility'), 'request_fingerprint': result.get('request_fingerprint'),
                  'human_decision': 'reviewed' if continued else 'rejected',
                  'decided_at_utc': datetime.now(timezone.utc).isoformat(),
-                 'event_type': 'upgrade_disposition', 'application_context': result.get('application_context'),
+                 'event_type': 'configuration_disposition' if configuration else 'upgrade_disposition',
+                 'workflow_type': result.get('workflow_type', 'dependency_upgrade'), 'application_context': result.get('application_context'),
                  'upgrade_decision': 'continue_manual_process' if continued else 'hold', **assessment}
         try:
             state['saved_event'] = repository.record(event, session_id=session_id)

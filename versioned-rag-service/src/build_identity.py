@@ -13,6 +13,14 @@ from pathlib import Path
 _SHA40 = re.compile(r"^[0-9a-f]{40}$")
 
 
+def service_identity_digest(identity: dict) -> str:
+    """Bind an individual response to the startup-loaded code and corpus."""
+    keys = ('build_revision', 'corpus_fingerprint', 'retrieval_config_fingerprint',
+            'service_code_fingerprint', 'review_code_fingerprint', 'evaluation_fingerprint')
+    values = {key: identity.get(key) for key in keys}
+    return hashlib.sha256(json.dumps(values, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+
+
 def git_revision(root: Path, *, timeout_seconds: float = 1.0) -> str | None:
     """Return the platform deploy commit or a clean Git HEAD; otherwise unknown."""
     if os.getenv("RENDER", "").casefold() == "true":
@@ -95,8 +103,21 @@ def public_build_identity(
         "service_code_fingerprint": content_fingerprint({
             path.name: path for path in (repo_root / 'versioned-rag-service' / 'src').glob('*.py')
         })['fingerprint_sha256'],
+        "review_code_fingerprint": review_execution_fingerprint(repo_root),
         "evaluation_fingerprint": evaluation_fingerprint,
     }
+
+
+def review_execution_fingerprint(repo_root: Path) -> str:
+    """Bind API and independent Worker to the actual analysis/orchestration code."""
+    root=Path(repo_root)
+    paths={}
+    for folder,pattern in (('versioned-rag-service/src','*.py'),('change-review-agent/app','*.py'),
+                           ('change-review-agent/config','*.json'),('demo-ui/services','*.py')):
+        files=list((root/folder).rglob(pattern))
+        if not files:return 'unknown'
+        paths.update({p.relative_to(root).as_posix():p for p in files if '__pycache__' not in p.parts})
+    return content_fingerprint(paths)['fingerprint_sha256']
 
 
 def paddleocr_evaluation_fingerprint(repo_root: Path) -> str:
@@ -108,6 +129,9 @@ def paddleocr_evaluation_fingerprint(repo_root: Path) -> str:
         "report": root / "report.json",
         "compatibility_tool": Path(repo_root) / "versioned-rag-service" / "src" / "paddleocr_compatibility.py",
         "retrieval_fusion": Path(repo_root) / "versioned-rag-service" / "src" / "retrieval_fusion.py",
+        "maintenance_cases": Path(repo_root) / 'evaluation/maintenance_acceptance_v1/maintenance30.json',
+        "maintenance_runner": Path(repo_root) / 'evaluation/maintenance_acceptance_v1/run.py',
+        "maintenance_reporting": Path(repo_root) / 'evaluation/maintenance_acceptance_v1/acceptance_report.py',
     }
     if any(not path.is_file() for path in paths.values()):
         return "pending_paddleocr_evaluation"

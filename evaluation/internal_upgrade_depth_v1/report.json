@@ -1,0 +1,152 @@
+{
+  "dataset_id": "internal-upgrade-depth-v1",
+  "assessment_type": "known_task_regression_not_blind_accuracy",
+  "cases_sha256": "e151ea7cc1776d802f0c80bf6318fa36ed86f2acc89a67f1808edfbcc5667f96",
+  "chunks_sha256": "981822b9c3dc9394e6872c3979f9bbc99883d7d34349177dbac187cabe5143c1",
+  "code_sha256": {
+    "answer_generation.py": "8efcf7bad7cff326b20f552d3f7504b582a290471ea9a7217162eb8f976dbcb4",
+    "application_contracts.py": "0e850fbc3e85e02197ba2012a5910eb5048c0a4ec4d94af7ff4ab6784899ff50",
+    "application_knowledge.py": "3669a0b3a449de896dced14bd163cf17200470540147e25b8eb587673021cfa9",
+    "artifact_lifecycle.py": "633a72acf7e553fe11c03c492f5db4b212afb6424b585e61fb883888381dd76f",
+    "build_identity.py": "ae39871e1dbc0a7669c15678544c6fa0a1cc68456e49cc86509457ba12be6b4c",
+    "claim_support.py": "f4b33ac0e48416c6792b5c2c9b31de512e4947afd5603732c036aac05ea3aae7",
+    "context_expansion.py": "1436bb009aaf14d18e24fc1352471416b6c72b04c91a2629b7ef9a5a3c2bc37a",
+    "document_lifecycle.py": "2cb4c2f4b162d64aeee090548dd8c27713bf9dda275238b35753745ff88c97d6",
+    "document_relations.py": "c2fd442e136d4f9dc80940cab04c88c518d7f3aa95e60eb0fe5001d12846ba1d",
+    "figure_sidecar_integrity.py": "b8c2b62842242f3a22f1e27091a775019aa31bdcc4e967ab960583a934e606e7",
+    "local_embedding_worker.py": "f93b8e693f638a5e6e8f25af60e49f177a886352c185ba39069a1959c59ffb77",
+    "native_runtime.py": "f72c9198c6e19686c6f27887ca1e8f507e06855c759f90e4f5091068f1e584e0",
+    "paddleocr_application_graph.py": "1bd522d8c47e23792cc74a303b43fb617223aa9e1fa8d4286b5f8e0880ac394f",
+    "paddleocr_application_roles.py": "6941a4690911bc8177e9543deeaf20ca093349acd824bde833866d24292820df",
+    "paddleocr_argument_flow.py": "1bbdcc2154ee7cbf5e58bde718073d0f2c0c5d1e5483467452b28b473145ef2e",
+    "paddleocr_compatibility.py": "e5e459390b7abe39cb71db071f72d565a4c09686ecd6f78d4fa3056f51ad377b",
+    "paddleocr_corpus.py": "955a1d9a9595a81c2829691e6101b0304141adb6ef67a818f8de74f5bb84a7b8",
+    "paddleocr_coverage.py": "593bc1b7c05b971e17633aa7100a7aceb6cac5d65c5d0030742bdfdb61d7a7ab",
+    "paddleocr_evaluation.py": "9dc498a3e53d8b4c6b2f450abe72af23a1e07a56c87cfea36fa9e61293659ae8",
+    "paddleocr_evidence_search.py": "14fa89693b5d252bca64e7c4ddef32d14cf12a0bccc6967e4a02af0f28b4d065",
+    "paddleocr_fact_checks.py": "4115a1698c0c6d1abd0d57e0fda71000148a82a39a8efa4de6716b2fb252155b",
+    "paddleocr_function_results.py": "9d35f12863f3d544dcf94ae404fe9d0dcd3640458d54474ad68ea9158864ff34",
+    "paddleocr_impact_evaluation.py": "18f0f00413e1cf85c8d8df2f7ef03bdb9aea808f2d6b50b4adf1e1820de4896d",
+    "paddleocr_internal_release.py": "182b2f565c702c102a025a7aa9902971a7175c7402b3c7cb58049f1d6aa71a8b",
+    "paddleocr_planning.py": "98b0bf13930c82ba70fa85dd597da90e6436ea6e96cbfed60320a106a9ff5d72",
+    "paddleocr_quality.py": "948713e9845273dbd40fa983f64215d3999176afef9c578f52770d0cd9f722f5",
+    "paddleocr_query_plan.py": "2796d1d427c08cdbf1a1b5894e0a4daf4764719761a0fca8f986f62acd470bb2",
+    "paddleocr_rag_release.py": "0a1b91b2791ea60bbf1e2aab5ac1c0b26580ec9633162e690f9737baf496900e",
+    "paddleocr_retrieval_comparison.py": "f27131f884de68ece34c3b78f4f30dd2e32d9f020a29977d2283e84f5c422f6f",
+    "paddleocr_retrieval_views.py": "b12ac4df7c044bfa77fae1296e62526a714b287118a47ead15171adbb18ecf58",
+    "pphuman_corpus.py": "3f65a7dad0e1740111f9292749548a2cb812305f8cfb303961f564cae77105d2",
+    "project_corpus_contract.py": "59d209819ef8377c7826f61bb489d8679eed79609903fcbddc4d90f53b9668de",
+    "public_api.py": "c0e5f94fd08f4164e8486418267920de3bd1d5f2a3b3d1ff1f51c3320e10c6ca",
+    "public_config_trace.py": "00d891b2ad15cfccf9940c5d6187952a7c94a0341c2f25ab2e7a6b2317eaa8d9",
+    "public_evaluation_release.py": "55f80b2a6fd237f30612b7a93bafe3e1eaaabba39d5b9dbfce06bf273808caee",
+    "public_knowledge.py": "211792d8206e1de61891754d31a25041a06ee5a7526fc4b547c23e1ace50509a",
+    "public_reranking.py": "92aa62fceefe6481748306e219176309cdf9dc2a85bdad812b5850ae5cd0e72e",
+    "public_retrieval_runtime.py": "064cc2d0a271dd909f05858f76ecb635821b15ad541abe14506faf144872b066",
+    "public_scope.py": "96855c0c52d1c115b0b746641d9c23a555796a65f9935c8c8adbff424e623f90",
+    "public_server.py": "4c7398afd7c7443034d0ba45ba9aba345c94dfc910d506d46a281830fbb27922",
+    "quality_evaluation.py": "a2a8159abf6e6940363f038fd3495ba72c403c656a1ccb890980c1050d9b1247",
+    "rd_v2_api.py": "630c89e16c634ad66a3516ee44dc528cc46702cf04a06505ae17e6a2c8275f7e",
+    "rd_v2_runtime.py": "b7e34ccf76e362a7e7f36277d5cad217c11299aae7bc2adde3be763cab05766a",
+    "requirement_coverage.py": "f9b27863fa1a6151fb76562801e581e8e46ab51ef8f8b93042bbe5ee1fcc09a1",
+    "retrieval_diagnostics.py": "2e853a21fb5d7996793949c4ae825f16071b3484785aed9869f54dae8d0e09cf",
+    "retrieval_fusion.py": "a4eb9ae461c0c526f0d9cde19460e566351b150333b133078841256cf37f9c6e",
+    "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "application_sha256": {
+    "application/__init__.py": "916835a1e2c8e2ebc1ed808457eef0cea0e16fbcd2362fcb70359dad8c0a8192",
+    "application/consumer.py": "769e965d3f9a318ecfa8bf3e0b015e43154d7e345059cfb0734e34cd78cb91e1",
+    "application/contract.json": "8497d02cec52712d255270f26fe89c44a206fd1741889df9aa9cad1235b0087e",
+    "application/design.md": "d028eeb81f36aee61d6d63028be69ed437abf35ac852139650a0a2a9b7351382",
+    "application/normalizer.py": "32d811893353415861e4bc4a82525cee6bffa0257f8995f30161ef28836525fb",
+    "application/ocr_client.py": "a6155f06223ad57ed854482f5f818bd5832a647f3fe6066b4916db4a6cbab702",
+    "application/pipeline.py": "7176f736af377ed925fc3ada9593f5e423258f59ca4c7049ed7bf2722c6d8f02",
+    "application/requirements-v2.txt": "33e42943a1f915eb34f36b649f706e774cf3f904f113f792540c46a15c9fe23e",
+    "application/requirements-v3.txt": "8f82f4eeffa94bf738f58b0f51eb4d3071139c64ce465e4de8403deedab78865",
+    "application/tests/test_contract.py": "a5c7d0906fb2e66fc3dac8b08185339303f22d887fd167fe6bad081040dec9af",
+    "application/upgrade.md": "4b7a4d558cb57a1221cac4a55c663d87ca4dab9b343295b11a7543127d6f0601",
+    "result_adapter.py": "702df5052cf64c19c524bdb7ee2a1b931fdc7030e9f09cf2db9842cedb3681cf"
+  },
+  "sdk_evidence": [
+    {
+      "id": "old-call",
+      "covered": true,
+      "requirements": [
+        true
+      ],
+      "wrong_versions": 0
+    },
+    {
+      "id": "migration-contract",
+      "covered": true,
+      "requirements": [
+        true,
+        true
+      ],
+      "wrong_versions": 0
+    },
+    {
+      "id": "official-tests",
+      "covered": true,
+      "requirements": [
+        true
+      ],
+      "wrong_versions": 0
+    },
+    {
+      "id": "removed-layout",
+      "covered": true,
+      "requirements": [
+        true
+      ],
+      "wrong_versions": 0
+    }
+  ],
+  "application_evidence": [
+    {
+      "id": "output",
+      "covered": true,
+      "paths": [
+        "application/contract.json",
+        "application/design.md",
+        "application/upgrade.md"
+      ]
+    },
+    {
+      "id": "entry-tests",
+      "covered": true,
+      "paths": [
+        "application/contract.json",
+        "application/tests/test_contract.py",
+        "application/design.md",
+        "application/upgrade.md",
+        "application/tests/test_contract.py"
+      ]
+    },
+    {
+      "id": "contract-and-test",
+      "covered": true,
+      "paths": [
+        "application/contract.json",
+        "application/tests/test_contract.py",
+        "application/upgrade.md",
+        "application/tests/test_contract.py",
+        "application/tests/test_contract.py"
+      ]
+    }
+  ],
+  "missing_internal_fact_rejected": true,
+  "static": {
+    "risk_count": 2,
+    "gaps": 32,
+    "coverage": {
+      "actionable_gaps": 3,
+      "analysis_limitations": 29,
+      "runtime_verified": false
+    },
+    "status": "supported_risk"
+  },
+  "answer_accuracy": null,
+  "model_calls": 0,
+  "runtime_verified": false,
+  "notice": "Literal evidence coverage and static findings on known tasks; not independent answer or business accuracy. Working files are identified by hashes, not claimed as a committed application snapshot."
+}

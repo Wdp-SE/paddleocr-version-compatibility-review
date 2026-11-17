@@ -73,3 +73,35 @@ def test_new_risk_and_file_change_and_duplicates_are_not_hidden():
         'application': {'path': 'application/normalizer.py', 'line': 10}, 'title': '接口变化'})
     out = compare_reviews(before, current, corpus_fingerprint='corpus')
     assert {r['change'] for r in out['findings']} == {'PERSISTS', 'NEW'}
+
+
+def test_two_sites_in_same_file_are_compared_individually_when_only_one_is_changed():
+    previous=report()
+    one=previous['compatibility_report']['findings'][0]
+    one['application'].update(symbol='adapt_first',expression_fingerprint='a'*64,snippet='return line[1][0]')
+    two=copy.deepcopy(one);two.update(finding_id='f2')
+    two['application'].update(symbol='adapt_second',line=20,expression_fingerprint='b'*64)
+    previous['compatibility_report']['findings'].append(two)
+    current=copy.deepcopy(previous)
+    current['compatibility_report']['findings']=[copy.deepcopy(two)]
+    current['compatibility_report']['findings'][0]['application']['line']=30
+    current['compatibility_report']['files'][0]['sha256']='c'*64
+    out=compare_reviews(capture_baseline(previous,corpus_fingerprint='corpus'),current,corpus_fingerprint='corpus')
+    sites=out['site_comparisons']
+    assert {s['change'] for s in sites}=={'NOT_OBSERVED_NOW','PERSISTS'}
+    persisted=next(s for s in sites if s['change']=='PERSISTS')
+    assert persisted['previous_locations'][0]['line']==20
+    assert persisted['current_locations'][0]['line']==30
+    assert out['prior_records_reusable'] is False
+
+
+def test_duplicate_identical_expressions_in_same_function_are_not_guessed_by_line_number():
+    previous=report()
+    one=previous['compatibility_report']['findings'][0]
+    one['application'].update(symbol='adapt',expression_fingerprint='a'*64,snippet='line[1][0]')
+    two=copy.deepcopy(one);two['application']['line']=20
+    previous['compatibility_report']['findings'].append(two)
+    current=copy.deepcopy(previous);current['compatibility_report']['findings']=[two]
+    out=compare_reviews(capture_baseline(previous,corpus_fingerprint='corpus'),current,corpus_fingerprint='corpus')
+    assert out['site_comparisons'][0]['change']=='UNRESOLVED'
+    assert out['site_comparisons'][0]['match_status']=='AMBIGUOUS_DUPLICATES'

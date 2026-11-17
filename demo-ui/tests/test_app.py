@@ -19,7 +19,7 @@ def test_app_always_runs_the_public_profile_workbench(monkeypatch):
     assert "研发知识与变更审查工作台" not in visible
     assert "DEMO_LEGACY_FIXTURES" not in visible
     assert not app.tabs
-    assert any(button.label == "版本化知识检索" for button in app.button)
+    assert any(button.label == "知识查询" for button in app.button)
 
 
 def test_public_profile_workbench_handles_unavailable_rag(monkeypatch):

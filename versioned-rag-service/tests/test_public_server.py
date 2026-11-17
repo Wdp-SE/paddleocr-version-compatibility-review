@@ -53,6 +53,24 @@ def _index() -> PublicKnowledgeIndex:
     return PublicKnowledgeIndex(CORPUS)
 
 
+def test_each_response_binds_to_the_serving_build_identity():
+    from src.build_identity import service_identity_digest
+    with TestClient(create_app(index=_index())) as client:
+        response = client.get('/public/workspace')
+        assert response.headers['X-Service-Identity'] == service_identity_digest(response.json())
+        assert client.get('/health').headers['X-Service-Identity'] == response.headers['X-Service-Identity']
+
+
+def test_evidence_capability_is_available_without_claiming_benchmark_success():
+    with TestClient(create_app(index=_index())) as client:
+        workspace = client.get('/public/workspace').json()
+        assert workspace['evidence_retrieval'] == {
+            'available': True, 'policy': 'paddleocr_evidence',
+            'fallback_strategy': 'contextual_bm25', 'score_is_probability': False,
+            'evaluation_is_separate': True,
+        }
+
+
 
 
 def test_default_index_and_health_use_the_paddleocr_corpus(monkeypatch):
@@ -76,6 +94,30 @@ def test_default_index_and_health_use_the_paddleocr_corpus(monkeypatch):
     assert health["rag_ready"] is True
     assert health["workspace"] == workspace["workspace"]
     assert workspace["workspace_id"] == "paddleocr"
+
+
+def test_startup_resolves_active_corpus_only_once(monkeypatch):
+    import src.public_server as server
+    monkeypatch.setenv('APP_ENV','local')
+    monkeypatch.delenv('RAG_PUBLIC_RETRIEVAL_CONFIG',raising=False)
+    calls=[]
+    def resolve():
+        calls.append(1)
+        if len(calls)>1:raise AssertionError('A release may change between resolutions')
+        return CORPUS
+    monkeypatch.setattr(server,'_configured_public_corpus_root',resolve)
+    with TestClient(create_app()) as client:assert client.get('/health').status_code==200
+    assert len(calls)==1
+
+
+def test_release_mode_rejects_config_from_another_directory(monkeypatch,tmp_path):
+    import pytest
+    import src.public_server as server
+    monkeypatch.setenv('APP_ENV','local')
+    monkeypatch.setenv('RAG_CORPUS_RELEASE_POINTER',str(tmp_path/'active.json'))
+    monkeypatch.setenv('RAG_PUBLIC_RETRIEVAL_CONFIG',str(tmp_path/'outside.json'))
+    with pytest.raises(ValueError,match='resolved release'):
+        server._configured_public_retrieval_config(CORPUS)
 
 
 def test_query_without_generation_returns_retrieved_evidence_without_fabricating_answer():
@@ -185,6 +227,18 @@ def test_provider_failure_keeps_retrieval_evidence_and_returns_actionable_status
     assert "private provider detail" not in str(body)
 
 
+def test_provider_failure_exposes_only_safe_network_reason_and_keeps_evidence(caplog):
+    from src.provider_network import ProviderConnectionError
+    generator = StructuredGenerator('unused', error=ProviderConnectionError('CONNECTION_REFUSED', 'system'))
+    with TestClient(create_app(index=_index(), generator=generator)) as client:
+        body = client.post('/public/query', json={'query':QUESTION,'language':'zh'}).json()
+    assert body['status'] == 'GENERATION_PROVIDER_UNAVAILABLE' and body['evidence']
+    assert body['generation']['network_failure_reason'] == 'CONNECTION_REFUSED'
+    assert body['generation']['network_mode'] == 'system'
+    assert 'network_reason=CONNECTION_REFUSED' in caplog.text
+    assert generator.calls == 1
+
+
 def test_public_generation_has_no_application_call_budget():
     index = _index()
     generator = StructuredGenerator("E1", relevant_sources=[])
@@ -194,6 +248,8 @@ def test_public_generation_has_no_application_call_budget():
 
     assert generator.calls == 5
     assert all(body["status"] == "OK" for body in bodies)
+    assert all(body['answer_completeness'] == 'NOT_ASSESSED' for body in bodies)
+    assert all(body['correction']['attempts'] == 0 for body in bodies)
 
 
 def test_private_company_request_is_stopped_before_retrieval_or_generation():

@@ -1,0 +1,193 @@
+{
+  "generated_at_utc": "2026-11-13T21:33:37.806337+00:00",
+  "source_type": "developer_original_application",
+  "application_files_sha256": {
+    "application/application_manifest.json": "31d88341441b636070ef58937395c5fd994f2841ac855020346e5bda67af62a0",
+    "application/consumer.py": "769e965d3f9a318ecfa8bf3e0b015e43154d7e345059cfb0734e34cd78cb91e1",
+    "application/contract.json": "8497d02cec52712d255270f26fe89c44a206fd1741889df9aa9cad1235b0087e",
+    "application/design.md": "b79eda2394ceaf1f36b99b67105e30f4769da527bdb8c4f0119be98a7492bbc5",
+    "application/normalizer.py": "32d811893353415861e4bc4a82525cee6bffa0257f8995f30161ef28836525fb",
+    "application/ocr_client.py": "352f2f4be7f043cda570315449892ce2be498a52c574d4f0f9a66a677536089e",
+    "application/pipeline.py": "d189d914d687caf2ccf90e21b3a3ef592002180a998b1afaf3aa3675f05ad269",
+    "application/requirements-v2.txt": "33e42943a1f915eb34f36b649f706e774cf3f904f113f792540c46a15c9fe23e",
+    "application/requirements-v3.txt": "8f82f4eeffa94bf738f58b0f51eb4d3071139c64ce465e4de8403deedab78865",
+    "application/upgrade.md": "4b7a4d558cb57a1221cac4a55c663d87ca4dab9b343295b11a7543127d6f0601",
+    "application/__init__.py": "916835a1e2c8e2ebc1ed808457eef0cea0e16fbcd2362fcb70359dad8c0a8192",
+    "application/tests/test_contract.py": "a5c7d0906fb2e66fc3dac8b08185339303f22d887fd167fe6bad081040dec9af"
+  },
+  "controlled_child_runner_sha256": "0feaa533365a96fce3560450399bf72924be46458d1bb7d8c1be4faccb6eddbf",
+  "supervisor_sha256": "460f63e102b5211c23598e9cb22a8da582f41bcbafd5676e2911b08482f7aafa",
+  "test_result": {
+    "passed": 50,
+    "skipped": 0,
+    "raw_log": ".local-demo-temp/business-quality-20261114/final-app-tests.log"
+  },
+  "fixed_score_fixture": {
+    "artifact": ".local-demo-temp/business-quality-20261114/runtime-fixtures.json",
+    "sha256": "8f9193460747cd199bcc39ab960843968dc5a3acc0b64fdc64307091b035e8ba",
+    "case_count": 8,
+    "expectations_met": true,
+    "observed_failed_cases": [
+      "file_changed_not_adopted",
+      "v3_default_entry_fails",
+      "unchanged_call_runtime_bad_type"
+    ]
+  },
+  "real_ocr_records": [
+    {
+      "artifact": ".local-demo-temp/business-quality-20261114/real-v2-default.json",
+      "sha256": "454cc5a990c91521d2dd356dd3dd9088ce02d16768a0c97aecf1d62b9a48fbb2",
+      "runtime_status": "PASSED",
+      "actual_entrypoint_contract_passed": true,
+      "configuration": {
+        "config_sha256": null,
+        "config_source": null,
+        "declared_values": {},
+        "effective_values": {
+          "lang": "ch",
+          "drop_score": 0.5
+        },
+        "value_sources": {
+          "lang": "default",
+          "drop_score": "default"
+        },
+        "factory_parameters": {
+          "lang": "ch"
+        }
+      },
+      "child_exit_code": null,
+      "current_application_source_matches": true
+    },
+    {
+      "artifact": ".local-demo-temp/business-quality-20261114/real-v2-json-old.json",
+      "sha256": "6eca94652af31fc61fdc325de43d0e96dba4f08f700f9a3544f5bba538bfe39c",
+      "runtime_status": "PASSED",
+      "actual_entrypoint_contract_passed": true,
+      "configuration": {
+        "config_sha256": "3aac5b921cce991976dcd069e371695545269c2f1cf308e6f3c902b5e2584919",
+        "config_source": "<repo>/.local-demo-temp/business-quality-20261114/runtime-configs/old.json",
+        "declared_values": {
+          "schema_version": 1,
+          "drop_score": 0.5
+        },
+        "effective_values": {
+          "lang": "ch",
+          "drop_score": 0.5
+        },
+        "value_sources": {
+          "lang": "default",
+          "drop_score": "json"
+        },
+        "factory_parameters": {
+          "lang": "ch",
+          "drop_score": 0.5
+        }
+      },
+      "child_exit_code": null,
+      "current_application_source_matches": true
+    },
+    {
+      "artifact": ".local-demo-temp/business-quality-20261114/real-v2-json-new.json",
+      "sha256": "9188875dc6ac5d4049b597723179cf06e603f4dd2c0857c76b2181129802a18d",
+      "runtime_status": "PASSED",
+      "actual_entrypoint_contract_passed": true,
+      "configuration": {
+        "config_sha256": "5e9df4ca862d65318f1256fbdabfa3f8855d75956bb1826ca6df8f92123e5e6a",
+        "config_source": "<repo>/.local-demo-temp/business-quality-20261114/runtime-configs/new.json",
+        "declared_values": {
+          "schema_version": 1,
+          "drop_score": 0.8
+        },
+        "effective_values": {
+          "lang": "ch",
+          "drop_score": 0.8
+        },
+        "value_sources": {
+          "lang": "default",
+          "drop_score": "json"
+        },
+        "factory_parameters": {
+          "lang": "ch",
+          "drop_score": 0.8
+        }
+      },
+      "child_exit_code": null,
+      "current_application_source_matches": true
+    },
+    {
+      "artifact": ".local-demo-temp/business-quality-20261114/real-v2-explicit-override.json",
+      "sha256": "0073daecd3542ad3a09016c7d3eb30cca8001389e013c0d3fb38a097f4e4336a",
+      "runtime_status": "PASSED",
+      "actual_entrypoint_contract_passed": true,
+      "configuration": {
+        "config_sha256": "5e9df4ca862d65318f1256fbdabfa3f8855d75956bb1826ca6df8f92123e5e6a",
+        "config_source": "<repo>/.local-demo-temp/business-quality-20261114/runtime-configs/new.json",
+        "declared_values": {
+          "schema_version": 1,
+          "drop_score": 0.8
+        },
+        "effective_values": {
+          "lang": "ch",
+          "drop_score": 0.5
+        },
+        "value_sources": {
+          "lang": "default",
+          "drop_score": "explicit_override"
+        },
+        "factory_parameters": {
+          "lang": "ch",
+          "drop_score": 0.5
+        }
+      },
+      "child_exit_code": null,
+      "current_application_source_matches": true
+    },
+    {
+      "artifact": ".local-demo-temp/business-quality-20261114/supervised-real-v2-json-new.json",
+      "sha256": "034d55e835d119fe1c9b34a69d7afff6ce50a3398f9c129dc5fe0bf22689d7bd",
+      "runtime_status": "PASSED",
+      "actual_entrypoint_contract_passed": true,
+      "configuration": {
+        "config_sha256": "5e9df4ca862d65318f1256fbdabfa3f8855d75956bb1826ca6df8f92123e5e6a",
+        "config_source": "<repo>/.local-demo-temp/business-quality-20261114/runtime-configs/new.json",
+        "declared_values": {
+          "schema_version": 1,
+          "drop_score": 0.8
+        },
+        "effective_values": {
+          "lang": "ch",
+          "drop_score": 0.8
+        },
+        "value_sources": {
+          "lang": "default",
+          "drop_score": "json"
+        },
+        "factory_parameters": {
+          "lang": "ch",
+          "drop_score": 0.8
+        }
+      },
+      "child_exit_code": 0,
+      "current_application_source_matches": true
+    },
+    {
+      "artifact": ".local-demo-temp/business-quality-20261114/supervised-real-v3-default.json",
+      "sha256": "c235a216c6d3cd5c484daa44a8cb623f2a656ce9e3db050c82c19c8196ccf3ad",
+      "runtime_status": "NOT_AVAILABLE",
+      "actual_entrypoint_contract_passed": false,
+      "configuration": null,
+      "child_exit_code": 3221225477,
+      "current_application_source_matches": true
+    }
+  ],
+  "real_threshold_text_difference_observed": false,
+  "real_v3_compatibility": "NOT_VERIFIED",
+  "limitations": [
+    "Only original synthetic three-page inputs, not recognition accuracy or enterprise production data",
+    "Shadowed-configuration expected failure and candidate v3 adapter success are fixed-score fixtures",
+    "v3 native exit without child report is environment unavailability, not a compatibility finding",
+    "Application Git base is dirty; exact file hashes are authoritative for these runs"
+  ],
+  "record_status": "HISTORICAL_SUPERSEDED",
+  "superseded_by": "runtime-summary-final.json"
+}

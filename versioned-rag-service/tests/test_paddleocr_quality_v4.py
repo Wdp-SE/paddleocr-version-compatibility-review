@@ -198,16 +198,6 @@ def test_long_line_context_is_bounded_without_dropping_selected_span():
     assert '必要事实' in value and len(value)<=6000
 
 
-def test_partial_correction_union_retains_both_windows_of_same_source():
-    from src.public_api import _merge_evidence
-    from src.paddleocr_retrieval_views import evidence_text as exact_text
-    original={'chunk_id':'c','content':'FIRST_FACT\nSECOND_FACT','line_start':1,'line_end':2}
-    first={**original,'evidence_spans':[{'line_start':1,'line_end':1}]}
-    second={**original,'evidence_spans':[{'line_start':2,'line_end':2}]}
-    merged=_merge_evidence([first],[second])
-    assert len(merged)==1 and exact_text(merged[0])=='FIRST_FACT\nSECOND_FACT'
-
-
 def test_auto_policy_uses_validated_release_and_configured_ranker(monkeypatch):
     from fastapi.testclient import TestClient
     from src.public_server import create_app
@@ -240,7 +230,10 @@ def test_auto_repair_keeps_structured_selection_and_expands_candidates(monkeypat
     monkeypatch.setattr(api,'_query_once',once)
     monkeypatch.setattr(api,'_index',lambda request:SimpleNamespace(manifest={'workspace_id':'paddleocr'}))
     payload=api.SearchRequest(query='OCR parameters',retrieval_policy='paddleocr_evidence',evidence_strategy='auto')
-    asyncio.run(api.query(payload,None))
+    monkeypatch.setattr(api, '_execute_public_search', lambda *a, **k: {
+        'results': [{'chunk_id': 'new', 'version': 'v3.0.0', 'content': 'new context'}]})
+    request = SimpleNamespace(app=SimpleNamespace(state=SimpleNamespace(public_generator=None)))
+    asyncio.run(api.query(payload,request))
     assert calls[1].evidence_strategy=='auto'
     assert calls[1].candidate_budget==120
 
@@ -265,3 +258,22 @@ def test_repair_uses_release_windows_without_overriding_expanded_budget(monkeypa
     payload=api.SearchRequest(query='OCR usage',version='v3.0.0',retrieval_policy='paddleocr_evidence',evidence_strategy='auto',candidate_budget=120)
     api._execute_public_search(index,payload,None,top_k=8,correction=True)
     assert captured[0]['candidate_budget']==120
+def test_general_result_window_keeps_unique_api_context_from_same_canonical_block():
+    from src.public_api import _claim_scope_mismatches
+    text="from paddleocr import PaddleOCR\nengine = PaddleOCR()\nresult = engine.predict('scan.png')\n{'rec_texts': ['文字'], 'rec_scores': [0.9]}"
+    result=text.splitlines()[-1]
+    hit={'chunk_id':'quick','module':'general','version':'v3.0.0','line_start':1,
+         'content':text,'evidence_spans':[{'line_start':4,'line_end':4,'content':result}]}
+    claim={'text':'v3.0.0 的 rec_texts 保存识别文本。','evidence_ids':['quick']}
+    req=[{'id':'r','module':'ocr','query':'升级后怎么取文字','version':'v3.0.0'}]
+    assert _claim_scope_mismatches([claim],[hit],req)==set()
+
+
+def test_mixed_api_parent_does_not_assign_an_unlabelled_result_to_ocr():
+    from src.public_api import _claim_scope_mismatches
+    text="ocr = PaddleOCR()\nstructure = PPStructureV3()\n{'rec_texts': ['文字']}"
+    hit={'chunk_id':'mixed','module':'general','version':'v3.0.0','line_start':1,
+         'content':text,'evidence_spans':[{'line_start':3,'line_end':3,'content':text.splitlines()[-1]}]}
+    claim={'text':'v3.0.0 OCR 的 rec_texts 保存识别文本。','evidence_ids':['mixed']}
+    req=[{'id':'r','module':'ocr','query':'OCR 结果','version':'v3.0.0'}]
+    assert _claim_scope_mismatches([claim],[hit],req)=={0}

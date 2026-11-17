@@ -5,6 +5,12 @@
     "include": ["application/", "result_adapter.py"],
     "exclude": ["application/application_manifest.json"],
     "owner": "学生原创应用维护者（演示）", "source_identity": "student_poc_application",
+    "entrypoints": {
+      "application/pipeline.py::process": "application/requirements-v2.txt",
+      "application/pipeline.py::process_configured": "application/requirements-v2.txt",
+      "application/pipeline.py::process_target": "application/requirements-v3.txt",
+      "application/pipeline.py::process_target_configured": "application/requirements-v3.txt"
+    },
     "roles": {
       "entry": ["application/ocr_client.py"],
       "normalizer": ["application/normalizer.py"],

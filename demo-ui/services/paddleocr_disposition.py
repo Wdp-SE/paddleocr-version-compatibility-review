@@ -13,6 +13,8 @@ def _report(result):
 
 def binding(result):
     payload = {'report': result.get('report_fingerprint'),
+               'workflow_type': result.get('workflow_type', 'dependency_upgrade'),
+               'baseline_snapshot': result.get('baseline_application_snapshot'),
                'request': result.get('request_fingerprint'),
                'context': result.get('application_context'),
                'snapshot': result.get('application_snapshot'),
@@ -31,7 +33,7 @@ def regression_template(result):
             'source_version': result.get('source_version'), 'target_version': result.get('target_version'),
             'application_id': (result.get('application_snapshot') or {}).get('application_id'),
             'application_commit': (result.get('application_snapshot') or {}).get('head_commit'),
-            'actual_dependency': '', 'environment': '',
+            'actual_dependency': '', 'environment': '', 'execution_kind': 'developer_runtime',
             'application_files': _report(result).get('files', []),
             'results': [{'finding_id': row['finding_id'], 'input_conditions': row['input_conditions'],
                          'checks': [{'name': name, 'passed': False} for name in row['checks']],
@@ -50,6 +52,9 @@ def validate_regression(result, data):
             raise ValueError('回归记录与当前报告、版本或应用文件绑定不一致，请重新审查后导出模板。')
     if data.get('actual_dependency') != result.get('target_version'):
         raise ValueError('实际执行依赖必须与升级目标一致。')
+    execution_kind = data.get('execution_kind', 'developer_runtime')
+    if execution_kind not in ('developer_runtime', 'fixture'):
+        raise ValueError('公网导入仅支持人工运行记录或夹具；不接受自称可信 CI 的认证。')
     if not isinstance(data.get('environment'), str) or not data['environment'].strip() or len(data['environment']) > 2000:
         raise ValueError('请填写实际测试环境。')
     rows = data.get('results')
@@ -75,7 +80,9 @@ def validate_regression(result, data):
             raise ValueError('每项日志摘要必须是最多 10000 字的文本。')
     # Do not preserve caller-controlled verification/approval fields.
     return {**expected, 'environment': data['environment'], 'actual_dependency': data['actual_dependency'],
-            'results': rows, 'record_status': 'HUMAN_SUBMITTED_UNVERIFIED', 'runtime_verified': False}
+            'results': rows, 'execution_kind': execution_kind,
+            'record_status': 'FIXTURE_ONLY' if execution_kind == 'fixture' else 'HUMAN_SUBMITTED_UNVERIFIED',
+            'runtime_verified': False}
 
 
 def assess_disposition(result, risks, gaps, regression):
@@ -85,7 +92,7 @@ def assess_disposition(result, risks, gaps, regression):
     report = _report(result)
     findings = report.get('findings', [])
     if not findings:
-        blockers.append('没有可处置的静态发现；不能据此认定升级兼容。')
+        blockers.append('没有可处置的静态发现；不能据此认可变更。')
     if regression:
         try:
             regression = validate_regression(result, regression)
@@ -93,6 +100,8 @@ def assess_disposition(result, risks, gaps, regression):
             regression = None
             blockers.append('外部回归记录已失效。')
     results = {row['finding_id']: row for row in (regression or {}).get('results', [])}
+    if regression and regression.get('execution_kind') == 'fixture':
+        blockers.append('夹具仅验证程序逻辑，不能替代实际 OCR 运行回归。')
     requirements = {row['finding_id']: row for row in report.get('regression_requirements', [])}
     for finding in findings:
         fid = finding['finding_id']
@@ -102,17 +111,32 @@ def assess_disposition(result, risks, gaps, regression):
             row = risks.get(fid, {})
             if row.get('decision') not in ('mitigated', 'not_applicable') or not str(row.get('reason', '')).strip():
                 blockers.append(f'{fid}：风险尚未记录处置理由。')
+        if finding.get('status') == 'behavior_change':
+            row = risks.get(fid, {})
+            if row.get('decision') != 'accepted_change' or not str(row.get('reason', '')).strip():
+                blockers.append(f'{fid}：需人工确认配置行为变化符合预期，并填写依据。')
         required = requirements.get(fid)
         actual = results.get(fid, {})
         passed = {row['name'] for row in actual.get('checks', []) if row['passed'] is True}
         if not required or not set(required['checks']).issubset(passed) or not set(required['input_conditions']).issubset(actual.get('input_conditions', [])) or not actual.get('log_excerpt', '').strip():
             blockers.append(f'{fid}：缺少覆盖输入条件与契约的外部回归记录。')
     all_gaps = [*report.get('gaps', []), *(result.get('investigation') or {}).get('unresolved', [])]
+    for fid, required in requirements.items():
+        if required.get('kind') != 'application_contract':
+            continue
+        actual = results.get(fid, {})
+        passed = {row['name'] for row in actual.get('checks', []) if row['passed'] is True}
+        if (not set(required['checks']).issubset(passed)
+                or not set(required['input_conditions']).issubset(actual.get('input_conditions', []))
+                or not actual.get('log_excerpt', '').strip()):
+            blockers.append(f'{fid}：应用输出契约尚无覆盖完整条件的外部回归记录。')
     for gap in all_gaps:
+        if gap.get('blocking') is False:
+            continue
         row = gaps.get(gap_id(gap), {})
         if row.get('decision') != 'accepted_residual' or not str(row.get('reason', '')).strip():
             blockers.append(f'{gap_id(gap)}：缺口尚未由人记录残余风险。')
     return {'report_binding': binding(result), 'eligible_for_human_continuation': not blockers,
             'blockers': blockers, 'risk_dispositions': risks, 'gap_dispositions': gaps,
             'external_regression': regression, 'runtime_verified': False,
-            'decision_scope': '人工决定是否继续升级流程；不是自动批准，也未验证提交者身份或日志真实性'}
+            'decision_scope': '人工决定是否继续变更流程；不是自动批准，也未验证提交者身份或日志真实性'}

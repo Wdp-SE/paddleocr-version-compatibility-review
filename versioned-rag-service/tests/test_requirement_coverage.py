@@ -61,6 +61,15 @@ def test_rejected_claim_cannot_close_a_requirement():
     assert out['coverage']['items'][0]['status'] == 'MISSING'
 
 
+def test_missing_verdict_with_supporting_claim_is_a_conflict_not_a_source_gap():
+    value = response()
+    value['requirement_verdicts'][0].update(status='MISSING', claim_indexes=[0])
+    out = run(value)
+    assert out['coverage']['status'] == 'CONFLICTING_ASSESSMENTS'
+    assert out['coverage']['items'][0]['status'] == 'CONFLICTING'
+    assert out['coverage']['items'][0]['evidence_ids'] == ['a']
+
+
 def test_wrong_version_evidence_cannot_cover_requirement():
     evidence = [{**EVIDENCE[0], 'version': 'v2.9.1'}]
     out = check_claim_support(CLAIMS, evidence, lambda _: (response(), {}), requirements=REQUIREMENTS)
@@ -75,9 +84,20 @@ def test_complete_is_labeled_as_model_assessment_not_human_accuracy():
     assert out['coverage']['assessment_type'] == 'model_assessment_not_human_validation'
 
 
+def test_coverage_checker_receives_generator_gaps_as_untrusted_context():
+    seen=[]
+    def judge(payload):
+        seen.extend(payload)
+        return response(),{}
+    result=check_claim_support(CLAIMS,EVIDENCE,judge,requirements=REQUIREMENTS,
+                               reported_gaps=['尚未明确空页行为'])
+    assert seen[0]['reported_gaps']==['尚未明确空页行为']
+    assert result['coverage']['status']=='PARTIAL_SUPPORTED'
+
+
 def test_query_plan_exposes_truncated_requirements_instead_of_silently_omitting():
     from src.paddleocr_query_plan import plan_query
-    plan = plan_query('安装；调用；结果；阈值；空页；多页', versions=('v3.0.0',))
+    plan = plan_query('安装；调用；结果；阈值；配置；参数；返回；推理；空页；多页', versions=('v3.0.0',))
     assert plan['omitted_requirements'] == ['空页', '多页']
 
 
@@ -119,3 +139,35 @@ def test_public_query_surfaces_missing_requirement_even_when_generator_omits_gap
     assert result['requirement_coverage']['status'] == 'PARTIAL_SUPPORTED'
     assert result['answer_completeness'] == 'PARTIAL_SUPPORTED'
     assert any('未被回答' in gap for gap in result['evidence_gaps'])
+
+
+def test_public_query_keeps_supported_fact_when_completeness_assessments_conflict():
+    from pathlib import Path
+    from fastapi.testclient import TestClient
+    from src.public_knowledge import PublicKnowledgeIndex
+    from src.public_server import create_app
+
+    class Generator:
+        provider, model = 'test', 'test'
+
+        def generate(self, **kwargs):
+            return {'claims': [{'text': 'rec_batch_num 默认为 6。', 'evidence_ids': ['E1']}],
+                    'relevant_sources': [], 'evidence_gaps': ['裁剪图输入条件仍需核对']}
+
+        def verify_claims_with_diagnostics(self, payload):
+            assert payload[0]['reported_gaps'] == ['裁剪图输入条件仍需核对']
+            return {'verdicts': [{'claim_index': 0, 'supported': True, 'reason': '参数定义支持'}],
+                    'requirement_verdicts': [
+                        {'requirement_id': r['id'], 'status': 'COVERED', 'claim_indexes': [0],
+                         'reason': '参数和默认值已回答'} for r in payload[0]['requirements']]}, {}
+
+    index = PublicKnowledgeIndex(Path(__file__).resolve().parents[1] / 'public_corpus_paddleocr')
+    with TestClient(create_app(index=index, generator=Generator())) as client:
+        result = client.post('/public/query', json={
+            'query': 'rec_batch_num 默认值是多少，用于什么输入？',
+            'version': 'v2.9.1', 'language': 'zh'}).json()
+    assert result['status'] == 'OK'
+    assert 'rec_batch_num' in result['answer']
+    assert result['answer_completeness'] == 'PARTIAL_SUPPORTED'
+    assert result['requirement_coverage']['status'] == 'CONFLICTING_ASSESSMENTS'
+    assert '裁剪图输入条件仍需核对' in result['evidence_gaps']

@@ -5,7 +5,7 @@ from src.paddleocr_retrieval_views import generation_evidence_text as evidence_t
 from src.paddleocr_retrieval_views import module_for
 
 
-def check_claim_support(claims, evidence, judge, *, question=None, requirements=None):
+def check_claim_support(claims, evidence, judge, *, question=None, requirements=None, reported_gaps=None):
     failure={'status':'CHECK_FAILED','claims':[],'rejected':[],'diagnostics':{},
              'failure_type':'InvalidCheckerResponse',
              'assessment_type':'model_assessment_not_human_validation'}
@@ -21,12 +21,17 @@ def check_claim_support(claims, evidence, judge, *, question=None, requirements=
                             'evidence':[{'id':cid,'version':by_id[cid].get('version'),
                                          'module':by_id[cid].get('module',module_for(by_id[cid])),
                                          'document_path':by_id[cid].get('document_path'),
+                                         'source_identity':by_id[cid].get('source_identity'),
+                                         'applicability':by_id[cid].get('applicability'),
                                          'content':evidence_text(by_id[cid])} for cid in ids]})
             if question is not None:
                 if not isinstance(question,str) or not 0<len(question)<=4000:return failure
                 payload[-1]['question']=question
         if requirements:
             payload[0]['requirements'] = requirements
+        if reported_gaps:
+            if not isinstance(reported_gaps,list) or any(not isinstance(g,str) for g in reported_gaps):return failure
+            payload[0]['reported_gaps'] = list(reported_gaps)
         if len(json.dumps(payload,ensure_ascii=False))>60000:
             return {**failure,'failure_type':'EvidenceBudgetExceeded'}
         result,diagnostics=judge(payload)
@@ -41,14 +46,21 @@ def check_claim_support(claims, evidence, judge, *, question=None, requirements=
                     or not isinstance(row['reason'],str) or not 0<len(row['reason'])<=800):
                 return failure
             seen.add(i)
+        from src.paddleocr_applicability import claim_scope_conflict
+        for row in rows:
+            claim=claims[row['claim_index']]
+            if row['supported'] and claim_scope_conflict(claim['text'],[by_id[cid] for cid in claim['evidence_ids']]):
+                row.update(supported=False,reason='EXAMPLE_VERSION_SCOPE_MISMATCH')
         supported={row['claim_index'] for row in rows if row['supported']}
         rejected=[row for row in rows if not row['supported']]
         from src.requirement_coverage import assess_requirement_coverage
         coverage = assess_requirement_coverage(requirements, result.get('requirement_verdicts'),
                                                claims, supported, evidence)
+        from src.gap_review import assess_gaps
+        gap_review = assess_gaps(reported_gaps, result.get('gap_verdicts'), claims, supported, coverage)
         return {'status':'SUPPORTED' if len(supported)==len(claims) else 'PARTIAL_SUPPORTED' if supported else 'UNSUPPORTED',
                 'claims':[claim for i,claim in enumerate(claims) if i in supported],
-                'rejected':rejected,'diagnostics':diagnostics,'coverage':coverage,
+                'rejected':rejected,'diagnostics':diagnostics,'coverage':coverage,'gap_review':gap_review,
                 'assessment_type':'model_assessment_not_human_validation'}
     except Exception as exc:
         # A checker failure must not promote an unchecked answer. Preserve safe category only.
