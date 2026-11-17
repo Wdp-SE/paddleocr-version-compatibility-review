@@ -8,6 +8,9 @@ ROOT = Path(__file__).parents[2]
 
 def test_deployment_manifests_use_public_profile_and_lightweight_dependencies() -> None:
     render = (ROOT / "render.yaml").read_text(encoding="utf-8")
+    assert "rootDir:" not in render
+    assert "pip install -r versioned-rag-service/requirements-render.txt" in render
+    assert "cd versioned-rag-service && uvicorn " in render
     assert "versioned-rag-service" in render
     assert "uvicorn src.public_server:app --host 0.0.0.0 --port $PORT" in render
     assert "APP_ENV" in render and "public_demo" in render
