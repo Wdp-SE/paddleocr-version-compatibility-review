@@ -139,7 +139,13 @@ def asset_identity(folder):
     files=sorted(p for p in path.rglob('*') if p.is_file() and p.suffix in ('.json','.txt','.safetensors','.bin') and '.cache' not in p.relative_to(path).parts) if folder else []
     signature=tuple((str(p),p.stat().st_size,p.stat().st_mtime_ns) for p in files)
     if signature not in _ASSET_CACHE:
-        _ASSET_CACHE[signature]=hashlib.sha256(''.join(str(p.relative_to(path))+hashlib.sha256(p.read_bytes()).hexdigest() for p in files).encode()).hexdigest() if files else 'NOT_CONFIGURED'
+        def digest_file(file):
+            digest=hashlib.sha256()
+            with file.open('rb') as stream:
+                for block in iter(lambda: stream.read(1024*1024), b''):
+                    digest.update(block)
+            return digest.hexdigest()
+        _ASSET_CACHE[signature]=hashlib.sha256(''.join(str(p.relative_to(path))+digest_file(p) for p in files).encode()).hexdigest() if files else 'NOT_CONFIGURED'
     return _ASSET_CACHE[signature]
 
 

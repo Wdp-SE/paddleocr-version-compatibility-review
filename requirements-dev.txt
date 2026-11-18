@@ -1,0 +1,4 @@
+# Unified runtime plus existing optional corpus/legacy evaluation test dependencies.
+-r deploy/internal/requirements.in
+faiss-cpu>=1.9,<2
+pypdf>=5,<6

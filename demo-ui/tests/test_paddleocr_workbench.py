@@ -36,7 +36,7 @@ WORKSPACE = {"workspace_id": "paddleocr", "workspace": "PaddleOCR 文档处理�
 
 def static_report(files):
     content = files[0]["content"]
-    return {"schema_version": 1, "project_id": "paddleocr", "workspace_id": "paddleocr", "source_version": "v2.9.1",
+    report = {"schema_version": 1, "project_id": "paddleocr", "workspace_id": "paddleocr", "source_version": "v2.9.1",
             "target_version": "v3.0.0", "runtime_verified": False, "status": "supported_risk",
             "files": [{"path": row["path"], "sha256": hashlib.sha256(row["content"].encode()).hexdigest(),
                        "line_count": len(row["content"].splitlines())} for row in files],
@@ -50,6 +50,30 @@ def static_report(files):
             "gaps": [{"code": "runtime_not_verified", "detail": "真实扫描文档的 OCR 推理尚未验证"}],
             "verification_steps": ["在目标版本环境用实际扫描文档回归"],
             "summary": {"finding_count": 1, "risk_count": 1, "gap_count": 1}}
+    # The gateway fixture must obey the same complete declaration protocol as a real response.
+    report['application_contracts'] = []
+    report['regression_requirements'] = []
+    for row in files:
+        path = Path(row['path'])
+        if path.suffix != '.json' or 'contract' not in path.name.casefold():
+            continue
+        value = json.loads(row['content'])
+        requirements = {key: value[key] for key in ('required_line_fields', 'output_fields', 'page_fields', 'page_policy') if key in value}
+        source = {'path': row['path'], 'sha256': hashlib.sha256(row['content'].encode()).hexdigest(),
+                  'line_start': 1, 'line_end': len(row['content'].splitlines()), 'source_identity': 'submitted_application',
+                  'requirements': requirements, 'status': 'DECLARED_NOT_VERIFIED', 'runtime_verified': False}
+        report['application_contracts'].append(source)
+        checks = [f'{key}: ' + ', '.join(values) for key, values in requirements.items() if isinstance(values, list)]
+        if 'page_policy' in requirements:
+            checks.append('分页策略: ' + requirements['page_policy'])
+        if checks:
+            report['regression_requirements'].append({'kind': 'application_contract', 'rule_id': 'application_output_contract',
+                'finding_id': 'contract-' + hashlib.sha256((row['path'] + source['sha256']).encode()).hexdigest()[:16],
+                'application': {'path': row['path'], 'line': 1}, 'source': source,
+                'input_conditions': ['带文本页', '空页', '多页', '非法字段或长度不匹配'],
+                'expected_contract': '按本次提交的应用输出契约验证；测试定义不代表测试已经执行。',
+                'checks': checks, 'status': 'NOT_EXECUTED', 'runtime_verified': False})
+    return report
 
 
 @pytest.fixture
@@ -76,19 +100,63 @@ def visible(app):
     return "\n".join(str(item.value) for item in list(app.markdown) + list(app.caption) + list(app.info) + list(app.warning))
 
 
-def test_interview_examples_keep_cross_version_question_and_select_scope(client, monkeypatch):
-    workspace=copy.deepcopy(WORKSPACE)
-    workspace['domain_profile']['example_queries']=[
-        'PaddleOCR 2.9.1 的 OCR 调用如何只识别文字而不检测？',
-        'PaddleOCR 3.0.0 的 OCR 结果中 rec_texts 和 rec_scores 分别表示什么？',
-        'PaddleOCR 2.9.1 升级到 3.0.0，旧结果读取方式为什么需要调整？',
-        '仅凭官方资料，能否确认我们应用升级后下游 JSON 输出兼容？']
-    monkeypatch.setattr(PublicKnowledgeClient,'workspace',lambda self:copy.deepcopy(workspace))
+def test_configuration_branch_opens_without_upgrade_fields_and_changes_clear_result(client):
+    app = AppTest.from_file(APP, default_timeout=30).run()
+    app.button(key='nav_新建变更审查').click().run()
+    app.radio(key='ocr_workflow_type').set_value('OCR 配置变更').run()
+    assert not app.exception
+    assert 'OCR 组件 v2.9.1' in visible(app)
+    assert 'drop_score=0.5' in app.text_area(key='config_before_code_提高阈值 0.5 → 0.8').value
+    assert 'drop_score=0.8' in app.text_area(key='config_after_code_提高阈值 0.5 → 0.8').value
+    assert not any(w.key == 'ocr_target_version' for w in app.selectbox)
+
+
+def test_examples_follow_scope_and_replace_stale_canned_question(client):
+    from services.knowledge_examples import examples_for_scope
     app=AppTest.from_file(APP,default_timeout=30).run()
     app.button(key='nav_版本检索与问答').click().run()
-    assert len(app.selectbox(key='official_example').options)==4
-    app.selectbox(key='official_example').select(workspace['domain_profile']['example_queries'][2]).run()
+    assert len(app.selectbox(key='official_example').options)==5
+    assert app.text_area(key='official_question').value == examples_for_scope('v2.9.1')[0].question
+    app.selectbox(key='official_version').set_value('v3.0.0').run()
+    assert app.text_area(key='official_question').value == examples_for_scope('v3.0.0')[0].question
+    assert all('2.9.1' not in option for option in app.selectbox(key='official_example').options)
+    app.selectbox(key='official_version').set_value('all').run()
     assert app.selectbox(key='official_version').value=='all'
+    assert all('2.9.1' in option and '3.0.0' in option for option in app.selectbox(key='official_example').options)
+    app.selectbox(key='official_example').set_value(examples_for_scope('all')[1].question).run()
+    assert app.text_area(key='official_question').value == examples_for_scope('all')[1].question
+    assert not app.exception
+
+
+def test_scope_change_keeps_custom_draft_and_explains_mismatched_version(client):
+    app = AppTest.from_file(APP, default_timeout=30).run()
+    app.button(key='nav_版本检索与问答').click().run()
+    draft = '我的 PaddleOCR 2.9.1 自定义调用问题'
+    app.text_area(key='official_question').input(draft).run()
+    app.selectbox(key='official_version').set_value('v3.0.0').run()
+    assert app.text_area(key='official_question').value == draft
+    assert '问题提到了所选范围以外的版本' in visible(app)
+    assert not app.exception
+
+
+def test_declared_evidence_capability_is_used_by_query_without_benchmark_claim(client, monkeypatch):
+    workspace = copy.deepcopy(WORKSPACE)
+    workspace['evidence_retrieval'] = {'available': True}
+    workspace['source_breakdown'] = [{'version':'v3.0.0', 'document_family':'api_test'},
+                                    {'version':'v2.9.1', 'document_family':'upgrade_notes'}]
+    submitted = []
+    monkeypatch.setattr(PublicKnowledgeClient,'workspace',lambda self:copy.deepcopy(workspace))
+    monkeypatch.setattr(PublicKnowledgeClient,'query_official',
+                        lambda self, question, **scope: submitted.append(scope) or {'status':'NO_EVIDENCE'})
+    app = AppTest.from_file(APP, default_timeout=30).run()
+    app.button(key='nav_版本检索与问答').click().run()
+    assert app.selectbox(key='official_retrieval_policy').value == 'paddleocr_evidence'
+    app.selectbox(key='official_version').set_value('v3.0.0').run()
+    assert '官方接口测试' in visible(app) and 'api test' not in visible(app)
+    assert '升级说明' not in visible(app)
+    app.button(key='knowledge_generate').click().run()
+    assert submitted[-1]['version'] == 'v3.0.0'
+    assert submitted[-1]['retrieval_policy'] == 'paddleocr_evidence'
     assert not app.exception
 
 
@@ -153,8 +221,9 @@ def test_question_has_one_label_and_provider_failure_is_prominent(client, monkey
 def test_default_review_explains_human_validation_boundary(client):
     app = AppTest.from_file(APP, default_timeout=30).run()
     app.button(key='nav_新建变更审查').click().run()
-    assert '已登记应用和 Git 提交' in visible(app)
-    assert '已审阅不等于批准升级' in visible(app)
+    assert app.selectbox(key='ocr_input_mode').value=='已登记应用（Git 提交）'
+    assert '未提交的修改不纳入审查' in visible(app)
+    assert not app.selectbox(key='ocr_target_version').disabled
 
 
 def test_system_description_exposes_comparison_without_inventing_answer_accuracy(client, monkeypatch):
@@ -185,7 +254,13 @@ def test_full_application_is_default_and_edits_clear_review(client):
     assert app.selectbox(key='ocr_input_mode').value=='已登记应用（Git 提交）'
     app.selectbox(key='ocr_input_mode').select('完整文档处理应用').run()
     app.button(key='ocr_run_review').click().run()
+    # A cold graph import can exceed the UI's one-second inline grace period.
+    # AppTest does not run the fragment timer, so finish the actual queued job.
+    if 'ocr_job' in app.session_state:
+        app.session_state['ocr_job']['future'].result(timeout=30)
+        app.run()
     assert not app.exception
+    assert calls, '\n'.join(str(item.value) for item in list(app.error) + list(app.warning))
     assert len(calls[0][0])>4
     app.text_area(key='ocr_bundle_content').input('from paddleocr import PaddleOCR\n').run()
     assert not app.session_state.get('ocr_compatibility_review')
@@ -195,7 +270,7 @@ def test_registered_application_input_requires_loading_a_commit(client):
     app = AppTest.from_file(APP, default_timeout=30).run()
     app.button(key='nav_新建变更审查').click().run()
     assert app.selectbox(key='ocr_input_mode').value == '已登记应用（Git 提交）'
-    assert '先读取应用提交' in visible(app)
+    assert '未提交的修改不纳入审查' in visible(app)
     assert not any(b.key == 'ocr_run_review' for b in app.button)
     assert not app.exception
 
@@ -210,7 +285,7 @@ def test_registered_commit_submission_and_report_keep_identity(client, monkeypat
     monkeypatch.setattr(PublicKnowledgeClient, 'application_search', lambda *args, **kwargs: {'results': []})
     app = AppTest.from_file(APP, default_timeout=30).run()
     app.button(key='nav_新建变更审查').click().run()
-    next(button for button in app.button if button.label == '读取提交与检查范围').click().run()
+    next(button for button in app.button if button.label == '加载应用提交').click().run()
     assert not app.exception
     assert len(app.session_state['registered_snapshot']['files']) == 12
     app.button(key='ocr_run_review').click().run()
@@ -223,7 +298,7 @@ def test_registered_commit_submission_and_report_keep_identity(client, monkeypat
     result = app.session_state['ocr_compatibility_review']
     assert result['application_snapshot']['head_commit'] == app.session_state['registered_snapshot']['head_commit']
     assert result['input_coverage']['status'] == 'REGISTERED_SCOPE_COMPLETE'
-    assert '审查对象与检查范围' in visible(app)
+    assert '应用与检查范围' in visible(app)
     from services.review_tasks import ReviewTaskStore
     record = ReviewTaskStore(client[1] / 'application_tasks.sqlite3').load(app.session_state['ocr_task_ticket'])
     assert record['state'] == 'DONE'
@@ -252,15 +327,17 @@ def test_home_shows_latest_but_query_follows_application_dependency(client):
     assert not app.exception
     assert any(item.value == "PaddleOCR 文档处理应用研发工作台" for item in app.title)
     assert "PP-Human" not in visible(app)
-    assert "v3.0.0" in visible(app) and "当前应用依赖" in visible(app)
+    assert "v3.0.0" in visible(app) and "现用依赖" in visible(app)
     app.button(key="nav_版本检索与问答").click().run()
     assert not app.exception
     assert app.selectbox(key="official_version").value == "v2.9.1"
-    assert app.selectbox(key='official_version').disabled
-    app.radio(key='internal_query_mode').set_value('target').run()
+    assert not app.selectbox(key='official_version').disabled
+    assert not any(row.key == 'internal_query_mode' for row in app.radio)
+    assert not any(row.key == 'official_language' for row in app.selectbox)
+    assert app.selectbox(key='official_version').options==['现用版本资料 · PaddleOCR 2.9.1','升级目标资料 · PaddleOCR 3.0.0','两版对照 · 2.9.1 → 3.0.0']
+    app.selectbox(key='official_version').set_value('v3.0.0').run()
     assert app.selectbox(key='official_version').value == 'v3.0.0'
-    app.radio(key='internal_query_mode').set_value('manual').run()
-    app.selectbox(key='official_version').select('v2.9.1').run()
+    app.selectbox(key='official_version').set_value('v2.9.1').run()
     app.run()
     assert app.selectbox(key='official_version').value == 'v2.9.1'
     assert app.selectbox(key="official_retrieval_policy").options == ["BM25 基线（默认）"]
@@ -296,14 +373,13 @@ def test_static_report_workflow_shows_bound_locations_both_versions_and_human_re
     assert set(calls[0][1]) == {"source_version", "target_version",'request_timeout'}
     assert 0<calls[0][1]['request_timeout']<=240
     page = visible(app)
-    assert "应用位置：app/removed_structure_api.py" in page
+    assert "app/removed_structure_api.py" in page
     assert "当前依赖证据 · v2.9.1" in page and "升级目标证据 · v3.0.0" in page
-    assert "实际 OCR 推理未验证" in page and "真实扫描文档" in page
+    assert "未关联回归记录" in page and "真实扫描文档" in page
     assert "模型核查建议（待人工确认）" not in page
-    for key in ("nav_可能相关资料", "nav_修改前后对照", "nav_人工审核"):
-        app.button(key=key).click().run()
-        assert not app.exception
-        assert app.session_state["ocr_compatibility_review"]["workspace_id"] == "paddleocr"
+    assert [t.label for t in app.tabs]==['审查结果','证据与代码','回归要求','处理记录']
+    app.run()
+    assert app.session_state['ocr_compatibility_review']['workspace_id']=='paddleocr'
 
 
 def test_report_collapses_detail_and_deduplicates_exact_sources_without_mutating_report(client):
@@ -319,19 +395,38 @@ def test_report_collapses_detail_and_deduplicates_exact_sources_without_mutating
     assert not details['原因与应用代码'].proto.expanded
     assert not details['双版本依据 · 2 条来源'].proto.expanded
     assert any('有证据支持的静态风险' in item.value for item in app.error)
-    assert '下一步核查' in visible(app)
+    assert finding['desired_check'] in visible(app)
     assert any(finding['application']['snippet'] == item.value for item in app.code)
     links = [item.value for item in app.markdown if '](' in item.value and '#L5-L7' in item.value]
     assert len(links) == 2
     assert app.session_state['ocr_compatibility_review'] == result
-    assert any(button.label == '确认已审阅本次静态兼容性报告' for button in app.button)
+    assert any(button.label == '记录已审阅' for button in app.button)
+
+
+def test_human_regression_requirement_is_not_shown_as_failed_document_lookup(client):
+    app=open_review()
+    app.button(key='ocr_run_review').click().run()
+    result=copy.deepcopy(app.session_state['ocr_compatibility_review'])
+    pending={'check_id':'app-check','reason':'application_validation_required',
+             'versions':['v2.9.1','v3.0.0']}
+    result['investigation']['unresolved']=[pending]
+    result['application_validation_requirements']=[pending]
+    result['lookup_gaps']=[]
+    result['stage_status']['official_lookup']='completed'
+    app.session_state['ocr_compatibility_review']=result
+    app.run()
+    assert not app.exception
+    page=visible(app)
+    assert '待完成应用验证' in page
+    assert '当前提交的回归记录' in page
+    assert not any(x.label=='版本资料待补查' for x in app.expander)
 
 
 def test_human_review_persists_versions_files_and_exact_static_facts(client):
     _, temp = client
     app = open_review()
     app.button(key="ocr_run_review").click().run()
-    next(button for button in app.button if button.label == "确认已审阅本次静态兼容性报告").click().run()
+    next(button for button in app.button if button.label == "记录已审阅").click().run()
     assert not app.exception
     result = app.session_state["ocr_compatibility_review"]
     records = SQLiteReviewAudit(temp / "audit.sqlite3").list_recent(session_id=app.session_state["official_session_id"])
@@ -342,7 +437,7 @@ def test_human_review_persists_versions_files_and_exact_static_facts(client):
     assert record["compatibility_report"] == result["compatibility_report"]
     assert record["runtime_verified"] is False
     assert "不代表实际推理兼容性已验证" in record["human_review_scope"]
-    assert "人工审核已记录" in visible(app)
+    assert any('已记录审阅意见' in x.value for x in app.success)
     assert "等待人工审核" not in visible(app)
 
 
@@ -365,13 +460,13 @@ def test_model_suggestion_records_show_actual_provider_model_keys(client):
     assert not app.exception
     assert "建议结构或引用未通过校验" in visible(app)
     assert "实际模型：deepseek-flash" in visible(app)
-    assert "实际 OCR 推理未验证" in visible(app)
+    assert "未关联回归记录" in visible(app)
 
 
 def test_editing_application_invalidates_previous_report_and_decision(client):
     app = open_review()
     app.button(key="ocr_run_review").click().run()
-    next(button for button in app.button if button.label == "确认已审阅本次静态兼容性报告").click().run()
+    next(button for button in app.button if button.label == "记录已审阅").click().run()
     app.text_area(key="ocr_application_content").set_value("from paddleocr import PaddleOCR\nocr = PaddleOCR()\n").run()
     assert not app.exception
     assert "ocr_compatibility_review" not in app.session_state
@@ -465,9 +560,9 @@ def test_risk_disposition_hold_is_persisted_without_runtime_approval(client):
     app=open_review()
     app.button(key='ocr_run_review').click().run()
     assert not app.exception
-    continuation=next(b for b in app.button if b.label=='人工记录：继续升级流程')
+    continuation=next(b for b in app.button if b.label=='记录继续评审')
     assert continuation.disabled  # no disposition or regression logs submitted
-    next(b for b in app.button if b.label=='人工记录：暂缓升级').click().run()
+    next(b for b in app.button if b.label=='记录暂缓变更').click().run()
     assert not app.exception
     records=SQLiteReviewAudit(temp/'audit.sqlite3').list_recent(session_id=app.session_state['official_session_id'])
     assert records[0]['event_type']=='upgrade_disposition'

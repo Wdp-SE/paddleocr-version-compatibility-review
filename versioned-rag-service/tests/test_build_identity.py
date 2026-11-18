@@ -78,6 +78,17 @@ def test_content_fingerprint_marks_missing_inputs_unknown(tmp_path):
     assert result == {"chunks_sha256": None, "fingerprint_sha256": "unknown"}
 
 
+def test_review_identity_changes_when_agent_or_orchestration_changes(tmp_path):
+    from src.build_identity import review_execution_fingerprint
+    for folder,name in (('versioned-rag-service/src','api.py'),('change-review-agent/app','review.py'),
+        ('change-review-agent/config','policy.json'),('demo-ui/services','registered_review.py')):
+        directory=tmp_path/folder;directory.mkdir(parents=True)
+        (directory/name).write_text('{}')
+    before=review_execution_fingerprint(tmp_path)
+    (tmp_path/'change-review-agent/app/review.py').write_text('changed')
+    assert before!=review_execution_fingerprint(tmp_path)
+
+
 def test_project_workspace_does_not_publish_legacy_domain_evaluation_fingerprint(tmp_path):
     from src.build_identity import public_build_identity
 

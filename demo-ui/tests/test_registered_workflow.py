@@ -32,3 +32,21 @@ def test_wrong_commit_application_evidence_is_rejected():
     with pytest.raises(ValueError):
         validate_application_evidence({'results': [{'path': 'consumer.py', 'application_commit': 'b'*40}]},
             {'application_id': 'ocr', 'head_commit': 'a'*40, 'files': [{'path': 'consumer.py', 'content': 'text'}]})
+
+
+def test_application_lookup_happens_before_analysis_and_failure_remains_explicit():
+    order=[]
+    class Gateway:
+        def application_search(self, *args, **kwargs):
+            order.append('application_lookup')
+            raise ValueError('unavailable')
+    def analyze(client, files, **kwargs):
+        order.append('static_review')
+        return {'compatibility_report': {'files': [], 'findings': [], 'gaps': []}}
+    snapshot={'application_id':'ocr','head_commit':'a'*40,'files':[{'path':'contract.json','content':'{}'}],
+              'gaps':[],'coverage':{'status':'REGISTERED_SCOPE_COMPLETE'}}
+    result=run_registered_review(Gateway(),snapshot,analyze=analyze,context={},
+                                 source_version='v2.9.1',target_version='v3.0.0')
+    assert order==['application_lookup','static_review']
+    assert any(g['code']=='application_evidence_unavailable' for g in result['compatibility_report']['gaps'])
+    assert result['runtime_verified'] is False

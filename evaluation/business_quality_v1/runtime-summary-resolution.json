@@ -1,0 +1,291 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-11-14T02:45:47.121719+00:00",
+  "identity_scope": "Current author-owned uncommitted application source snapshot, not an internal application release or deployment.",
+  "source_identity": {
+    "application_files_sha256": {
+      "application/application_manifest.json": "93f1e5b22512bfe2e965a400c1107ab0d2586a1a0152b92b3495d2d06a8ed1cb",
+      "application/consumer.py": "769e965d3f9a318ecfa8bf3e0b015e43154d7e345059cfb0734e34cd78cb91e1",
+      "application/contract.json": "8497d02cec52712d255270f26fe89c44a206fd1741889df9aa9cad1235b0087e",
+      "application/design.md": "4222e2fdb6424b239ccfdc452bb737f4b34eecdaa6b85cb26af2aa253aa3758d",
+      "application/normalizer.py": "32d811893353415861e4bc4a82525cee6bffa0257f8995f30161ef28836525fb",
+      "application/ocr_client.py": "59047b1b8e0327874a930803368608125f297b0a8d3c4682efecf2027a1972b8",
+      "application/pipeline.py": "cb5c6bcd9d81cf53fd94e2b703e5448cdb9889bce592f89d7363453a9922703b",
+      "application/requirements-v2.txt": "33e42943a1f915eb34f36b649f706e774cf3f904f113f792540c46a15c9fe23e",
+      "application/requirements-v3.txt": "8f82f4eeffa94bf738f58b0f51eb4d3071139c64ce465e4de8403deedab78865",
+      "application/upgrade.md": "4b7a4d558cb57a1221cac4a55c663d87ca4dab9b343295b11a7543127d6f0601",
+      "application/__init__.py": "916835a1e2c8e2ebc1ed808457eef0cea0e16fbcd2362fcb70359dad8c0a8192",
+      "application/tests/test_contract.py": "a5c7d0906fb2e66fc3dac8b08185339303f22d887fd167fe6bad081040dec9af"
+    },
+    "runner_sha256": "6b5da5d82fe39d81ac57df1caa17941f7b962dbce1fabe563c5acbae6b181211",
+    "adapter_sha256": "702df5052cf64c19c524bdb7ee2a1b931fdc7030e9f09cf2db9842cedb3681cf"
+  },
+  "application_manifest_sha256": "93f1e5b22512bfe2e965a400c1107ab0d2586a1a0152b92b3495d2d06a8ed1cb",
+  "current_source_revalidated": true,
+  "fixed_score_fixtures": {
+    "report": ".local-demo-temp/resolve-20261114/runtime-fixtures-resolution.json",
+    "expectations_met": true,
+    "count": 8,
+    "intentionally_failed_cases": [
+      "file_changed_not_adopted",
+      "v3_default_entry_fails",
+      "unchanged_call_runtime_bad_type"
+    ]
+  },
+  "real_v2": {
+    "versions": {
+      "paddleocr": "2.9.1",
+      "paddlepaddle": "2.6.2"
+    },
+    "cases": [
+      {
+        "case": "default",
+        "report": ".local-demo-temp/resolve-20261114/real-v2-resolution-default.json",
+        "report_sha256": "73ef47386977a84a572e5c4c859691a6fd2f95c060be7f18ad333611ef70918b",
+        "child_exit_code": 0,
+        "supervisor_seconds": 13.13,
+        "runtime_status": "PASSED",
+        "configuration": {
+          "config_sha256": null,
+          "config_source": null,
+          "declared_values": {},
+          "effective_values": {
+            "lang": "ch",
+            "drop_score": 0.5
+          },
+          "value_sources": {
+            "lang": "default",
+            "drop_score": "default"
+          },
+          "factory_parameters": {
+            "lang": "ch"
+          }
+        },
+        "actual_entrypoint_contract_passed": true,
+        "normalization_contract_passed": true,
+        "sample_regression_passed": true
+      },
+      {
+        "case": "old",
+        "report": ".local-demo-temp/resolve-20261114/real-v2-resolution-old.json",
+        "report_sha256": "d852fbc471f18e1ac14f0e6ed94822fff663380ecc1e544843959f3c4bbe99a8",
+        "child_exit_code": 0,
+        "supervisor_seconds": 13.66,
+        "runtime_status": "PASSED",
+        "configuration": {
+          "config_sha256": "3aac5b921cce991976dcd069e371695545269c2f1cf308e6f3c902b5e2584919",
+          "config_source": "<repo>/.local-demo-temp/resolve-20261114/runtime-configs/old.json",
+          "declared_values": {
+            "schema_version": 1,
+            "drop_score": 0.5
+          },
+          "effective_values": {
+            "lang": "ch",
+            "drop_score": 0.5
+          },
+          "value_sources": {
+            "lang": "default",
+            "drop_score": "json"
+          },
+          "factory_parameters": {
+            "lang": "ch",
+            "drop_score": 0.5
+          }
+        },
+        "actual_entrypoint_contract_passed": true,
+        "normalization_contract_passed": true,
+        "sample_regression_passed": true
+      },
+      {
+        "case": "new",
+        "report": ".local-demo-temp/resolve-20261114/real-v2-resolution-new.json",
+        "report_sha256": "636ac8313bbf98acf02f266deadda7615bdb854c6ca2330337ede347811223b4",
+        "child_exit_code": 0,
+        "supervisor_seconds": 13.99,
+        "runtime_status": "PASSED",
+        "configuration": {
+          "config_sha256": "5e9df4ca862d65318f1256fbdabfa3f8855d75956bb1826ca6df8f92123e5e6a",
+          "config_source": "<repo>/.local-demo-temp/resolve-20261114/runtime-configs/new.json",
+          "declared_values": {
+            "schema_version": 1,
+            "drop_score": 0.8
+          },
+          "effective_values": {
+            "lang": "ch",
+            "drop_score": 0.8
+          },
+          "value_sources": {
+            "lang": "default",
+            "drop_score": "json"
+          },
+          "factory_parameters": {
+            "lang": "ch",
+            "drop_score": 0.8
+          }
+        },
+        "actual_entrypoint_contract_passed": true,
+        "normalization_contract_passed": true,
+        "sample_regression_passed": true
+      },
+      {
+        "case": "override",
+        "report": ".local-demo-temp/resolve-20261114/real-v2-resolution-override.json",
+        "report_sha256": "af60ada986e6d1f2c06a1322d472bfbf8ab7b62b89bfd084cc738401298e4a4d",
+        "child_exit_code": 0,
+        "supervisor_seconds": 13.1,
+        "runtime_status": "PASSED",
+        "configuration": {
+          "config_sha256": "5e9df4ca862d65318f1256fbdabfa3f8855d75956bb1826ca6df8f92123e5e6a",
+          "config_source": "<repo>/.local-demo-temp/resolve-20261114/runtime-configs/new.json",
+          "declared_values": {
+            "schema_version": 1,
+            "drop_score": 0.8
+          },
+          "effective_values": {
+            "lang": "ch",
+            "drop_score": 0.5
+          },
+          "value_sources": {
+            "lang": "default",
+            "drop_score": "explicit_override"
+          },
+          "factory_parameters": {
+            "lang": "ch",
+            "drop_score": 0.5
+          }
+        },
+        "actual_entrypoint_contract_passed": true,
+        "normalization_contract_passed": true,
+        "sample_regression_passed": true
+      }
+    ],
+    "note": "All four configurations rerun after explicit target entrypoints and manifest were frozen."
+  },
+  "real_v3": {
+    "report": ".local-demo-temp/resolve-20261114/v3-target-application.child.json",
+    "report_sha256": "d53e6a2103e2dc083665e4fd4af6946ffe5f04c02b4b951d39907974c81e8c17",
+    "supervisor_report": ".local-demo-temp/resolve-20261114/v3-target-application.json",
+    "raw_log": ".local-demo-temp/resolve-20261114/v3-target-application.log",
+    "runtime_status": "PASSED",
+    "versions": {
+      "paddleocr": "3.0.0",
+      "paddlex": "3.0.0",
+      "paddlepaddle": "3.0.0",
+      "numpy": "1.24.4"
+    },
+    "profile": {
+      "device": "cpu",
+      "enable_mkldnn": false,
+      "cpu_threads": 2,
+      "use_doc_orientation_classify": false,
+      "use_doc_unwarping": false,
+      "use_textline_orientation": false,
+      "text_rec_score_thresh": 0.0,
+      "text_det_limit_type": "max",
+      "text_det_limit_side_len": 960,
+      "text_detection_model_name": "PP-OCRv5_server_det",
+      "text_detection_model_dir": "<local-user>/.paddlex/official_models/PP-OCRv5_server_det",
+      "text_recognition_model_name": "PP-OCRv5_server_rec",
+      "text_recognition_model_dir": "<local-user>/.paddlex/official_models/PP-OCRv5_server_rec"
+    },
+    "models_sha256": {
+      "PP-OCRv5_server_det": {
+        "inference.json": "af5876933d8806a1b50d895867e0781e135cd92ff37381992828fc8d1b842d28",
+        "inference.pdiparams": "183146fe9d9910352f68482f623bcbbb9fa7b9e8fa1463b9ad288cef00524d2d",
+        "inference.yml": "28fb721efc3634fc8aa677e474b9602cb815a91cf569ef357a7a553d7b3ce685"
+      },
+      "PP-OCRv5_server_rec": {
+        "inference.json": "8e6e12e5d42531840310977fffb58165bf889fc5061408c5a8afdb6985f47fcb",
+        "inference.pdiparams": "63853f062a5f4089befc16f565a68277618e0da5cb45468b49d11079de0ada77",
+        "inference.yml": "2c719dba044c4e2228aef8ff92f5f575394d75d24c16de096a33b7cfd902f66d"
+      }
+    },
+    "legacy_entry": {
+      "entrypoint": "application.pipeline.process_configured",
+      "runtime_status": "FAILED",
+      "error_type": "ValueError",
+      "error": "invalid v2 page"
+    },
+    "target_entrypoint": "application.pipeline.process_target_configured",
+    "baseline_application_invocations": 1,
+    "baseline_input_page_indices": [
+      0
+    ],
+    "target_application_invocations": 1,
+    "target_input_page_indices": [
+      0,
+      1,
+      2
+    ],
+    "target_input": "one ordered list of three locally decoded contiguous BGR arrays",
+    "normalization_contract_passed": true,
+    "consumer_contract_passed": true,
+    "sample_regression_passed": true,
+    "source_changed_during_run": false,
+    "raw_page_type": "paddlex.inference.pipelines.ocr.result.OCRResult",
+    "raw_texts_type": "builtins.list",
+    "raw_scores_type": "builtins.list",
+    "child_seconds": 81.44,
+    "supervisor_seconds": 82.578,
+    "configuration_notice": "No legacy drop_score is forwarded. The 2.x loader default record is not a 3.0 filter claim; actual 3.0 text_rec_score_thresh is explicit in profile."
+  },
+  "stage_evidence": [
+    {
+      "report": "v3-pipeline-baseline.json",
+      "log": "v3-pipeline-baseline.log",
+      "exit_code": 0,
+      "detector_shape": [
+        1,
+        3,
+        736,
+        1472
+      ],
+      "detector_inference_seconds": 36.036,
+      "recognition_inference_seconds": 5.473,
+      "meaning": "Unchanged full server pipeline works; the historical native crash was not reproduced."
+    },
+    {
+      "report": "v3-current-original-order.json",
+      "log": "v3-current-original-order.log",
+      "exit_code": 0,
+      "domain_report": "v3-current-original-runner-result.json",
+      "domain_status": "FAILED",
+      "meaning": "Pre-fix exact original runner completed six detector calls and real OCR; three legacy app entries fail ValueError. Diagnostic wrapper then returned zero despite domain failure; future wrapper was fixed to return nonzero."
+    },
+    {
+      "report": "v3-max960-single.json",
+      "log": "v3-max960-single.log",
+      "exit_code": 0,
+      "detector_shape": [
+        1,
+        3,
+        480,
+        960
+      ],
+      "detector_inference_seconds": 12.441,
+      "recognition_inference_seconds": 5.63,
+      "meaning": "Documented max960 CPU profile independently validated; resize/model configuration is not a recognition-quality comparison."
+    }
+  ],
+  "automated_checks": [
+    {
+      "scope": "original application",
+      "passed": 53
+    },
+    {
+      "scope": "service tests/test_upgrade_review_depth.py",
+      "passed": 25
+    },
+    {
+      "scope": "new evaluation scripts py_compile",
+      "passed": 3
+    }
+  ],
+  "boundaries": [
+    "PaddleOCR/PaddleX/PaddlePaddle remain 3.0.0; no dependency/model replacements or KMP_DUPLICATE_LIB_OK.",
+    "OCR v3 virtual environment inherits system site-packages; not a clean portable image.",
+    "Historical 0xC0000005 exact native cause remains unproven because it did not recur.",
+    "Default legacy entries remain intentional review baselines; the explicit target entry is the verified migration path.",
+    "Target threshold configuration migration, PPStructure, recognition accuracy and release approval were not validated."
+  ]
+}

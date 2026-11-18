@@ -1,0 +1,1012 @@
+{
+  "schema_version": 1,
+  "dataset_id": "business-quality-current-corpus-retrieval-v1-20261114",
+  "label_origin": "developer-authored source-grounded regressions and colloquial variants; not blind, not independent business expert scoring",
+  "split_policy": "11 previously seen regressions are development; new wording and controls fixed before this experiment are acceptance, still developer-authored with known source tasks",
+  "business_scope": "internal engineering knowledge proxy; PaddleOCR official sources retain attribution; OCR scan-page normalization to downstream JSON; PPStructure is a related interface branch, not runtime verified",
+  "cases": [
+    {
+      "id": "regression-v4-01",
+      "split": "dev",
+      "query": "OCR 产线的 rec_texts 和 rec_scores 分别保存什么，是否经过过滤？",
+      "expected_behavior": "supported",
+      "versions": [
+        "v3.0.0"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "reused-developer-regression: evaluation/paddleocr_quality_v4/dataset.json#v4-01",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "f1",
+          "version": "v3.0.0",
+          "module": "ocr",
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "tokens": [
+            "rec_texts",
+            "rec_scores",
+            "text_rec_score_thresh"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:30",
+              "version": "v3.0.0",
+              "module": "ocr",
+              "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+              "line_start": 907,
+              "line_end": 927,
+              "source_id": "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+              "source_sha256": "6ce2310fc0b471e634a57fb54718fa56d79a00867515b3bf5be397163ab8927a",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "regression-v4-02",
+      "split": "dev",
+      "query": "OCR 结果如何调用 save_to_json 保存到目录？",
+      "expected_behavior": "supported",
+      "versions": [
+        "v3.0.0"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "reused-developer-regression: evaluation/paddleocr_quality_v4/dataset.json#v4-02",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "f1",
+          "version": "v3.0.0",
+          "module": "ocr",
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "tokens": [
+            "save_to_json",
+            "save_path"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:41",
+              "version": "v3.0.0",
+              "module": "ocr",
+              "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+              "line_start": 1408,
+              "line_end": 1414,
+              "source_id": "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+              "source_sha256": "6ce2310fc0b471e634a57fb54718fa56d79a00867515b3bf5be397163ab8927a",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "regression-v4-03",
+      "split": "dev",
+      "query": "OCR 产线 predict 返回结果后，怎么逐个打印并保存图片？",
+      "expected_behavior": "supported",
+      "versions": [
+        "v3.0.0"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "reused-developer-regression: evaluation/paddleocr_quality_v4/dataset.json#v4-03",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "f1",
+          "version": "v3.0.0",
+          "module": "ocr",
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "tokens": [
+            "for res in",
+            "print",
+            "save_to_img"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:33",
+              "version": "v3.0.0",
+              "module": "ocr",
+              "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+              "line_start": 937,
+              "line_end": 953,
+              "source_id": "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+              "source_sha256": "6ce2310fc0b471e634a57fb54718fa56d79a00867515b3bf5be397163ab8927a",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "regression-v4-04",
+      "split": "dev",
+      "query": "OCR 产线用哪些开关关闭文档方向、矫正与文本行方向？",
+      "expected_behavior": "supported",
+      "versions": [
+        "v3.0.0"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "reused-developer-regression: evaluation/paddleocr_quality_v4/dataset.json#v4-04",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "f1",
+          "version": "v3.0.0",
+          "module": "ocr",
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "tokens": [
+            "use_doc_orientation_classify",
+            "use_doc_unwarping",
+            "use_textline_orientation"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:26",
+              "version": "v3.0.0",
+              "module": "ocr",
+              "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+              "line_start": 521,
+              "line_end": 532,
+              "source_id": "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+              "source_sha256": "6ce2310fc0b471e634a57fb54718fa56d79a00867515b3bf5be397163ab8927a",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "regression-v4-05",
+      "split": "dev",
+      "query": "OCR 的 text_det_box_thresh 是像素阈值还是框内平均得分阈值？",
+      "expected_behavior": "supported",
+      "versions": [
+        "v3.0.0"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "reused-developer-regression: evaluation/paddleocr_quality_v4/dataset.json#v4-05",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "f1",
+          "version": "v3.0.0",
+          "module": "ocr",
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "tokens": [
+            "text_det_box_thresh",
+            "平均"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:35",
+              "version": "v3.0.0",
+              "module": "ocr",
+              "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+              "line_start": 959,
+              "line_end": 1224,
+              "source_id": "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+              "source_sha256": "6ce2310fc0b471e634a57fb54718fa56d79a00867515b3bf5be397163ab8927a",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "regression-v4-06",
+      "split": "dev",
+      "query": "OCR 结果中 rec_boxes 的形状和坐标顺序是什么？",
+      "expected_behavior": "supported",
+      "versions": [
+        "v3.0.0"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "reused-developer-regression: evaluation/paddleocr_quality_v4/dataset.json#v4-06",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "f1",
+          "version": "v3.0.0",
+          "module": "ocr",
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "tokens": [
+            "rec_boxes",
+            "x_min",
+            "y_max"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:41",
+              "version": "v3.0.0",
+              "module": "ocr",
+              "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+              "line_start": 1408,
+              "line_end": 1414,
+              "source_id": "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+              "source_sha256": "6ce2310fc0b471e634a57fb54718fa56d79a00867515b3bf5be397163ab8927a",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "regression-v4-07",
+      "split": "dev",
+      "query": "PPStructureV3 如何导出 Markdown 文档？",
+      "expected_behavior": "supported",
+      "versions": [
+        "v3.0.0"
+      ],
+      "modules": [
+        "structure"
+      ],
+      "label_origin": "reused-developer-regression: evaluation/paddleocr_quality_v4/dataset.json#v4-07",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "f1",
+          "version": "v3.0.0",
+          "module": "structure",
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md"
+          ],
+          "tokens": [
+            "save_to_markdown"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:75",
+              "version": "v3.0.0",
+              "module": "structure",
+              "document_path": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+              "line_start": 2461,
+              "line_end": 2466,
+              "source_id": "v3-0-0-docs-version3-x-pipeline-usage-pp-structurev3-md-619d1ff4",
+              "source_sha256": "edf596dfd26a6a0814650495f2b503933822b06230cf045a3b4b2acbce72950d",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/PP-StructureV3.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "regression-v4-08",
+      "split": "dev",
+      "query": "PPStructureV3 的 overall_ocr_res 中识别文本和得分字段是什么？",
+      "expected_behavior": "supported",
+      "versions": [
+        "v3.0.0"
+      ],
+      "modules": [
+        "structure"
+      ],
+      "label_origin": "reused-developer-regression: evaluation/paddleocr_quality_v4/dataset.json#v4-08",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "f1",
+          "version": "v3.0.0",
+          "module": "structure",
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md"
+          ],
+          "tokens": [
+            "overall_ocr_res",
+            "rec_texts",
+            "rec_scores"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:73",
+              "version": "v3.0.0",
+              "module": "structure",
+              "document_path": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+              "line_start": 2413,
+              "line_end": 2437,
+              "source_id": "v3-0-0-docs-version3-x-pipeline-usage-pp-structurev3-md-619d1ff4",
+              "source_sha256": "edf596dfd26a6a0814650495f2b503933822b06230cf045a3b4b2acbce72950d",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/PP-StructureV3.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "regression-old-call",
+      "split": "dev",
+      "query": "PaddleOCR 2.9.1 Python 接口如何只识别已有文本图片而不检测？",
+      "expected_behavior": "supported",
+      "versions": [
+        "v2.9.1"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "reused-developer-regression: internal_upgrade_depth_v1#old-call",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "old-call",
+          "version": "v2.9.1",
+          "module": "ocr",
+          "allowed_paths": [
+            "doc/doc_ch/whl.md"
+          ],
+          "tokens": [
+            "det=False"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v2.9.1:zh:doc/doc_ch/whl:25",
+              "version": "v2.9.1",
+              "module": "ocr",
+              "document_path": "doc/doc_ch/whl.md",
+              "line_start": 168,
+              "line_end": 178,
+              "source_id": "v2-9-1-doc-doc-ch-whl-md-f1bd9719",
+              "source_sha256": "9bc1fb30acf1da3ef10613fc44b8748f70ac7fb17d5b449b281fa49d869e455a",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/whl.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "regression-result-migration",
+      "split": "dev",
+      "query": "PaddleOCR 2.9.1 升级到 3.0.0，为什么旧结果读取需要调整？",
+      "expected_behavior": "supported",
+      "versions": [
+        "v2.9.1",
+        "v3.0.0"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "reused-developer-regression: internal_upgrade_depth_v1#migration-contract",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "old-result",
+          "version": "v2.9.1",
+          "module": "ocr",
+          "allowed_paths": [
+            "paddleocr.py"
+          ],
+          "tokens": [
+            "ocr_res.append"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v2.9.1:zh:paddleocr:10",
+              "version": "v2.9.1",
+              "module": "ocr",
+              "document_path": "paddleocr.py",
+              "line_start": 690,
+              "line_end": 793,
+              "source_id": "v2-9-1-paddleocr-py-02eb1820",
+              "source_sha256": "37da5a58692bcd37c8d9cf60765c449fa3662de82d416f04358bd8ead87e7162",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/paddleocr.py"
+            }
+          ]
+        },
+        {
+          "id": "target-fields",
+          "version": "v3.0.0",
+          "module": "ocr",
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "tokens": [
+            "rec_texts",
+            "rec_scores",
+            "text_rec_score_thresh"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:30",
+              "version": "v3.0.0",
+              "module": "ocr",
+              "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+              "line_start": 907,
+              "line_end": 927,
+              "source_id": "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+              "source_sha256": "6ce2310fc0b471e634a57fb54718fa56d79a00867515b3bf5be397163ab8927a",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "regression-official-tests",
+      "split": "dev",
+      "query": "PaddleOCR 3.0.0 的官方 OCR 测试检查了哪些返回字段？",
+      "expected_behavior": "supported",
+      "versions": [
+        "v3.0.0"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "reused-developer-regression: internal_upgrade_depth_v1#official-tests",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "official-test",
+          "version": "v3.0.0",
+          "module": "ocr",
+          "allowed_paths": [
+            "tests/pipelines/test_ocr.py"
+          ],
+          "tokens": [
+            "assert isinstance(res[\"rec_texts\"], list)"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v3.0.0:zh:tests/pipelines/test_ocr:3",
+              "version": "v3.0.0",
+              "module": "ocr",
+              "document_path": "tests/pipelines/test_ocr.py",
+              "line_start": 17,
+              "line_end": 42,
+              "source_id": "v3-0-0-tests-pipelines-test-ocr-py-e61d8a41",
+              "source_sha256": "55b9d4c5c92123d114e701230bf5e1a282097acdd8e383fc5166d84b07e31a51",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/tests/pipelines/test_ocr.py"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "colloquial-text-score",
+      "split": "acceptance",
+      "query": "扫描页识别完，OCR 给我的字和对应分数各放哪？低分的会被先筛掉吗？",
+      "expected_behavior": "supported",
+      "versions": [
+        "v3.0.0"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "developer-authored-colloquial-not-blind",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "target-fields",
+          "version": "v3.0.0",
+          "module": "ocr",
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "tokens": [
+            "rec_texts",
+            "rec_scores",
+            "text_rec_score_thresh"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:30",
+              "version": "v3.0.0",
+              "module": "ocr",
+              "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+              "line_start": 907,
+              "line_end": 927,
+              "source_id": "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+              "source_sha256": "6ce2310fc0b471e634a57fb54718fa56d79a00867515b3bf5be397163ab8927a",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "colloquial-save-json",
+      "split": "acceptance",
+      "query": "我想把 OCR 每页识别结果落到一个目录，怎么导出 JSON？",
+      "expected_behavior": "supported",
+      "versions": [
+        "v3.0.0"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "developer-authored-colloquial-not-blind",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "save-json",
+          "version": "v3.0.0",
+          "module": "ocr",
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "tokens": [
+            "save_to_json",
+            "save_path"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:41",
+              "version": "v3.0.0",
+              "module": "ocr",
+              "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+              "line_start": 1408,
+              "line_end": 1414,
+              "source_id": "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+              "source_sha256": "6ce2310fc0b471e634a57fb54718fa56d79a00867515b3bf5be397163ab8927a",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "colloquial-old-crop",
+      "split": "acceptance",
+      "query": "2.9.1 里我已经裁出文字小图，只想识别，不要再找框，OCR 该怎么调？",
+      "expected_behavior": "supported",
+      "versions": [
+        "v2.9.1"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "developer-authored-colloquial-not-blind",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "old-call",
+          "version": "v2.9.1",
+          "module": "ocr",
+          "allowed_paths": [
+            "doc/doc_ch/whl.md"
+          ],
+          "tokens": [
+            "det=False"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v2.9.1:zh:doc/doc_ch/whl:25",
+              "version": "v2.9.1",
+              "module": "ocr",
+              "document_path": "doc/doc_ch/whl.md",
+              "line_start": 168,
+              "line_end": 178,
+              "source_id": "v2-9-1-doc-doc-ch-whl-md-f1bd9719",
+              "source_sha256": "9bc1fb30acf1da3ef10613fc44b8748f70ac7fb17d5b449b281fa49d869e455a",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/whl.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "version-old-positions",
+      "split": "acceptance",
+      "query": "PaddleOCR 2.9.1 的 OCR 输出里，line[1][0] 和 line[1][1] 分别怎么取文字和分数？",
+      "expected_behavior": "supported",
+      "versions": [
+        "v2.9.1"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "developer-authored-colloquial-not-blind",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "old-text-score",
+          "version": "v2.9.1",
+          "module": "ocr",
+          "allowed_paths": [
+            "doc/doc_ch/whl.md"
+          ],
+          "tokens": [
+            "line[1][0]",
+            "line[1][1]"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v2.9.1:zh:doc/doc_ch/whl:13",
+              "version": "v2.9.1",
+              "module": "ocr",
+              "document_path": "doc/doc_ch/whl.md",
+              "line_start": 70,
+              "line_end": 91,
+              "source_id": "v2-9-1-doc-doc-ch-whl-md-f1bd9719",
+              "source_sha256": "9bc1fb30acf1da3ef10613fc44b8748f70ac7fb17d5b449b281fa49d869e455a",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/whl.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "module-ocr-fields",
+      "split": "acceptance",
+      "query": "只看 PaddleOCR OCR 产线的 rec_texts、rec_scores，别拿表格识别或 PPStructureV3 的 overall_ocr_res 当证据。",
+      "expected_behavior": "supported",
+      "versions": [
+        "v3.0.0"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "developer-authored-colloquial-not-blind",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "target-fields",
+          "version": "v3.0.0",
+          "module": "ocr",
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "tokens": [
+            "rec_texts",
+            "rec_scores",
+            "text_rec_score_thresh"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:30",
+              "version": "v3.0.0",
+              "module": "ocr",
+              "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+              "line_start": 907,
+              "line_end": 927,
+              "source_id": "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+              "source_sha256": "6ce2310fc0b471e634a57fb54718fa56d79a00867515b3bf5be397163ab8927a",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "module-structure-fields",
+      "split": "acceptance",
+      "query": "PPStructureV3 中 overall_ocr_res 内的 rec_texts 和 rec_scores 是什么？这里不是独立 OCR 调用。",
+      "expected_behavior": "supported",
+      "versions": [
+        "v3.0.0"
+      ],
+      "modules": [
+        "structure"
+      ],
+      "label_origin": "developer-authored-colloquial-not-blind",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "structure-fields",
+          "version": "v3.0.0",
+          "module": "structure",
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/PP-StructureV3.md"
+          ],
+          "tokens": [
+            "overall_ocr_res",
+            "rec_texts",
+            "rec_scores"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/PP-StructureV3:73",
+              "version": "v3.0.0",
+              "module": "structure",
+              "document_path": "docs/version3.x/pipeline_usage/PP-StructureV3.md",
+              "line_start": 2413,
+              "line_end": 2437,
+              "source_id": "v3-0-0-docs-version3-x-pipeline-usage-pp-structurev3-md-619d1ff4",
+              "source_sha256": "edf596dfd26a6a0814650495f2b503933822b06230cf045a3b4b2acbce72950d",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/PP-StructureV3.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "compound-six-obligations",
+      "split": "acceptance",
+      "query": "PaddleOCR 2.9.1 升级 3.0.0：OCR 怎么初始化、怎么调用、结果怎么读？请分别给出两个版本的依据。",
+      "expected_behavior": "supported",
+      "versions": [
+        "v2.9.1",
+        "v3.0.0"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "developer-authored-colloquial-not-blind",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "baseline-init",
+          "version": "v2.9.1",
+          "module": "ocr",
+          "allowed_paths": [
+            "paddleocr.py"
+          ],
+          "tokens": [
+            "def __init__",
+            "kwargs"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v2.9.1:zh:paddleocr:9",
+              "version": "v2.9.1",
+              "module": "ocr",
+              "document_path": "paddleocr.py",
+              "line_start": 624,
+              "line_end": 688,
+              "source_id": "v2-9-1-paddleocr-py-02eb1820",
+              "source_sha256": "37da5a58692bcd37c8d9cf60765c449fa3662de82d416f04358bd8ead87e7162",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/paddleocr.py"
+            }
+          ]
+        },
+        {
+          "id": "baseline-call",
+          "version": "v2.9.1",
+          "module": "ocr",
+          "allowed_paths": [
+            "paddleocr.py"
+          ],
+          "tokens": [
+            "def ocr("
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v2.9.1:zh:paddleocr:10",
+              "version": "v2.9.1",
+              "module": "ocr",
+              "document_path": "paddleocr.py",
+              "line_start": 690,
+              "line_end": 793,
+              "source_id": "v2-9-1-paddleocr-py-02eb1820",
+              "source_sha256": "37da5a58692bcd37c8d9cf60765c449fa3662de82d416f04358bd8ead87e7162",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/paddleocr.py"
+            }
+          ]
+        },
+        {
+          "id": "old-result",
+          "version": "v2.9.1",
+          "module": "ocr",
+          "allowed_paths": [
+            "paddleocr.py"
+          ],
+          "tokens": [
+            "ocr_res.append"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v2.9.1:zh:paddleocr:10",
+              "version": "v2.9.1",
+              "module": "ocr",
+              "document_path": "paddleocr.py",
+              "line_start": 690,
+              "line_end": 793,
+              "source_id": "v2-9-1-paddleocr-py-02eb1820",
+              "source_sha256": "37da5a58692bcd37c8d9cf60765c449fa3662de82d416f04358bd8ead87e7162",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/paddleocr.py"
+            }
+          ]
+        },
+        {
+          "id": "target-init",
+          "version": "v3.0.0",
+          "module": "ocr",
+          "allowed_paths": [
+            "paddleocr/_pipelines/ocr.py"
+          ],
+          "tokens": [
+            "def __init__",
+            "lang"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v3.0.0:zh:paddleocr/_pipelines/ocr:3",
+              "version": "v3.0.0",
+              "module": "ocr",
+              "document_path": "paddleocr/_pipelines/ocr.py",
+              "line_start": 55,
+              "line_end": 144,
+              "source_id": "v3-0-0-paddleocr-pipelines-ocr-py-4c8493af",
+              "source_sha256": "d81073c98ac08125c389d8a292837d9b2e12242ba0601ef65fb5d1c5a176a9a8",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/paddleocr/_pipelines/ocr.py"
+            }
+          ]
+        },
+        {
+          "id": "target-call",
+          "version": "v3.0.0",
+          "module": "ocr",
+          "allowed_paths": [
+            "paddleocr/_pipelines/ocr.py"
+          ],
+          "tokens": [
+            "def predict("
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v3.0.0:zh:paddleocr/_pipelines/ocr:6",
+              "version": "v3.0.0",
+              "module": "ocr",
+              "document_path": "paddleocr/_pipelines/ocr.py",
+              "line_start": 177,
+              "line_end": 204,
+              "source_id": "v3-0-0-paddleocr-pipelines-ocr-py-4c8493af",
+              "source_sha256": "d81073c98ac08125c389d8a292837d9b2e12242ba0601ef65fb5d1c5a176a9a8",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/paddleocr/_pipelines/ocr.py"
+            }
+          ]
+        },
+        {
+          "id": "target-fields",
+          "version": "v3.0.0",
+          "module": "ocr",
+          "allowed_paths": [
+            "docs/version3.x/pipeline_usage/OCR.md"
+          ],
+          "tokens": [
+            "rec_texts",
+            "rec_scores",
+            "text_rec_score_thresh"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v3.0.0:zh:docs/version3.x/pipeline_usage/OCR:30",
+              "version": "v3.0.0",
+              "module": "ocr",
+              "document_path": "docs/version3.x/pipeline_usage/OCR.md",
+              "line_start": 907,
+              "line_end": 927,
+              "source_id": "v3-0-0-docs-version3-x-pipeline-usage-ocr-md-22258bbc",
+              "source_sha256": "6ce2310fc0b471e634a57fb54718fa56d79a00867515b3bf5be397163ab8927a",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/a8474288ad53c0f439c272b786c5fa6240f0cf27/docs/version3.x/pipeline_usage/OCR.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "colloquial-drop-score",
+      "split": "acceptance",
+      "query": "我们扫描页的 OCR 封装还用 2.9.1，drop_score 这个门槛在哪一步过滤文字，默认是多少？",
+      "expected_behavior": "supported",
+      "versions": [
+        "v2.9.1"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "developer-authored-colloquial-not-blind",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": [
+        {
+          "id": "drop-filter",
+          "version": "v2.9.1",
+          "module": "ocr",
+          "allowed_paths": [
+            "tools/infer/predict_system.py"
+          ],
+          "tokens": [
+            "self.drop_score",
+            "score >= self.drop_score"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v2.9.1:zh:tools/infer/predict_system:5",
+              "version": "v2.9.1",
+              "module": "ocr",
+              "document_path": "tools/infer/predict_system.py",
+              "line_start": 76,
+              "line_end": 157,
+              "source_id": "v2-9-1-tools-infer-predict-system-py-e8c7e4f9",
+              "source_sha256": "8b2df4845824d93595b970eba9d093982e3c2ed52d8eefe8b3c213126efc361c",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/tools/infer/predict_system.py"
+            }
+          ]
+        },
+        {
+          "id": "drop-default",
+          "version": "v2.9.1",
+          "module": "ocr",
+          "allowed_paths": [
+            "doc/doc_ch/inference_args.md"
+          ],
+          "tokens": [
+            "drop_score",
+            "0.5"
+          ],
+          "oracle_evidence": [
+            {
+              "chunk_id": "v2.9.1:zh:doc/doc_ch/inference_args:2",
+              "version": "v2.9.1",
+              "module": "ocr",
+              "document_path": "doc/doc_ch/inference_args.md",
+              "line_start": 7,
+              "line_end": 24,
+              "source_id": "v2-9-1-doc-doc-ch-inference-args-md-0941a09c",
+              "source_sha256": "60812c30e0cd0d9ea351b82b3df0f54106cc36f3943f2072b88dd2a3fb6d59af",
+              "source_url": "https://github.com/PaddlePaddle/PaddleOCR/blob/07603421c20a96bb94bb87d0c4211032527ae706/doc/doc_ch/inference_args.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "version-conflict",
+      "split": "acceptance",
+      "query": "我选的是 2.9.1，但请只给 PaddleOCR 3.0.0 的 rec_texts 字段定义。",
+      "expected_behavior": "version_clarification",
+      "versions": [
+        "v2.9.1"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "developer-authored-colloquial-not-blind",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": []
+    },
+    {
+      "id": "missing-internal-json",
+      "split": "acceptance",
+      "query": "只凭 PaddleOCR 官方资料，能确认我们扫描页应用升级后下游 JSON 字段完全兼容吗？",
+      "expected_behavior": "missing_internal_evidence",
+      "versions": [
+        "v3.0.0"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "developer-authored-colloquial-not-blind",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": []
+    },
+    {
+      "id": "missing-internal-approval",
+      "split": "acceptance",
+      "query": "PaddleOCR 3.0.0 官方资料能证明我们内部应用已完成目标环境回归并获准上线吗？",
+      "expected_behavior": "missing_internal_evidence",
+      "versions": [
+        "v3.0.0"
+      ],
+      "modules": [
+        "ocr"
+      ],
+      "label_origin": "developer-authored-colloquial-not-blind",
+      "prior_exposure": "known-source-task; newly authored wording is not an independent blind set",
+      "facts": []
+    }
+  ]
+}

@@ -2,6 +2,17 @@ import numpy as np
 import pytest
 
 
+def test_asset_identity_streams_weights_without_reading_entire_file(tmp_path, monkeypatch):
+    from pathlib import Path
+    import hashlib
+    from src.paddleocr_quality import asset_identity
+    body=b'local test weights'
+    (tmp_path/'model.safetensors').write_bytes(body)
+    monkeypatch.setattr(Path,'read_bytes',lambda path:pytest.fail('weights read into one allocation'))
+    expected=hashlib.sha256(('model.safetensors'+hashlib.sha256(body).hexdigest()).encode()).hexdigest()
+    assert asset_identity(tmp_path)==expected
+
+
 def test_cache_reuses_only_identical_texts_and_model(tmp_path):
     from src.paddleocr_quality import CachedEncoder
     calls=[]

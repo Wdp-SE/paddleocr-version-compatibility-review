@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 from dataclasses import dataclass
 from typing import Any
 
@@ -16,6 +18,14 @@ class ServiceError(RuntimeError):
 
     def __str__(self) -> str:
         return self.public_message
+
+
+def service_identity_digest(identity: dict) -> str:
+    """Match the backend response identity, including code and evaluation assets."""
+    keys = ('build_revision', 'corpus_fingerprint', 'retrieval_config_fingerprint',
+            'service_code_fingerprint', 'review_code_fingerprint', 'evaluation_fingerprint')
+    values = {key: identity.get(key) for key in keys}
+    return hashlib.sha256(json.dumps(values, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
 
 
 class RAGClient:
@@ -33,6 +43,28 @@ class RAGClient:
         self.session = session or requests.Session()
         self.session_id = session_id
         self.retry_limit = retry_limit
+        self._service_identity_digest: str | None = None
+
+    def bind_service_identity(self, workspace: dict) -> None:
+        """Pin a task to one service build; rebinding cannot accept deployment drift."""
+        digest = service_identity_digest(workspace)
+        if self._service_identity_digest is not None and digest != self._service_identity_digest:
+            self._identity_changed()
+        self._service_identity_digest = digest
+
+    @staticmethod
+    def _identity_changed() -> None:
+        raise ServiceError(
+            "知识服务版本在任务期间发生变化，已停止审查，请重新发起任务。",
+            "Missing or changed service identity", "SERVICE_IDENTITY_CHANGED",
+        )
+
+    def _validate_response_identity(self, response) -> None:
+        if self._service_identity_digest is None:
+            return
+        headers = getattr(response, 'headers', {})
+        if headers.get('X-Service-Identity') != self._service_identity_digest:
+            self._identity_changed()
 
     def _request(
         self, method: str, endpoint: str, *, retry_limit: int | None = None,
@@ -53,6 +85,7 @@ class RAGClient:
                     timeout=self.timeout if request_timeout is None else request_timeout,
                     **kwargs,
                 )
+                self._validate_response_identity(response)
                 response.raise_for_status()
                 break
             except requests.Timeout as exc:

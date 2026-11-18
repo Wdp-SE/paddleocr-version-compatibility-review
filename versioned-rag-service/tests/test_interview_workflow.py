@@ -92,8 +92,12 @@ def test_migration_answer_has_both_result_contracts(index):
         versions=('v2.9.1','v3.0.0')))
     assert any(h['version']=='v2.9.1' and ('line[1]' in generation_evidence_text(h) or 'ocr_res.append' in generation_evidence_text(h)) for h in out['results'])
     assert any(h['version']=='v3.0.0' and 'rec_texts' in generation_evidence_text(h) and 'rec_scores' in generation_evidence_text(h) for h in out['results'])
-    assert any(h['version']=='v3.0.0' and 'def ocr(' in generation_evidence_text(h)
-               and 'self.predict' in generation_evidence_text(h) for h in out['results'])
+    # The limited evidence pack needs the actual return container and the old
+    # nested-field usage. The deprecated ocr alias alone proves neither.
+    assert any(h['version']=='v3.0.0' and 'return list(' in generation_evidence_text(h)
+               and 'self.predict_iter' in generation_evidence_text(h) for h in out['results'])
+    assert any(h['version']=='v2.9.1' and 'line[1][0]' in generation_evidence_text(h)
+               and 'line[1][1]' in generation_evidence_text(h) for h in out['results'])
 
 
 def test_repaired_answer_replaces_instead_of_concatenating_partial_paraphrases(monkeypatch):
@@ -110,5 +114,8 @@ def test_repaired_answer_replaces_instead_of_concatenating_partial_paraphrases(m
     monkeypatch.setattr(public_api,'_query_once',once)
     monkeypatch.setattr(public_api,'_index',lambda request:SimpleNamespace(manifest={'workspace_id':'paddleocr'}))
     monkeypatch.setattr(public_api,'_answer_evidence_support',lambda *args: {})
-    out=asyncio.run(public_api.query(public_api.SearchRequest(query='旧结果读取',version='v2.9.1'),None))
+    monkeypatch.setattr(public_api, '_execute_public_search', lambda *a, **k: {
+        'results': [{'chunk_id': 'a', 'version': 'v2.9.1', 'content': '新增结果读取证据'}]})
+    request = SimpleNamespace(app=SimpleNamespace(state=SimpleNamespace(public_generator=None)))
+    out=asyncio.run(public_api.query(public_api.SearchRequest(query='旧结果读取',version='v2.9.1'),request))
     assert out['claims']==expected and len(out['claims'])==1

@@ -225,8 +225,12 @@ def _module_mutations(statements):
     return {key for key, count in counts.items() if count > 1} | forced, attribute_writes
 
 
+def _has_ocr_origin(value):
+    return value[0] in {'ocr_results', 'ocr_page', 'ocr_line', 'legacy_value', 'ocr_derived_unknown'}
+
+
 class _Analyzer:
-    def __init__(self, file, evidence, report, *, summaries=None):
+    def __init__(self, file, evidence, report, *, summaries=None, flow=None, bound_parameters=None):
         self.file, self.evidence, self.report = file, evidence, report
         self.related_names = set()
         self.seen = set()
@@ -236,9 +240,25 @@ class _Analyzer:
         self.return_values = []
         from src.paddleocr_function_results import function_bindings
         self.imported_functions, self.local_functions = function_bindings(file, summaries or {})
+        self.flow, self.bound_parameters = flow, bound_parameters or {}
+        self.function_depth = 0
+        self.location_scopes=[]
+        if flow:
+            imported, own = flow.bindings(file)
+            # Traverse real calls instead of letting a summary bypass the shared depth bound.
+            self.imported_functions = {**self.imported_functions, **imported}
+            self.local_functions = {**self.local_functions, **own}
 
     def prepare(self, statements):
         self.module_mutations, self.module_attribute_writes = _module_mutations(statements)
+        def collect(nodes,prefix=''):
+            for node in nodes:
+                if isinstance(node,(ast.FunctionDef,ast.AsyncFunctionDef,ast.ClassDef)):
+                    symbol=prefix+node.name
+                    self.location_scopes.append((node.lineno,node.end_lineno,symbol))
+                    collect(node.body,symbol+'.')
+                else:collect(list(ast.iter_child_nodes(node)),prefix)
+        collect(statements)
 
     def bind(self, key, value, env):
         # A new parent object cannot inherit attributes of the former object.
@@ -268,10 +288,18 @@ class _Analyzer:
     def location(self, node):
         line = getattr(node, "lineno", 1)
         end = min(getattr(node, "end_lineno", line), line + 3, len(self.file["lines"]))
-        return {"path": self.file["path"], "line": line, "end_line": end, "snippet": "\n".join(self.file["lines"][line - 1:end])[:600]}
+        scopes=[(hi-lo,name) for lo,hi,name in self.location_scopes if lo<=line<=hi]
+        symbol=min(scopes)[1] if scopes else '<module>'
+        expression=hashlib.sha256(ast.dump(node,include_attributes=False).encode()).hexdigest()
+        return {"path": self.file["path"], "line": line, "end_line": end,
+                'symbol':symbol,'expression_fingerprint':expression,
+                "snippet": "\n".join(self.file["lines"][line - 1:end])[:600]}
 
     def gap(self, code, detail, node):
         key = ("gap", code, getattr(node, "lineno", 1))
+        if any(g['code'] == code and g.get('application', {}).get('path') == self.file['path']
+               and g.get('application', {}).get('line') == key[2] for g in self.report['gaps']):
+            return
         if key not in self.seen:
             self.seen.add(key)
             if len(self.report["gaps"]) >= MAX_GAPS - 1:
@@ -285,6 +313,9 @@ class _Analyzer:
 
     def finding(self, rule, status, title, explanation, check, node):
         key = ("finding", rule, getattr(node, "lineno", 1))
+        if any(f['rule_id'] == rule and f['application']['path'] == self.file['path']
+               and f['application']['line'] == key[2] for f in self.report['findings']):
+            return
         if key in self.seen:
             return
         self.seen.add(key)
@@ -295,11 +326,20 @@ class _Analyzer:
         if not evidence:
             self.gap("missing_official_evidence", f"{title}：固定版本官方证据不完整，无法生成支持结论。", node)
             return
+        if self.file.get('role') == 'application_test':
+            status = 'needs_verification'
+            title = '测试定义待迁移核对：' + title
+            explanation = '该位置属于测试定义，需核对断言与夹具；不直接认定生产应用受损。' + explanation
         self.report["findings"].append({
             "finding_id": f"finding-{len(self.report['findings']) + 1}", "rule_id": rule, "status": status,
             "title": title, "explanation": explanation, "application": self.location(node),
             "evidence": evidence, "desired_check": check,
         })
+
+    def unknown_origin(self, node):
+        self.gap('ocr_result_flow_unresolved',
+                 '该表达式接收或派生自 OCR 结果，但当前规则未证明转换后的形态；不能将后续消费视为无影响。', node)
+        return ('ocr_derived_unknown',)
 
     def value(self, node, env):
         key = _name(node)
@@ -320,28 +360,61 @@ class _Analyzer:
             return _UNKNOWN
         if isinstance(node, (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)):
             local = env.copy()
+            origin = False
             for generator in node.generators:
                 iterable = self.value(generator.iter, local)
+                origin = origin or _has_ocr_origin(iterable)
                 item = {"ocr_results": ("ocr_page",), "ocr_page": ("ocr_line",), "structure_results": ("structure_region",)}.get(iterable[0], _UNKNOWN)
+                if iterable[0] == 'enumerated':
+                    item = ('enumerate_item', iterable[1])
                 self.assign(generator.target, item, local)
                 for condition in generator.ifs:
                     self.value(condition, local)
+            values = {}
             for field in ("elt", "key", "value"):
                 child = getattr(node, field, None)
                 if child is not None:
-                    self.value(child, local)
-            return _UNKNOWN
+                    values[field] = self.value(child, local)
+            # Only an identity list comprehension preserves the sequence shape.
+            if (isinstance(node, ast.ListComp) and len(node.generators) == 1
+                    and not node.generators[0].is_async
+                    and isinstance(node.elt, ast.Name) and isinstance(node.generators[0].target, ast.Name)
+                    and node.elt.id == node.generators[0].target.id
+                    and values.get('elt') == ('ocr_page',)):
+                return ('ocr_results',)
+            if (isinstance(node, ast.ListComp) and len(node.generators) == 1
+                    and not node.generators[0].is_async
+                    and values.get('elt', _UNKNOWN)[0] == 'ocr_named_field'):
+                # A named-field projection is an explicit consumption shape,
+                # not an opaque conversion of the original nested sequence.
+                return ('ocr_field_collection',)
+            return self.unknown_origin(node) if origin else _UNKNOWN
         if isinstance(node, ast.Attribute):
             parent = self.value(node.value, env)
+            if parent[0] == 'local_module' and self.flow and (parent[1], node.attr) in self.flow.functions:
+                return ('local_function', parent[1], node.attr)
             if parent[0] == "module" and node.attr in {"PaddleOCR", "PPStructure"}:
                 return ("api", node.attr)
             if parent[0] == "instance":
                 return ("method", parent[1], node.attr, parent[2])
+            if _has_ocr_origin(parent):
+                return ('ocr_result_method',)
         if isinstance(node, ast.Subscript):
             parent = self.value(node.value, env)
             numeric = isinstance(node.slice, ast.Constant) and type(node.slice.value) is int
+            if parent[0] == 'ocr_derived_unknown':
+                self.value(node.slice, env)
+                return self.unknown_origin(node)
+            if parent[0] == 'ocr_results' and isinstance(node.slice, ast.Slice):
+                bounds = (node.slice.lower, node.slice.upper, node.slice.step)
+                if all(b is None or isinstance(b, ast.Constant) and (b.value is None or type(b.value) is int) for b in bounds):
+                    return parent
+                return self.unknown_origin(node)
             if parent[0] == "ocr_results" and numeric:
                 return ("ocr_page",)
+            if (parent[0] == 'ocr_page' and isinstance(node.slice, ast.Constant)
+                    and node.slice.value in ('rec_texts', 'rec_scores')):
+                return ('ocr_named_field', node.slice.value)
             if parent[0] in {"ocr_page", "ocr_line", "legacy_value"} and numeric:
                 self.finding(
                     "legacy_ocr_result", "supported_risk", "旧版 OCR 结果按嵌套列表位置消费",
@@ -361,10 +434,20 @@ class _Analyzer:
             return _UNKNOWN
         if isinstance(node, ast.Call):
             function = self.value(node.func, env)
-            for argument in node.args:
-                self.value(argument, env)
-            for keyword in node.keywords:
-                self.value(keyword.value, env)
+            positional = [self.value(argument, env) for argument in node.args]
+            keywords = [(keyword.arg, self.value(keyword.value, env)) for keyword in node.keywords]
+            if (isinstance(node.func, ast.Name) and node.func.id == 'list' and 'list' not in env
+                    and len(positional) == 1 and not keywords and positional[0] == ('ocr_results',)):
+                return ('ocr_results',)
+            if isinstance(node.func, ast.Name) and node.func.id == 'enumerate' and 'enumerate' not in env:
+                if len(positional) == 1 and not keywords:
+                    item = {'ocr_results': ('ocr_page',), 'ocr_page': ('ocr_line',)}.get(positional[0][0], _UNKNOWN)
+                    return ('enumerated', item)
+            if function[0] == 'local_function' and self.flow:
+                result = self.flow.call(function, node, self, positional, keywords)
+                if result == _UNKNOWN and any(_has_ocr_origin(v) for v in positional + [v for _, v in keywords]):
+                    return self.unknown_origin(node)
+                return result
             if function[0] == "api":
                 self.ocr_seen = True
                 api = function[1]
@@ -417,12 +500,27 @@ class _Analyzer:
                 or (_name(node.func) or "").split(".")[0] in self.related_names
             ):
                 self.gap("unresolved_call", "可能的 PaddleOCR 调用无法解析为已登记导入或实例；需人工确认绑定。", node)
+            observes_only = (isinstance(node.func, ast.Name) and node.func.id not in env
+                             and node.func.id in {'len', 'bool', 'isinstance', 'print'})
+            if not observes_only and (function[0] == 'ocr_result_method'
+                    or any(_has_ocr_origin(v) for v in positional + [v for _, v in keywords])):
+                # An unmodelled callee may mutate any alias of a result value.
+                # Shape evidence must not survive that uncertainty as a proof.
+                for name,value in list(env.items()):
+                    if _has_ocr_origin(value):
+                        env[name]=('ocr_derived_unknown',)
+                return self.unknown_origin(node)
             return _UNKNOWN
-        for child in ast.iter_child_nodes(node):
-            self.value(child, env)
+        children = [self.value(child, env) for child in ast.iter_child_nodes(node)]
+        if any(_has_ocr_origin(v) for v in children):
+            return self.unknown_origin(node)
         return _UNKNOWN
 
     def assign(self, target, value, env):
+        if value[0] == 'enumerate_item' and isinstance(target, (ast.Tuple, ast.List)) and len(target.elts) == 2:
+            self.assign(target.elts[0], _UNKNOWN, env)
+            self.assign(target.elts[1], value[1], env)
+            return
         key = _name(target)
         if key:
             self.bind(key, value, env)
@@ -448,7 +546,8 @@ class _Analyzer:
             if isinstance(node, ast.Import):
                 for alias in node.names:
                     name = alias.asname or alias.name.split(".")[0]
-                    self.bind(name, ("module",) if alias.name == "paddleocr" else _UNKNOWN, env)
+                    local_module = ('local_module', alias.name) if self.flow and alias.name in self.flow.files else _UNKNOWN
+                    self.bind(name, ("module",) if alias.name == "paddleocr" else local_module, env)
                     if alias.name == "paddleocr":
                         self.related_names.add(name)
             elif isinstance(node, ast.ImportFrom):
@@ -474,6 +573,10 @@ class _Analyzer:
             elif isinstance(node, ast.Return):
                 self.return_values.append(self.value(node.value, env) if node.value else _UNKNOWN)
             elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                if self.function_depth:
+                    self.bind(node.name, _UNKNOWN, env)
+                    self.gap('nested_function_not_resolved', '嵌套函数未做调用上下文证明；不扫描未调用函数体或复用同名顶层函数。', node)
+                    continue
                 for decorator in node.decorator_list:
                     self.value(decorator, env)
                 local = env.copy()
@@ -484,6 +587,9 @@ class _Analyzer:
                     self.bind(arg.arg, _UNKNOWN, local)
                 # Python treats all assigned/imported names as local throughout a function.
                 for nested in ast.walk(node):
+                    if isinstance(nested, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) and nested is not node:
+                        local_names.add(nested.name)
+                        self.bind(nested.name, _UNKNOWN, local)
                     if isinstance(nested, ast.Name) and isinstance(nested.ctx, ast.Store):
                         local_names.add(nested.id)
                         self.bind(nested.id, _UNKNOWN, local)
@@ -493,8 +599,20 @@ class _Analyzer:
                             local_names.add(name)
                             self.bind(name, _UNKNOWN, local)
                 self.deferred_env(node, local, local_names)
+                # Call-site input types are seeded only for this exact analyzed function.
+                for name, value in self.bound_parameters.get(id(node), {}).items():
+                    self.bind(name, value, local)
                 self.bind(node.name, self.local_functions.get(node.name, _UNKNOWN), env)
-                self.block(node.body, local)
+                self.function_depth += 1
+                prior_findings = len(self.report['findings'])
+                try:
+                    self.block(node.body, local)
+                    if (isinstance(node, ast.AsyncFunctionDef)
+                            and any(f['rule_id'] == 'basic_ocr_surface' for f in self.report['findings'][prior_findings:])):
+                        self.gap('async_result_flow_not_resolved',
+                                 '异步函数内识别到 OCR 调用，但协程返回与 await 的结果传播尚未证明；需核对实际消费者。', node)
+                finally:
+                    self.function_depth -= 1
             elif isinstance(node, ast.ClassDef):
                 self.bind(node.name, _UNKNOWN, env)
                 self.block(node.body, env.copy())
@@ -502,12 +620,42 @@ class _Analyzer:
                 iterable = self.value(node.iter, env)
                 local = env.copy()
                 item = {"ocr_results": ("ocr_page",), "ocr_page": ("ocr_line",), "structure_results": ("structure_region",)}.get(iterable[0], _UNKNOWN)
+                if iterable[0] == 'enumerated':
+                    item = ('enumerate_item', iterable[1])
                 self.assign(node.target, item, local)
                 self.block(node.body, local)
                 self.block(node.orelse, local)
                 self.invalidate(node, env)
             elif isinstance(node, (ast.If, ast.While, ast.Try, ast.With, ast.AsyncWith, ast.Match)):
                 self.gap("uncertain_control_flow", "条件、异常或上下文控制流未做运行路径证明，相关绑定需人工确认。", node)
+                semantic = {'module','api','instance','method','ocr_results','ocr_page','ocr_line','legacy_value','structure_results','structure_region'}
+                changes_origin = any(isinstance(n, ast.Name) and isinstance(n.ctx, (ast.Store, ast.Del))
+                                     and env.get(n.id, _UNKNOWN)[0] in semantic for n in ast.walk(node))
+                calls_sdk = any(isinstance(n, ast.Call) and (
+                    env.get(_name(n.func), _UNKNOWN)[0] in {'api','instance','method','local_function','function_result'}
+                    or isinstance(n.func,ast.Attribute) and env.get(_name(n.func.value),_UNKNOWN)[0] in {'module','instance'})
+                    for n in ast.walk(node))
+                if changes_origin or calls_sdk:
+                    for gap in self.report['gaps']:
+                        if (gap['code']=='uncertain_control_flow' and gap.get('application',{}).get('path')==self.file['path']
+                                and gap['application']['line']==node.lineno):
+                            gap['binding_affected']=True
+                if not changes_origin and not calls_sdk:
+                    for gap in self.report['gaps']:
+                        if (gap['code']=='uncertain_control_flow' and gap.get('application',{}).get('path')==self.file['path']
+                                and gap['application']['line']==node.lineno):
+                            gap.update(category='analysis_limitation',blocking=False,
+                                next_action='未证明完整运行路径；当前分支未重新绑定已知 OCR 来源，不提升为独立业务风险。')
+                if (isinstance(node, ast.If) and not node.orelse
+                        and all(isinstance(s, (ast.Raise, ast.Continue, ast.Pass)) for s in node.body)
+                        and all(not isinstance(n, ast.Call) or isinstance(n.func, ast.Name) and n.func.id == 'isinstance'
+                                for n in ast.walk(node.test))):
+                    for gap in self.report['gaps']:
+                        if (gap['code'] == 'uncertain_control_flow' and gap.get('application',{}).get('path') == self.file['path']
+                                and gap['application']['line'] == node.lineno):
+                            if gap.get('binding_affected'):continue
+                            gap.update(category='analysis_limitation', blocking=False,
+                                next_action='输入校验分支未做运行证明；未据此抹除已定位的潜在升级风险。')
                 self.invalidate(node, env)
                 # Analyze possible bodies conservatively after invalidating their assignments.
                 for field in ("body", "orelse", "finalbody"):
@@ -541,13 +689,18 @@ def review_compatibility(index, *, source_version: str, target_version: str, fil
     from src.paddleocr_application_roles import application_role, regression_requirements
     for file in application_files:
         file['role'] = application_role(file['path'], file['content'])
+    from src.application_contracts import read_contracts, contract_regressions, classify_gaps
+    contracts, dependency_roles, contract_gaps = read_contracts(application_files)
+    for file in application_files:
+        if file['path'] in dependency_roles:
+            file['dependency_role'] = dependency_roles[file['path']]
     report = {
         "schema_version": 1, "project_id": "paddleocr", "workspace_id": "paddleocr",
         "source_version": source_version, "target_version": target_version,
         "status": "needs_verification", "runtime_verified": False, "model_call_count": 0,
         "files": [{"path": f["path"], "sha256": f["sha256"], "line_count": len(f["lines"]),
-                   "role": f['role']} for f in application_files],
-        "findings": [], "gaps": [],
+                   "role": f['role'], **({'dependency_role': f['dependency_role']} if 'dependency_role' in f else {})} for f in application_files],
+        "findings": [], "gaps": contract_gaps, 'application_contracts': contracts,
         "verification_steps": [
             "开发者审核每个应用位置与固定版本官方证据，确认升级调整。",
             "在目标依赖环境执行真实扫描文档推理；核对模型加载、文本/版面质量、空页、多页和下游结果契约。静态审查不等于实际推理验证。",
@@ -556,21 +709,21 @@ def review_compatibility(index, *, source_version: str, target_version: str, fil
     any_usage = False
     from src.paddleocr_function_results import summarize_functions
     summaries = summarize_functions(application_files, evidence)
+    from src.paddleocr_argument_flow import ArgumentFlow
+    flow = ArgumentFlow(application_files, evidence, report, summaries)
     for file in application_files:
-        analyzer = _Analyzer(file, evidence, report, summaries=summaries)
+        analyzer = _Analyzer(file, evidence, report, summaries=summaries, flow=flow)
         if PurePosixPath(file["path"]).suffix.casefold() != ".py":
             node = ast.Constant(value=None)
             node.lineno = node.end_lineno = 1
             matches = re.findall(r"(?im)\bpaddleocr\s*==\s*(v?\d+\.\d+\.\d+)\b", file["content"])
-            if any(_version(match) != source_version for match in matches):
-                analyzer.gap("dependency_version_mismatch", "配置声明的 PaddleOCR 依赖与审查源版本不一致。", node)
-            if file['role'] == 'output_contract':
-                try:
-                    contract = json.loads(file['content'])
-                    if not isinstance(contract, dict):raise ValueError('contract must be an object')
-                except (ValueError, RecursionError):
-                    analyzer.gap('invalid_output_contract', '输出契约不是可解析的 JSON 对象，无法据此制定验收。', node)
-            elif file['role'] in ('runtime_configuration', 'dependency_manifest'):
+            role = file.get('dependency_role')
+            expected = {'current': source_version, 'target': target_version}.get(role)
+            if matches and expected and any(_version(match) != expected for match in matches):
+                analyzer.gap("dependency_version_mismatch", f"{role} 环境声明的 PaddleOCR 依赖与对应审查版本 {expected} 不一致。", node)
+            elif matches and role is None:
+                analyzer.gap('dependency_role_unknown', '发现依赖版本但未声明 current/target/reference 角色；不能将目标或参考文件当成当前环境。', node)
+            if file['role'] in ('runtime_configuration', 'dependency_manifest') or matches:
                 analyzer.gap("unreviewed_configuration", "已识别配置/依赖声明；未证明完整环境及配置迁移兼容。", node)
             continue
         try:
@@ -595,7 +748,8 @@ def review_compatibility(index, *, source_version: str, target_version: str, fil
     report.update(impact_schema_version=1,application_graph=graph,
                   impact_paths=trace_impacts(graph,report['findings']))
     report['result_flow_coverage'] = {'analysis': 'straight_line_local_wrappers',
-        'summary_count': len(summaries), 'max_wrapper_depth': 6, 'runtime_verified': False}
+        'summary_count': len(summaries), 'max_wrapper_depth': 6, 'runtime_verified': False,
+        'argument_contexts': flow.calls, 'max_argument_contexts': flow.max_contexts}
     graph_gaps=[]
     for gap in graph['gaps']:
         item=dict(gap)
@@ -606,7 +760,16 @@ def review_compatibility(index, *, source_version: str, target_version: str, fil
                                  'snippet':'\n'.join(loc['excerpt'].splitlines()[:4])[:600]}
         graph_gaps.append(item)
     report['gaps']=(report['gaps']+graph_gaps)[:MAX_GAPS]
-    report['regression_requirements']=regression_requirements(report['findings'])
+    report['regression_requirements']=regression_requirements(report['findings']) + contract_regressions(contracts)
+    related_paths = {f['application']['path'] for f in report['findings']} | flow.visited_paths
+    # Include declared direct neighbours, without claiming dynamic reachability.
+    related_nodes = {n['id'] for n in graph['nodes'] if n['application']['path'] in related_paths}
+    for _ in range(8):
+        expanded = related_nodes | {e[k] for e in graph['edges'] if e['source'] in related_nodes or e['target'] in related_nodes for k in ('source', 'target')}
+        if expanded == related_nodes: break
+        related_nodes = expanded
+    related_paths |= {n['application']['path'] for n in graph['nodes'] if n['id'] in related_nodes}
+    classify_gaps(report, related_paths, {f['path'] for f in application_files if f['role']=='application_test'})
     risks = sum(f["status"] == "supported_risk" for f in report["findings"])
     if risks:
         report["status"] = "supported_risk"

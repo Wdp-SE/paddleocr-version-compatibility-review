@@ -90,10 +90,18 @@ def _update_generation_diagnostics(target: dict, details: dict | None) -> None:
 
 def _log_generation_failure(*, operation: str, status: str, diagnostics: dict, exc: Exception) -> None:
     # No provider response body, prompt, evidence, key or proxy URL in application logs.
+    from src.provider_network import NETWORK_FAILURE_REASONS, NETWORK_MODES
+    reason = getattr(exc, 'reason_code', None)
+    mode = getattr(exc, 'network_mode', None)
+    if reason in NETWORK_FAILURE_REASONS:
+        diagnostics['network_failure_reason'] = reason
+    if mode in NETWORK_MODES:
+        diagnostics['network_mode'] = mode
     logger.warning(
-        "%s request_id=%s status=%s provider=%s model=%s exception_type=%s",
+        "%s request_id=%s status=%s provider=%s model=%s exception_type=%s network_mode=%s network_reason=%s",
         operation, diagnostics["request_id"], status, diagnostics["provider"],
         diagnostics["requested_model"], type(exc).__name__,
+        diagnostics.get('network_mode', 'unknown'), diagnostics.get('network_failure_reason', 'unknown'),
     )
 
 
@@ -246,7 +254,9 @@ class SearchRequest(BaseModel):
 
 def _canonical_evidence_text(hit: dict) -> str:
     from src.paddleocr_retrieval_views import generation_evidence_text
-    return generation_evidence_text(hit)
+    from src.paddleocr_applicability import applicability_note
+    note=applicability_note(hit)
+    return (note+'\n' if note else '')+generation_evidence_text(hit)
 
 
 class BatchSearchCheck(BaseModel):
@@ -425,6 +435,7 @@ def _rerank_candidates(generator, task: str, candidates: list[dict], *, fallback
 
 
 def _claim_scope_mismatches(claims,hits,requirements):
+    import re
     from src.paddleocr_fact_checks import parameter_scope_mismatch
     from src.paddleocr_query_plan import claim_scope_module,explicit_versions
     from src.paddleocr_retrieval_views import module_for,evidence_text
@@ -446,12 +457,22 @@ def _claim_scope_mismatches(claims,hits,requirements):
             hit=by_id[cid];scope=hit.get('module',module_for(hit))
             if scope not in (module,'shared','general') or not any(not r.get('version') or r['version']==hit.get('version') for r in applicable):
                 bad.add(i);break
-            # General guides can support OCR only where that public API is present.
-            if scope=='general' and module=='ocr' and 'PaddleOCR' not in evidence_text(hit):bad.add(i);break
+            # A printed result window can omit its constructor even though the
+            # same canonical example block names exactly one supported API.
+            # Never borrow context from another block or a mixed-pipeline example.
+            if scope=='general' and module=='ocr' and 'PaddleOCR' not in evidence_text(hit):
+                constructors=set(re.findall(
+                    r'\b(PaddleOCR|PPStructureV3|PPStructure|DocPreprocessor|'
+                    r'TableRecognitionPipelineV2|TextDetection|TextRecognition|'
+                    r'TextLineOrientationClassification|DocImgOrientationClassification|'
+                    r'TextImageUnwarping|LayoutDetection)\s*\(',hit['content']))
+                if constructors!={'PaddleOCR'}:
+                    bad.add(i);break
     return bad
 
 
-def _execute_public_search(index, payload, generator, *, top_k: int, correction: bool = False) -> dict:
+def _execute_public_search(index, payload, generator, *, top_k: int, correction: bool = False,
+                           repair_requirements=None) -> dict:
     """Execute legacy retrieval or the explicitly selected experimental policy."""
     requested = payload.retrieval_policy
     route = route_query(payload.query, task_type="lookup")
@@ -462,7 +483,10 @@ def _execute_public_search(index, payload, generator, *, top_k: int, correction:
         base_index=getattr(index,'base_index',index)
         versions=tuple(sorted(base_index._version_members(payload.version) or base_index.manifest['versions']))
         plan=plan_query(payload.query,versions=versions)
-        strategy=payload.evidence_strategy;budget=payload.candidate_budget;use_context=True;window_budget=384;structure_windows=False
+        if repair_requirements:
+            from src.paddleocr_query_plan import target_missing_requirements
+            plan=target_missing_requirements(plan,repair_requirements)
+        strategy=payload.evidence_strategy;budget=payload.candidate_budget;use_context=True;window_budget=384;structure_windows=True
         if strategy=='auto':
             rag_release=load_rag_release(Path(base_index.root))
             release=load_impact_release(Path(base_index.root))
@@ -623,6 +647,51 @@ class ApplicationSearchRequest(BaseModel):
     top_k: int = Field(default=5, ge=1, le=10)
 
 
+class ApplicationQueryRequest(ApplicationSearchRequest):
+    version: Literal['v2.9.1', 'v3.0.0', 'all'] = 'v3.0.0'
+
+
+@router.post('/application-query')
+async def application_query(payload: ApplicationQueryRequest, request: Request) -> dict:
+    return await resolve_application_knowledge(payload, request, generate=True)
+
+
+async def resolve_application_knowledge(payload: ApplicationQueryRequest, request: Request, *, generate: bool) -> dict:
+    from src.application_knowledge import search_application
+    from src.joint_knowledge import answer_joint, application_hits
+    index = _index(request)
+    _require_project_query_ready(index)
+    if index.manifest.get('workspace_id') != PADDLEOCR_WORKSPACE_ID:
+        raise HTTPException(422, 'APPLICATION_QUERY_NOT_SUPPORTED')
+    official_request = SearchRequest(query=payload.query, version=payload.version, language='zh',
+                                     top_k=payload.top_k, retrieval_policy='paddleocr_evidence')
+    clarification = _paddleocr_version_clarification(index, official_request)
+    if clarification:
+        return clarification
+    try:
+        application = search_application([row.model_dump() for row in payload.files], payload.query,
+            application_id=payload.application_id, application_commit=payload.application_commit,
+            top_k=min(5, payload.top_k))
+    except ValueError as exc:
+        raise HTTPException(422, 'INVALID_APPLICATION_EVIDENCE_REQUEST') from exc
+    async def run():
+        generator = request.app.state.public_generator if generate else None
+        execution = await asyncio.to_thread(_execute_public_search, index, official_request,
+            generator, top_k=payload.top_k)
+        if generate:
+            base_index = getattr(index, 'base_index', index)
+            selected_versions = tuple(sorted(base_index._version_members(payload.version) or base_index.manifest['versions']))
+            result = await answer_joint(payload.query, execution['results'], application['results'],
+                                        generator, versions=selected_versions)
+        else:
+            result = {'status': 'EVIDENCE_ONLY', 'runtime_verified': False,
+                      'evidence': [{**row, 'source_identity': 'official_component'} for row in execution['results']]
+                                  + application_hits(application['results'])}
+        return {**result, 'application_id':payload.application_id, 'application_commit':payload.application_commit,
+                'component_version_scope':payload.version, 'retrieval_diagnostics':execution.get('rerank_diagnostics', {})}
+    return await _query_with_exact_cache(payload, request, run) if generate else await run()
+
+
 @router.post('/application-search')
 def application_search(payload: ApplicationSearchRequest, request: Request) -> dict:
     from src.application_knowledge import search_application
@@ -687,6 +756,20 @@ class ReviewAdviceRequest(BaseModel):
     module_sku: str | None = Field(default=None, min_length=1, max_length=80)
     carrier_board: str | None = Field(default=None, min_length=1, max_length=120)
     software_baseline: str | None = Field(default=None, min_length=1, max_length=120)
+
+
+class ConfigurationReviewRequest(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    dependency_version: str = Field(min_length=1, max_length=32)
+    before_files: list[ApplicationFile] = Field(min_length=1, max_length=12)
+    after_files: list[ApplicationFile] = Field(min_length=1, max_length=12)
+
+    @model_validator(mode='after')
+    def bounded_snapshots(self):
+        if any(sum(len(f.content.encode()) for f in files) > 200000
+               for files in (self.before_files, self.after_files)):
+            raise ValueError('application snapshot exceeds text budget')
+        return self
 
 
 def _index(request: Request) -> PublicKnowledgeIndex:
@@ -770,6 +853,21 @@ def compatibility_review(payload: CompatibilityReviewRequest, request: Request) 
         **report, "workspace_id": PADDLEOCR_WORKSPACE_ID,
         "model_calls": 0, "impact_status": "REQUIRES_HUMAN_REVIEW", "latency_ms": duration,
     }
+
+
+@router.post('/configuration-review')
+def configuration_review(payload: ConfigurationReviewRequest, request: Request) -> dict:
+    from src.paddleocr_configuration import review_configuration
+    index = _index(request)
+    _require_project_query_ready(index)
+    if index.manifest.get('workspace_id') != PADDLEOCR_WORKSPACE_ID:
+        raise HTTPException(status_code=422, detail='CONFIGURATION_REVIEW_NOT_SUPPORTED')
+    try:
+        return review_configuration([f.model_dump() for f in payload.before_files],
+                                    [f.model_dump() for f in payload.after_files],
+                                    dependency_version=payload.dependency_version)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail='INVALID_CONFIGURATION_REVIEW') from exc
 
 
 def _with_document_relationships(index, rows: list[dict]) -> list[dict]:
@@ -1005,6 +1103,8 @@ def workspace(request: Request) -> dict:
             "public_body_indexing_enabled": True,
             "rag_ready": bool(getattr(index, "ready", True)),
             "generation_available": request.app.state.public_generator is not None,
+            "generation_provider": getattr(request.app.state.public_generator, 'provider', None),
+            "generation_network_mode": getattr(request.app.state.public_generator, 'network_mode', None),
             "generation_status": getattr(request.app.state, "public_generation_config", {}).get("status"),
             "activation_block_reason": None,
             "retrieval_policy": _runtime_policy(index),
@@ -1014,6 +1114,13 @@ def workspace(request: Request) -> dict:
                 'strategy':_quality_strategy(index),
                 'status':'optional_neural_assets_required',
                 'score_is_probability':False,
+            }} if manifest['workspace_id']==PADDLEOCR_WORKSPACE_ID else {}),
+            **({'progressive_evidence': True, 'joint_application_query': True, 'evidence_retrieval': {
+                'available': True,
+                'policy': 'paddleocr_evidence',
+                'fallback_strategy': 'contextual_bm25',
+                'score_is_probability': False,
+                'evaluation_is_separate': True,
             }} if manifest['workspace_id']==PADDLEOCR_WORKSPACE_ID else {}),
             **({'quality_comparison':load_quality_comparison(Path(index.root)),
                 'impact_evaluation':_impact_summary(index),
@@ -1333,6 +1440,9 @@ def search(payload: SearchRequest, request: Request) -> dict:
     _validate_public_language(index, payload)
     _validate_public_retrieval_policy(index, payload)
     _validate_edge_ai_facets(index, payload)
+    clarification = _paddleocr_version_clarification(index, payload)
+    if clarification:
+        return clarification
     try:
         execution = _execute_public_search(
             index, payload, request.app.state.public_generator, top_k=payload.top_k,
@@ -1387,354 +1497,93 @@ def _workflow_usage(results):
             'complete':len(known)==len(calls) and all(c.get('schema_usage_complete',True) for c in calls)}
 
 
-def _merge_evidence(first, second):
-    rows={}
-    for hit in first+second:
-        cid=hit['chunk_id']
-        previous=rows.get(cid)
-        value=dict(hit)
-        if previous:
-            if 'evidence_spans' not in previous or 'evidence_spans' not in hit:
-                value.pop('evidence_spans',None)
-            else:
-                spans=list(previous['evidence_spans'])
-                spans.extend(s for s in hit['evidence_spans'] if s not in spans)
-                value['evidence_spans']=spans
-        rows[cid]=value
-    return list(rows.values())
+def _paddleocr_version_clarification(index, payload):
+    base = getattr(index, 'base_index', index)
+    if base.manifest.get('workspace_id') != PADDLEOCR_WORKSPACE_ID:
+        return None
+    from src.paddleocr_query_plan import explicit_versions
+    requested = explicit_versions(payload.query)
+    available = set(base.manifest['versions'])
+    selected = set(base._version_members(payload.version) or available)
+    if not requested - selected:
+        return None
+    return {'status': 'NEEDS_CLARIFICATION', 'answer': 'N/A', 'sources': [], 'results': [], 'evidence': [],
+            'clarification': {'requested_versions': sorted(requested), 'selected_versions': sorted(selected),
+                              'available_versions': sorted(available)},
+            'clarification_message': '问题指定的版本不在已选资料范围内，或尚未收录。请核对版本后再查询。',
+            'retrieval_policy': 'not_run_version_guard', 'scope_status': 'VERSION_SELECTION_CONFLICT'}
 
 
 @router.post("/query")
 async def query(payload: SearchRequest, request: Request) -> dict:
-    """One evidence repair, never an unbounded agent loop or provider retry."""
-    first = await _query_once(payload, request)
-    first['correction'] = {'attempts': 0, 'status': 'NOT_NEEDED'}
-    first['workflow_usage'] = _workflow_usage([first])
-    if _index(request).manifest.get('workspace_id') != PADDLEOCR_WORKSPACE_ID:
-        return first
-    reason = first.get('generation', {}).get('failure_reason')
-    content_failure = reason in {
-        'CLAIM_SCOPE_MISMATCH', 'MECHANICAL_FACT_CONTRADICTION',
-        'CLAIM_SUPPORT_REJECTED', 'MODEL_NO_SUPPORTED_ANSWER',
-    }
-    partial = (first.get('status') == 'OK' and first.get('answer_completeness') == 'PARTIAL_SUPPORTED'
-               and first.get('claim_verification', {}).get('status') != 'CHECK_FAILED')
-    if not content_failure and not partial:
-        return first
-    # Keep the question, selected versions, language and namespace unchanged.
-    # Repair the evidence budget/context only; rejected facts are never new queries.
-    strategy = first.get('actual_policy')
-    from src.paddleocr_evidence_search import STRATEGIES
-    if strategy not in STRATEGIES: strategy = 'contextual_bm25'
-    if payload.evidence_strategy=='auto': strategy='auto'
-    repaired = payload.model_copy(update={
-        'retrieval_policy': 'paddleocr_evidence', 'evidence_strategy': strategy,
-        'candidate_budget': 120, 'top_k': min(20, max(payload.top_k+3, 8)),
-    })
-    second = await _query_once(repaired, request, correction=True)
-    attempts = []
-    for result in (first, second):
-        attempts.append({key: result.get(key) for key in (
-            'status', 'generation', 'claim_verification', 'mechanical_verification',
-            'actual_policy', 'retrieval_latency_ms', 'rerank_diagnostics',
-        )})
-    chosen = second if second.get('status') == 'OK' else first
-    chosen['workflow_usage'] = _workflow_usage([first, second])
-    chosen['correction'] = {'attempts': 1, 'trigger': reason or 'PARTIAL_SUPPORTED',
-                            'status': 'PARTIAL_SUPPORTED' if second.get('status')=='OK' and second.get('evidence_gaps') else 'RECOVERED' if second.get('status') == 'OK' else 'UNRESOLVED',
-                            'trace': attempts}
-    # A successful repair is one coherent, independently checked answer.
-    # Concatenating separately worded passes repeats facts and can exceed the
-    # five-claim budget. A failed repair still preserves the valid first pass.
-    return chosen
+    """Run the LangGraph knowledge workflow and its bounded evidence repair."""
+    from src.rag_graph import run_query
+    return await _query_with_exact_cache(payload, request, lambda: run_query(payload, request))
 
 
-async def _query_once(payload: SearchRequest, request: Request, *, correction: bool = False) -> dict:
-    index = _index(request)
-    _require_project_query_ready(index, payload)
-    started = time.perf_counter()
-    if is_out_of_scope_public_request(payload.query):
-        diagnostics = _generation_diagnostics(
-            None, request_id=getattr(request.state, "request_id", None),
-        )
-        diagnostics["failure_reason"] = "OUT_OF_SCOPE_PUBLIC_CORPUS"
-        diagnostics["candidate_count"] = 0
-        _log_public_stage(request, operation="query", stage="scope", status="OUT_OF_SCOPE", started=started, hit_count=0)
-        return {
-            "answer": "N/A", "sources": [], "evidence": [],
-            "consistency_notes": [], "generation": diagnostics,
-            "retrieval_policy": "not_run_scope_guard",
-            "route": "NOT_RUN_SCOPE_GUARD", "rerank_status": "NOT_RUN_SCOPE_GUARD",
-            "status": "OUT_OF_SCOPE", "scope_status": "OUT_OF_SCOPE_PUBLIC_CORPUS",
-        }
-    _validate_public_language(index, payload)
-    _validate_public_retrieval_policy(index, payload)
-    _validate_edge_ai_facets(index, payload)
+async def _query_with_exact_cache(payload, request, run):
+    from src.exact_query_cache import ExactQueryCache
+    import re
+    _require_project_query_ready(_index(request))
+    session = request.headers.get('X-Demo-Session-ID', '') if hasattr(request, 'headers') else ''
+    identity = getattr(request.app.state, 'public_build_identity', {})
+    fields = ('corpus_fingerprint','service_code_fingerprint','retrieval_config_fingerprint',
+              'review_code_fingerprint','evaluation_fingerprint')
     generator = request.app.state.public_generator
-    try:
-        execution = await asyncio.to_thread(
-            _execute_public_search, index, payload, generator, top_k=payload.top_k, correction=correction,
-        )
-    except ValueError as exc:
-        raise HTTPException(status_code=422, detail="INVALID_PUBLIC_SEARCH") from exc
-    hits = execution["results"]
-    _log_public_stage(
-        request, operation="query", stage="retrieval", status="OK" if hits else "EMPTY",
-        started=started, duration_ms=execution["retrieval_latency_ms"], hit_count=len(hits),
-        retrieval_policy=execution["actual_policy"],
-    )
-    if payload.retrieval_policy == "task_adaptive_rerank":
-        _log_public_stage(
-            request, operation="query", stage="rerank", status=execution["rerank_status"],
-            started=started, duration_ms=execution["rerank_latency_ms"],
-            hit_count=execution["candidate_count"], retrieval_policy=execution["actual_policy"],
-        )
-    logger.info(
-        "public_rerank request_id=%s status=%s candidate_count=%s provider=%s model=%s usage=%s latency_ms=%s",
-        getattr(request.state, "request_id", "unknown"), execution["rerank_status"],
-        execution["candidate_count"], execution["rerank_diagnostics"].get("provider"),
-        execution["rerank_diagnostics"].get("model"), execution["rerank_diagnostics"].get("usage"),
-        execution["rerank_latency_ms"],
-    )
-    notes = verified_consistency_notes(hits)
-    diagnostics = _generation_diagnostics(
-        generator, request_id=getattr(request.state, "request_id", None),
-    )
-    base = {
-        "answer": "N/A", "sources": [], "evidence": hits,
-        "requirements": execution.get('requirements', []),
-        "consistency_notes": notes, "generation": diagnostics,
-        "retrieval_policy": payload.retrieval_policy,
-        "requested_policy": execution["requested_policy"],
-        "actual_policy": execution["actual_policy"],
-        "route": execution["route"],
-        "rerank_status": execution["rerank_status"],
-        "rerank_diagnostics": execution["rerank_diagnostics"],
-        "candidate_count": execution["candidate_count"],
-        "final_evidence_count": execution["final_evidence_count"],
-        "retrieval_latency_ms": execution["retrieval_latency_ms"],
-        "rerank_latency_ms": execution["rerank_latency_ms"],
-    }
-    if not hits:
-        diagnostics["failure_reason"] = "NO_POSITIVE_RETRIEVAL_EVIDENCE"
-        diagnostics["candidate_count"] = 0
-        diagnostics["evidence_coverage"] = _evidence_query_coverage(payload.query, hits)
-        return {**base, "status": "NO_EVIDENCE"}
-    if generator is None:
-        return {**base, "status": "GENERATION_NOT_CONFIGURED"}
-    evidence_aliases = {
-        f"E{position}": hit["chunk_id"]
-        for position, hit in enumerate(hits, start=1)
-    }
-    generator_hits = [
-        {
-            "document_id": f"E{position}", "page_number": 1,
-            "section_id": hit["heading"], "section_path": [hit["document_key"], hit["heading"]],
-            "chunk_id": f"E{position}", "text": _canonical_evidence_text(hit),
-            "modality": hit.get("modality", "text"),
-        }
-        for position, hit in enumerate(hits, start=1)
-    ]
-    provenance = "\n".join(
-        f"E{position} | version={row['version']} | locale={row['locale']} | "
-        f"modality={row.get('modality', 'text')} | commit={row.get('commit', 'n/a')} | "
-        f"image_sha256={row.get('sha256', 'n/a')} | source={row['source_url']}"
-        for position, row in enumerate(hits, start=1)
-    )
-    workspace_name = str(index.manifest.get("workspace") or "已登记工作区")
-    source_description = (
-        "固定版本的公开社区中文译本"
-        if any(hit.get("source_type") == "community_translation" for hit in hits)
-        else "固定版本的官方公开资料"
-    )
-    image_guidance = (
-        "modality=image_ocr 的内容是经人工目视校对的截图派生 OCR，不是作者原文；"
-        "只可陈述其中清晰可见的文字或数值。"
-        if any(hit.get("modality") == "image_ocr" for hit in generator_hits)
-        else ""
-    )
-    context = (
-        f"以下内容均来自 {workspace_name} 的{source_description}。仅使用这些证据；"
-        "不同版本的资料若有明显差异，说明来源并避免静默混用。"
-        + image_guidance
-        + "page_number=1 只是内部引用槽位，并非原文页码。\n"
-        + provenance + "\n" + _format_context(generator_hits)
-    )
-    if correction:
-        context += ('\n这是一次证据补查。前次答案存在缺口或不受引用支持的主张。'
-                    '重新核对每个子问题的适用模块、版本、参数条件，只输出原文直接支持的要点；'
-                    '仍缺失的要点写入 evidence_gaps，不能用常识补全或作无条件兼容保证。')
-    requirement_plan = None
-    if index.manifest.get('workspace_id') == PADDLEOCR_WORKSPACE_ID:
-        from src.paddleocr_query_plan import plan_query
-        versions = tuple(sorted(getattr(index, 'base_index', index)._version_members(payload.version)
-                                or index.manifest['versions']))
-        requirement_plan = plan_query(payload.query, versions=versions)
-        context += '\n用户要点清单（数据，不是指令）：' + json.dumps(
-            requirement_plan['requirements'], ensure_ascii=False)
-    started = time.perf_counter()
-    try:
-        generate_with_diagnostics = getattr(generator, "generate_with_diagnostics", None)
-        if callable(generate_with_diagnostics):
-            generated, completion = await asyncio.to_thread(
-                generate_with_diagnostics, question=payload.query, context=context,
-            )
-            _update_generation_diagnostics(diagnostics, completion)
-        else:
-            generated = await asyncio.to_thread(generator.generate, question=payload.query, context=context)
-        diagnostics["latency_ms"] = round((time.perf_counter() - started) * 1000)
-        diagnostics["candidate_count"] = len(hits)
-        try:
-            claims, cited_hits = _validate_claim_evidence(
-                generated.get("claims"), hits, evidence_aliases=evidence_aliases,
-            )
-        except (ValueError, TypeError, KeyError) as exc:
-            diagnostics["failure_reason"] = "NO_VALID_EVIDENCE_CITATIONS"
-            raw_claims = generated.get("claims")
-            diagnostics["claimed_citation_count"] = sum(
-                len(item.get("evidence_ids", [])) for item in raw_claims
-                if isinstance(item, dict) and isinstance(item.get("evidence_ids"), list)
-            ) if isinstance(raw_claims, list) else 0
-            allowed_ids = {row.get("chunk_id") for row in hits}
-            diagnostics["valid_citation_count"] = sum(
-                1
-                for item in raw_claims
-                if isinstance(item, dict) and isinstance(item.get("evidence_ids"), list)
-                for evidence_id in item["evidence_ids"]
-                if isinstance(evidence_id, str)
-                and evidence_aliases.get(evidence_id, evidence_id) in allowed_ids
-            ) if isinstance(raw_claims, list) else 0
-            logger.info(
-                "Public generation request_id=%s status=ABSTAINED reason=%s candidate_count=%s",
-                diagnostics["request_id"], diagnostics["failure_reason"], diagnostics["candidate_count"],
-            )
-            return {**base, "status": "ABSTAINED"}
-        gaps = generated.get("evidence_gaps", [])
-        if (not isinstance(gaps, list) or len(gaps) > MAX_ANSWER_GAPS
-                or any(not isinstance(gap, str) or not gap.strip() or len(gap) > MAX_ANSWER_GAP_CHARS for gap in gaps)):
-            raise ValueError("answer evidence gaps violate the bounded schema")
-        base["evidence_gaps"] = list(dict.fromkeys(gap.strip() for gap in gaps))
-        base["answer_completeness"] = "PARTIAL_SUPPORTED" if gaps and claims else "NOT_ASSESSED"
-        if not claims:
-            diagnostics["failure_reason"] = "MODEL_NO_SUPPORTED_ANSWER"
-            diagnostics["evidence_coverage"] = _evidence_query_coverage(payload.query, hits)
-            logger.info(
-                "Public generation request_id=%s status=ABSTAINED reason=%s candidate_count=%s",
-                diagnostics["request_id"], diagnostics["failure_reason"], diagnostics["candidate_count"],
-            )
-            return {**base, "status": "ABSTAINED"}
-        if index.manifest.get('workspace_id') == PADDLEOCR_WORKSPACE_ID:
-            from src.paddleocr_fact_checks import check_mechanical_facts
-            from src.paddleocr_query_plan import plan_query
-            requirements=execution.get('requirements')
-            if not requirements:
-                base_index=getattr(index,'base_index',index)
-                versions=tuple(sorted(base_index._version_members(payload.version) or base_index.manifest['versions']))
-                requirements=plan_query(payload.query,versions=versions)['requirements']
-            mechanical=check_mechanical_facts(claims,hits,requirements=requirements)
-            scope_rejected=_claim_scope_mismatches(claims,hits,requirements)
-            for row in mechanical['claims']:
-                if row['claim_index'] in scope_rejected:row['status']='SCOPE_MISMATCH'
-            rejected_indexes={r['claim_index'] for r in mechanical['claims'] if r['status'] in ('CONTRADICTED','SCOPE_MISMATCH')}
-            if rejected_indexes:
-                claims=[c for i,c in enumerate(claims) if i not in rejected_indexes]
-                if any(r['status']=='SCOPE_MISMATCH' for r in mechanical['claims']):
-                    base['evidence_gaps'].append('部分主张引用了不适用的模块或版本资料，已移除；当前证据尚不足以支持这些要点。')
-                if any(r['status']=='CONTRADICTED' for r in mechanical['claims']):
-                    base['evidence_gaps'].append('部分参数默认值与所引原文冲突，已移除，请核对对应模块和版本。')
-                base['answer_completeness']='PARTIAL_SUPPORTED'
-            base['mechanical_verification']=mechanical
-            if not claims:
-                diagnostics['failure_reason']='CLAIM_SCOPE_MISMATCH' if any(
-                    r['status']=='SCOPE_MISMATCH' for r in mechanical['claims']) else 'MECHANICAL_FACT_CONTRADICTION'
-                return {**base,'status':'ABSTAINED'}
-            from src.claim_support import check_claim_support
-            judge=getattr(generator,'verify_claims_with_diagnostics',None)
-            verification_started=time.perf_counter()
-            verification=(await asyncio.to_thread(check_claim_support,claims,hits,judge,question=payload.query,
-                          requirements=requirement_plan['requirements'] if requirement_plan else requirements)
-                          if callable(judge) else {'status':'CHECK_FAILED','claims':[],'rejected':[],
-                                                    'failure_type':'CheckerNotConfigured'})
-            base['claim_verification']={key:value for key,value in verification.items() if key!='claims'}
-            base['claim_verification']['latency_ms']=round((time.perf_counter()-verification_started)*1000,3)
-            diagnostics['generation_latency_ms']=diagnostics.get('latency_ms')
-            diagnostics['latency_ms']=round((time.perf_counter()-started)*1000,3)
-            claims=verification['claims']
-            if not claims:
-                diagnostics['failure_reason']=('CLAIM_SUPPORT_REJECTED' if verification['status']=='UNSUPPORTED'
-                                               else 'CLAIM_SUPPORT_CHECK_FAILED')
-                return {**base,'status':'ABSTAINED'}
-            allowed={cid for claim in claims for cid in claim['evidence_ids']}
-            cited_hits=[row for row in hits if row['chunk_id'] in allowed]
-            # Re-index citations after removing unsupported claims and sources.
-            slots={row['chunk_id']:i+1 for i,row in enumerate(cited_hits)}
-            for claim in claims:claim['source_indexes']=[slots[cid] for cid in claim['evidence_ids']]
-            if verification['rejected']:
-                base['answer_completeness']='PARTIAL_SUPPORTED'
-                base['evidence_gaps'].append('部分生成主张未获得引用原文支持，已移除；请人工核对缺失要点。')
-            coverage = verification.get('coverage', {'status': 'NOT_ASSESSED', 'items': []})
-            base['requirement_coverage'] = coverage
-            missing = [r for r in coverage['items'] if r['status'] != 'COVERED']
-            omitted = (requirement_plan or {}).get('omitted_requirements', [])
-            if missing or omitted:
-                base['answer_completeness'] = 'PARTIAL_SUPPORTED'
-                for row in missing:
-                    base['evidence_gaps'].append(f"待核对要点：{row['query']}；{row['reason']}")
-                for text in omitted:
-                    base['evidence_gaps'].append(f'要点数量超出单次核验范围，请拆分提问：{text}')
-            elif coverage['status'] == 'MODEL_ASSESSED_COMPLETE' and not base['evidence_gaps']:
-                base['answer_completeness'] = 'MODEL_ASSESSED_COMPLETE'
-            base['evidence_gaps'] = list(dict.fromkeys(base['evidence_gaps']))
-        diagnostics["claimed_citation_count"] = sum(len(claim["evidence_ids"]) for claim in claims)
-        diagnostics["valid_citation_count"] = diagnostics["claimed_citation_count"]
-        answer = "\n".join(claim["text"] for claim in claims)
-        logger.info(
-            "Public generation request_id=%s status=OK provider=%s requested_model=%s returned_model=%s "
-            "finish_reason=%s usage=%s latency_ms=%s",
-            diagnostics["request_id"], diagnostics["provider"], diagnostics["requested_model"],
-            diagnostics["returned_model"], diagnostics["finish_reason"],
-            diagnostics["usage"], diagnostics["latency_ms"],
-        )
-        return {
-            **base, "answer": answer, "claims": claims, "sources": cited_hits,
-            "evidence_support": _answer_evidence_support(
-                payload.query,
-                cited_hits,
-                notes,
-            ),
-            "status": "OK",
-        }
-    except GenerationProviderError as exc:
-        diagnostics["latency_ms"] = round((time.perf_counter() - started) * 1000)
-        _log_generation_failure(operation="Public generation", status=exc.code, diagnostics=diagnostics, exc=exc)
-        return {**base, "status": exc.code}
-    except TimeoutError as exc:
-        diagnostics["latency_ms"] = round((time.perf_counter() - started) * 1000)
-        status = "GENERATION_PROVIDER_TIMEOUT"
-        _log_generation_failure(operation="Public generation", status=status, diagnostics=diagnostics, exc=exc)
-        return {**base, "status": status}
-    except (ConnectionError, OSError) as exc:
-        diagnostics["latency_ms"] = round((time.perf_counter() - started) * 1000)
-        status = "GENERATION_PROVIDER_UNAVAILABLE"
-        _log_generation_failure(operation="Public generation", status=status, diagnostics=diagnostics, exc=exc)
-        return {**base, "status": status}
-    except RuntimeError as exc:
-        diagnostics["latency_ms"] = round((time.perf_counter() - started) * 1000)
-        _log_generation_failure(operation="Public generation", status="GENERATION_PROVIDER_REJECTED", diagnostics=diagnostics, exc=exc)
-        return {**base, "status": "GENERATION_PROVIDER_REJECTED"}
-    except GenerationResponseError as exc:
-        diagnostics["latency_ms"] = round((time.perf_counter() - started) * 1000)
-        _update_generation_diagnostics(diagnostics, exc.diagnostics)
-        _log_generation_failure(operation="Public generation", status=exc.code, diagnostics=diagnostics, exc=exc)
-        return {**base, "status": exc.code}
-    except (ValueError, TypeError, KeyError, IndexError) as exc:
-        diagnostics["latency_ms"] = round((time.perf_counter() - started) * 1000)
-        _log_generation_failure(operation="Public generation", status="GENERATION_RESPONSE_INVALID", diagnostics=diagnostics, exc=exc)
-        return {**base, "status": "GENERATION_RESPONSE_INVALID"}
-    except Exception as exc:
-        diagnostics["latency_ms"] = round((time.perf_counter() - started) * 1000)
-        _log_generation_failure(operation="Public generation", status="FAIL_CLOSED", diagnostics=diagnostics, exc=exc)
-        return {**base, "status": "FAIL_CLOSED"}
+    async def execute():
+        admission = getattr(getattr(request, 'state', None), 'generation_admission', None)
+        if generator is not None and callable(admission):
+            await admission()
+        return await run()
+    cacheable = (generator is not None and bool(re.fullmatch(r'[A-Za-z0-9_-]{1,128}', session))
+                 and all(identity.get(k) for k in fields))
+    if not cacheable:
+        return await execute()
+    cache = getattr(request.app.state, 'exact_query_cache', None)
+    if cache is None:
+        cache = request.app.state.exact_query_cache = ExactQueryCache()
+    principal = getattr(request.state, 'principal', None)
+    diagnostic = _generation_diagnostics(generator)
+    key = {'session':session, 'subject':getattr(principal, 'subject', None),
+           'application':request.headers.get('X-Application-ID'), 'request':payload.model_dump(),
+           'build':{k:identity.get(k) for k in fields}, 'generator_instance':id(generator),
+           'provider':diagnostic.get('provider'), 'model':diagnostic.get('requested_model')}
+    cached = cache.get(key)
+    if cached is not None:
+        historical = cached.get('workflow_usage')
+        cached['cache'] = {'hit':True, 'scope':'exact_session_request', 'historical_workflow_usage':historical}
+        cached['cache']['historical_rerank_diagnostics'] = cached.get('rerank_diagnostics')
+        if isinstance(cached.get('rerank_diagnostics'), dict):
+            cached['rerank_diagnostics'] = {**cached['rerank_diagnostics'], 'usage':None, 'cache_hit':True}
+            cached['rerank_diagnostics'].pop('llm_ranking',None)
+        if isinstance(cached.get('retrieval_diagnostics'), dict):
+            cached['cache']['historical_retrieval_diagnostics'] = cached['retrieval_diagnostics']
+            cached['retrieval_diagnostics'] = {**cached['retrieval_diagnostics'], 'usage':None, 'cache_hit':True}
+            cached['retrieval_diagnostics'].pop('llm_ranking',None)
+        if isinstance(cached.get('correction'), dict) and cached['correction'].get('trace'):
+            cached['cache']['historical_correction_trace'] = cached['correction'].pop('trace')
+        cached['workflow_usage'] = {'total_tokens':0, 'reported_calls':0, 'observed_stages':0, 'complete':True}
+        cached['generation'] = {**cached.get('generation',{}), 'usage':None, 'cache_hit':True,
+                                'latency_ms':0, 'generation_latency_ms':0,
+                                'request_id':getattr(request.state,'request_id',None)}
+        if isinstance(cached.get('claim_verification'),dict):
+            cached['claim_verification']['diagnostics'] = {'cache_hit':True, 'usage':None}
+        cached['retrieval_latency_ms'] = 0
+        cached['rerank_latency_ms'] = 0
+        if isinstance(cached.get('graph_execution'),dict):
+            cached['graph_execution']['cache_hit'] = True
+        return cached
+    value = await execute()
+    cache.put(key, value)
+    return {**value, 'cache':{'hit':False, 'scope':'exact_session_request'}}
+
+
+async def _query_once(payload: SearchRequest, request: Request, *, correction: bool = False,
+                      repair_gaps=None, execution=None) -> dict:
+    """Compatibility seam for a single pass; execution belongs to LangGraph."""
+    from src.rag_graph import run_query_once
+    return await run_query_once(payload, request, correction=correction,
+                                repair_gaps=repair_gaps, execution=execution)
 
 
 @router.post("/review-advice")

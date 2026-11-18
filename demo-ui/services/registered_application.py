@@ -36,6 +36,17 @@ def load_registry(path=REGISTRY):
         for key in ('include', 'exclude'):
             item[key] = [_path(p, empty=key == 'include') for p in item.get(key, [])]
         item['roles'] = {role: [_path(p) for p in paths] for role, paths in item['roles'].items()}
+        entrypoints = item.get('entrypoints', {})
+        if not isinstance(entrypoints, dict) or len(entrypoints) > 12:
+            raise ValueError('入口登记必须为有界的入口与依赖文件映射。')
+        for entrypoint, manifest in entrypoints.items():
+            path, _, symbol = entrypoint.partition('::')
+            if not _path(path).endswith('.py') or not re.fullmatch(r'[A-Za-z_]\w{0,63}', symbol):
+                raise ValueError('入口必须指向登记应用内的 Python 模块函数。')
+            if (_path(manifest) not in item['roles'].get('dependency', [])
+                    or not _selected(item, path) or not _selected(item, manifest)):
+                raise ValueError('入口及其依赖文件必须位于登记的审查范围。')
+        item['entrypoints'] = entrypoints
         item['registration_fingerprint'] = hashlib.sha256(json.dumps(row, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
         result[item['id']] = item
     return result

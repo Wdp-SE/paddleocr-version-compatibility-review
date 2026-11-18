@@ -1,0 +1,56 @@
+name: Internal service boundary checks
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  internal-boundaries:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17-bookworm
+        env:
+          POSTGRES_DB: review_test
+          POSTGRES_USER: review_test
+          POSTGRES_PASSWORD: ephemeral-ci-only
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U review_test -d review_test"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with: {python-version: '3.11'}
+      - name: Install hash-locked Linux dependencies
+        run: python -m pip install --require-hashes -r deploy/internal/requirements.lock
+      - name: Test API, leases, CI binding and disposable PostgreSQL
+        working-directory: versioned-rag-service
+        env:
+          RD_V2_ALLOW_EXTERNAL_GENERATION: 'false'
+          INTERNAL_TEST_DATABASE_URL: postgresql://review_test:ephemeral-ci-only@127.0.0.1:5432/review_test
+        run: >-
+          python -m pytest tests/test_internal_tasks.py tests/test_internal_security.py
+          tests/test_internal_worker.py tests/test_internal_api.py tests/test_internal_records.py
+          tests/test_internal_operations.py tests/test_internal_postgres.py
+          tests/test_internal_integration.py tests/test_internal_image_boundary.py
+          tests/test_corpus_release.py
+          tests/test_joint_knowledge.py tests/test_joint_knowledge_api.py tests/test_query_acceptance_runner.py
+          tests/test_public_server.py::test_startup_resolves_active_corpus_only_once
+          tests/test_public_server.py::test_release_mode_rejects_config_from_another_directory -q
+          --junitxml=../internal-api-tests.xml
+      - name: Test authenticated frontend navigation
+        working-directory: demo-ui
+        run: python -m pytest tests/test_internal_workbench.py -q --junitxml=../internal-ui-tests.xml
+      - name: Verify fixed OCR evidence coverage without a model
+        run: python evaluation/business_quality_v1/production_retrieval_acceptance.py --output ocr-retrieval-verification
+      - name: Upload internal verification results
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: internal-verification
+          path: |
+            internal-*-tests.xml
+            ocr-retrieval-verification/*.json

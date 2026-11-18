@@ -2,10 +2,9 @@ services:
   - type: web
     name: version-aware-rag-public-demo
     runtime: python
-    rootDir: versioned-rag-service
     plan: free
-    buildCommand: pip install -r requirements-render.txt
-    startCommand: uvicorn src.public_server:app --host 0.0.0.0 --port $PORT
+    buildCommand: pip install -r versioned-rag-service/requirements-render.txt
+    startCommand: cd versioned-rag-service && uvicorn src.public_server:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:
       - key: PYTHON_VERSION

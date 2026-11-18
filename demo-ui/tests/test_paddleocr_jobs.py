@@ -4,6 +4,22 @@ import pytest
 from services.paddleocr_jobs import JobManager, snapshot, cancel_job, job_diagnostics
 
 
+def test_verified_static_preview_is_visible_while_optional_work_is_pending():
+    manager=JobManager(max_workers=1,max_pending=1);ready,release=Event(),Event()
+    def work(cancelled,update):
+        update({'stage':'official_lookup','static_preview':{'runtime_verified':False,'risk_count':1,'finding_count':1,
+            'findings':[{'title':'旧结果读取','path':'application/adapter.py','line':6}],
+            'files':[{'path':'application/adapter.py','sha256':'a'*64}]}})
+        ready.set();release.wait(3);return {'done':True}
+    try:
+        job=manager.start(work,'case',owner='one');assert ready.wait(2)
+        view=snapshot(job)
+        assert not view['done'] and view['static_preview']['risk_count']==1
+        assert not view['static_preview']['runtime_verified']
+        assert 'static_preview' not in job_diagnostics(job)
+    finally:release.set();manager.close()
+
+
 def test_duplicate_same_owner_reuses_work_but_other_session_never_reuses_result():
     manager = JobManager(max_workers=1, max_pending=3)
     entered, release = Event(), Event()

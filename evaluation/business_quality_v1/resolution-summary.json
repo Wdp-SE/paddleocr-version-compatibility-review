@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-11-14T03:50:34.274282+00:00",
+  "scope": "Fixed internal OCR SDK maintenance simulation; public official corpus and student original application; uncommitted working source, not production deployment",
+  "retrieval": {
+    "identity_sha256": "7598be78426f66e2b647002e9ddf76f0cc50d2010c2884885763aeeffcc8c8a7",
+    "freeze": {
+      "path": ".local-demo-temp/resolve-20261114/closeout-retrieval/freeze.json",
+      "sha256": "df1fc60509127e9161fdf4e2199d7dddd227f0721f585f7d521b157037f88d42"
+    },
+    "report": {
+      "path": ".local-demo-temp/resolve-20261114/closeout-retrieval/report.json",
+      "sha256": "bdb1fbc5fd572f8b1f1a9393dd26edb4f5be256c68d1a792c30195f81120f658"
+    },
+    "fixed": {
+      "questions": 22,
+      "fact_hits": 26,
+      "fact_count": 26,
+      "wrong_version_or_module": 0,
+      "guards_met": true
+    },
+    "additional_wording": {
+      "questions": 9,
+      "fact_hits": 12,
+      "fact_count": 12,
+      "wrong_version_or_module": 0,
+      "guards_met": true
+    },
+    "baseline": {
+      "sha256": "da5e56bad75fb72ef0e44edb450e7d7bde8345600259443ef08ddeaea05096e9",
+      "note": "Captured default-path diagnostic before repair; no full pre-run source freeze, not a strategy promotion benchmark",
+      "fact_hits": 14,
+      "fact_count": 26,
+      "lost_existing_facts": []
+    },
+    "score_type": "necessary literal source fact coverage in assembled bounded canonical context, not answer accuracy or independent blind evaluation",
+    "no_external_model_calls": true
+  },
+  "generation": {
+    "report": {
+      "path": ".local-demo-temp/resolve-20261114/closeout-query.json",
+      "sha256": "6575f77fc28504dc20f15cbd38ec01b540cdc514917dcaf8b3c3d4c26e3029ed"
+    },
+    "loaded_service_code_fingerprint": "8730eeb2201d4524e7c52b4ef28b5f6d6ff26a3682157a33ef382ef87c1a18bc",
+    "questions_including_exact_repeat": 7,
+    "responses_ok": 7,
+    "rows": [
+      {
+        "id": "single",
+        "seconds": 6.279,
+        "status": "OK",
+        "answer_completeness": "MODEL_ASSESSED_COMPLETE",
+        "model_reported_usage": {
+          "total_tokens": 6985,
+          "reported_calls": 2,
+          "observed_stages": 2,
+          "complete": true
+        },
+        "correction_status": "NOT_NEEDED",
+        "remaining_gaps": [],
+        "rejected_claims": [],
+        "human_accuracy": "NOT_EVALUATED"
+      },
+      {
+        "id": "single_repeat",
+        "seconds": 0.012,
+        "status": "OK",
+        "answer_completeness": "MODEL_ASSESSED_COMPLETE",
+        "model_reported_usage": {
+          "total_tokens": 0,
+          "reported_calls": 0,
+          "observed_stages": 0,
+          "complete": true
+        },
+        "correction_status": "NOT_NEEDED",
+        "remaining_gaps": [],
+        "rejected_claims": [],
+        "human_accuracy": "NOT_EVALUATED"
+      },
+      {
+        "id": "compound",
+        "seconds": 9.697,
+        "status": "OK",
+        "answer_completeness": "MODEL_ASSESSED_COMPLETE",
+        "model_reported_usage": {
+          "total_tokens": 16038,
+          "reported_calls": 2,
+          "observed_stages": 2,
+          "complete": true
+        },
+        "correction_status": "NOT_NEEDED",
+        "remaining_gaps": [],
+        "rejected_claims": [],
+        "human_accuracy": "NOT_EVALUATED"
+      },
+      {
+        "id": "colloquial_compound",
+        "seconds": 20.255,
+        "status": "OK",
+        "answer_completeness": "MODEL_ASSESSED_COMPLETE",
+        "model_reported_usage": {
+          "total_tokens": 33156,
+          "reported_calls": 4,
+          "observed_stages": 4,
+          "complete": true
+        },
+        "correction_status": "RECOVERED",
+        "remaining_gaps": [],
+        "rejected_claims": [],
+        "human_accuracy": "NOT_EVALUATED"
+      },
+      {
+        "id": "legacy_method",
+        "seconds": 6.11,
+        "status": "OK",
+        "answer_completeness": "MODEL_ASSESSED_COMPLETE",
+        "model_reported_usage": {
+          "total_tokens": 4536,
+          "reported_calls": 2,
+          "observed_stages": 2,
+          "complete": true
+        },
+        "correction_status": "NOT_NEEDED",
+        "remaining_gaps": [],
+        "rejected_claims": [],
+        "human_accuracy": "NOT_EVALUATED"
+      },
+      {
+        "id": "default_omission",
+        "seconds": 5.655,
+        "status": "OK",
+        "answer_completeness": "PARTIAL_SUPPORTED",
+        "model_reported_usage": {
+          "total_tokens": 10038,
+          "reported_calls": 2,
+          "observed_stages": 2,
+          "complete": true
+        },
+        "correction_status": "SKIPPED_NO_NEW_RELEVANT_EVIDENCE",
+        "remaining_gaps": [
+          "部分生成主张未获得引用原文支持，已移除；请人工核对缺失要点。"
+        ],
+        "rejected_claims": [
+          {
+            "claim_index": 2,
+            "supported": false,
+            "reason": "原文中返回 cls_res 的条件是进入 else 分支（det 为假）且 if not rec 成立；并非必须显式传 rec=False。例如 det=False、rec=True 时 else 内 rec 不为假，返回 ocr_res 而非 cls_res。主张将例外条件限定为“需要显式传 rec=False”不准确。"
+          }
+        ],
+        "human_accuracy": "NOT_EVALUATED"
+      },
+      {
+        "id": "joint",
+        "seconds": 9.306,
+        "status": "OK",
+        "answer_completeness": "PARTIAL_SUPPORTED",
+        "model_reported_usage": {
+          "total_tokens": 15463,
+          "reported_calls": 3,
+          "observed_stages": 3,
+          "complete": true
+        },
+        "correction_status": null,
+        "remaining_gaps": [
+          "缺少依据说明官方 predict 返回的外层容器与单项结果对象的确切接口类型及访问方式；现有证据仅显示测试中以 result[0]、res[\"rec_texts\"] 读取，以及打印示例中的 'res' 字典。",
+          "缺少依据说明官方 page_index 在多页或单页输入下与应用适配层 enumerate 生成的 page_index 语义完全一致。"
+        ],
+        "rejected_claims": [],
+        "human_accuracy": "NOT_EVALUATED"
+      }
+    ],
+    "limitation": "Model-assessed completeness is not human correctness. Intermediate runs and failures retained locally; final compound can require one bounded repair. Joint query does not establish runtime compatibility."
+  },
+  "runtime": {
+    "summary": {
+      "path": "evaluation/business_quality_v1/runtime-summary-resolution.json",
+      "sha256": "979345fc4bfaa161e42e188b85b5c2080a25600d1e8836d33b9991baf06c571f"
+    },
+    "target_v3_report": {
+      "path": ".local-demo-temp/resolve-20261114/v3-target-application.child.json",
+      "sha256": "d53e6a2103e2dc083665e4fd4af6946ffe5f04c02b4b951d39907974c81e8c17"
+    },
+    "target_v3_status": "PASSED",
+    "legacy_entry": {
+      "entrypoint": "application.pipeline.process_configured",
+      "runtime_status": "FAILED",
+      "error_type": "ValueError",
+      "error": "invalid v2 page"
+    },
+    "supervisor_seconds": 82.578,
+    "real_v2_count": 4,
+    "real_v2_passed": 4,
+    "fixtures_expected_results": 8,
+    "fixtures_intentionally_failed": 3,
+    "historical_native_fault": "Not reproduced; exact 0xC0000005 cause remains unproven",
+    "supervisor_cli_failure_propagation": {
+      "expected_exit": 2,
+      "observed_exit": 2,
+      "record": {
+        "path": ".local-demo-temp/resolve-20261114/supervisor-failure-exit-check.json",
+        "sha256": "73f88327b7bc3e78d7a8237cbbb688da47cd46c356fbf78902f83a709361ee7b"
+      }
+    }
+  },
+  "checks": {
+    "backend": {
+      "path": ".local-demo-temp/resolve-20261114/backend-final-complete.log",
+      "sha256": "2aba73ed0c8d178b50b60232dbd51998d953bde58ecf782ec6b77aa10645714a",
+      "passed": 841,
+      "skipped": 2
+    },
+    "agent": {
+      "path": ".local-demo-temp/resolve-20261114/agent-function-context.log",
+      "sha256": "c96e1774df6a72708cc8a19fb83fa24d7d89c19db71719ceb3db3dc1d8d924a1",
+      "passed": 208,
+      "skipped": 0
+    },
+    "ui": {
+      "path": ".local-demo-temp/resolve-20261114/ui-function-context.log",
+      "sha256": "bafbb19c2cf7d3932fdc0b44c39aace48b4a3d4fc27cc0e36d18f8b022b9f210",
+      "passed": 302,
+      "skipped": 10
+    },
+    "original_application": {
+      "path": ".local-demo-temp/resolve-20261114/application-all-verified.log",
+      "sha256": "837806d7284881db5a6169a1a6d47892e6dd361359092bb1641d02f070262c82",
+      "passed": 53,
+      "skipped": 0
+    }
+  },
+  "dependency_check": "No broken requirements found",
+  "review": "Independent review findings corrected; bounded Python source-unit change independently verified 13 tests",
+  "local_urls": {
+    "ui": "http://127.0.0.1:8534/",
+    "api": "http://127.0.0.1:8776/docs"
+  },
+  "github_or_public_deployment_updated": false
+}

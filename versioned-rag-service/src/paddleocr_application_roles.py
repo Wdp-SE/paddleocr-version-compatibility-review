@@ -29,6 +29,7 @@ def regression_requirements(findings: list[dict]) -> list[dict]:
         rule = finding['rule_id']
         layout = rule == 'removed_ppstructure'
         rows.append({
+            'kind': 'component_contract',
             'finding_id': finding['finding_id'], 'rule_id': rule,
             'application': finding['application'],
             'input_conditions': ['含表格与段落的版面页', '空页', '多页'] if layout else ['带文本页', '空页', '多页'],

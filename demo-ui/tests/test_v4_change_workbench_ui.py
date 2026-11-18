@@ -13,7 +13,7 @@ def test_paddleocr_workbench_is_the_primary_review_flow_and_loads_without_rag(mo
     assert not app.exception
     assert any(item.value == "PaddleOCR 文档处理应用研发工作台" for item in app.title)
     navigation = {item.label for item in app.button}
-    assert {"总览", "版本化知识检索", "版本与历史", "发起兼容性审查", "检索评测"} <= navigation
+    assert {"总览", "知识查询", "资料库", "变更审查", "评测报告"} <= navigation
 
 def test_change_analysis_explains_added_and_removed_without_blank_placeholders() -> None:
     result = {

@@ -1,1 +1,15 @@
-{"schema_version":1,"source_type":"developer_original_application","required_line_fields":["page_index","text","confidence"],"output_fields":["schema_version","pages"],"runtime_scope":"original offline regression only; submitted applications are not executed"}
+{
+  "schema_version": 1,
+  "source_type": "developer_original_application",
+  "required_line_fields": ["page_index", "text", "confidence"],
+  "output_fields": ["schema_version", "pages"],
+  "page_fields": ["page_index", "text"],
+  "page_policy": "preserve_empty_pages",
+  "review_context": {
+    "dependency_files": {
+      "current": ["application/requirements-v2.txt"],
+      "target": ["application/requirements-v3.txt"]
+    }
+  },
+  "runtime_scope": "Original example only. Test definitions and fixture results do not prove real OCR runtime compatibility."
+}

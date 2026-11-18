@@ -4,9 +4,9 @@
   "selection_status": "new_corpus_pending_rebenchmark",
   "benchmark_query_count": 0,
   "reranker_enabled": false,
-  "benchmark_corpus_sha256": "8ef43923047ac06c4cff1a64e8611fd05224d05e3d0d402b06cdcab3497db7c9",
+  "benchmark_corpus_sha256": "94d8809eb466f9aceabb44fafc5a1959335dd0876e203faeb365e61bf9818457",
   "index_artifacts_sha256": {
-    "chunks.json": "981822b9c3dc9394e6872c3979f9bbc99883d7d34349177dbac187cabe5143c1",
-    "dense_vectors.npy": "0a03098af1983652975d7165d711819723c2671f8aba032d915e8ff27808f639"
+    "chunks.json": "6bab86243cac838784c05a1e38ee7d89964acbd1223270e2eb0a692db1e10580",
+    "dense_vectors.npy": "739e3c6d177b3439db27dc5e295de46c4f9b1640dc8dee2ee6eaf0a3ae94692a"
   }
 }

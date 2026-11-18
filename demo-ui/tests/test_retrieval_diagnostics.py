@@ -3,6 +3,16 @@ from __future__ import annotations
 from services.retrieval_diagnostics import retrieval_diagnostic_lines, retrieval_policy_options
 
 
+def test_available_evidence_search_is_not_hidden_when_benchmark_is_stale():
+    options = retrieval_policy_options({'workspace_id': 'paddleocr',
+        'evidence_retrieval': {'available': True}, 'rag_quality_evaluation': None,
+        'impact_evaluation': None})
+    assert [row['id'] for row in options] == ['paddleocr_evidence', 'bm25']
+    assert not any('验证通过' in row['label'] for row in options)
+    assert retrieval_policy_options({'workspace_id':'paddleocr',
+        'evidence_retrieval': {'available': False}})[0]['id'] == 'bm25'
+
+
 def test_verified_rag_release_stays_default_with_optional_experiments():
     options=retrieval_policy_options({'workspace_id':'paddleocr','rag_quality_evaluation':{},
         'impact_evaluation':{'selected_strategy':'window_rerank_120'},

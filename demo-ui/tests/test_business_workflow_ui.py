@@ -25,7 +25,7 @@ def test_active_workbench_exposes_retrieval_and_change_review_pages_without_rag(
     app = AppTest.from_file(UI_ROOT / "app.py", default_timeout=60).run()
     assert not app.exception
     button_labels = {item.label for item in app.button}
-    assert {"总览", "版本化知识检索", "版本与历史", "资料来源", "发起兼容性审查"} <= button_labels
+    assert {"总览", "知识查询", "资料库", "变更审查"} <= button_labels
     assert "加载旗舰模板" not in button_labels
 
 

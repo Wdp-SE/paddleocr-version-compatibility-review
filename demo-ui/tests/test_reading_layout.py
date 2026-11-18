@@ -3,6 +3,32 @@ from streamlit.testing.v1 import AppTest
 from components.reading_layout import paragraph_blocks, unique_citations, evidence_excerpt
 
 
+def test_retired_generator_gap_is_visible_as_review_history_not_missing_source():
+    app = AppTest.from_string('''
+from components.answer_reading import render_answer
+render_answer({'answer':'False 关闭分类', 'claims':[], 'evidence_gaps':[],
+ 'answer_completeness':'MODEL_ASSESSED_COMPLETE',
+ 'generator_gap_review':{'items':[{'retired':True,'original_gap':'完整类型定义',
+   'reason':'用户只问开关，不要求类型定义。'}]}})
+''').run()
+    assert not app.exception
+    text = '\n'.join(str(r.value) for r in list(app.caption) + list(app.markdown))
+    assert '完整类型定义' in text and '已复核' in text
+    assert not app.warning
+
+
+def test_conflicting_completeness_is_visible_without_hiding_supported_answer():
+    app = AppTest.from_string('''
+from components.answer_reading import render_answer
+render_answer({'answer':'已确认 rec_batch_num 默认为 6。', 'claims':[],
+ 'answer_completeness':'PARTIAL_SUPPORTED', 'evidence_gaps':['裁剪图输入条件仍待核对'],
+ 'requirement_coverage':{'status':'CONFLICTING_ASSESSMENTS','items':[]}})
+''').run()
+    assert not app.exception
+    assert any('核验意见不一致' in row.value for row in app.warning)
+    assert any('rec_batch_num 默认为 6' in row.value for row in app.markdown)
+
+
 def test_requirement_coverage_is_visible_and_not_presented_as_accuracy():
     app = AppTest.from_string('''
 from components.answer_reading import render_answer

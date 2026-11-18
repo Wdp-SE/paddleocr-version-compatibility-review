@@ -663,7 +663,7 @@ def test_offline_version_fallback_is_not_presented_as_latest(monkeypatch):
 
     monkeypatch.setattr(PublicKnowledgeClient, "workspace", lambda self: None)
     app = AppTest.from_file(APP, default_timeout=40).run()
-    next(button for button in app.button if button.label == "版本化知识检索").click().run()
+    app.button(key="nav_版本检索与问答").click().run()
 
     assert not app.exception
     assert app.selectbox(key="official_version").value == "等待连接"

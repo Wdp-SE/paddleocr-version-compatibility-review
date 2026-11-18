@@ -61,3 +61,29 @@ def test_empty_report_never_becomes_an_upgrade_approval():
     r = report(); r['compatibility_report']['findings'] = []
     assert not assess_disposition(r, {}, {}, None)['eligible_for_human_continuation']
     assert binding(r) != binding({**r, 'request_fingerprint': 'other'})
+
+
+def test_fixture_or_self_asserted_ci_record_does_not_certify_runtime():
+    r = report(); data = record(r); data['execution_kind'] = 'fixture'
+    parsed = validate_regression(r, data)
+    assert parsed['record_status'] == 'FIXTURE_ONLY'
+    assert not assess_disposition(r, {'risk-1': {'decision': 'mitigated', 'reason': '修改'}}, {}, parsed)['eligible_for_human_continuation']
+    data['execution_kind'] = 'trusted_ci'
+    with pytest.raises(ValueError): validate_regression(r, data)
+
+
+def test_config_records_bind_both_snapshots_and_workflow_type():
+    r = report()
+    assert binding(r) != binding({**r, 'workflow_type': 'configuration_change'})
+    a = {**r, 'baseline_application_snapshot': {'head_commit': 'a'*40}}
+    assert binding(a) != binding({**a, 'baseline_application_snapshot': {'head_commit': 'b'*40}})
+
+
+def test_application_contract_regression_cannot_be_skipped_when_static_risk_was_tested():
+    r=report()
+    r['compatibility_report']['regression_requirements'].append({'kind':'application_contract',
+        'finding_id':'contract-a','input_conditions':['空页'],'checks':['保留页号']})
+    risks={'risk-1':{'decision':'mitigated','reason':'adapter changed'}}
+    result=assess_disposition(r,risks,{},record(r))
+    assert not result['eligible_for_human_continuation']
+    assert any('contract-a' in b for b in result['blockers'])

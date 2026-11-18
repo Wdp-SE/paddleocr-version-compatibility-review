@@ -306,7 +306,9 @@ def test_budget_consumed_and_exceeded_trace_events(tmp_path: Path) -> None:
         operation="tool.call",
         stage="RUN",
     )
-    ledger = BudgetLedger(ExecutionBudget(max_tool_calls=1))
+    # This test counts tool-call events, not elapsed-time events. A real clock
+    # can add DURATION_MS consumption under slower disk/CI scheduling.
+    ledger = BudgetLedger(ExecutionBudget(max_tool_calls=1),clock=FakeClock())
     reservation = ledger.reserve(
         {BudgetDimension.TOOL_CALLS: 1},
         operation="tool.call",

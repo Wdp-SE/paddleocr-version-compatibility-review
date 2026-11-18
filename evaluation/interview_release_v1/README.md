@@ -41,7 +41,7 @@
 
 ## 失败与中间实验
 
-`diagnosis/duplicate-migration-answer.json` 保存早期两轮答案拼接重复的响应。其它 `live/question-*.json`、旧时间目录、`agent/case-*.json` 和 `final/` 至 `final5/` 是本次修复过程的诊断/中间记录，**不代表当前运行代码**。其中既有保守拒绝，也有生成把打印字典和返回类型混淆的表述；不能只挑成功输出宣传效果。
+[`live/question-3.json`](live/question-3.json) 保存早期两轮答案拼接重复的响应。其它 `live/question-*.json`、旧时间目录、`agent/case-*.json` 和 `final/` 至 `final5/` 是本次修复过程的诊断和中间记录。其中既有保守拒绝，也有将打印字典与返回类型混淆的表述，按各自构建身份追溯。
 
 当前通过“版本/产线范围 → 有界候选与来源角色 → 逐条引用 → 原问题支持核验 → 一次纠正/缺口”改善质量，未添加固定答案。中间检索数字相同不意味着源码身份一致，以 `final6` 文件指纹为准。
 

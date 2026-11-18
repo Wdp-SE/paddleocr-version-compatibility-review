@@ -21,6 +21,9 @@
 # Local workspaces and UI outputs
 OpenManus-rag/workspace/
 demo-ui/runtime/
+demo-ui/output/
+/outputs/
+/project_delivery/interview_preparation/
 
 # Confidential R&D source documents, normalized copies, indexes and reports
 RAG-Challenge-2-main/开发过程资料/
@@ -48,6 +51,7 @@ RAG-Challenge-2-main/data/domain_corpus_v0_2/offline_reassembly/
 
 # Local logs, IDE and operating-system files
 .local-demo-temp/
+.venv-maintenance/
 evaluation/retrieval_upgrade_v2/experiment-*/
 *.local.log
 *.token.log

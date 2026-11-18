@@ -5,22 +5,24 @@ from services.registered_application import load_registry, collect_snapshot
 from services.review_tasks import ReviewTaskStore
 
 
-def render_registered_input(client, ready, *, on_change, public_demo=True):
+def render_registered_input(client, ready, *, on_change, public_demo=True, workflow_type='dependency_upgrade'):
     registry = load_registry()
     if public_demo:
         registry = {key: row for key, row in registry.items() if row['source_identity'] == 'student_poc_application'}
     if not registry:
         st.warning('尚无可用的已登记应用。公网演示只开放学生原创资料。')
         return None, None
-    app_id = st.selectbox('已登记内部应用', list(registry), format_func=lambda key: registry[key]['name'], key='registered_app')
+    app_id = st.selectbox('应用', list(registry), format_func=lambda key: registry[key]['name'], key='registered_app')
     app = registry[app_id]
-    st.caption(f"维护者：{app['owner']} · 学生原创应用 · 文件范围：{', '.join(app['include'])}")
+    with st.expander('应用登记信息'):
+        st.caption(f"维护者：{app['owner']} · 来源：{app['source_identity']}")
+        st.write('检查目录：'+', '.join(app['include']))
     with st.form('git_snapshot_form'):
         mode = st.radio('审查阶段', ['升级前预审', '候选提交审查'], horizontal=True, key='git_review_mode')
         left, right = st.columns(2)
         head = left.text_input('待审应用提交 / 本地分支', value='HEAD', max_chars=160, key='git_head')
         base = right.text_input('基准应用提交（候选审查时必填）', value='', max_chars=160, key='git_base')
-        submitted = st.form_submit_button('读取提交与检查范围')
+        submitted = st.form_submit_button('加载应用提交')
     if submitted:
         on_change()
         st.session_state.pop('registered_snapshot', None)
@@ -34,10 +36,9 @@ def render_registered_input(client, ready, *, on_change, public_demo=True):
         except ValueError as exc: st.error(str(exc))
     snapshot = st.session_state.get('registered_snapshot')
     if not snapshot or snapshot['application_id'] != app_id:
-        st.info('先读取应用提交。系统从 Git 对象收集登记范围，包含未修改的消费者；不读取工作区未提交改动。')
+        st.info('填写 Git 提交或本地分支，然后加载应用。未提交的修改不纳入审查。')
         return None, None
     st.success(f"已装载应用提交 {snapshot['head_commit'][:12]} · {len(snapshot['files'])} 个文件")
-    st.caption('依赖升级 v2.9.1 → v3.0.0；上述提交号属于应用，两者分别管理。')
     if snapshot['gaps']: st.warning(f"收集不完整：{len(snapshot['gaps'])} 项缺口。报告将保留这些缺口。")
     with st.expander('已检查范围与缺失资料'):
         st.write(snapshot['coverage']['scope'])
@@ -67,17 +68,16 @@ def render_registered_input(client, ready, *, on_change, public_demo=True):
 def render_snapshot_report(result):
     snapshot = result.get('application_snapshot')
     if not snapshot: return
-    st.markdown('**审查对象与检查范围**')
+    st.markdown('**应用与检查范围**')
     st.caption(f"{snapshot['application_id']} · 应用提交 {snapshot['head_commit'][:12]} · "
                f"{snapshot.get('review_mode', 'preflight')} · 依赖 {result['source_version']} → {result['target_version']}")
     if snapshot['coverage']['status'] != 'REGISTERED_SCOPE_COMPLETE':
         st.warning('登记范围内资料未收集完整；不能将未发现风险解释为应用兼容。')
-    else: st.caption('已收集登记角色所需文件；静态关系和实际回归仍须分别核查。')
     with st.expander('应用提交中的契约与测试依据'):
         for row in (result.get('application_evidence') or {}).get('results', []):
             st.markdown(f"**{row['path']} · 第 {row['line_start']}–{row['line_end']} 行**")
             st.code(row['content'], language=None)
-        st.caption('学生原创应用资料，与官方 SDK 资料分别管理；测试定义不能证明已执行。')
+        st.caption('原创应用资料；测试定义不是运行记录。')
     comparison = result.get('commit_comparison')
     if comparison:
         with st.expander('基准提交与候选提交对照'):

@@ -2,30 +2,22 @@ param(
     [int]$RagPort = 8765,
     [int]$UiPort = 8502,
     [string]$RagPythonPath = '',
+    [ValidateSet('direct', 'system')]
+    [string]$ModelNetworkMode = 'direct',
     [switch]$EnableGeneration,
     [switch]$DisableGeneration
 )
 
 $ErrorActionPreference = 'Stop'
 $workspace = $PSScriptRoot
-$agentRoot = Join-Path $workspace 'change-review-agent'
-$legacyAgentRoot = Join-Path $workspace 'OpenManus-rag'
 $ragRoot = Join-Path $workspace 'versioned-rag-service'
-$legacyRagRoot = Join-Path $workspace 'RAG-Challenge-2-main'
 $uiRoot = Join-Path $workspace 'demo-ui'
-$ragPython = Join-Path $ragRoot '.venv\Scripts\python.exe'
-if (-not (Test-Path -LiteralPath $ragPython -PathType Leaf)) {
-    # Keep the existing local virtual environment usable after the folder rename.
-    $ragPython = Join-Path $legacyRagRoot '.venv\Scripts\python.exe'
-}
+$unifiedPython = Join-Path $workspace '.venv-maintenance\Scripts\python.exe'
+$ragPython = $unifiedPython
 if (-not [string]::IsNullOrWhiteSpace($RagPythonPath)) {
     $ragPython = (Resolve-Path -LiteralPath $RagPythonPath).Path
 }
-$uiPython = Join-Path $agentRoot '.venv\Scripts\python.exe'
-if (-not (Test-Path -LiteralPath $uiPython -PathType Leaf)) {
-    # Keep the existing local virtual environment usable after the folder rename.
-    $uiPython = Join-Path $legacyAgentRoot '.venv\Scripts\python.exe'
-}
+$uiPython = $unifiedPython
 $projectCorpus = Join-Path $ragRoot 'public_corpus_paddleocr'
 $projectRetrievalPolicy = Join-Path $projectCorpus 'retrieval_policy.json'
 
@@ -161,6 +153,7 @@ if ($generationEnabled) {
     }
 }
 $env:RD_V2_ALLOW_EXTERNAL_GENERATION = if ($generationEnabled) { 'true' } else { 'false' }
+$env:RD_V2_GENERATION_NETWORK_MODE = $ModelNetworkMode
 
 if ($useWindowsProxyFallback) {
     Write-Host '检测到不可用的本机代理；RAG/UI 子进程本次回退到 Windows 系统代理，不修改永久环境变量。'

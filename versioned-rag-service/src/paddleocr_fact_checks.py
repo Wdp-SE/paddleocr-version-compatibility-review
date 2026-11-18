@@ -9,6 +9,22 @@ from src.paddleocr_query_plan import claim_scope_module, explicit_versions
 _DEFAULT=re.compile(r'\b([A-Za-z][\w]*)\b\s*(?:的)?\s*默认(?:值)?\s*(?:为|是|=|：|:)?\s*([-+]?\d+(?:\.\d+)?|True|False|None)\b',re.I)
 
 
+def _unproven_result_type(text, cited):
+    if not any(h.get('version') == 'v3.0.0' for h in cited):
+        return False
+    for sentence in re.split(r'[。；\n]', text.replace('`', '')):
+        if re.search(r'打印|序列化|JSON|json', sentence):
+            continue
+        if re.search(r'结果|返回', sentence) and re.search(
+            r'(?:改为|变为|变成|返回的是|返回一个|结果是|结果为|返回)\s*.{0,18}(?:字典|\bdict\b)', sentence):
+            # Mapping-like fields and serialized output do not establish a
+            # Python dict type. Require an explicit type assertion in code.
+            proven = any(re.search(r'isinstance\([^\n]+,\s*dict\s*\)', evidence_text(h)) for h in cited)
+            if not proven:
+                return True
+    return False
+
+
 def parameter_scope_mismatch(question: str, claim: str) -> bool:
     """Conservative PaddleOCR argument-family guard; not general entailment.
 
@@ -101,6 +117,8 @@ def check_mechanical_facts(claims:list[dict],evidence:list[dict],*,requirements:
         contradicted=[m[1] for m in assertions if m[1] in defaults and m[2].lower() not in defaults[m[1]]]
         supported=[m[1] for m in assertions if defaults.get(m[1])=={m[2].lower()}]
         status='SCOPE_MISMATCH' if missing_scope else 'CONTRADICTED' if contradicted else 'CONSISTENT_PARSED_FACT' if assertions and len(supported)==len(assertions) else 'NOT_MECHANICALLY_CHECKABLE'
+        if status == 'NOT_MECHANICALLY_CHECKABLE' and _unproven_result_type(claim['text'], cited):
+            status = 'UNPROVEN_RETURN_TYPE'
         verdicts.append({'claim_index':i,'status':status,'symbols':contradicted or supported})
     return {'assessment_type':'mechanical_scope_and_parsed_defaults_not_complete_answer_validation',
             'requirements':requirement_status,'claims':verdicts}

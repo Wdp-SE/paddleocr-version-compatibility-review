@@ -1,5 +1,7 @@
 """Bounded retrieval windows; citations always point into unchanged source blocks."""
 from __future__ import annotations
+import ast
+import textwrap
 import hashlib
 import re
 import html
@@ -8,6 +10,8 @@ from collections import OrderedDict
 
 def module_for(chunk: dict) -> str:
     path = chunk.get('document_path', '').lower()
+    if path=='paddleocr.py' and re.search(r'class PPStructure\b|Initializes the PPStructure object',chunk.get('content','')):
+        return 'structure'
     # Historical guides predate the pipeline_usage/ directory. Their explicit
     # source role must survive windows that don't repeat the imported class.
     if path in ('doc/doc_ch/whl.md','doc/doc_ch/inference_ppocr.md','doc/doc_ch/inference_args.md'):
@@ -18,7 +22,7 @@ def module_for(chunk: dict) -> str:
         if re.search(r'\bdef\s+(?:test_structure\w*|structure_engine)\b',text):return 'structure'
     # A pipeline's test body does not necessarily repeat its constructor. Its
     # path still owns the scope, including assertion-only source blocks.
-    if path == 'tests/pipelines/test_ocr.py':
+    if path in ('tests/pipelines/test_ocr.py', 'tools/infer/predict_rec.py', 'tools/infer/predict_system.py'):
         return 'ocr'
     if 'module_usage/' in path:
         return path.rsplit('/', 1)[-1].split('.')[0]
@@ -29,7 +33,7 @@ def module_for(chunk: dict) -> str:
     if 'preprocessor' in path: return 'doc_preprocessor'
     if 'structure' in path: return 'structure'
     if path.endswith('/ocr.md') or path.endswith('/ocr.py') or path == 'paddleocr.py': return 'ocr'
-    if 'common_args' in path: return 'shared'
+    if 'common_args' in path or path == 'paddleocr/_pipelines/base.py': return 'shared'
     return 'general'
 
 
@@ -113,7 +117,10 @@ def build_structure_views(chunks: list[dict], *, max_chars: int = 384) -> list[d
     output=[]
     for parent in chunks:
         text=parent['content']
-        protected=[m.span() for m in re.finditer(r'<tr\b[^>]*>.*?</tr>|```[^\n]*\n.*?```',text,re.S|re.I)]
+        # Markdown parameter rows can contain hundreds of padding spaces.
+        # Keep the name, meaning and default together just like an HTML row.
+        protected_pattern=r'<tr\b[^>]*>.*?</tr>|```[^\n]*\n.*?```|^[ \t]*\|[^\n]+\|[ \t]*$'
+        protected=[m.span() for m in re.finditer(protected_pattern,text,re.S|re.I|re.M)]
         ranges=[];cursor=0
         for lo,hi in protected+[(len(text),len(text))]:
             if lo<cursor:continue
@@ -172,7 +179,10 @@ def validate_views(chunks: list[dict], views: list[dict]) -> None:
         seen.add(vid)
 
 
-def materialize_evidence(chunks: list[dict], selected: list[dict]) -> list[dict]:
+def materialize_evidence(chunks: list[dict], selected: list[dict], *, applicability=None) -> list[dict]:
+    if applicability is None:
+        from src.paddleocr_applicability import example_applicability
+        applicability=example_applicability(chunks)
     parents={c['chunk_id']:c for c in chunks}; output=OrderedDict()
     for view in selected:
         parent=parents.get(view.get('parent_chunk_id'))
@@ -182,6 +192,7 @@ def materialize_evidence(chunks: list[dict], selected: list[dict]) -> list[dict]
         span={k:view[k] for k in ('line_start','line_end','char_start','char_end') if k in view}
         span['content']=_span_text(parent,view)
         row=output.setdefault(parent['chunk_id'],{**parent,'module':module_for(parent),'evidence_spans':[]})
+        if parent['chunk_id'] in applicability:row['applicability']=applicability[parent['chunk_id']]
         if span not in row['evidence_spans']: row['evidence_spans'].append(span)
     return list(output.values())
 
@@ -203,6 +214,20 @@ def generation_evidence_text(hit: dict) -> str:
     text = hit['content']; lines = text.splitlines(keepends=True)
     offsets = [0]
     for line in lines: offsets.append(offsets[-1] + len(line))
+    python_units=[]
+    if hit.get('document_path','').endswith('.py'):
+        try:
+            tree=ast.parse(textwrap.dedent(text))
+        except (SyntaxError,ValueError):
+            tree=None
+        if tree is not None:
+            for node in ast.walk(tree):
+                if not isinstance(node,(ast.FunctionDef,ast.AsyncFunctionDef)):
+                    continue
+                first=min([node.lineno]+[d.lineno for d in node.decorator_list])-1
+                lo,hi=offsets[first],offsets[node.end_lineno]
+                if hi-lo<=6000:
+                    python_units.append((lo,hi))
     ranges = []
     for span in spans:
         _span_text(hit, span)  # Reject forged spans before expanding anything.
@@ -212,6 +237,10 @@ def generation_evidence_text(hit: dict) -> str:
         # PaddleOCR guides use HTML tables as well as Markdown tables.
         char_lo = span.get('char_start', offsets[start])
         char_hi = span.get('char_end', offsets[end])
+        # A broken signature/docstring or half of a multiline return is not a
+        # complete proof unit. Copy only overlapping bounded functions from the
+        # same validated canonical parent; do not execute or fetch other code.
+        ranges.extend((lo,hi) for lo,hi in python_units if lo<char_hi and char_lo<hi)
         table_start = text.rfind('<table', 0, char_hi)
         table_end = text.find('</table>', char_hi)
         if table_start >= 0 and table_end >= 0 and text.rfind('</table>', 0, char_lo) < table_start:
@@ -227,9 +256,10 @@ def generation_evidence_text(hit: dict) -> str:
             header = start
             while header > 0 and lines[header-1].lstrip().startswith('|'): header -= 1
             if header+1 < len(lines) and '---' in lines[header+1]:
-                if offsets[hi]-offsets[header] <= 6000: lo = min(lo, header)
-                else:
-                    ranges.append((offsets[header], offsets[header+2]))
+                # The schema plus selected rows is sufficient. Copying every
+                # row between the header and a late hit adds unrelated defaults
+                # to both generator and checker and wastes their input budget.
+                ranges.append((offsets[header], offsets[header+2]))
         # A complete fenced example is more useful than an isolated code line.
         fences = [i for i in range(start) if lines[i].lstrip().startswith('```')]
         if len(fences) % 2:

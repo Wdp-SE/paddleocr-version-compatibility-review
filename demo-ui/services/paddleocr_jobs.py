@@ -1,5 +1,7 @@
 """Bounded, session-owned read-only jobs. Workers never access Streamlit state."""
 from concurrent.futures import ThreadPoolExecutor, CancelledError
+import copy
+import json
 from threading import Event, Lock
 import time
 import uuid
@@ -32,6 +34,12 @@ class JobManager:
                            and type(v) is int and 0 <= v <= 10000}
                 if values.get('stage') in ('static_review', 'evidence_validation', 'official_lookup', 'model_advice'):
                     bounded['stage'] = values['stage']
+                preview=values.get('static_preview')
+                if (isinstance(preview,dict) and preview.get('runtime_verified') is False
+                        and type(preview.get('risk_count')) is int and 0<=preview['risk_count']<=100
+                        and isinstance(preview.get('findings'),list) and len(preview['findings'])<=5
+                        and len(json.dumps(preview,ensure_ascii=False))<=12000):
+                    bounded['static_preview']=copy.deepcopy(preview)
                 with job['lock']:
                     job['progress'].update(bounded)
 
@@ -79,7 +87,7 @@ def cancel_job(job):
 
 def snapshot(job):
     with job['lock']:
-        return {**job['progress'], 'state': job['state'],
+        return {**copy.deepcopy(job['progress']), 'state': job['state'],
                 'elapsed_seconds': (job['finished'] or time.monotonic()) - job['started'],
                 'done': job['future'].done()}
 
