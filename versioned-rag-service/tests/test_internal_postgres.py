@@ -11,7 +11,7 @@ def test_postgres_admission_concurrent_claim_and_stale_worker():
     if not url:pytest.skip('Disposable PostgreSQL integration database not configured')
     import psycopg
     from psycopg.conninfo import conninfo_to_dict
-    from urllib.parse import urlsplit,urlunsplit,parse_qsl,urlencode
+    from urllib.parse import urlsplit,urlunsplit,parse_qsl,quote,urlencode
     from psycopg import sql
     if conninfo_to_dict(url).get('dbname')!='review_test':pytest.fail('Only disposable review_test is allowed')
     schema='review_test_'+uuid.uuid4().hex
@@ -19,7 +19,10 @@ def test_postgres_admission_concurrent_claim_and_stale_worker():
         db.execute(sql.SQL('CREATE SCHEMA {}').format(sql.Identifier(schema)))
     # Disposable CI container owns cleanup; never issue DROP against operator databases.
     parts=urlsplit(url)
-    scoped=urlunsplit(parts._replace(query=urlencode([*parse_qsl(parts.query),('options','-c search_path='+schema)])))
+    options = '-c search_path=' + schema
+    query = urlencode([*parse_qsl(parts.query), ('options', options)], quote_via=quote)
+    scoped = urlunsplit(parts._replace(query=query))
+    assert conninfo_to_dict(scoped)['options'] == options
     now=[1000.0];store=TaskStore(scoped,clock=lambda:now[0])
     winners=[];errors=[]
     def submit(i):
